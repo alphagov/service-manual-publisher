@@ -1,25 +1,22 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
+# This file overwritten on deploy
+
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-  timeout: 5000
+  # Necessary to allow creating a db with different encodings.
+  # See http://www.postgresql.org/docs/9.1/static/manage-ag-templatedbs.html for details
+  template: template0
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: service-manual-publisher_development
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
+test: &test
   <<: *default
-  database: db/test.sqlite3
+  database: service-manual-publisher_test
 
-production:
-  <<: *default
-  database: db/production.sqlite3
+cucumber:
+  <<: *test
