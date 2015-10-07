@@ -1,0 +1,15 @@
+<%= form_for ShortText.new do |f| %>
+  <p>
+    <%= f.label :slug %>
+    <%= f.text_field :slug %>
+  </p>
+
+  <p>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </p>
+
+  <p>
+    <%= f.submit :save %>
+  </p>
+<% end %>
