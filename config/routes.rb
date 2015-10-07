@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   get '/healthcheck', :to => proc { [200, {}, ['OK']] }
   mount GovukAdminTemplate::Engine, at: "/style-guide"
-  root 'application#index' # placeholder to make the above path work
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+
+  root "short_texts#new"
+
+  resources :short_texts
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
