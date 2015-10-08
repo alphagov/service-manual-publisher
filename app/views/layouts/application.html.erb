@@ -1,13 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ServiceManualPublisher</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+<%# blocks for govuk_admin_template %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tag %>
+<% end %>
+<% content_for :app_title do %>GOV.UK Service Manual Publisher<% end %>
 
-<%= yield %>
+<% content_for :content do %>
+  <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
+    <div class="main-alert <%= k %>">
+      <%= flash[k] %>
+      <% if flash[:need_id] %>
+        <%= link_to "#{flash[:need_id]}: #{flash[:goal]}",
+                    need_path(flash[:need_id]) %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= yield %>
+<% end %>
 
-</body>
-</html>
+<%= render template: 'layouts/govuk_admin_template' %>
