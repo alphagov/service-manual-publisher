@@ -15,7 +15,7 @@ class ShortTextsController < ApplicationController
 
   def create
     slug = params[:short_text][:slug]
-    body = params[:short_text][:body]
+    body = Govspeak::Document.new(params[:short_text][:body]).to_html
     title = params[:short_text][:title]
 
     publishing_api.put_content_item(slug, {
@@ -23,11 +23,14 @@ class ShortTextsController < ApplicationController
       rendering_app: "government-frontend",
       public_updated_at: Time.now,
       routes: [
-        {type: "exact", path: slug}
+        { type: "exact", path: slug }
       ],
       format: "short_text",
       title: title,
       update_type: 'minor',
+      details: {
+        body: body
+      },
     })
 
     redirect_to action: :show, id: slug
