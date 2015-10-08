@@ -25,7 +25,7 @@ class ShortTextsController < ApplicationController
       routes: [
         {type: "exact", path: slug}
       ],
-      format: "like_whatevs",
+      format: "short_text",
       title: title,
       update_type: 'minor',
     })
