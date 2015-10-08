@@ -12,7 +12,8 @@ gem 'airbrake', '~> 4.2.1'
 gem 'govuk_admin_template', '~> 3.0.0'
 
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :development, :test do
