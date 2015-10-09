@@ -1,49 +1,31 @@
 # Service-manual-publisher
 
-One paragraph description and purpose.
+This application allows editing of service manual pages.
 
-## Screenshots (if there's a client-facing aspect of it)
+## Screenshots
 
 ## Live examples (if available)
 
 - [gov.uk/thing](https://www.gov.uk/thing)
 
-## Nomenclature
-
-- **Word**: definition of word, and how it's used in the code
-
-## Technical documentation
-
-Write a single paragraph including a general technical overview of the app.
-Example:
-
-This is a Ruby on Rails application that maps RESTful URLs onto a persistence
-layer. It's only presented as an internal API and doesn't face public users.
-
 ### Dependencies
 
-- [alphagov/other-repo]() - provides some downstream service
-- [redis]() - provides a backing service for work queues
+- [alphagov/government-frontend]() - for rendering service manual pages on gov.uk
+- [postgresql]() - for the db
 
 ### Running the application
 
+Currently `government-frontend` has a feature flag to enable service manual
+content.
+
+`FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend`
 `./startup.sh`
 
-Documentation for where the app will appear (default port, vhost, URL etc).
+The app should now appear on http://service-manual-publisher.dev.gov.uk
 
 ### Running the test suite
 
 `bundle exec rake`
-
-Include any other edge cases, e.g parallel test runner in Whitehall
-
-### Any deviations from idiomatic Rails/Go etc. (optional)
-
-### Example API output (optional)
-
-`one-line-curl-command with JSON response after`
-
-Keep this section limited to core endpoints - if the app is complex link out to `/docs`.
 
 ## Licence
 
