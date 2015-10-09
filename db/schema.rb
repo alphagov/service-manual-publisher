@@ -11,9 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20151009125935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "users", force: :cascade do |t|
+    t.text     "uid"
+    t.text     "name"
+    t.text     "email"
+    t.text     "organisation_slug"
+    t.text     "organisation_content_id"
+    t.boolean  "remotely_signed_out",     default: false
+    t.boolean  "disabled",                default: false
+    t.text     "permissions",                                          array: true
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
+  add_index "users", ["organisation_content_id"], name: "index_users_on_organisation_content_id", using: :btree
+  add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
 
 end
