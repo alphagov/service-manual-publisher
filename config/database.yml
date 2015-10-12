@@ -1,5 +1,3 @@
-# This file overwritten on deploy
-
 default: &default
   adapter: postgresql
   encoding: unicode
@@ -18,5 +16,6 @@ test: &test
   <<: *default
   database: service-manual-publisher_test
 
-cucumber:
-  <<: *test
+production:
+  <<: *default
+  # Rails reads values from DATABASE_URL env var.
