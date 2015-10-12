@@ -24,3 +24,7 @@ group :development, :test do
   gem 'simplecov-rcov', '0.2.3', require: false
 end
 
+group :test do
+  gem 'capybara'
+end
+

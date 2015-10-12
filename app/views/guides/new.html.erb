@@ -1,0 +1,23 @@
+<div class='well'>
+  <%= form_for Guide.new do |f| %>
+    <fieldset class='inputs'>
+      <div class='form-group'>
+        <%= f.label :slug %>
+        <%= f.text_field :slug, class: 'input-md-12 form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= f.label :title %>
+        <%= f.text_field :title, class: 'input-md-12 form-control' %>
+      </div>
+
+      <%# <div class='form-group'> %>
+      <%#   <%= f.label :body %1> %>
+      <%#   <%= f.text_area :body, class: 'input-md-12 form-control', rows: 14 %1> %>
+      <%# </div> %>
+    </fieldset>
+    <div class='form-group'>
+      <%= f.submit "Publish", class: 'btn btn-success' %>
+    </div>
+  <% end %>
+</div>

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   mount GovukAdminTemplate::Engine, at: "/style-guide"
   root 'application#index' # placeholder to make the above path work
 
+  resources :guides
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
