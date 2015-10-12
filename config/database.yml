@@ -15,3 +15,7 @@ development:
 test: &test
   <<: *default
   database: service-manual-publisher_test
+
+production:
+  <<: *default
+  # Rails reads values from DATABASE_URL env var.
