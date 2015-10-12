@@ -6,6 +6,13 @@
 <% end %>
 <% content_for :app_title do %>GOV.UK Service Manual Publisher<% end %>
 
+<% if current_user %>
+  <% content_for :navbar_right do %>
+    <%= link_to current_user.name, Plek.current.find('signon') %>
+    &bull; <%= link_to 'Sign out', gds_sign_out_path %>
+  <% end %>
+<% end %>
+
 <% content_for :content do %>
   <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
     <div class="main-alert <%= k %>">

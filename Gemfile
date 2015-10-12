@@ -10,6 +10,7 @@ gem 'logstasher', '0.6.2'
 gem 'plek', '~> 1.10'
 gem 'airbrake', '~> 4.2.1'
 gem 'govuk_admin_template', '~> 3.0.0'
+gem 'gds-sso', '~> 11.0.0'
 
 group :development do
   gem 'better_errors'
