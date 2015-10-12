@@ -1,49 +1,45 @@
 # Service-manual-publisher
 
-One paragraph description and purpose.
+Service Manual Publisher is in very early stages and is going to be used for publishing and maitaining https://gov.uk/service-manual. This application will replace the current [service manual application](https://github.com/alphagov/government-service-design-manual).
 
-## Screenshots (if there's a client-facing aspect of it)
+## Screenshots
 
-## Live examples (if available)
+TODO
 
-- [gov.uk/thing](https://www.gov.uk/thing)
+## Live examples
+
+None at the moment.
 
 ## Nomenclature
 
-- **Word**: definition of word, and how it's used in the code
+- **Guide**: a service manual guide is the main document format used for manuals.
 
 ## Technical documentation
 
-Write a single paragraph including a general technical overview of the app.
-Example:
-
-This is a Ruby on Rails application that maps RESTful URLs onto a persistence
-layer. It's only presented as an internal API and doesn't face public users.
+PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no public facing aspect.
 
 ### Dependencies
 
-- [alphagov/other-repo]() - provides some downstream service
-- [redis]() - provides a backing service for work queues
+- PostgreSQL
+- [Publishing API](alphagov/publishing-api) - for publishing documents
 
-### Running the application
+### Development
 
 `./startup.sh`
 
-Documentation for where the app will appear (default port, vhost, URL etc).
+The application runs on port `3111` by default. If you're using the GDS VM it's exposed on http://service-manual-publisher.dev.gov.uk.
 
-### Running the test suite
+Currently [government-frontend](alphagov/government-frontend) has a feature flag to enable rendering service manual content.
 
-`bundle exec rake`
+```
+FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend
+```
 
-Include any other edge cases, e.g parallel test runner in Whitehall
+The application has a style guide that can be accessed on `/style-guide`.
 
-### Any deviations from idiomatic Rails/Go etc. (optional)
+### Testing
 
-### Example API output (optional)
-
-`one-line-curl-command with JSON response after`
-
-Keep this section limited to core endpoints - if the app is complex link out to `/docs`.
+`bundle exec rspec`
 
 ## Licence
 
