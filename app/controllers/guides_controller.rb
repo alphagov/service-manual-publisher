@@ -1,6 +1,6 @@
 class GuidesController < ApplicationController
   def new
-    @guide = Guide.new
+    @guide = Guide.new(latest_edition: Edition.new)
   end
 
   def create
