@@ -6,7 +6,7 @@
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
 
-      <%= f.fields_for @guide.latest_edition do |editions_form| %>
+      <%= f.fields_for :latest_edition, @guide.latest_edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
           <%= editions_form.text_field :title, class: 'input-md-12 form-control' %>

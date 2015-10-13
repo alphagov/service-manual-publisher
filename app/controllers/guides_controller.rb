@@ -1,12 +1,16 @@
 class GuidesController < ApplicationController
   def new
+    @guide = Guide.new
   end
 
   def create
-    guide = Guide.new
-    guide.slug = params[:guide][:slug]
-    guide.editions << create_edition_from_params(params[:guide][:editions])
-    guide.save!
+    @guide = Guide.new(guide_params)
+    @guide.latest_edition.state = edition_state_from_params
+    if @guide.save
+      redirect_to root_path, notice: "Guide has been created"
+    else
+      render action: :new
+    end
   end
 
   def edit
@@ -14,25 +18,27 @@ class GuidesController < ApplicationController
   end
 
   def update
-    guide = Guide.find(params[:id])
-    guide.editions << create_edition_from_params(params[:guide][:edition])
+    @guide = Guide.find(params[:id])
+    @guide.attributes = guide_params
+    @guide.latest_edition.state = edition_state_from_params
+    if @guide.save
+      redirect_to root_path, notice: "Guide has been updated"
+    else
+      render action: :edit
+    end
   end
 
-  private
+private
 
-  def create_edition_from_params hash
-    edition = Edition.new
+  def guide_params
+    params.require(:guide).permit(:slug, latest_edition_attributes: [:title, :body])
+  end
 
-    [:title, :body].each do |a|
-      edition.send("#{a}=", hash[a])
-    end
-
+  def edition_state_from_params
     if params[:save_draft]
-      edition.state = 'draft'
+      'draft'
     elsif params[:publish]
-      edition.state = 'published'
+      'published'
     end
-
-    edition
   end
 end
