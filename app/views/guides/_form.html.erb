@@ -1,20 +1,43 @@
 <div class='well'>
   <%= form_for guide do |f| %>
     <fieldset class='meta'>
+      <legend>Meta</legend>
       <div class='form-group'>
         <%= f.label :slug %>
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
 
       <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
+
+        <div class='form-group'>
+          <%= editions_form.label :related_discussion_title %>
+          <%= editions_form.text_field :related_discussion_title, class: 'input-md-12 form-control' %>
+        </div>
+
+        <div class='form-group'>
+          <%= editions_form.label :related_discussion_href, "Link to related discussion" %>
+          <%= editions_form.text_field :related_discussion_href, class: 'input-md-12 form-control' %>
+        </div>
+
         <div class='form-group'>
           <%= editions_form.label :publisher_title, 'Published by' %>
           <%= editions_form.select :publisher_title, Guide::PUBLISHERS.keys, class: 'input-md-12 form-control' %>
+        </div>
+
+        <div class='form-group'>
+          <%= editions_form.label :phase, 'Phase' %>
+          <%= editions_form.select :phase, [['Alpha', 'alpha'], ['Beta', 'beta'], ['Live', 'live']], class: 'input-md-12 form-control' %>
+        </div>
+
+        <div class='form-group'>
+          <%= editions_form.label :description %>
+          <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
         </div>
       <% end %>
     </fieldset>
 
     <fieldset class='inputs'>
+      <legend>Content</legend>
       <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
@@ -27,9 +50,20 @@
       <% end %>
 
     </fieldset>
-    <div class='form-group'>
-      <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft %>
-      <%= f.submit "Publish", class: 'btn btn-success', name: :publish %>
-    </div>
+
+    <fieldset class='update'>
+      <div class='form-group'>
+        <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
+          <div class='form-group'>
+            <%= editions_form.label :update_type %>
+            <%= editions_form.select :update_type, [["Major", "major"], ["Minor", "minor"], ["Republish", "republish"]], include_blank: true, class: 'input-md-12 form-control' %>
+          </div>
+        <% end %>
+      </div>
+      <div class='form-group'>
+        <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft %>
+        <%= f.submit "Publish", class: 'btn btn-success', name: :publish %>
+      </div>
+    </fieldset>
   <% end %>
 </div>

@@ -31,7 +31,12 @@ class GuidesController < ApplicationController
 private
 
   def guide_params
-    params.require(:guide).permit(:slug, latest_edition_attributes: [:title, :body, :publisher_title])
+    params.require(:guide).permit(
+      :slug,
+      latest_edition_attributes: [
+        :title, :body, :description, :publisher_title, :phase,
+        :related_discussion_href, :related_discussion_title, :update_type
+      ])
   end
 
   def edition_state_from_params
