@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20151013114232) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "guide_editions", force: :cascade do |t|
+  create_table "editions", force: :cascade do |t|
     t.integer  "guide_id"
     t.integer  "user_id"
     t.text     "title"

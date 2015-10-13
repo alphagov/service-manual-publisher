@@ -1,5 +1,7 @@
 class Guide < ActiveRecord::Base
   has_many :editions
-  has_one :published_edition, -> { published }, class_name: "GuideEdition"
-  has_one :draft_edition, -> { draft }, class_name: "GuideEdition"
+
+  def latest_edition
+    editions.order(created_at: :desc).first
+  end
 end

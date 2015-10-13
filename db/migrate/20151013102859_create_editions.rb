@@ -1,6 +1,6 @@
-class CreateGuideEditions < ActiveRecord::Migration
+class CreateEditions < ActiveRecord::Migration
   def change
-    create_table :guide_editions do |t|
+    create_table :editions do |t|
       t.references :guide
       t.references :user
 

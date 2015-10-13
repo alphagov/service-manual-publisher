@@ -1,12 +1,12 @@
 <div class='well'>
-  <%= form_for Guide.new do |f| %>
+  <%= form_for @guide do |f| %>
     <fieldset class='inputs'>
       <div class='form-group'>
         <%= f.label :slug %>
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
 
-      <%= f.fields_for :editions do |editions_form| %>
+      <%= f.fields_for @guide.latest_edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
           <%= editions_form.text_field :title, class: 'input-md-12 form-control' %>
