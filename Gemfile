@@ -11,6 +11,8 @@ gem 'plek', '~> 1.10'
 gem 'airbrake', '~> 4.2.1'
 gem 'govuk_admin_template', '~> 3.0.0'
 gem 'gds-sso', '~> 11.0.0'
+gem 'gds-api-adapters'
+gem 'govspeak', '~> 3.4.0'
 
 group :development do
   gem 'better_errors'
@@ -27,4 +29,3 @@ end
 group :test do
   gem 'capybara'
 end
-

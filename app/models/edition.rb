@@ -4,6 +4,7 @@ class Edition < ActiveRecord::Base
   scope :published, -> { where(state: 'published') }
 
   validates :state, presence: true
+  validates :title, presence: true
 
   def draft?
     state == 'draft'

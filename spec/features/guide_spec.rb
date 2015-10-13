@@ -9,6 +9,7 @@ RSpec.describe "creating guides", type: :feature do
 
   it "stores guide metadata" do
     fill_in "Slug", with: "/the/path"
+    fill_in "Title", with: "The Title"
     click_button "Publish"
 
     guide = Guide.first
