@@ -6,6 +6,10 @@ class Guide < ActiveRecord::Base
 
   accepts_nested_attributes_for :latest_edition
 
+  PUBLISHERS = {
+    "Design Community" => "https://designpatterns.hackpad.com"
+  }
+
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
   end

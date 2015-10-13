@@ -18,6 +18,7 @@ RSpec.describe "creating guides", type: :feature do
   it "saves draft guide editions" do
     fill_in "Slug", with: "/the/path"
     fill_in "Title", with: "First Draft"
+    select "Design Community", from: "Published by"
     click_button "Save Draft"
 
     within ".main-alert" do
@@ -27,6 +28,7 @@ RSpec.describe "creating guides", type: :feature do
     edition = Guide.first.latest_edition
     content_id = Guide.first.content_id
     expect(content_id).to be_present
+    expect(edition.publisher_title).to eq "Design Community"
     expect(edition.title).to eq "First Draft"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false

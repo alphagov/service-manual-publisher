@@ -1,11 +1,20 @@
 <div class='well'>
   <%= form_for guide do |f| %>
-    <fieldset class='inputs'>
+    <fieldset class='meta'>
       <div class='form-group'>
         <%= f.label :slug %>
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
 
+      <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
+        <div class='form-group'>
+          <%= editions_form.label :publisher_title, 'Published by' %>
+          <%= editions_form.select :publisher_title, Guide::PUBLISHERS.keys, class: 'input-md-12 form-control' %>
+        </div>
+      <% end %>
+    </fieldset>
+
+    <fieldset class='inputs'>
       <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
