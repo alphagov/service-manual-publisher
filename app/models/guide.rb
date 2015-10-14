@@ -1,3 +1,5 @@
+require "gds_api/publishing_api"
+
 class Guide < ActiveRecord::Base
   validates :content_id, presence: true, uniqueness: true
   validates :slug, presence: true
@@ -20,8 +22,6 @@ class Guide < ActiveRecord::Base
   after_save :write_to_content_store
 
   def write_to_content_store
-    require "gds_api/publishing_api"
-
     publishing_api = GdsApi::PublishingApi.new(Plek.new.find('publishing-api'))
     rendered_body = Govspeak::Document.new(latest_edition.body)
 
