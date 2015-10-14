@@ -35,6 +35,7 @@ describe Guide do
 
     double_api = double(:publishing_api)
     double_document = double(:document)
+    double_document.stub(:to_html).and_return "html"
 
     expected_plek = Plek.new.find('publishing-api')
     expect(GdsApi::PublishingApi).to receive(:new).with(expected_plek).and_return(double_api)
@@ -48,7 +49,7 @@ describe Guide do
       format:            "service_manual_guide",
       title:             edition.title,
       update_type:       "minor",
-      details:           { body: double_document }
+      details:           { body: double_document.to_html }
     }
 
     expect(double_api).to receive(:put_content_item).with(guide.slug, expected_hash)
@@ -67,6 +68,7 @@ describe Guide do
 
     double_api = double(:publishing_api)
     double_document = double(:document)
+    double_document.stub(:to_html).and_return "html"
 
     expected_plek = Plek.new.find('publishing-api')
     expect(GdsApi::PublishingApi).to receive(:new).with(expected_plek).and_return(double_api)
@@ -80,7 +82,7 @@ describe Guide do
       format:            "service_manual_guide",
       title:             edition.title,
       update_type:       "minor",
-      details:           { body: double_document }
+      details:           { body: double_document.to_html }
     }
 
     expect(double_api).to receive(:put_draft_content_item).with(guide.slug, expected_hash)

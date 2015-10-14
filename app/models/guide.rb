@@ -35,7 +35,7 @@ class Guide < ActiveRecord::Base
       format: "service_manual_guide",
       title: latest_edition.title,
       update_type: 'minor',
-      details: { body: rendered_body },
+      details: { body: rendered_body.to_html },
     }
 
     if latest_edition.draft?
