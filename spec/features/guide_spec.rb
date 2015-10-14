@@ -7,9 +7,9 @@ RSpec.describe "creating guides", type: :feature do
     click_link "Create a Guide"
 
     double_api = double(:publishing_api)
-    GdsApi::PublishingApi.stub(:new).and_return(double_api)
-    double_api.stub(:put_draft_content_item)
-    double_api.stub(:put_content_item)
+    allow(GdsApi::PublishingApi).to receive(:new).and_return(double_api)
+    allow(double_api).to receive(:put_draft_content_item)
+    allow(double_api).to receive(:put_content_item)
   end
 
   it "saves draft guide editions" do

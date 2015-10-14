@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Guide do
+RSpec.describe Guide do
   def valid_edition(attributes = {})
     attributes = {
       title:           "The Title",
@@ -31,7 +31,7 @@ describe Guide do
 
     guide = Guide.new(editions: [edition])
     guide.slug = "/test/slug"
-    guide.stub(:latest_edition).and_return edition
+    allow(guide).to receive(:latest_edition).and_return edition
 
     double_api = double(:publishing_api)
     expected_plek = Plek.new.find('publishing-api')
@@ -66,7 +66,7 @@ describe Guide do
 
     guide = Guide.new(editions: [edition])
     guide.slug = "/test/slug"
-    guide.stub(:latest_edition).and_return edition
+    allow(guide).to receive(:latest_edition).and_return edition
 
     double_api = double(:publishing_api)
 
