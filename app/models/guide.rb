@@ -24,27 +24,9 @@ class Guide < ActiveRecord::Base
 private
 
   def publish
+    data = GuidePresenter.new(self, latest_edition).exportable_attributes
+
     publishing_api = GdsApi::PublishingApi.new(Plek.new.find('publishing-api'))
-    rendered_document = Govspeak::Document.new(latest_edition.body)
-
-    level_two_headers = rendered_document.structured_headers.select{|s| s.level == 2}
-    level_two_headers = level_two_headers.map {|l| {title: l.text, href: "\##{l.id}"}}
-    data = {
-      publishing_app: "service-manual-publisher",
-      rendering_app: "government-frontend",
-      public_updated_at: latest_edition.created_at,
-      routes: [
-        { type: "exact", path: slug }
-      ],
-      format: "service_manual_guide",
-      title: latest_edition.title,
-      update_type: 'minor',
-      details: {
-        body: rendered_document.to_html,
-        header_links: level_two_headers,
-      },
-    }
-
     if latest_edition.draft?
       publishing_api.put_draft_content_item(slug, data)
     elsif latest_edition.published?
