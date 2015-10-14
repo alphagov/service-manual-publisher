@@ -23,8 +23,10 @@ class Guide < ActiveRecord::Base
 
   def write_to_content_store
     publishing_api = GdsApi::PublishingApi.new(Plek.new.find('publishing-api'))
-    rendered_body = Govspeak::Document.new(latest_edition.body)
+    rendered_document = Govspeak::Document.new(latest_edition.body)
 
+    level_two_headers = rendered_document.structured_headers.select{|s| s.level == 2}
+    level_two_headers = level_two_headers.map {|l| {title: l.text, href: "\##{l.id}"}}
     data = {
       publishing_app: "service-manual-publisher",
       rendering_app: "government-frontend",
@@ -35,7 +37,10 @@ class Guide < ActiveRecord::Base
       format: "service_manual_guide",
       title: latest_edition.title,
       update_type: 'minor',
-      details: { body: rendered_body.to_html },
+      details: {
+        body: rendered_document.to_html,
+        header_links: level_two_headers,
+      },
     }
 
     if latest_edition.draft?

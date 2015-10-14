@@ -26,7 +26,7 @@ describe Guide do
   it "saves published items" do
     edition = valid_edition(title: "something", state: "published")
     edition.title = "Test Title"
-    edition.body = "# Heading"
+    edition.body = "## Heading 1\n\n## Heading 2\n"
     edition.created_at = Time.now
 
     guide = Guide.new(editions: [edition])
@@ -34,12 +34,8 @@ describe Guide do
     guide.stub(:latest_edition).and_return edition
 
     double_api = double(:publishing_api)
-    double_document = double(:document)
-    double_document.stub(:to_html).and_return "html"
-
     expected_plek = Plek.new.find('publishing-api')
     expect(GdsApi::PublishingApi).to receive(:new).with(expected_plek).and_return(double_api)
-    expect(Govspeak::Document).to receive(:new).with(edition.body).and_return(double_document)
 
     expected_hash = {
       publishing_app:    "service-manual-publisher",
@@ -49,7 +45,13 @@ describe Guide do
       format:            "service_manual_guide",
       title:             edition.title,
       update_type:       "minor",
-      details:           { body: double_document.to_html }
+      details:           {
+        body:         "<h2 id=\"heading-1\">Heading 1</h2>\n\n<h2 id=\"heading-2\">Heading 2</h2>\n",
+        header_links: [
+          {:title=>"Heading 1", :href=>"#heading-1"},
+          {:title=>"Heading 2", :href=>"#heading-2"},
+        ],
+      },
     }
 
     expect(double_api).to receive(:put_content_item).with(guide.slug, expected_hash)
@@ -67,12 +69,9 @@ describe Guide do
     guide.stub(:latest_edition).and_return edition
 
     double_api = double(:publishing_api)
-    double_document = double(:document)
-    double_document.stub(:to_html).and_return "html"
 
     expected_plek = Plek.new.find('publishing-api')
     expect(GdsApi::PublishingApi).to receive(:new).with(expected_plek).and_return(double_api)
-    expect(Govspeak::Document).to receive(:new).with(edition.body).and_return(double_document)
 
     expected_hash = {
       publishing_app:    "service-manual-publisher",
@@ -82,7 +81,10 @@ describe Guide do
       format:            "service_manual_guide",
       title:             edition.title,
       update_type:       "minor",
-      details:           { body: double_document.to_html }
+      details:           {
+        body: "<h1 id=\"heading\">Heading</h1>\n",
+        header_links: [],
+      },
     }
 
     expect(double_api).to receive(:put_draft_content_item).with(guide.slug, expected_hash)
