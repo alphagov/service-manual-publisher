@@ -24,6 +24,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.3'
   gem 'simplecov', '0.10.0', require: false
   gem 'simplecov-rcov', '0.2.3', require: false
+  gem 'pry'
 end
 
 group :test do
