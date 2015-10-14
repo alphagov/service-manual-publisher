@@ -19,9 +19,11 @@ class Guide < ActiveRecord::Base
     object.content_id = SecureRandom.uuid
   end
 
-  after_save :write_to_content_store
+  after_save :publish
 
-  def write_to_content_store
+private
+
+  def publish
     publishing_api = GdsApi::PublishingApi.new(Plek.new.find('publishing-api'))
     rendered_document = Govspeak::Document.new(latest_edition.body)
 
