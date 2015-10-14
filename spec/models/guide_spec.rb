@@ -1,16 +1,30 @@
 require 'rails_helper'
 
 describe Guide do
+  def valid_edition attributes={}
+    attributes = {
+      title:           "The Title",
+      state:           "draft",
+      phase:           "beta",
+      description:     "Description",
+      update_type:     "major",
+      body:            "# Heading",
+      publisher_title: "Publisher Name",
+    }.merge(attributes)
+
+    Edition.new(attributes)
+  end
+
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      edition = Edition.new(title:"something", state: "published")
+      edition = valid_edition(title:"something", state: "published")
       guide = Guide.create!(slug: "/slug", content_id: nil, editions: [edition])
       expect(guide.content_id).to be_present
     end
   end
 
   it "saves published items" do
-    edition = Edition.new(title:"something", state: "published")
+    edition = valid_edition(title:"something", state: "published")
     edition.title = "Test Title"
     edition.body = "# Heading"
     edition.created_at = Time.now
@@ -42,7 +56,7 @@ describe Guide do
   end
 
   it "saves draft items" do
-    edition = Edition.new(title:"something", state: "draft")
+    edition = valid_edition(title:"something", state: "draft")
     edition.title = "Test Title"
     edition.body = "# Heading"
     edition.created_at = Time.now
