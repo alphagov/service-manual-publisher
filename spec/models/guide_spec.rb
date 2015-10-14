@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Guide do
-  def valid_edition attributes={}
+  def valid_edition(attributes = {})
     attributes = {
       title:           "The Title",
       state:           "draft",
@@ -9,7 +9,7 @@ describe Guide do
       description:     "Description",
       update_type:     "major",
       body:            "# Heading",
-      publisher_title: "Publisher Name",
+      publisher_title: "Publisher Name"
     }.merge(attributes)
 
     Edition.new(attributes)
@@ -17,14 +17,14 @@ describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      edition = valid_edition(title:"something", state: "published")
+      edition = valid_edition(title: "something", state: "published")
       guide = Guide.create!(slug: "/slug", content_id: nil, editions: [edition])
       expect(guide.content_id).to be_present
     end
   end
 
   it "saves published items" do
-    edition = valid_edition(title:"something", state: "published")
+    edition = valid_edition(title: "something", state: "published")
     edition.title = "Test Title"
     edition.body = "# Heading"
     edition.created_at = Time.now
@@ -41,14 +41,14 @@ describe Guide do
     expect(Govspeak::Document).to receive(:new).with(edition.body).and_return(double_document)
 
     expected_hash = {
-      :publishing_app    => "service-manual-publisher",
-      :rendering_app     => "government-frontend",
-      :public_updated_at => edition.created_at,
-      :routes            => [{:type=>"exact", :path=>guide.slug}],
-      :format            => "service_manual_guide",
-      :title             => edition.title,
-      :update_type       => "minor",
-      :details           => {:body=> double_document }
+      publishing_app:    "service-manual-publisher",
+      rendering_app:     "government-frontend",
+      public_updated_at: edition.created_at,
+      routes:            [{ type: "exact", path: guide.slug }],
+      format:            "service_manual_guide",
+      title:             edition.title,
+      update_type:       "minor",
+      details:           { body: double_document }
     }
 
     expect(double_api).to receive(:put_content_item).with(guide.slug, expected_hash)
@@ -56,7 +56,7 @@ describe Guide do
   end
 
   it "saves draft items" do
-    edition = valid_edition(title:"something", state: "draft")
+    edition = valid_edition(title: "something", state: "draft")
     edition.title = "Test Title"
     edition.body = "# Heading"
     edition.created_at = Time.now
@@ -73,14 +73,14 @@ describe Guide do
     expect(Govspeak::Document).to receive(:new).with(edition.body).and_return(double_document)
 
     expected_hash = {
-      :publishing_app    => "service-manual-publisher",
-      :rendering_app     => "government-frontend",
-      :public_updated_at => edition.created_at,
-      :routes            => [{:type=>"exact", :path=>guide.slug}],
-      :format            => "service_manual_guide",
-      :title             => edition.title,
-      :update_type       => "minor",
-      :details           => {:body=> double_document }
+      publishing_app:    "service-manual-publisher",
+      rendering_app:     "government-frontend",
+      public_updated_at: edition.created_at,
+      routes:            [{ type: "exact", path: guide.slug }],
+      format:            "service_manual_guide",
+      title:             edition.title,
+      update_type:       "minor",
+      details:           { body: double_document }
     }
 
     expect(double_api).to receive(:put_draft_content_item).with(guide.slug, expected_hash)
