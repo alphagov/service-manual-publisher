@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GuidePresenter do
+RSpec.describe GuidePresenter do
   let(:edition) do
     Edition.new(
       title:           "The Title",
