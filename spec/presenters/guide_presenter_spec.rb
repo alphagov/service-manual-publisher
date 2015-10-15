@@ -10,13 +10,14 @@ RSpec.describe GuidePresenter do
       update_type:     "major",
       body:            "# Heading",
       publisher_title: "Publisher Name",
-      updated_at: "2015-10-10"
+      publisher_href: "http://gov.uk",
+      updated_at: Time.now
     )
   end
 
   let(:guide) do
     Guide.new(
-      content_id: "cont-ent-id",
+      content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
       latest_edition: edition,
       slug: '/service/manual/test'
     )
@@ -26,12 +27,12 @@ RSpec.describe GuidePresenter do
 
   describe "#exportable_attributes" do
     it "conforms to the schema" do
-      skip "TODO add assertion against schema"
+      expect(presenter.exportable_attributes).to be_valid_against_schema('service_manual_guide')
     end
 
     it "exports all necessary metadata" do
       expect(presenter.exportable_attributes).to include(
-        content_id: "cont-ent-id",
+        content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
         description: "Description",
         update_type: "major",
         phase: "beta",

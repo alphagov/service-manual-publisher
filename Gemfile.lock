@@ -37,6 +37,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.7)
     airbrake (4.2.1)
       builder
       multi_json
@@ -94,6 +95,8 @@ GEM
       kramdown (~> 1.5.0)
       nokogiri (~> 1.5)
       sanitize (~> 2.1.0)
+    govuk-content-schema-test-helpers (1.3.0)
+      json-schema (~> 2.5.1)
     govuk_admin_template (3.0.0)
       bootstrap-sass (~> 3.3.3)
       jquery-rails (~> 3.1.3)
@@ -107,6 +110,8 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
+    json-schema (2.5.1)
+      addressable (~> 2.3.7)
     jwt (1.5.1)
     kgio (2.10.0)
     kramdown (1.5.0)
@@ -265,6 +270,7 @@ DEPENDENCIES
   gds-api-adapters (~> 24.4.0)
   gds-sso (~> 11.0.0)
   govspeak (~> 3.4.0)
+  govuk-content-schema-test-helpers (~> 1.3.0)
   govuk_admin_template (~> 3.0.0)
   logstasher (= 0.6.2)
   pg (~> 0.18)

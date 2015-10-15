@@ -15,7 +15,7 @@ class GuidePresenter
       locale: "en",
       update_type: edition.update_type,
       base_path: guide.slug,
-      public_updated_at: edition.updated_at,
+      public_updated_at: edition.updated_at.iso8601,
       title: edition.title,
       description: edition.description,
       phase: edition.phase,
