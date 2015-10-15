@@ -9,9 +9,8 @@ RSpec.describe GuidePublisher do
     expected_plek = Plek.new.find('publishing-api')
     expected_json = {test: :json}
     double_guide_presenter = double(:guide_presenter)
-    double_guide_presenter
-      .stub(:exportable_attributes)
-      .and_return(expected_json)
+    expect(double_guide_presenter).to receive(:exportable_attributes)
+                                        .and_return(expected_json)
     expect(GuidePresenter).to receive(:new)
                                 .with(guide, guide.latest_edition)
                                 .and_return(double_guide_presenter)
@@ -31,9 +30,8 @@ RSpec.describe GuidePublisher do
     expected_plek = Plek.new.find('publishing-api')
     expected_json = {test: :json}
     double_guide_presenter = double(:guide_presenter)
-    double_guide_presenter
-      .stub(:exportable_attributes)
-      .and_return(expected_json)
+    expect(double_guide_presenter).to receive(:exportable_attributes)
+                                        .and_return(expected_json)
     expect(GuidePresenter).to receive(:new)
                                 .with(guide, guide.latest_edition)
                                 .and_return(double_guide_presenter)
