@@ -262,7 +262,7 @@ DEPENDENCIES
   binding_of_caller
   byebug
   capybara
-  gds-api-adapters
+  gds-api-adapters (~> 24.4.0)
   gds-sso (~> 11.0.0)
   govspeak (~> 3.4.0)
   govuk_admin_template (~> 3.0.0)
