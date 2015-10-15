@@ -19,18 +19,11 @@ class Guide < ActiveRecord::Base
     object.content_id = SecureRandom.uuid
   end
 
-  after_save :publish
+  after_save :publish!
 
 private
 
-  def publish
-    data = GuidePresenter.new(self, latest_edition).exportable_attributes
-
-    publishing_api = GdsApi::PublishingApi.new(Plek.new.find('publishing-api'))
-    if latest_edition.draft?
-      publishing_api.put_draft_content_item(slug, data)
-    elsif latest_edition.published?
-      publishing_api.put_content_item(slug, data)
-    end
+  def publish!
+    GuidePublisher.new(self)
   end
 end
