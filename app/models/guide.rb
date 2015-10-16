@@ -10,11 +10,6 @@ class Guide < ActiveRecord::Base
 
   accepts_nested_attributes_for :latest_edition
 
-  PUBLISHERS = {
-    "Design Community" => "http://sm-11.herokuapp.com/designing-services/design-community/",
-    "Agile Community" => "http://sm-11.herokuapp.com/agile-delivery/agile-community"
-  }
-
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
   end

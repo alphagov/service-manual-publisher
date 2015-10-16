@@ -21,7 +21,7 @@
 
         <div class='form-group'>
           <%= editions_form.label :publisher_title, 'Published by' %>
-          <%= editions_form.select :publisher_title, Guide::PUBLISHERS.keys, class: 'input-md-12 form-control' %>
+          <%= editions_form.select :publisher_title, Edition::PUBLISHERS.keys, class: 'input-md-12 form-control' %>
         </div>
 
         <div class='form-group'>

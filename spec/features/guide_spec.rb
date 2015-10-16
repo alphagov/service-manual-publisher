@@ -2,18 +2,21 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "creating guides", type: :feature do
+  let(:api_double) { double(:publishing_api) }
+
   before do
     visit root_path
     click_link "Create a Guide"
 
-    double_api = double(:publishing_api)
-    allow(GdsApi::PublishingApi).to receive(:new).and_return(double_api)
-    allow(double_api).to receive(:put_draft_content_item)
-    allow(double_api).to receive(:put_content_item)
+    expect(GdsApi::PublishingApi).to receive(:new).and_return(api_double).twice # save and update
   end
 
   it "saves draft guide editions" do
     fill_in_guide_form
+
+    expect(api_double).to receive(:put_draft_content_item)
+                            .twice
+                            .with("/the/path", be_valid_against_schema('service_manual_guide'))
 
     click_button "Save Draft"
 
@@ -53,6 +56,10 @@ RSpec.describe "creating guides", type: :feature do
 
   it "publishes guide editions" do
     fill_in_guide_form
+
+    expect(api_double).to receive(:put_content_item)
+                            .twice
+                            .with("/the/path", be_valid_against_schema('service_manual_guide'))
 
     click_button "Publish"
 

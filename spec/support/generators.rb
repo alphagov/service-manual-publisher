@@ -7,7 +7,7 @@ class Generators
       description:     "Description",
       update_type:     "major",
       body:            "# Heading",
-      publisher_title: "Publisher Name"
+      publisher_title: Edition::PUBLISHERS.keys.first
     }.merge(attributes)
 
     Edition.new(attributes)
