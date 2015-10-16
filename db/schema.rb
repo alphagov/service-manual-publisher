@@ -11,10 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009125935) do
+ActiveRecord::Schema.define(version: 20151013135813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "editions", force: :cascade do |t|
+    t.integer  "guide_id"
+    t.integer  "user_id"
+    t.text     "title"
+    t.text     "description"
+    t.text     "body"
+    t.string   "update_type"
+    t.string   "phase"
+    t.text     "publisher_title"
+    t.text     "publisher_href"
+    t.text     "related_discussion_href"
+    t.text     "related_discussion_title"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.text     "state"
+  end
+
+  create_table "guides", force: :cascade do |t|
+    t.string "slug"
+    t.string "content_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.text     "uid"
