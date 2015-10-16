@@ -18,12 +18,4 @@ class Guide < ActiveRecord::Base
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
   end
-
-  after_save :publish!
-
-private
-
-  def publish!
-    GuidePublisher.new(self)
-  end
 end

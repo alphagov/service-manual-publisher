@@ -7,6 +7,7 @@ class GuidesController < ApplicationController
     @guide = Guide.new(guide_params)
     @guide.latest_edition.state = edition_state_from_params
     if @guide.save
+      GuidePublisher.new(@guide).publish!
       redirect_to root_path, notice: "Guide has been created"
     else
       render action: :new
@@ -22,6 +23,7 @@ class GuidesController < ApplicationController
     @guide.attributes = guide_params
     @guide.latest_edition.state = edition_state_from_params
     if @guide.save
+      GuidePublisher.new(@guide).publish!
       redirect_to root_path, notice: "Guide has been updated"
     else
       render action: :edit
