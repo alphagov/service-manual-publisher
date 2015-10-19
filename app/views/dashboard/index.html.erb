@@ -4,11 +4,11 @@
 <%= link_to "Create a Guide" , new_guide_path %>
 
 <h2>Guides</h2>
-<ol>
+<ul>
 <% Guide.all.each do |guide| %>
   <li>
     <%= guide.latest_edition.state %> :
     <%= link_to guide.latest_edition.title, edit_guide_path(guide) %>
   </li>
 <% end %>
-</ol>
+</ul>
