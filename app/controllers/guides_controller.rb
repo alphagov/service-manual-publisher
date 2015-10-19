@@ -1,4 +1,8 @@
 class GuidesController < ApplicationController
+  def index
+    @guides = Guide.all
+  end
+
   def new
     @guide = Guide.new(latest_edition: Edition.new)
   end
