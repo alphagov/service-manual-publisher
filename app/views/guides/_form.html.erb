@@ -62,6 +62,7 @@
       </div>
       <div class='form-group'>
         <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft %>
+        <%= link_to "Preview", document_preview_url(guide), class: 'btn btn-default' %>
         <%= f.submit "Publish", class: 'btn btn-success', name: :publish %>
       </div>
     </fieldset>
