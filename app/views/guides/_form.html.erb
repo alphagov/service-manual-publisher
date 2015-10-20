@@ -4,7 +4,10 @@
       <legend>Meta</legend>
       <div class='form-group'>
         <%= f.label :slug %>
-        <%= f.text_field :slug, class: 'input-md-12 form-control' %>
+        <div class="input-group">
+          <span class="input-group-addon">/service-manual/</span>
+          <%= f.text_field :slug, class: 'form-control' %>
+        </div>
       </div>
 
       <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
