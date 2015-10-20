@@ -18,8 +18,8 @@
           <%= guide.latest_edition.title %>
           <span class='text-muted'><%= guide.slug %></span>
         </td>
-        <td>
-          <%= link_to 'Edit', edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+        <td class='content-controls'>
+          <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
         </td>
       </tr>
     <% end %>

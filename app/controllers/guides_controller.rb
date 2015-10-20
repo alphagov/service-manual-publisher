@@ -1,6 +1,6 @@
 class GuidesController < ApplicationController
   def index
-    @guides = Guide.all
+    @guides = Guide.includes(:latest_edition)
   end
 
   def new
@@ -24,9 +24,7 @@ class GuidesController < ApplicationController
 
   def update
     @guide = Guide.find(params[:id])
-    @guide.attributes = guide_params
-    @guide.latest_edition.state = edition_state_from_params
-    if @guide.save
+    if @guide.update_attributes_from_params(guide_params, state: edition_state_from_params)
       GuidePublisher.new(@guide).publish!
       redirect_to root_path, notice: "Guide has been updated"
     else
