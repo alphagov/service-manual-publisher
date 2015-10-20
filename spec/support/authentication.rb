@@ -26,8 +26,10 @@ RSpec.configure do |config|
     login_as_stub_user
   end
 
-  config.include AuthenticationHelpers, type: :request
-  config.before(:each, type: :request) do
-    login_as_stub_user
+  [:request, :feature].each do |spec_type|
+    config.include AuthenticationHelpers, type: spec_type
+    config.before(:each, type: spec_type) do
+      login_as_stub_user
+    end
   end
 end
