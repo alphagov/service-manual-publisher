@@ -9,6 +9,7 @@ class Edition < ActiveRecord::Base
   scope :published, -> { where(state: 'published') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href]
+  validates_inclusion_of :state, in: %w(draft published)
 
   before_validation :assign_publisher_href
 
