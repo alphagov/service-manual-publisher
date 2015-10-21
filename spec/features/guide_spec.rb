@@ -7,16 +7,19 @@ RSpec.describe "creating guides", type: :feature do
   before do
     visit root_path
     click_link "Create a Guide"
+  end
 
-    expect(GdsApi::PublishingApi).to receive(:new).and_return(api_double).twice # save and update
+  it "has a prepopulated slug field" do
+    expect(find_field('Slug').value).to eq "/service-manual/"
   end
 
   it "saves draft guide editions" do
     fill_in_guide_form
 
+    expect(GdsApi::PublishingApi).to receive(:new).and_return(api_double).twice # save and update
     expect(api_double).to receive(:put_draft_content_item)
                             .twice
-                            .with("/the/path", be_valid_against_schema('service_manual_guide'))
+                            .with("/service-manual/the/path", be_valid_against_schema('service_manual_guide'))
 
     click_button "Save Draft"
 
@@ -24,7 +27,7 @@ RSpec.describe "creating guides", type: :feature do
       expect(page).to have_content('created')
     end
 
-    guide = Guide.find_by_slug("/the/path")
+    guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
@@ -46,7 +49,7 @@ RSpec.describe "creating guides", type: :feature do
       expect(page).to have_content('updated')
     end
 
-    guide = Guide.find_by_slug("/the/path")
+    guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
     expect(guide.content_id).to eq content_id
     expect(edition.title).to eq "Second Edition Title"
@@ -57,9 +60,10 @@ RSpec.describe "creating guides", type: :feature do
   it "publishes guide editions" do
     fill_in_guide_form
 
+    expect(GdsApi::PublishingApi).to receive(:new).and_return(api_double).twice # save and update
     expect(api_double).to receive(:put_content_item)
                             .twice
-                            .with("/the/path", be_valid_against_schema('service_manual_guide'))
+                            .with("/service-manual/the/path", be_valid_against_schema('service_manual_guide'))
 
     click_button "Publish"
 
@@ -67,7 +71,7 @@ RSpec.describe "creating guides", type: :feature do
       expect(page).to have_content('created')
     end
 
-    guide = Guide.find_by_slug("/the/path")
+    guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
     expect(edition.title).to eq "First Edition Title"
     expect(edition.draft?).to eq false
@@ -81,7 +85,7 @@ RSpec.describe "creating guides", type: :feature do
       expect(page).to have_content('updated')
     end
 
-    guide = Guide.find_by_slug("/the/path")
+    guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
     expect(edition.title).to eq "Second Edition Title"
     expect(edition.draft?).to eq false
@@ -91,7 +95,7 @@ RSpec.describe "creating guides", type: :feature do
 private
 
   def fill_in_guide_form
-    fill_in "Slug", with: "/the/path"
+    fill_in "Slug", with: "/service-manual/the/path"
     fill_in "Related discussion title", with: "Discussion on HackPad"
     fill_in "Link to related discussion", with: "https://designpatterns.hackpad.com/"
     select "Design Community", from: "Published by"

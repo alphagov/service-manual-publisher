@@ -42,7 +42,7 @@ private
     edition = Generators.valid_edition
     edition.state = state
     edition.title = 'Sample Published Edition'
-    Guide.create!(latest_edition: edition, slug: "/test/slug_published")
+    Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
   end
 
   def there_should_be_a_control_link(link_text, document:)
