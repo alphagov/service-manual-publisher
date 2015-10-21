@@ -5,6 +5,8 @@ class Edition < ActiveRecord::Base
   }.freeze
 
   belongs_to :guide
+  belongs_to :user
+
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
 

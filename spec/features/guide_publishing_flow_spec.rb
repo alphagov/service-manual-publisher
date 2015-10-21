@@ -36,6 +36,18 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition 2"]
   end
 
+  it "should record who's the last editor" do
+    stub_user.update_attribute :name, "John Smith"
+    guide = given_a_guide_exists state: 'draft'
+    visit edit_guide_path(guide)
+    fill_in "Title", with: "An amended title"
+    click_button "Save Draft"
+    visit guides_path
+    within ".last-edited-by" do
+      expect(page).to have_content "John Smith"
+    end
+  end
+
 private
 
   def given_a_guide_exists(state:)
