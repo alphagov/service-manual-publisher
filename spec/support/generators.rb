@@ -7,7 +7,8 @@ class Generators
       description:     "Description",
       update_type:     "major",
       body:            "# Heading",
-      publisher_title: Edition::PUBLISHERS.keys.first
+      publisher_title: Edition::PUBLISHERS.keys.first,
+      user:            User.new(name: "Generated User")
     }.merge(attributes)
 
     Edition.new(attributes)
