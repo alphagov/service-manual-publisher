@@ -20,12 +20,25 @@ PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no
 
 ### Dependencies
 
+- [url-arbiter](https://github.com/alphagov/url-arbiter)
+- [router-api](https://github.com/alphagov/router-api)
+- [content-store](https://github.com/alphagov/content-store)
+- [publishing-api](https://github.com/alphagov/publishing-api)
 - PostgreSQL
-- [Publishing API](alphagov/publishing-api) - for publishing documents
+- [Publishing API](https://github.com/alphagov/publishing-api) - for publishing documents
+
+You will need to clone down all these repositories, and run the following commands
+for each one:
+
+```
+bundle
+bundle exec rake db:create
+bundle exec rake db:migrate
+```
 
 ### Development
 
-`./startup.sh`
+To launch the application, run `./startup.sh` in the `service-manual-publisher` dirctory on the VM.
 
 The application runs on port `3111` by default. If you're using the GDS VM it's exposed on http://service-manual-publisher.dev.gov.uk.
 
