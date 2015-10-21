@@ -4,7 +4,10 @@ class GuidesController < ApplicationController
   end
 
   def new
-    @guide = Guide.new(latest_edition: Edition.new)
+    @guide = Guide.new(
+      latest_edition: Edition.new,
+      slug:           "/service-manual/",
+    )
   end
 
   def create

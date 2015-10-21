@@ -4,6 +4,10 @@ class Guide < ActiveRecord::Base
   validates :content_id, presence: true, uniqueness: true
   validates :slug, presence: true
   validates_associated :latest_edition
+  validates :slug, format: {
+    with: /\A\/service-manual\//,
+    message: "must be be prefixed with /service-manual/"
+  }
 
   has_many :editions
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
