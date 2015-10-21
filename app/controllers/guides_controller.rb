@@ -1,6 +1,6 @@
 class GuidesController < ApplicationController
   def index
-    @guides = Guide.includes(:latest_edition)
+    @guides = Guide.includes(latest_edition: :user)
   end
 
   def new
@@ -38,10 +38,11 @@ class GuidesController < ApplicationController
 private
 
   def guide_params
+    params[:guide][:latest_edition_attributes].merge!(user_id: current_user.id)
     params.require(:guide).permit(
       :slug,
       latest_edition_attributes: [
-        :title, :body, :description, :publisher_title, :phase,
+        :title, :body, :description, :publisher_title, :phase, :user_id,
         :related_discussion_href, :related_discussion_title, :update_type
       ])
   end
