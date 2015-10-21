@@ -20,6 +20,7 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
+    @guide.slug = @guide.slug.gsub(/^\/service-manual\//, '')
   end
 
   def update
@@ -35,6 +36,7 @@ class GuidesController < ApplicationController
 private
 
   def guide_params
+    params[:guide][:slug] = File.join("/service-manual/", params[:guide][:slug])
     params.require(:guide).permit(
       :slug,
       latest_edition_attributes: [
