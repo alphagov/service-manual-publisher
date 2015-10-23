@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe GuidePublisher do
   it "saves published items" do
     guide = Guide.new(slug: "/test/slug", latest_edition: Generators.valid_edition(state: 'published'))
-    publisher = GuidePublisher.new(guide)
+    publisher = GuidePublisher.new(guide: guide, edition: guide.latest_edition)
 
     double_api = double(:publishing_api)
     expected_plek = Plek.new.find('publishing-api')
@@ -24,7 +24,7 @@ RSpec.describe GuidePublisher do
 
   it "saves draft items" do
     guide = Guide.new(latest_edition: Generators.valid_edition, slug: "/test/slug")
-    publisher = GuidePublisher.new(guide)
+    publisher = GuidePublisher.new(guide: guide, edition: guide.latest_edition)
 
     double_api = double(:publishing_api)
     expected_plek = Plek.new.find('publishing-api')
