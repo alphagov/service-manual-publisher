@@ -4,17 +4,15 @@ class GuidesController < ApplicationController
   end
 
   def new
-    @guide = Guide.new(
-      latest_edition: Edition.new,
-      slug:           "/service-manual/",
-    )
+    @guide = Guide.new(slug: "/service-manual/")
+    @edition = Edition.new
   end
 
   def create
     @guide = Guide.new(guide_params)
-    @guide.latest_edition.state = edition_state_from_params
+    @edition = build_new_edition_version_for(@guide)
     if @guide.save
-      GuidePublisher.new(@guide).publish!
+      GuidePublisher.new(guide: @guide, edition: @edition).publish!
       redirect_to root_path, notice: "Guide has been created"
     else
       render action: :new
@@ -23,12 +21,14 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
+    @edition = @guide.latest_edition.unsaved_copy
   end
 
   def update
     @guide = Guide.find(params[:id])
-    if @guide.update_attributes_from_params(guide_params, state: edition_state_from_params)
-      GuidePublisher.new(@guide).publish!
+    @edition = build_new_edition_version_for(@guide)
+    if @guide.update_attributes(guide_params)
+      GuidePublisher.new(guide: @guide, edition: @edition).publish!
       redirect_to root_path, notice: "Guide has been updated"
     else
       render action: :edit
@@ -37,14 +37,35 @@ class GuidesController < ApplicationController
 
 private
 
+  def build_new_edition_version_for(guide)
+    template_edition = guide.latest_edition || Edition.new
+
+    guide.editions.build(
+      template_edition.copyable_attributes(
+        state: edition_state_from_params,
+        user_id: current_user.id
+      ).merge(edition_params)
+    )
+  end
+
   def guide_params
-    params[:guide][:latest_edition_attributes].merge!(user_id: current_user.id)
-    params.require(:guide).permit(
-      :slug,
-      latest_edition_attributes: [
-        :title, :body, :description, :publisher_title, :phase, :user_id,
-        :related_discussion_href, :related_discussion_title, :update_type
-      ])
+    params.require(:guide).permit(:slug)
+  end
+
+  def edition_params
+    params
+      .require(:guide)
+      .require(:edition)
+      .permit(
+        :title,
+        :body,
+        :description,
+        :publisher_title,
+        :phase,
+        :related_discussion_href,
+        :related_discussion_title,
+        :update_type
+      )
   end
 
   def edition_state_from_params

@@ -8,7 +8,7 @@
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
 
-      <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
+      <%= f.fields_for :edition, edition do |editions_form| %>
 
         <div class='form-group'>
           <%= editions_form.label :related_discussion_title %>
@@ -44,7 +44,7 @@
 
     <fieldset class='inputs'>
       <legend>Content</legend>
-      <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
+      <%= f.fields_for :edition, edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
           <%= editions_form.error_list :title %>
@@ -61,7 +61,7 @@
 
     <fieldset class='update'>
       <div class='form-group'>
-        <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
+        <%= f.fields_for :edition, edition do |editions_form| %>
           <div class='form-group'>
             <%= editions_form.label :update_type %>
             <%= editions_form.error_list :update_type %>

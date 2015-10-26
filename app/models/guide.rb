@@ -20,16 +20,4 @@ class Guide < ActiveRecord::Base
   def work_in_progress_edition?
     latest_edition.try(:state) == 'draft'
   end
-
-  def update_attributes_from_params(params, state:)
-    if work_in_progress_edition?
-      self.attributes = params
-      self.latest_edition.state = state
-    else
-      self.attributes = params.except(:latest_edition_attributes)
-      edition_attributes = params[:latest_edition_attributes].with_indifferent_access
-      self.editions.build(edition_attributes.except(:id, :updated_at, :created_at).merge(state: state))
-    end
-    save
-  end
 end

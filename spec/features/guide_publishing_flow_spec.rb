@@ -22,7 +22,20 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition 2"]
   end
 
-  it "should allow editing an existing draft" do
+  it "should create a new edition even when saving a draft" do
+    guide = given_a_guide_exists state: 'draft'
+    visit guides_path
+    link = there_should_be_a_control_link "Continue editing", document: guide
+    link.click
+    fill_in "Title", with: "Sample Published Edition 2"
+    click_button "Save Draft"
+    expect(current_path).to eq root_path
+
+    expect(guide.editions.draft.size).to eq 2
+    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition 2"]
+  end
+
+  it "should create a new edition when publishing a draft" do
     guide = given_a_guide_exists state: 'draft'
     visit guides_path
     link = there_should_be_a_control_link "Continue editing", document: guide
@@ -32,8 +45,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     expect(current_path).to eq root_path
 
     expect(guide.editions.published.size).to eq 1
-    expect(guide.editions.draft.size).to eq 0
-    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition 2"]
+    expect(guide.editions.draft.size).to eq 1
+    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition 2"]
   end
 
   it "should record who's the last editor" do

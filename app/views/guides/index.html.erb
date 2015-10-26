@@ -24,6 +24,7 @@
         </td>
         <td class='content-controls'>
           <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+          <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
         </td>
       </tr>
     <% end %>
