@@ -3,7 +3,8 @@
     <fieldset class='meta'>
       <legend>Meta</legend>
       <div class='form-group'>
-        <%= f.label :slug %>
+        <%= f.label :slug  %>
+        <%= f.error_list :slug  %>
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
 
@@ -11,26 +12,31 @@
 
         <div class='form-group'>
           <%= editions_form.label :related_discussion_title %>
+          <%= editions_form.error_list :related_discussion_title %>
           <%= editions_form.text_field :related_discussion_title, class: 'input-md-12 form-control' %>
         </div>
 
         <div class='form-group'>
           <%= editions_form.label :related_discussion_href, "Link to related discussion" %>
+          <%= editions_form.error_list :related_discussion_href %>
           <%= editions_form.text_field :related_discussion_href, class: 'input-md-12 form-control' %>
         </div>
 
         <div class='form-group'>
-          <%= editions_form.label :publisher_title, 'Published by' %>
+          <%= editions_form.label :publisher_title, "Published by" %>
+          <%= editions_form.error_list :publisher_title %>
           <%= editions_form.select :publisher_title, Edition::PUBLISHERS.keys, class: 'input-md-12 form-control' %>
         </div>
 
         <div class='form-group'>
-          <%= editions_form.label :phase, 'Phase' %>
+          <%= editions_form.label :phase %>
+          <%= editions_form.error_list :phase %>
           <%= editions_form.select :phase, [['Alpha', 'alpha'], ['Beta', 'beta'], ['Live', 'live']], class: 'input-md-12 form-control' %>
         </div>
 
         <div class='form-group'>
           <%= editions_form.label :description %>
+          <%= editions_form.error_list :description %>
           <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
         </div>
       <% end %>
@@ -41,10 +47,12 @@
       <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
+          <%= editions_form.error_list :title %>
           <%= editions_form.text_field :title, class: 'input-md-12 form-control' %>
         </div>
         <div class="form-group">
           <%= editions_form.label :body %>
+          <%= editions_form.error_list :body %>
           <%= editions_form.text_area :body, class: 'input-md-12 form-control', rows: 14 %>
         </div>
       <% end %>
@@ -56,6 +64,7 @@
         <%= f.fields_for :latest_edition, guide.latest_edition do |editions_form| %>
           <div class='form-group'>
             <%= editions_form.label :update_type %>
+            <%= editions_form.error_list :update_type %>
             <%= editions_form.select :update_type, [["Major", "major"], ["Minor", "minor"], ["Republish", "republish"]], include_blank: true, class: 'input-md-12 form-control' %>
           </div>
         <% end %>
