@@ -1,3 +1,15 @@
+<% if guide.persisted? %>
+  <div class='well'>
+    <%= form_for ReviewRequest.new do |f| %>
+      <fieldset class='meta'>
+        <legend>Review</legend>
+        <%= f.hidden_field :guide_id, value: guide.id %>
+        <%= f.submit "Request a Review", class: 'btn btn-success' %>
+      </fieldset>
+    <% end %>
+  </div>
+<% end %>
+
 <div class='well'>
   <%= form_for guide do |f| %>
     <fieldset class='meta'>

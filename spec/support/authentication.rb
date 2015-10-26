@@ -6,6 +6,10 @@ module AuthenticationHelpers
   def login_as_stub_user
     GDS::SSO.test_user = stub_user
   end
+
+  def login_as(user)
+    GDS::SSO.test_user = user
+  end
 end
 
 module AuthenticationControllerHelpers

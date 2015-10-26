@@ -7,6 +7,8 @@ class Edition < ActiveRecord::Base
   belongs_to :guide
   belongs_to :user
 
+  belongs_to :review_request
+
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
 

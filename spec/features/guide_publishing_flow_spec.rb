@@ -61,12 +61,41 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
+  context "with a review request" do
+    it "lists guides that need a review" do
+      guide = given_a_guide_exists(state: 'draft')
+      visit edit_guide_path(guide)
+      click_button "Request a Review"
+      visit guides_path
+      expect(page).to have_content "Needs Review"
+    end
+
+    it "allows other users to approve it"
+  end
+
+  context "without a review request" do
+    it "does not list guides that don't need a review" do
+      given_a_guide_exists(state: 'draft')
+      visit guides_path
+      expect(page).to_not have_content "Needs Review"
+    end
+  end
+
+  context "without any approvals" do
+    it "does not allow guides to be published"
+  end
+
+  context "with approvals" do
+    it "allows guides to be published"
+  end
+
 private
 
-  def given_a_guide_exists(state:)
+  def given_a_guide_exists(state:, user: nil)
     edition = Generators.valid_edition
     edition.state = state
     edition.title = 'Sample Published Edition'
+    edition.user = user unless user.nil?
     Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
   end
 
