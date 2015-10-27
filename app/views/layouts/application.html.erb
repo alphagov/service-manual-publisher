@@ -14,12 +14,8 @@
 
 <% content_for :content do %>
   <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
-    <div class="main-alert <%= k %>">
+    <div class="alert <%= alert_css_class(k) %>">
       <%= flash[k] %>
-      <% if flash[:need_id] %>
-        <%= link_to "#{flash[:need_id]}: #{flash[:goal]}",
-                    need_path(flash[:need_id]) %>
-      <% end %>
     </div>
   <% end %>
   <%= yield %>

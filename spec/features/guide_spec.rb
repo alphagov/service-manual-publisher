@@ -23,7 +23,7 @@ RSpec.describe "creating guides", type: :feature do
 
     click_button "Save Draft"
 
-    within ".main-alert" do
+    within ".alert" do
       expect(page).to have_content('created')
     end
 
@@ -45,7 +45,7 @@ RSpec.describe "creating guides", type: :feature do
     fill_in "Title", with: "Second Edition Title"
     click_button "Save Draft"
 
-    within ".main-alert" do
+    within ".alert" do
       expect(page).to have_content('updated')
     end
 
@@ -70,7 +70,7 @@ RSpec.describe "creating guides", type: :feature do
 
     click_button "Publish"
 
-    within ".main-alert" do
+    within ".alert" do
       expect(page).to have_content('created')
     end
 
@@ -84,7 +84,7 @@ RSpec.describe "creating guides", type: :feature do
     fill_in "Title", with: "Second Edition Title"
     click_button "Publish"
 
-    within ".main-alert" do
+    within ".alert" do
       expect(page).to have_content('updated')
     end
 
