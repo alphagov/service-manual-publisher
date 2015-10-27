@@ -109,11 +109,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
 private
 
-  def given_a_guide_exists(state:, user: nil)
+  def given_a_guide_exists(state:)
     edition = Generators.valid_edition
     edition.state = state
     edition.title = 'Sample Published Edition'
-    edition.user = user unless user.nil?
     Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
   end
 
