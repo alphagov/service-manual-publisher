@@ -18,6 +18,10 @@ class Guide < ActiveRecord::Base
       latest_edition.review_request.approvals.empty?
   end
 
+  def latest_edition_approvals
+    latest_edition.review_request.approvals
+  end
+
   has_many :editions
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
 
