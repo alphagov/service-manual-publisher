@@ -12,7 +12,7 @@ class GuidesController < ApplicationController
     @guide = Guide.new(guide_params)
     @edition = build_new_edition_version_for(@guide)
     if @guide.save
-      GuidePublisher.new(guide: @guide, edition: @edition).publish!
+      GuidePublisher.new(guide: @guide, edition: @edition).process
       redirect_to root_path, notice: "Guide has been created"
     else
       render action: :new
@@ -28,7 +28,7 @@ class GuidesController < ApplicationController
     @guide = Guide.find(params[:id])
     @edition = build_new_edition_version_for(@guide)
     if @guide.update_attributes(guide_params)
-      GuidePublisher.new(guide: @guide, edition: @edition).publish!
+      GuidePublisher.new(guide: @guide, edition: @edition).process
       redirect_to root_path, notice: "Guide has been updated"
     else
       render action: :edit

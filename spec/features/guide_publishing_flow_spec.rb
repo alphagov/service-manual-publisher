@@ -4,7 +4,7 @@ require 'capybara/rails'
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
 
   before do
-    allow_any_instance_of(GuidePublisher).to receive(:publish!)
+    allow_any_instance_of(GuidePublisher).to receive(:process)
   end
 
   it "should create a new edition if there are no drafts" do

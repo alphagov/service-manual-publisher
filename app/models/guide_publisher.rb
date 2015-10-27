@@ -6,7 +6,7 @@ class GuidePublisher
     @edition = edition
   end
 
-  def publish!
+  def process
     publishing_api = GdsApi::PublishingApiV2.new(Plek.new.find('publishing-api'))
 
     data = GuidePresenter.new(@guide, @edition).exportable_attributes

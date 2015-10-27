@@ -23,7 +23,7 @@ RSpec.describe GuidePublisher do
                                          .and_return(double_api)
       expect(double_api).to receive(:put_content)
                               .with(guide.content_id, expected_json)
-      publisher.publish!
+      publisher.process
     end
   end
 
@@ -53,7 +53,7 @@ RSpec.describe GuidePublisher do
 
       expect(double_api).to receive(:publish)
                               .with(guide.content_id, 'major')
-      publisher.publish!
+      publisher.process
     end
   end
 end
