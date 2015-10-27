@@ -44,6 +44,12 @@ The application runs on port `3111` by default. If you're using the GDS VM it's 
 
 Currently [government-frontend](alphagov/government-frontend) has a feature flag to enable rendering service manual content.
 
+```
+FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend
+```
+
+The application has a style guide that can be accessed on `/style-guide`.
+
 ### Seeding data
 
 Running `bundle exec rake db:seed` will load sample data into the database.
@@ -52,12 +58,6 @@ The sample data is taken from the existing (to be deprecated)
 If you don't have a local clone of the
 [government-service-design-manual](https://github.com/alphagov/government-service-design-manual/),
 it will be cloned for you.
-
-```
-FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend
-```
-
-The application has a style guide that can be accessed on `/style-guide`.
 
 ### Testing
 
