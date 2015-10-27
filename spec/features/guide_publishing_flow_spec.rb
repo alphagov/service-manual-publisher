@@ -70,7 +70,21 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(page).to have_content "Needs Review"
     end
 
-    it "allows other users to approve it"
+    context "approved by another user" do
+      it "shows how many approvals it has" do
+        guide = given_a_guide_exists(state: 'draft')
+        visit edit_guide_path(guide)
+        click_button "Request a Review"
+
+        reviewer = User.new(name: "Some User")
+        login_as reviewer
+        visit guides_path
+        click_link "Continue editing"
+        click_button "Mark as Approved"
+        expect(page).to have_content "Thanks for approving this guide"
+        expect(page).to have_content "Approved by 1 user: User Name"
+      end
+    end
   end
 
   context "without a review request" do

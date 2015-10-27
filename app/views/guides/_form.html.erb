@@ -1,11 +1,21 @@
 <% if guide.persisted? %>
   <div class='well'>
-    <%= form_for ReviewRequest.new do |f| %>
-      <fieldset class='meta'>
-        <legend>Review</legend>
-        <%= f.hidden_field :guide_id, value: guide.id %>
-        <%= f.submit "Request a Review", class: 'btn btn-success' %>
-      </fieldset>
+    <% if guide.latest_edition.review_request.present? %>
+      <%= form_for Approval.new do |f| %>
+        <fieldset class='meta'>
+          <legend>Approve</legend>
+          <%= f.hidden_field :review_request_id, value: guide.latest_edition.review_request.id %>
+          <%= f.submit "Mark as Approved", class: 'btn btn-success' %>
+        </fieldset>
+      <% end %>
+    <% else %>
+      <%= form_for ReviewRequest.new do |f| %>
+        <fieldset class='meta'>
+          <legend>Review</legend>
+          <%= f.hidden_field :guide_id, value: guide.id %>
+          <%= f.submit "Request a Review", class: 'btn btn-success' %>
+        </fieldset>
+      <% end %>
     <% end %>
   </div>
 <% end %>
