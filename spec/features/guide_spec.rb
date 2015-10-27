@@ -16,10 +16,10 @@ RSpec.describe "creating guides", type: :feature do
   it "saves draft guide editions" do
     fill_in_guide_form
 
-    expect(GdsApi::PublishingApi).to receive(:new).and_return(api_double).twice # save and update
-    expect(api_double).to receive(:put_draft_content_item)
+    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice # save and update
+    expect(api_double).to receive(:put_content)
                             .twice
-                            .with("/service-manual/the/path", be_valid_against_schema('service_manual_guide'))
+                            .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
 
     click_button "Save Draft"
 
@@ -60,10 +60,13 @@ RSpec.describe "creating guides", type: :feature do
   it "publishes guide editions" do
     fill_in_guide_form
 
-    expect(GdsApi::PublishingApi).to receive(:new).and_return(api_double).twice # save and update
-    expect(api_double).to receive(:put_content_item)
+    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice # save and update
+    expect(api_double).to receive(:put_content)
                             .twice
-                            .with("/service-manual/the/path", be_valid_against_schema('service_manual_guide'))
+                            .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+    expect(api_double).to receive(:publish)
+                            .twice
+                            .with(an_instance_of(String), 'minor')
 
     click_button "Publish"
 

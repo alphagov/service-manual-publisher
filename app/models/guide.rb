@@ -1,5 +1,3 @@
-require "gds_api/publishing_api"
-
 class Guide < ActiveRecord::Base
   validates :content_id, presence: true, uniqueness: true
   validates :slug, presence: true
