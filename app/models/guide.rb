@@ -13,7 +13,9 @@ class Guide < ActiveRecord::Base
   end
 
   def needs_review?
-    latest_edition.draft? && latest_edition.review_request.present?
+    latest_edition.draft? &&
+      latest_edition.review_request.present? &&
+      latest_edition.review_request.approvals.empty?
   end
 
   has_many :editions
