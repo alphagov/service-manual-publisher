@@ -63,7 +63,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "with a review request" do
     it "lists guides that need a review" do
-      guide = given_a_guide_exists(state: 'draft')
+      edition = Generators.valid_edition(review_request: nil)
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
       visit edit_guide_path(guide)
       click_button "Request a Review"
       visit guides_path
@@ -72,7 +73,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "approved by another user" do
       it "shows how many approvals it has" do
-        guide = given_a_guide_exists(state: 'draft')
+        edition = Generators.valid_edition(review_request: nil)
+        guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
         visit edit_guide_path(guide)
         click_button "Request a Review"
 
@@ -96,11 +98,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   context "without any approvals" do
-    it "does not allow guides to be published"
-  end
-
-  context "with approvals" do
-    it "allows guides to be published"
+    it "does not allow guides to be published" do
+      edition = Generators.valid_edition(review_request: nil)
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+      visit edit_guide_path(guide)
+      click_button "Publish"
+      expect(page).to have_content "Guide must be approved before being published"
+    end
   end
 
 private

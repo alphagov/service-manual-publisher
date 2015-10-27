@@ -8,7 +8,14 @@ module AuthenticationHelpers
   end
 
   def login_as(user)
-    GDS::SSO.test_user = user
+    if block_given?
+      old_user = GDS::SSO.test_user
+      GDS::SSO.test_user = user
+      yield
+      GDS::SSO.test_user = old_user
+    else
+      GDS::SSO.test_user = user
+    end
   end
 end
 

@@ -6,6 +6,12 @@ class Guide < ActiveRecord::Base
     message: "must be be prefixed with /service-manual/"
   }
 
+  def needs_approval?
+    latest_edition.nil? ||
+    latest_edition.review_request.nil? ||
+      latest_edition.review_request.approvals.empty?
+  end
+
   def needs_review?
     latest_edition.draft? && latest_edition.review_request.present?
   end

@@ -21,6 +21,9 @@ RSpec.describe Edition, type: :model do
     it "allows 'published' state" do
       edition = Edition.new(state: 'published')
 
+      edition.review_request = ReviewRequest.new(
+        approvals: [Approval.new(user: User.first)],
+      )
       edition.valid?
 
       expect(edition.errors.full_messages_for(:state).size).to eq 0
