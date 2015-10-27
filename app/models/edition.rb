@@ -7,11 +7,21 @@ class Edition < ActiveRecord::Base
   belongs_to :guide
   belongs_to :user
 
+  belongs_to :review_request
+
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href, :user]
   validates_inclusion_of :state, in: %w(draft published)
+  validate :has_been_approved?
+
+  def has_been_approved?
+    return unless published?
+    if review_request.nil? || review_request.approvals.empty?
+      errors.add(:state, "This guide must be approved at least once before publishing")
+    end
+  end
 
   before_validation :assign_publisher_href
 

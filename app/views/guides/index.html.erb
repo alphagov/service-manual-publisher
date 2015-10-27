@@ -9,6 +9,7 @@
     <tr class='table-header'>
       <th>Title</th>
       <th>Last updated by</th>
+      <th>Review</th>
       <th>Controls</th>
     </tr>
   </thead>
@@ -21,6 +22,14 @@
         </td>
         <td class='last-edited-by'>
           <%= latest_editor_name(guide) %>
+        </td>
+        <td>
+          <% if !guide.needs_approval? %>
+            Approved by <%= pluralize(guide.latest_edition_approvals.count, "user")%>:
+            <%= guide.latest_edition_approvals.map {|a| a.user.name }.join(", ") %>
+          <% elsif guide.needs_review? %>
+            Needs Review
+          <% end %>
         </td>
         <td class='content-controls'>
           <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>

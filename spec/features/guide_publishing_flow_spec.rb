@@ -61,6 +61,52 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
+  context "with a review request" do
+    it "lists guides that need a review" do
+      edition = Generators.valid_edition(review_request: nil)
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+      visit edit_guide_path(guide)
+      click_button "Request a Review"
+      visit guides_path
+      expect(page).to have_content "Needs Review"
+    end
+
+    context "approved by another user" do
+      it "shows how many approvals it has" do
+        edition = Generators.valid_edition(review_request: nil)
+        guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+        visit edit_guide_path(guide)
+        click_button "Request a Review"
+
+        reviewer = User.new(name: "Some User")
+        login_as reviewer
+        visit guides_path
+        click_link "Continue editing"
+        click_button "Mark as Approved"
+        expect(page).to have_content "Thanks for approving this guide"
+        expect(page).to have_content "Approved by 1 user: User Name"
+      end
+    end
+  end
+
+  context "without a review request" do
+    it "does not list guides that don't need a review" do
+      given_a_guide_exists(state: 'draft')
+      visit guides_path
+      expect(page).to_not have_content "Needs Review"
+    end
+  end
+
+  context "without any approvals" do
+    it "does not allow guides to be published" do
+      edition = Generators.valid_edition(review_request: nil)
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+      visit edit_guide_path(guide)
+      click_button "Publish"
+      expect(page).to have_content "Guide must be approved before being published"
+    end
+  end
+
 private
 
   def given_a_guide_exists(state:)
