@@ -1,0 +1,365 @@
+---
+- :content_id: 2204fbc6-cd7c-443d-a56a-a2e08b91d99a
+  :title: Agile delivery
+  :base_path: "/service-manual/agile-delivery"
+  :description: Agile methods and tools explained, including what assurance and reporting
+    to use.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:20+00:00'
+  :details:
+    :groups:
+    - :name: Agile and government services
+      :description: Why use agile methodology, features of agile, signs of not being
+        agile.
+      :contents:
+      - "/service-manual/agile-delivery/agile-and-government-services"
+      - "/service-manual/agile-delivery/agile-methodology-explained"
+      - "/service-manual/agile-delivery/agile-planning-software"
+      :content_ids:
+      - 18c40f69-5a5c-4687-9a17-10df9261a884
+      - 1d0d7eb3-b447-4535-a82b-194be1fee91e
+      - f8310abc-d478-41c7-8f26-da3b264bab3b
+    - :name: Agile methods
+      :description: Agile ceremonies for planning and reviewing work, including user
+        stories and retrospectives.
+      :contents:
+      - "/service-manual/agile-delivery/create-agile-working-environment"
+      - "/service-manual/agile-delivery/the-agile-wall"
+      - "/service-manual/agile-delivery/retrospective"
+      - "/service-manual/agile-delivery/the-roadmap"
+      - "/service-manual/agile-delivery/show-and-tell"
+      - "/service-manual/agile-delivery/sprint-planning"
+      - "/service-manual/agile-delivery/stand-up"
+      - "/service-manual/agile-delivery/user-stories"
+      :content_ids:
+      - e623aafd-6d43-4477-9aa8-654c8066fdd6
+      - b4f2011d-fa83-476f-a21d-8ef93d934aef
+      - e366fa5e-f8bf-4686-b92a-a3d51f28b00e
+      - ab160e5e-0f52-44d3-95ee-2baacd51dd0a
+      - 2d5a1a06-3792-4458-b246-e612e7113997
+      - 9d5127fb-6882-4e1c-8260-0deee65fab52
+      - 5df10357-049b-4b4e-a716-2398b4bde70f
+      - 90ad24cc-1821-4042-be1d-f78bfda4c6be
+    - :name: Governing an agile service
+      :description: Assurance, funding and reporting for services.
+      :contents:
+      - "/service-manual/agile-delivery/assurance-services"
+      - "/service-manual/agile-delivery/funding-a-service"
+      - "/service-manual/agile-delivery/reporting-on-a-service"
+      :content_ids:
+      - 5b0be905-663e-47c7-866a-0862052b9893
+      - bdbe7041-e6ca-4b03-a3c3-53466f307ee6
+      - 1ed47ac9-8cc9-4cf5-9deb-e92bf54e4181
+    - :name: Learn more about agile
+      :description: Training courses you can book.
+      :contents:
+      - "/service-manual/agile-delivery/agile-training-and-support"
+      - "/service-manual/agile-delivery/service-manager-induction"
+      - "/service-manual/agile-delivery/specialist-digital-foundation-day"
+      - "/service-manual/agile-delivery/open-programme"
+      :content_ids:
+      - 52f1c0a5-9d74-4e19-8b4b-11b0a3eaff06
+      - d5a6a21b-c7bf-4524-950e-15e52da26271
+      - 1127e3f7-b0b2-4931-8173-2de057312ba7
+      - 36840241-23f9-4468-8436-51691b5fb62c
+  :routes:
+  - :type: exact
+    :path: "/service-manual/agile-delivery"
+- :content_id: c92770cb-472f-4369-95f2-c8e1f199c453
+  :title: Designing services
+  :base_path: "/service-manual/designing-services"
+  :description: How to turn user research into simple, clear services, including resources
+    for designers and content designers.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:27+00:00'
+  :details:
+    :groups: []
+  :routes:
+  - :type: exact
+    :path: "/service-manual/designing-services"
+- :content_id: 25951e6f-eaf1-47a9-8bca-1bc7a2ddc98d
+  :title: Funding and procurement
+  :base_path: "/service-manual/funding-and-procurement"
+  :description: How to get money, buy things and use the Digital Marketplace.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:27+00:00'
+  :details:
+    :groups: []
+  :routes:
+  - :type: exact
+    :path: "/service-manual/funding-and-procurement"
+- :content_id: cca86aaf-7c62-4c6f-9c5b-defe780c1246
+  :title: Measuring success
+  :base_path: "/service-manual/measuring-success"
+  :description: What key performance indicators to measure and how, includes getting
+    on the Performance Platform.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:28+00:00'
+  :details:
+    :groups: []
+  :routes:
+  - :type: exact
+    :path: "/service-manual/measuring-success"
+- :content_id: 2e5831ff-9dba-459c-98e1-a4205aec5b81
+  :title: Service phases and assessments
+  :base_path: "/service-manual/service-phases-and-assessments"
+  :description: What your service will be assessed on and what the team needs to do
+    at each phase, and how to book an assessment.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:28+00:00'
+  :details:
+    :groups:
+    - :name: Discovery phase
+      :description: Includes preparing for discovery, the team, outputs and governing
+        the team.
+      :contents: []
+      :content_ids: []
+    - :name: Alpha phase
+      :description: Includes what you’ll be doing, outputs and governing the team.
+      :contents: []
+      :content_ids: []
+    - :name: Beta phase
+      :description: Includes the team, public and private beta, outputs and governing
+        the team.
+      :contents: []
+      :content_ids: []
+    - :name: Live phase
+      :description: Preparing to go live and what to do when a service is live.
+      :contents: []
+      :content_ids: []
+    - :name: Retirement phase
+      :description: What you need to do to retire a service, including redirects,
+        communicating change and managing data.
+      :contents: []
+      :content_ids: []
+    - :name: Service assessments
+      :description: How and why services are assessed, includes how to book and prepare
+        for an assessment.
+      :contents:
+      - "/service-manual/service-phases-and-assessments/an-introduction"
+      - "/service-manual/service-phases-and-assessments/check-if-you-need-a-service-assessment"
+      - "/service-manual/service-phases-and-assessments/arrange-a-service-assessment"
+      - "/service-manual/service-phases-and-assessments/how-services-are-assessed"
+      :content_ids:
+      - 60de4758-3b5d-4de9-9a3f-2b0ec385e6ad
+      - dd65f2c4-7288-4a6c-aaad-b58af2d0d25d
+      - 640ff131-398e-4af3-b542-31ea6f2195d3
+      - 8cfe5e3f-fd3f-463c-9bb3-095b3834cd9a
+  :routes:
+  - :type: exact
+    :path: "/service-manual/service-phases-and-assessments"
+- :content_id: 8d395b84-e097-4c72-a4ca-49301dcfc43c
+  :title: The team
+  :base_path: "/service-manual/the-team"
+  :description: What roles you need and how to recruit them, including job descriptions
+    and training.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:32+00:00'
+  :details:
+    :groups:
+    - :name: Getting a team for each delivery phase
+      :description: Setting up a team, recruiting people, and changing the size of
+        the team, includes job descriptions.
+      :contents:
+      - "/service-manual/the-team/set-up-a-service-team"
+      - "/service-manual/the-team/recruiting-people-and-skills"
+      - "/service-manual/the-team/changing-the-size-of-a-service-team"
+      :content_ids:
+      - 96c8373b-1afe-4e27-87cf-6c629f6a0d01
+      - f5d9e65a-d9e4-4962-8d56-63182a1915dc
+      - 414a4206-4908-425d-a54f-9b36782bf2ae
+    - :name: Roles in a service team
+      :description: The different roles you need to build a service.
+      :contents:
+      - "/service-manual/the-team/agile-coach"
+      - "/service-manual/the-team/content-designer"
+      - "/service-manual/the-team/delivery-manager"
+      - "/service-manual/the-team/designer"
+      - "/service-manual/the-team/developer"
+      - "/service-manual/the-team/performance-analyst"
+      - "/service-manual/the-team/product-manager"
+      - "/service-manual/the-team/service-manager"
+      - "/service-manual/the-team/technical-architect"
+      - "/service-manual/the-team/user-researcher"
+      - "/service-manual/the-team/web-operations-engineer"
+      :content_ids:
+      - f075d8c7-93b3-4a4f-9231-c67f5767779b
+      - 55922c5f-077d-4e16-8622-ecd5d909f34f
+      - 9d1c9d92-238c-4565-8250-5122f5313885
+      - 6edfd015-8b5d-4fb6-b252-dc258ab4fde8
+      - 84e9590a-771d-4d9a-ab41-28f10fba6155
+      - 0619217a-18bc-4835-8a6c-e93a3d2e2c4f
+      - 8c4ebe59-b9ff-4353-b2f0-077c9c6fad1a
+      - 3aa64441-9737-4237-95f3-ec182d745c37
+      - ba9d4d0c-ed15-4e49-87b9-30a7942bd43d
+      - 532c84b2-0703-4003-bbf0-0a5a1653a848
+      - 7c103246-a855-4148-a72b-134ad3e14279
+    - :name: Managing a service team
+      :description: Running one or more teams, and working with external suppliers.
+      :contents:
+      - "/service-manual/the-team/governing-more-than-one-team"
+      - "/service-manual/the-team/working-with-third-parties"
+      :content_ids:
+      - 84bb7212-21ba-4d90-8fec-fbb58096c2af
+      - 3e1b2697-d345-4320-ba22-ee5d7a271742
+  :routes:
+  - :type: exact
+    :path: "/service-manual/the-team"
+- :content_id: aa8670d8-a470-4ee3-9685-6ee2a756dde1
+  :title: Technical development
+  :base_path: "/service-manual/technical-development"
+  :description: How to build or buy systems and software that are secure, sustainable
+    and cost-effective.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:38+00:00'
+  :details:
+    :groups: []
+  :routes:
+  - :type: exact
+    :path: "/service-manual/technical-development"
+- :content_id: ced30bca-9a3a-4a19-8685-ccca85d51342
+  :title: User research
+  :base_path: "/service-manual/user-research"
+  :description: How to understand what users need and improve your service through
+    continuous research.
+  :format: topic
+  :publishing_app: service-manual-publisher
+  :rendering_app: government-frontend
+  :need_ids: []
+  :locale: en
+  :update_type: minor
+  :public_updated_at: '2015-11-17T14:49:39+00:00'
+  :details:
+    :groups:
+    - :name: Understand user needs
+      :description: Researching and writing user needs, and how the team should use
+        them.
+      :contents:
+      - "/service-manual/user-research/user-needs-an-introduction"
+      - "/service-manual/user-research/how-to-write-a-user-need"
+      - "/service-manual/user-research/how-to-work-with-user-needs"
+      :content_ids:
+      - dcf1e977-728d-4057-93c6-e38e812421de
+      - a237172f-86e3-42e3-b90c-6c23c563d0c1
+      - dd7ab378-51c5-45f8-835d-e722b0398b0a
+    - :name: Research at each service phase
+      :description: Research during discovery, alpha, beta and live.
+      :contents:
+      - "/service-manual/user-research/research-in-discovery"
+      - "/service-manual/user-research/how-to-do-user-research-in-alpha-and-beta"
+      - "/service-manual/user-research/research-for-a-live-service"
+      :content_ids:
+      - c173c8ce-d55b-44a9-ad6b-ce57fc7081fd
+      - 0341616a-e041-4413-9d93-c709052409be
+      - d63bec38-4a35-44d6-95c9-3b32034c1265
+    - :name: Planning your research
+      :description: Preparing to do research, includes finding participants and writing
+        discussion guides.
+      :contents:
+      - "/service-manual/user-research/research-programmes"
+      - "/service-manual/user-research/preparing-for-a-research-day"
+      - "/service-manual/user-research/where-to-do-user-research"
+      - "/service-manual/user-research/recruitment-briefs-and-screeners"
+      - "/service-manual/user-research/recruiting-research-participants"
+      - "/service-manual/user-research/discussion-guides"
+      - "/service-manual/user-research/user-consent"
+      :content_ids:
+      - f292eff0-57cf-44f0-8611-b11c660f221f
+      - 36e1c43e-a4c6-45b7-99df-e07f4db92c6d
+      - 62fd6070-571e-4455-b916-de8ff59968ef
+      - 4a546ee2-da70-444a-8130-2c705b9123c1
+      - 0a01b3ff-6a70-4cd2-99a7-d58a0a683572
+      - d4526baf-e29c-454d-b034-9558d083d4ff
+      - 5dd396fb-de1a-4aef-b011-97540ea9c7d9
+    - :name: During a session
+      :description: How to run a research session, includes observing and note taking.
+      :contents:
+      - "/service-manual/user-research/running-research-sessions"
+      - "/service-manual/user-research/introducing-research-sessions"
+      - "/service-manual/user-research/observing-user-research"
+      - "/service-manual/user-research/note-taking-during-research"
+      :content_ids:
+      - 24a07111-5d3e-4ebc-a5a6-f1a227da98c7
+      - ef94ff77-ffb8-4445-ac78-a3450620c488
+      - b271b131-caa4-4dfd-95b6-fdfa711402b5
+      - f6a48ac3-82bf-4096-9df4-a43a2b1ab13f
+    - :name: Using what you found out
+      :description: Analysing research and sharing it with your team, includes user
+        journey mapping and personas.
+      :contents:
+      - "/service-manual/user-research/analysing-research"
+      - "/service-manual/user-research/sharing-research"
+      - "/service-manual/user-research/creating-personas"
+      - "/service-manual/user-research/creating-journey-maps"
+      :content_ids:
+      - 13d77c4c-6448-4f00-ab1c-5d48a7e42eaf
+      - 0f7a2a53-232a-4333-9f9a-4b715f5614d7
+      - 21899bb9-b0f6-4b4a-bf68-95825eb467a8
+      - c404c229-c3ae-4762-9e7d-6f8b9e245c4e
+    - :name: User research methods
+      :description: Different types of research, includes pop-up research and A/B
+        testing.
+      :contents:
+      - "/service-manual/user-research/ab-and-multivariate-testing"
+      - "/service-manual/user-research/community-research-panels"
+      - "/service-manual/user-research/depth-interviews"
+      - "/service-manual/user-research/ethnographic-research"
+      - "/service-manual/user-research/pop-up-research"
+      - "/service-manual/user-research/remote-user-research"
+      - "/service-manual/user-research/surveys-and-questionnaires"
+      - "/service-manual/user-research/unmoderated-research"
+      :content_ids:
+      - 5beb5bee-ca23-4207-9a08-310b7d1391ac
+      - ded322f8-48a4-4c15-be1d-7dff7b117e93
+      - 0eb330c6-cb81-4cf6-b889-12726e079001
+      - e590eeaf-d690-4483-b0e7-333a4b628b91
+      - be15038c-77c4-4289-8582-640ffb1f82f5
+      - fc598249-20cb-439b-bea5-5987ef68eddb
+      - 1e268dd8-e43d-4ce9-bfcc-6d7f26a4eb10
+      - ab625b63-01fb-4313-8d29-1505177ff584
+    - :name: Learn more about user research
+      :description: Training courses, books, blogs and videos.
+      :contents:
+      - "/service-manual/user-research/user-research-training"
+      - "/service-manual/user-research/books-articles-blogs-and-forums"
+      :content_ids:
+      - 3481c1b9-5c2d-449c-8300-26ee96c2b403
+      - f2ff32fe-9e0c-4021-897b-5714d478d1cf
+  :routes:
+  - :type: exact
+    :path: "/service-manual/user-research"
