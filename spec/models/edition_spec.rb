@@ -3,59 +3,23 @@ require 'rails_helper'
 RSpec.describe Edition, type: :model do
   describe "validations" do
     it "requires user to be present" do
-      edition = Edition.new(user: nil)
-
+      edition = Generators.valid_edition(user: nil)
       expect(edition).to be_invalid
-
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
-    it "allows 'draft' state" do
-      edition = Edition.new(state: 'draft')
-
-      edition.valid?
-
-      expect(edition.errors.full_messages_for(:state).size).to eq 0
-    end
-
-    it "allows 'published' state" do
-      edition = Edition.new(
-        state: 'published',
-        approvals: [Approval.new(user:User.first)],
-      )
-      edition.valid?
-
-      expect(edition.errors.full_messages_for(:state).size).to eq 0
-    end
-
-    it "allows 'review_requested' state" do
-      edition = Edition.new(
-        state: 'review_requested',
-        approvals: [Approval.new(user:User.first)],
-      )
-      edition.valid?
-
-      expect(edition.errors.full_messages_for(:state).size).to eq 0
-    end
-
-    it "allows 'approved' state" do
-      edition = Edition.new(
-        state: 'approved',
-        approvals: [Approval.new(user:User.first)],
-      )
-      edition.valid?
-
-      expect(edition.errors.full_messages_for(:state).size).to eq 0
+    valid_states = %w(draft published review_requested approved)
+    valid_states.each do |valid_state|
+      it "allows '#{valid_state}' state" do
+        edition = Generators.valid_edition(state: valid_state)
+        edition.valid?
+        expect(edition.errors.full_messages_for(:state).size).to eq 0
+      end
     end
 
     it "does not allow arbitrary values" do
-      edition = Edition.new(
-        state: 'supercharged',
-        approvals: [Approval.new(user:User.first)],
-      )
-
+      edition = Generators.valid_edition(state: 'invalid state')
       edition.valid?
-
       expect(edition.errors.full_messages_for(:state).size).to eq 1
     end
   end
