@@ -8,7 +8,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should create a new edition if there are no drafts" do
-    guide = given_a_guide_exists state: 'published'
+    guide = given_a_published_guide_exists
     visit guides_path
     link = there_should_be_a_control_link "Create new edition", document: guide
     link.click
@@ -37,6 +37,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   it "should create a new edition when publishing a draft" do
     guide = given_a_guide_exists state: 'draft'
+    guide.latest_edition.approvals << Approval.new(user: User.first)
+
     visit guides_path
     link = there_should_be_a_control_link "Continue editing", document: guide
     link.click
@@ -61,12 +63,56 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
+  context "with a review requested" do
+    it "lists editions that need a review" do
+      edition = Generators.valid_edition(approvals: [])
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+
+      visit edit_guide_path(guide)
+      click_button "Send for review"
+      visit guides_path
+      expect(page).to have_content "review_requested"
+    end
+
+    context "approved by another user" do
+      it "lists editions that are approved" do
+        edition = Generators.valid_edition(state: "review_requested", approvals: [])
+        guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+
+        reviewer = User.new(name: "Some User")
+        login_as reviewer
+        visit guides_path
+        click_link "Create new edition"
+        click_button "Mark as Approved"
+        expect(page).to have_content "Thanks for approving this guide"
+        expect(page).to have_content "approved"
+      end
+    end
+  end
+
+  context "without any approvals" do
+    it "does not allow guides to be published" do
+      edition = Generators.valid_edition(state: "review_requested", approvals: [])
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+      visit edit_guide_path(guide)
+      expect(page).to_not have_button "Publish"
+    end
+  end
+
 private
 
+  def given_a_published_guide_exists
+    edition = Generators.valid_published_edition(
+      title: 'Sample Published Edition',
+    )
+    Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
+  end
+
   def given_a_guide_exists(state:)
-    edition = Generators.valid_edition
-    edition.state = state
-    edition.title = 'Sample Published Edition'
+    edition = Generators.valid_edition(
+      state: state,
+      title: 'Sample Published Edition',
+    )
     Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
   end
 

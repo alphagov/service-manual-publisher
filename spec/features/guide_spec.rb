@@ -60,18 +60,29 @@ RSpec.describe "creating guides", type: :feature do
   it "publishes guide editions" do
     fill_in_guide_form
 
-    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice # save and update
+    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).thrice
     expect(api_double).to receive(:put_content)
-                            .twice
+                            .thrice
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:publish)
                             .twice
                             .with(an_instance_of(String), 'minor')
 
+    click_button "Save Draft"
+    guide = Guide.first
+    visit edit_guide_path(guide)
+    click_button "Send for review"
+
+    login_as(User.new(name: "Reviewer")) do
+      visit edit_guide_path(guide)
+      click_button "Mark as Approved"
+    end
+
+    visit edit_guide_path(guide)
     click_button "Publish"
 
     within ".alert" do
-      expect(page).to have_content('created')
+      expect(page).to have_content('updated')
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
