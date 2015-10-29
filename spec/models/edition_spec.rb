@@ -38,6 +38,16 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:state).size).to eq 0
     end
 
+    it "allows 'approved' state" do
+      edition = Edition.new(
+        state: 'approved',
+        approvals: [Approval.new(user:User.first)],
+      )
+      edition.valid?
+
+      expect(edition.errors.full_messages_for(:state).size).to eq 0
+    end
+
     it "does not allow arbitrary values" do
       edition = Edition.new(
         state: 'supercharged',

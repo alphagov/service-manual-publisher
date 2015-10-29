@@ -5,7 +5,6 @@
     <tr class='table-header'>
       <th>Title</th>
       <th>Last updated by</th>
-      <th>Review</th>
       <th>State</th>
       <th>Controls</th>
     </tr>
@@ -19,14 +18,6 @@
         </td>
         <td class='last-edited-by'>
           <%= latest_editor_name(guide) %>
-        </td>
-        <td>
-          <% if !guide.needs_approval? %>
-            Approved by <%= pluralize(guide.latest_edition.approvals.count, "user")%>:
-            <%= guide.latest_edition.approvals.map {|a| a.user.name }.join(", ") %>
-          <% elsif guide.latest_edition.review_requested? %>
-            Needs Review
-          <% end %>
         </td>
         <td>
           <%= guide.latest_edition.state %>

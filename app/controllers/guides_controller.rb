@@ -1,11 +1,6 @@
 class GuidesController < ApplicationController
   def index
-    @guides = Guide.includes(
-      latest_edition: [
-        :user,
-        :approvals,
-      ]
-    )
+    @guides = Guide.includes(latest_edition: [:user])
   end
 
   def new

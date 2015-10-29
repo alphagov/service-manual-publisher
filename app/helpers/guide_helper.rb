@@ -12,11 +12,10 @@ module GuideHelper
   end
 
   def table_row_class_for(guide)
-    return 'success' if guide.latest_edition.ready_to_publish?
-
     row_classes = {
       "draft"            => "danger",
       "review_requested" => "warning",
+      "approved"         => "success",
       "published"        => "info",
     }
     row_classes[guide.latest_edition.state]

@@ -62,18 +62,18 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   context "with a review requested" do
-    it "lists guides that need a review" do
+    it "lists editions that need a review" do
       edition = Generators.valid_edition(approvals: [])
       guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
       visit edit_guide_path(guide)
       click_button "Send for review"
       visit guides_path
-      expect(page).to have_content "Needs Review"
+      expect(page).to have_content "review_requested"
     end
 
     context "approved by another user" do
-      it "shows how many approvals it has" do
+      it "lists editions that are approved" do
         edition = Generators.valid_edition(state: "review_requested", approvals: [])
         guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
@@ -83,16 +83,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         click_link "Create new edition"
         click_button "Mark as Approved"
         expect(page).to have_content "Thanks for approving this guide"
-        expect(page).to have_content "Approved by 1 user: Some User"
+        expect(page).to have_content "approved"
       end
-    end
-  end
-
-  context "without a review request" do
-    it "does not list guides that don't need a review" do
-      given_a_guide_exists(state: 'draft')
-      visit guides_path
-      expect(page).to_not have_content "Needs Review"
     end
   end
 

@@ -14,7 +14,7 @@ class Edition < ActiveRecord::Base
   scope :review_requested, -> { where(state: 'review_requested') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href, :user]
-  validates_inclusion_of :state, in: %w(draft published review_requested)
+  validates_inclusion_of :state, in: %w(draft published review_requested approved)
   validate :has_been_approved?
 
   def has_been_approved?
@@ -25,12 +25,6 @@ class Edition < ActiveRecord::Base
   end
 
   before_validation :assign_publisher_href
-
-  def ready_to_publish?
-    review_requested? &&
-      approvals.any? &&
-      !published?
-  end
 
   def draft?
     state == 'draft'

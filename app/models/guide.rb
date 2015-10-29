@@ -6,11 +6,6 @@ class Guide < ActiveRecord::Base
     message: "must be be prefixed with /service-manual/"
   }
 
-  def needs_approval?
-    latest_edition.nil? ||
-      latest_edition.approvals.empty?
-  end
-
   has_many :editions
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
 
