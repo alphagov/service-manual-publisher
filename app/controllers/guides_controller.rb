@@ -17,6 +17,9 @@ class GuidesController < ApplicationController
     else
       render action: :new
     end
+  rescue GdsApi::HTTPClientError => e
+    flash[:error] = e.error_details["error"]["message"]
+    render template: 'guides/new'
   end
 
   def edit
@@ -33,6 +36,9 @@ class GuidesController < ApplicationController
     else
       render action: :edit
     end
+  rescue GdsApi::HTTPClientError => e
+    flash[:error] = e.error_details["error"]["message"]
+    render template: 'guides/edit'
   end
 
 private
