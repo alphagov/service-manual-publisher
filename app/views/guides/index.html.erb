@@ -10,6 +10,7 @@
       <th>Title</th>
       <th>Last updated by</th>
       <th>Review</th>
+      <th>State</th>
       <th>Controls</th>
     </tr>
   </thead>
@@ -25,11 +26,14 @@
         </td>
         <td>
           <% if !guide.needs_approval? %>
-            Approved by <%= pluralize(guide.latest_edition_approvals.count, "user")%>:
-            <%= guide.latest_edition_approvals.map {|a| a.user.name }.join(", ") %>
-          <% elsif guide.needs_review? %>
+            Approved by <%= pluralize(guide.latest_edition.approvals.count, "user")%>:
+            <%= guide.latest_edition.approvals.map {|a| a.user.name }.join(", ") %>
+          <% elsif guide.latest_edition.review_requested? %>
             Needs Review
           <% end %>
+        </td>
+        <td>
+          <%= guide.latest_edition.state %>
         </td>
         <td class='content-controls'>
           <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>

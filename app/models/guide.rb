@@ -8,18 +8,7 @@ class Guide < ActiveRecord::Base
 
   def needs_approval?
     latest_edition.nil? ||
-    latest_edition.review_request.nil? ||
-      latest_edition.review_request.approvals.empty?
-  end
-
-  def needs_review?
-    latest_edition.draft? &&
-      latest_edition.review_request.present? &&
-      latest_edition.review_request.approvals.empty?
-  end
-
-  def latest_edition_approvals
-    latest_edition.review_request.approvals
+      latest_edition.approvals.empty?
   end
 
   has_many :editions

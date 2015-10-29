@@ -1,9 +1,6 @@
 class GuidesController < ApplicationController
   def index
-    @guides = Guide.includes(latest_edition: [
-      :user,
-      review_request: [:approvals],
-    ])
+    @guides = Guide.includes(latest_edition: [ :user ])
   end
 
   def new
@@ -46,7 +43,8 @@ private
     guide.editions.build(
       template_edition.copyable_attributes(
         state: edition_state_from_params,
-        user_id: current_user.id
+        user_id: current_user.id,
+        approvals: template_edition.approvals,
       ).merge(edition_params)
     )
   end
@@ -67,7 +65,7 @@ private
         :phase,
         :related_discussion_href,
         :related_discussion_title,
-        :update_type
+        :update_type,
       )
   end
 

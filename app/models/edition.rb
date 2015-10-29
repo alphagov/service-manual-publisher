@@ -7,18 +7,19 @@ class Edition < ActiveRecord::Base
   belongs_to :guide
   belongs_to :user
 
-  belongs_to :review_request
+  has_many :approvals
 
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
+  scope :review_requested, -> { where(state: 'review_requested') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href, :user]
-  validates_inclusion_of :state, in: %w(draft published)
+  validates_inclusion_of :state, in: %w(draft published review_requested)
   validate :has_been_approved?
 
   def has_been_approved?
-    return unless published?
-    if review_request.nil? || review_request.approvals.empty?
+    return if !published?
+    if self.approvals.empty?
       errors.add(:state, "This guide must be approved at least once before publishing")
     end
   end
@@ -31,6 +32,14 @@ class Edition < ActiveRecord::Base
 
   def published?
     state == 'published'
+  end
+
+  def review_requested?
+    state == 'review_requested'
+  end
+
+  def approved?
+    approvals.any?
   end
 
   def copyable_attributes(extra_attributes = {})

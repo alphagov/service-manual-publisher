@@ -19,10 +19,19 @@ RSpec.describe Edition, type: :model do
     end
 
     it "allows 'published' state" do
-      edition = Edition.new(state: 'published')
+      edition = Edition.new(
+        state: 'published',
+        approvals: [Approval.new(user:User.first)],
+      )
+      edition.valid?
 
-      edition.review_request = ReviewRequest.new(
-        approvals: [Approval.new(user: User.first)],
+      expect(edition.errors.full_messages_for(:state).size).to eq 0
+    end
+
+    it "allows 'review_requested' state" do
+      edition = Edition.new(
+        state: 'review_requested',
+        approvals: [Approval.new(user:User.first)],
       )
       edition.valid?
 
@@ -30,7 +39,10 @@ RSpec.describe Edition, type: :model do
     end
 
     it "does not allow arbitrary values" do
-      edition = Edition.new(state: 'supercharged')
+      edition = Edition.new(
+        state: 'supercharged',
+        approvals: [Approval.new(user:User.first)],
+      )
 
       edition.valid?
 
