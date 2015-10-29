@@ -95,6 +95,19 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq true
   end
 
+  it "shows api errors" do
+    fill_in_guide_form
+
+    api_error = GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
+    expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_content).and_raise(api_error)
+
+    click_button "Save Draft"
+
+    within ".alert" do
+      expect(page).to have_content('Error message stub')
+    end
+  end
+
 private
 
   def fill_in_guide_form
