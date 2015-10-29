@@ -11,9 +11,15 @@ class Generators
       body:            "# Heading",
       publisher_title: Edition::PUBLISHERS.keys.first,
       user:            user,
-      approvals:       [Approval.new(user: user)],
     }.merge(attributes)
 
     Edition.new(attributes)
+  end
+
+  def self.valid_published_edition(attributes = {})
+    attributes = {state: "published"}.merge(attributes)
+    edition = valid_edition(attributes)
+    edition.approvals << Approval.new(user: User.first)
+    edition
   end
 end

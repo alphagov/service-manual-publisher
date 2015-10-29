@@ -8,7 +8,13 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
-    valid_states = %w(draft published review_requested approved)
+    it "allows 'published' state" do
+      edition = Generators.valid_published_edition
+      edition.valid?
+      expect(edition.errors.full_messages_for(:state).size).to eq 0
+    end
+
+    valid_states = %w(draft review_requested approved)
     valid_states.each do |valid_state|
       it "allows '#{valid_state}' state" do
         edition = Generators.valid_edition(state: valid_state)
