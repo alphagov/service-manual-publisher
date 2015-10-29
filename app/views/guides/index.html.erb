@@ -1,9 +1,5 @@
 <h1>Guides</h1>
 
-<p>
-  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-</p>
-
 <table class='table table-bordered'>
   <thead>
     <tr class='table-header'>
@@ -16,7 +12,7 @@
   </thead>
   <tbody>
     <% @guides.each do |guide| %>
-      <tr>
+      <tr class="<%= table_row_class_for(guide) %>">
         <td>
           <%= guide.latest_edition.title %>
           <span class='text-muted'><%= guide.slug %></span>
@@ -43,3 +39,7 @@
     <% end %>
   </tbody>
 </table>
+
+<p>
+  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
+</p>

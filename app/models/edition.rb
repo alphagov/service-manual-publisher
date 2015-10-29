@@ -26,6 +26,12 @@ class Edition < ActiveRecord::Base
 
   before_validation :assign_publisher_href
 
+  def ready_to_publish?
+    review_requested? &&
+      approvals.any? &&
+      !published?
+  end
+
   def draft?
     state == 'draft'
   end

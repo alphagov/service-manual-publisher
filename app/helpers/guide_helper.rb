@@ -10,4 +10,15 @@ module GuideHelper
   def latest_editor_name(guide)
     guide.latest_edition.user.try(:name).to_s
   end
+
+  def table_row_class_for(guide)
+    return 'success' if guide.latest_edition.ready_to_publish?
+
+    row_classes = {
+      "draft"            => "danger",
+      "review_requested" => "warning",
+      "published"        => "info",
+    }
+    row_classes[guide.latest_edition.state]
+  end
 end
