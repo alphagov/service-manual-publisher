@@ -67,7 +67,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
       visit edit_guide_path(guide)
-      click_button "Request a Review"
+      click_button "Send for review"
       visit guides_path
       expect(page).to have_content "Needs Review"
     end

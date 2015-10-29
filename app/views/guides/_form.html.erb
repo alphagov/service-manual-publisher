@@ -82,7 +82,7 @@
   <% if guide.latest_edition.present? %>
     <% if guide.latest_edition.persisted? && !guide.latest_edition.review_requested? %>
       <%= form_for :review_request, url: edition_review_requests_path(edition_id: guide.latest_edition.id) do |f| %>
-        <%= f.submit "Request a Review", class: 'btn btn-success' %>
+        <%= f.submit "Send for review", class: 'btn btn-success' %>
       <% end %>
     <% end %>
 

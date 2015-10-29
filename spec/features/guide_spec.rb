@@ -71,7 +71,7 @@ RSpec.describe "creating guides", type: :feature do
     click_button "Save Draft"
     guide = Guide.first
     visit edit_guide_path(guide)
-    click_button "Request a Review"
+    click_button "Send for review"
 
     login_as(User.new(name: "Reviewer")) do
       visit edit_guide_path(guide)
