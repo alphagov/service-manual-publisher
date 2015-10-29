@@ -1,26 +1,26 @@
 <h1>Guides</h1>
 
-<p>
-  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-</p>
-
 <table class='table table-bordered'>
   <thead>
     <tr class='table-header'>
       <th>Title</th>
       <th>Last updated by</th>
+      <th>State</th>
       <th>Controls</th>
     </tr>
   </thead>
   <tbody>
     <% @guides.each do |guide| %>
-      <tr>
+      <tr class="<%= table_row_class_for(guide) %>">
         <td>
           <%= guide.latest_edition.title %>
           <span class='text-muted'><%= guide.slug %></span>
         </td>
         <td class='last-edited-by'>
           <%= latest_editor_name(guide) %>
+        </td>
+        <td>
+          <%= guide.latest_edition.state %>
         </td>
         <td class='content-controls'>
           <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
@@ -30,3 +30,7 @@
     <% end %>
   </tbody>
 </table>
+
+<p>
+  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
+</p>
