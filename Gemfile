@@ -13,6 +13,7 @@ gem 'govuk_admin_template', '~> 3.0.0'
 gem 'gds-sso', '~> 11.0.0'
 gem 'gds-api-adapters', '~> 24.6.0'
 gem 'govspeak', '~> 3.4.0'
+gem 'kaminari', '~> 0.16.3'
 
 group :development do
   gem 'better_errors'
