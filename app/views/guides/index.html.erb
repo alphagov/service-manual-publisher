@@ -1,9 +1,5 @@
 <h1>Guides</h1>
 
-<p>
-  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-</p>
-
 <table class='table table-bordered'>
   <thead>
     <tr class='table-header'>
@@ -36,3 +32,6 @@
 </table>
 
 <%= paginate @guides %>
+<p>
+  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
+</p>
