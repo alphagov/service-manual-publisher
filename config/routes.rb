@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     resources :editions, only: :index
   end
 
+  resources :editions, only: [] do
+    resources :review_requests
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

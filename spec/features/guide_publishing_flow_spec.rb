@@ -61,12 +61,32 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
+  context "with a review requested" do
+    it "lists editions that need a review" do
+      edition = Generators.valid_edition
+      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+
+      visit edit_guide_path(guide)
+      click_button "Send for review"
+      visit guides_path
+      expect(page).to have_content "Review Requested"
+    end
+  end
+
 private
 
+  def given_a_published_guide_exists
+    edition = Generators.valid_published_edition(
+      title: 'Sample Published Edition',
+    )
+    Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
+  end
+
   def given_a_guide_exists(state:)
-    edition = Generators.valid_edition
-    edition.state = state
-    edition.title = 'Sample Published Edition'
+    edition = Generators.valid_edition(
+      state: state,
+      title: 'Sample Published Edition',
+    )
     Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
   end
 
