@@ -13,11 +13,13 @@ class GuidesController < ApplicationController
   def create
     @guide = Guide.new(guide_params)
     @edition = build_new_edition_version_for(@guide)
-    if @guide.save
-      GuidePublisher.new(guide: @guide, edition: @edition).process
-      redirect_to root_path, notice: "Guide has been created"
-    else
-      render action: :new
+    ActiveRecord::Base.transaction do
+      if @guide.save
+        GuidePublisher.new(guide: @guide, edition: @edition).process
+        redirect_to root_path, notice: "Guide has been created"
+      else
+        render action: :new
+      end
     end
   rescue GdsApi::HTTPClientError => e
     flash[:error] = e.error_details["error"]["message"]
@@ -32,11 +34,13 @@ class GuidesController < ApplicationController
   def update
     @guide = Guide.find(params[:id])
     @edition = build_new_edition_version_for(@guide)
-    if @guide.update_attributes(guide_params)
-      GuidePublisher.new(guide: @guide, edition: @edition).process
-      redirect_to root_path, notice: "Guide has been updated"
-    else
-      render action: :edit
+    ActiveRecord::Base.transaction do
+      if @guide.update_attributes(guide_params)
+        GuidePublisher.new(guide: @guide, edition: @edition).process
+        redirect_to root_path, notice: "Guide has been updated"
+      else
+        render action: :edit
+      end
     end
   rescue GdsApi::HTTPClientError => e
     flash[:error] = e.error_details["error"]["message"]
