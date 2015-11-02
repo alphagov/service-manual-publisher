@@ -10,27 +10,24 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
-    it "allows 'draft' state" do
-      edition = Edition.new(state: 'draft')
-
+    it "allows 'published' state" do
+      edition = Generators.valid_published_edition
       edition.valid?
-
       expect(edition.errors.full_messages_for(:state).size).to eq 0
     end
 
-    it "allows 'published' state" do
-      edition = Edition.new(state: 'published')
-
-      edition.valid?
-
-      expect(edition.errors.full_messages_for(:state).size).to eq 0
+    valid_states = %w(draft review_requested approved)
+    valid_states.each do |valid_state|
+      it "allows '#{valid_state}' state" do
+        edition = Generators.valid_edition(state: valid_state)
+        edition.valid?
+        expect(edition.errors.full_messages_for(:state).size).to eq 0
+      end
     end
 
     it "does not allow arbitrary values" do
-      edition = Edition.new(state: 'supercharged')
-
+      edition = Generators.valid_edition(state: 'invalid state')
       edition.valid?
-
       expect(edition.errors.full_messages_for(:state).size).to eq 1
     end
   end
