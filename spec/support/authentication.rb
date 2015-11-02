@@ -6,6 +6,17 @@ module AuthenticationHelpers
   def login_as_stub_user
     GDS::SSO.test_user = stub_user
   end
+
+  def login_as(user)
+    if block_given?
+      old_user = GDS::SSO.test_user
+      GDS::SSO.test_user = user
+      yield
+      GDS::SSO.test_user = old_user
+    else
+      GDS::SSO.test_user = user
+    end
+  end
 end
 
 module AuthenticationControllerHelpers
