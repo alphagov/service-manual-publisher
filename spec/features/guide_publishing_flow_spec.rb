@@ -94,6 +94,20 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
+  it "should save a draft locally, sent it to Publishing API, then redirect to the front end when previewing" do
+    guide = given_a_guide_exists state: 'draft'
+    visit edit_guide_path(guide)
+    fill_in "Title", with: "Changed Title"
+
+    expect_any_instance_of(GuidePublisher).to receive(:process)
+
+    expect_external_redirect_to "http://government-frontend.dev.gov.uk#{guide.slug}" do
+      click_button "Save Draft and Preview"
+    end
+
+    expect(guide.editions.map(&:title)).to match_array ["Changed Title", "Sample Published Edition"]
+  end
+
   context "with a review requested" do
     it "lists editions that need a review" do
       edition = Generators.valid_edition
@@ -153,5 +167,13 @@ private
 
   def the_form_should_be_prepopulated
     expect(find_field('Title').value).to eq "Sample Published Edition"
+  end
+
+  def expect_external_redirect_to(external_url)
+    yield
+  rescue ActionController::RoutingError # Rack::Test raises when redirected to external urls
+    expect(current_url).to eq external_url
+  else
+    raise "Missing external redirect"
   end
 end
