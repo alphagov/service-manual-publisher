@@ -2,6 +2,7 @@ class GuidesController < ApplicationController
   def index
     @guides = Guide
                 .includes(latest_edition: :user)
+                .order(updated_at: :desc)
                 .page(params[:page])
   end
 

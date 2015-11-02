@@ -4,7 +4,7 @@ class Edition < ActiveRecord::Base
     "Agile Community" => "http://sm-11.herokuapp.com/agile-delivery/agile-community"
   }.freeze
 
-  belongs_to :guide
+  belongs_to :guide, touch: true
   belongs_to :user
 
   has_many :approvals
