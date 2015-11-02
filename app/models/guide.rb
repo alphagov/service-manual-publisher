@@ -16,6 +16,21 @@ class Guide < ActiveRecord::Base
   end
 
   def work_in_progress_edition?
-    latest_edition.try(:state) == 'draft'
+    latest_edition.try(:published?) == false
+  end
+
+  def can_request_review?
+    return false if latest_edition.nil?
+    return false if !latest_edition.persisted?
+    return false if latest_edition.review_requested?
+    return false if latest_edition.published?
+    return false if latest_edition.approved?
+    true
+  end
+
+  def can_mark_as_approved?
+    return false if latest_edition.nil?
+    return false if !latest_edition.persisted?
+    latest_edition.review_requested?
   end
 end

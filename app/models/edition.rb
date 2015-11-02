@@ -7,11 +7,14 @@ class Edition < ActiveRecord::Base
   belongs_to :guide
   belongs_to :user
 
+  has_many :approvals
+
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
+  scope :review_requested, -> { where(state: 'review_requested') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href, :user]
-  validates_inclusion_of :state, in: %w(draft published)
+  validates_inclusion_of :state, in: %w(draft published review_requested approved)
 
   before_validation :assign_publisher_href
 
@@ -21,6 +24,14 @@ class Edition < ActiveRecord::Base
 
   def published?
     state == 'published'
+  end
+
+  def review_requested?
+    state == 'review_requested'
+  end
+
+  def approved?
+    state == 'approved'
   end
 
   def copyable_attributes(extra_attributes = {})

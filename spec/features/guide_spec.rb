@@ -60,28 +60,25 @@ RSpec.describe "creating guides", type: :feature do
   it "publishes guide editions" do
     fill_in_guide_form
 
-    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice # save and update
+    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice
     expect(api_double).to receive(:put_content)
                             .twice
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:publish)
-                            .twice
+                            .once
                             .with(an_instance_of(String), 'minor')
 
-    click_button "Publish"
+    click_button "Save Draft"
+    guide = Guide.first
+    visit edit_guide_path(guide)
+    click_button "Send for review"
 
-    within ".alert" do
-      expect(page).to have_content('created')
+    login_as(User.new(name: "Reviewer")) do
+      visit edit_guide_path(guide)
+      click_button "Mark as Approved"
     end
 
-    guide = Guide.find_by_slug("/service-manual/the/path")
-    edition = guide.latest_edition
-    expect(edition.title).to eq "First Edition Title"
-    expect(edition.draft?).to eq false
-    expect(edition.published?).to eq true
-
     visit edit_guide_path(guide)
-    fill_in "Title", with: "Second Edition Title"
     click_button "Publish"
 
     within ".alert" do
@@ -90,7 +87,7 @@ RSpec.describe "creating guides", type: :feature do
 
     guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
-    expect(edition.title).to eq "Second Edition Title"
+    expect(edition.title).to eq "First Edition Title"
     expect(edition.draft?).to eq false
     expect(edition.published?).to eq true
   end
