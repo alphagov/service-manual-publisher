@@ -1,3 +1,8 @@
+<h1>
+  <%= guide.latest_edition.try(:title) || "Create a Guide" %>
+  <%= state_label(guide) %>
+</h1>
+
 <div class='well'>
   <%= form_for guide do |f| %>
     <fieldset class='meta'>

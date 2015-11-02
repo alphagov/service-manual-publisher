@@ -20,7 +20,7 @@
           <%= latest_editor_name(guide) %>
         </td>
         <td>
-          <%= guide.latest_edition.state.titleize %>
+          <%= state_label(guide) %>
         </td>
         <td class='content-controls'>
           <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
