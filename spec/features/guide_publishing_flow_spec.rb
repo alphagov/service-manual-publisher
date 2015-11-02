@@ -9,7 +9,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "latest edition is published" do
     it "should create a new draft edition if the latest edition is published" do
-      guide = given_a_published_guide_exists
+      guide = given_a_published_guide_exists title: "Standups"
 
       publisher_double = double(:publisher)
       expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
@@ -17,7 +17,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_button "Create new edition"
-      the_form_should_be_prepopulated
+      the_form_should_be_prepopulated_with_title "Standups"
       expect(guide.editions.published.size).to eq 1
       expect(guide.editions.draft.size).to eq 1
     end
@@ -71,15 +71,15 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should not create a new edition if the latest edition isn't published" do
-    guide = given_a_guide_exists state: 'draft'
+    guide = given_a_guide_exists state: 'draft', title: "Agile methodologies"
     visit guides_path
     click_link "Continue editing"
-    fill_in "Title", with: "Sample Published Edition 2"
+    fill_in "Title", with: "Agile"
     click_button "Save Draft"
     expect(current_path).to eq root_path
 
     expect(guide.editions.draft.size).to eq 1
-    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition 2"]
+    expect(guide.editions.map(&:title)).to match_array ["Agile"]
   end
 
   it "should record who's the last editor" do
@@ -95,17 +95,17 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should save a draft locally, sent it to Publishing API, then redirect to the front end when previewing" do
-    guide = given_a_guide_exists state: 'draft'
+    guide = given_a_guide_exists state: 'draft', title: 'Test guide', slug: '/service-manual/preview-test'
     visit edit_guide_path(guide)
     fill_in "Title", with: "Changed Title"
 
     expect_any_instance_of(GuidePublisher).to receive(:process)
 
-    expect_external_redirect_to "http://government-frontend.dev.gov.uk#{guide.slug}" do
+    expect_external_redirect_to "http://government-frontend.dev.gov.uk/service-manual/preview-test" do
       click_button "Save Draft and Preview"
     end
 
-    expect(guide.editions.map(&:title)).to match_array ["Changed Title", "Sample Published Edition"]
+    expect(guide.editions.map(&:title)).to match_array ["Changed Title"]
   end
 
   context "with a review requested" do
@@ -150,23 +150,20 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
 private
 
-  def given_a_published_guide_exists
-    edition = Generators.valid_published_edition(
-      title: 'Sample Published Edition',
-    )
-    Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
+  def given_a_guide_exists(attributes = {})
+    slug = attributes.delete(:slug) || '/service-manual/test-guide'
+    edition = Generators.valid_edition(attributes)
+    Guide.create!(latest_edition: edition, slug: slug)
   end
 
-  def given_a_guide_exists(state:)
-    edition = Generators.valid_edition(
-      state: state,
-      title: 'Sample Published Edition',
-    )
-    Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
+  def given_a_published_guide_exists(attributes = {})
+    edition = Generators.valid_published_edition(attributes)
+    slug = attributes.delete(:slug) || '/service-manual/published-test-guide'
+    Guide.create!(latest_edition: edition, slug: slug)
   end
 
-  def the_form_should_be_prepopulated
-    expect(find_field('Title').value).to eq "Sample Published Edition"
+  def the_form_should_be_prepopulated_with_title(title)
+    expect(find_field('Title').value).to eq title
   end
 
   def expect_external_redirect_to(external_url)
