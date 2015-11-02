@@ -109,6 +109,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
     end
 
+    context "approved by the same user" do
+      it "does not allow the same user to approve it"
+    end
   end
 
 private
