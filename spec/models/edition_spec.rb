@@ -3,10 +3,8 @@ require 'rails_helper'
 RSpec.describe Edition, type: :model do
   describe "validations" do
     it "requires user to be present" do
-      edition = Edition.new(user: nil)
-
+      edition = Generators.valid_edition(user: nil)
       expect(edition).to be_invalid
-
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 

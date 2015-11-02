@@ -8,7 +8,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should create a new edition if there are no drafts" do
-    guide = given_a_guide_exists state: 'published'
+    guide = given_a_published_guide_exists
     visit guides_path
     link = there_should_be_a_control_link "Create new edition", document: guide
     link.click
@@ -87,7 +87,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "approved by another user" do
       it "lists editions that are approved" do
-        edition = Generators.valid_edition(state: "review_requested", approvals: [])
+        edition = Generators.valid_edition(state: "review_requested")
         guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
         reviewer = User.new(name: "Some User")
