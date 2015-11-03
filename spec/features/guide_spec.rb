@@ -92,16 +92,66 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq true
   end
 
-  it "shows api errors" do
-    fill_in_guide_form
+  context "when creating a new guide" do
+    context "when publishing raises an exception" do
+      before do
+        api_error = GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
+        expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_content).and_raise(api_error)
+      end
 
-    api_error = GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
-    expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_content).and_raise(api_error)
+      it "shows api errors" do
+        fill_in_guide_form
+        click_button "Save Draft"
 
-    click_button "Save Draft"
+        within ".alert" do
+          expect(page).to have_content('Error message stub')
+        end
+      end
 
-    within ".alert" do
-      expect(page).to have_content('Error message stub')
+      it "does not store a guide" do
+        fill_in_guide_form
+        click_button "Save Draft"
+
+        expect(Guide.count).to eq 0
+        expect(Edition.count).to eq 0
+      end
+    end
+  end
+
+  context "when updating a guide" do
+    context "when publishing raises an exception" do
+      let :api_error do
+        GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
+      end
+
+      it "shows api errors" do
+        edition = Generators.valid_edition(title: "something")
+        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+
+        expect_any_instance_of(GuidePublisher).to receive(:process).once.and_raise(api_error)
+
+        visit edit_guide_path(guide)
+        click_button "Save Draft"
+
+        within ".alert" do
+          expect(page).to have_content('Error message stub')
+        end
+      end
+
+      it "does persist an extra edition" do
+        edition = Generators.valid_edition(title: "Original Title")
+        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+
+        expect_any_instance_of(GuidePublisher).to receive(:process).once.and_raise(api_error)
+
+        visit edit_guide_path(guide)
+        fill_in "Title", with: "Changed Title"
+        click_button "Save Draft"
+
+        expect(Guide.count).to eq 1
+        expect(Guide.first.latest_edition.title).to_not eq "Changed Title"
+        expect(Edition.count).to eq 1
+      end
     end
   end
 
