@@ -1,4 +1,6 @@
 class Edition < ActiveRecord::Base
+  acts_as_commentable
+
   PUBLISHERS = {
     "Design Community" => "http://sm-11.herokuapp.com/designing-services/design-community/",
     "Agile Community" => "http://sm-11.herokuapp.com/agile-delivery/agile-community"
