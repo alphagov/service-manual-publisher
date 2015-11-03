@@ -37,6 +37,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_commentable (4.0.2)
     addressable (2.3.7)
     airbrake (4.2.1)
       builder
@@ -271,6 +272,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_commentable (~> 4.0.2)
   airbrake (~> 4.2.1)
   better_errors
   binding_of_caller

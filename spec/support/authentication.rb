@@ -1,6 +1,9 @@
 module AuthenticationHelpers
   def stub_user
-    @stub_user ||= User.create!(uid: SecureRandom.hex)
+    @stub_user ||= User.create!(
+      uid: SecureRandom.hex,
+      name: "Stub User",
+    )
   end
 
   def login_as_stub_user

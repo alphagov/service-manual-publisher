@@ -30,11 +30,19 @@ class GuidesController < ApplicationController
   def edit
     @guide = Guide.find(params[:id])
     @edition = @guide.latest_edition.unsaved_copy
+    @comments = @guide.latest_edition.comments
+      .order(created_at: :asc)
+      .includes(:user)
+    @new_comment = @guide.latest_edition.comments.build
   end
 
   def update
     @guide = Guide.find(params[:id])
     @edition = build_new_edition_version_for(@guide)
+    @comments = @guide.latest_edition.comments
+      .order(created_at: :asc)
+      .includes(:user)
+    @new_comment = @guide.latest_edition.comments.build
     ActiveRecord::Base.transaction do
       if @guide.update_attributes(guide_params)
         GuidePublisher.new(guide: @guide, edition: @edition).process
