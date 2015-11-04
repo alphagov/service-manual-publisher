@@ -1,6 +1,11 @@
 class DraftsController < ApplicationController
   def create
     guide = Guide.find(params[:guide_id])
+
+    if guide.latest_edition.published? == false
+      return redirect_to edit_guide_path(guide)
+    end
+
     duplicated_edition = guide.latest_edition.dup
     duplicated_edition.state = "draft"
 

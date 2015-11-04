@@ -7,19 +7,34 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     allow_any_instance_of(GuidePublisher).to receive(:process)
   end
 
-  it "should create a new draft edition if the latest edition is published" do
-    guide = given_a_published_guide_exists
+  context "latest edition is published" do
+    it "should create a new draft edition if the latest edition is published" do
+      guide = given_a_published_guide_exists
 
-    publisher_double = double(:publisher)
-    expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
-    expect(publisher_double).to receive(:process)
+      publisher_double = double(:publisher)
+      expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
+      expect(publisher_double).to receive(:process)
 
-    visit guides_path
-    click_button "Create new edition"
-    the_form_should_be_prepopulated
-    expect(guide.editions.published.size).to eq 1
-    expect(guide.editions.draft.size).to eq 1
-    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition"]
+      visit guides_path
+      click_button "Create new edition"
+      the_form_should_be_prepopulated
+      expect(guide.editions.published.size).to eq 1
+      expect(guide.editions.draft.size).to eq 1
+    end
+  end
+
+  context "latest edition is not published" do
+    it "should not save an extra draft if someone else clicks the link in the meantime" do
+      guide = given_a_published_guide_exists
+
+      visit guides_path
+      guide.latest_edition.state = "draft"
+      guide.latest_edition.save!
+      click_button "Create new edition"
+
+      expect(guide.editions.published.size).to eq 0
+      expect(guide.editions.draft.size).to eq 1
+    end
   end
 
   context "when guide publishing raises an exception" do
