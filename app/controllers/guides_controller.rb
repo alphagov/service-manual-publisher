@@ -31,17 +31,13 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
-    @comments = @guide.latest_edition.comments
-      .order(created_at: :asc)
-      .includes(:user)
+    @comments = comments_list(@guide)
     @new_comment = @guide.latest_edition.comments.build
   end
 
   def update
     @guide = Guide.find(params[:id])
-    @comments = @guide.latest_edition.comments
-      .order(created_at: :asc)
-      .includes(:user)
+    @comments = comments_list(@guide)
     @new_comment = @guide.latest_edition.comments.build
 
     ActiveRecord::Base.transaction do
@@ -58,6 +54,12 @@ class GuidesController < ApplicationController
   end
 
 private
+
+  def comments_list guide
+    guide.latest_edition.comments
+      .order(created_at: :asc)
+      .includes(:user)
+  end
 
   def guide_params with={}
     params
