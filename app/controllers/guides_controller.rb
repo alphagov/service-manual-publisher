@@ -39,14 +39,6 @@ class GuidesController < ApplicationController
 
   def update
     @guide = Guide.find(params[:id])
-
-    if @guide.latest_edition.published?
-      duplicated_edition = @guide.latest_edition.dup
-      duplicated_edition.state = "draft"
-      @guide.editions << duplicated_edition
-      @guide.reload
-    end
-
     @comments = @guide.latest_edition.comments
       .order(created_at: :asc)
       .includes(:user)

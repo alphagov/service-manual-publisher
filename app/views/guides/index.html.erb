@@ -23,7 +23,13 @@
           <%= state_label(guide) %>
         </td>
         <td class='content-controls'>
-          <%= link_to edit_action_label(guide), edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+          <% if guide.latest_edition.published? %>
+            <%= form_for :drafts, url: guide_drafts_path(guide_id: guide.id), html: {style: "display: inline;"} do |f| %>
+              <%= f.submit("Create new edition", class: 'btn btn-default btn-xs') %>
+            <% end %>
+          <% else %>
+            <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+          <% end %>
           <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
         </td>
       </tr>

@@ -10,8 +10,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should create a new draft edition if the latest edition is published" do
     guide = given_a_published_guide_exists
     visit guides_path
-    link = there_should_be_a_control_link "Create new edition", document: guide
-    link.click
+    click_button "Create new edition"
     the_form_should_be_prepopulated
     fill_in "Title", with: "Sample Published Edition 2"
     click_button "Save Draft"
@@ -25,8 +24,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should not create a new edition if the latest edition isn't published" do
     guide = given_a_guide_exists state: 'draft'
     visit guides_path
-    link = there_should_be_a_control_link "Continue editing", document: guide
-    link.click
+    click_link "Continue editing"
     fill_in "Title", with: "Sample Published Edition 2"
     click_button "Save Draft"
     expect(current_path).to eq root_path
@@ -102,12 +100,6 @@ private
       title: 'Sample Published Edition',
     )
     Guide.create!(latest_edition: edition, slug: "/service-manual/test/slug_published")
-  end
-
-  def there_should_be_a_control_link(link_text, document:)
-    link = find_link link_text
-    expect(link[:href]).to eq edit_guide_path(document)
-    link
   end
 
   def the_form_should_be_prepopulated
