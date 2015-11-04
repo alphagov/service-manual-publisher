@@ -49,7 +49,7 @@ if Rails.env.development?
         user:            author
       )
       guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
-      GuidePublisher.new(guide: guide, edition: edition).process
+      GuidePublisher.new(guide: guide).process
     end
   end
 end

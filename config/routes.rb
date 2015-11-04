@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :guides do
     resources :editions, only: :index
+    resources :drafts
   end
 
   resources :editions, only: [] do

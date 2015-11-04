@@ -8,15 +8,17 @@ class GuidesController < ApplicationController
 
   def new
     @guide = Guide.new(slug: "/service-manual/")
-    @edition = Edition.new
+    @guide.latest_edition = @guide.editions.build
   end
 
   def create
     @guide = Guide.new(guide_params)
-    @edition = build_new_edition_version_for(@guide)
+    @guide.latest_edition.state = "draft"
+    @guide.latest_edition.user = current_user
+
     ActiveRecord::Base.transaction do
       if @guide.save
-        GuidePublisher.new(guide: @guide, edition: @edition).process
+        GuidePublisher.new(guide: @guide).process
         redirect_to root_path, notice: "Guide has been created"
       else
         render action: :new
@@ -29,23 +31,18 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
-    @edition = @guide.latest_edition.unsaved_copy
-    @comments = @guide.latest_edition.comments
-      .order(created_at: :asc)
-      .includes(:user)
+    @comments = comments_list(@guide)
     @new_comment = @guide.latest_edition.comments.build
   end
 
   def update
     @guide = Guide.find(params[:id])
-    @edition = build_new_edition_version_for(@guide)
-    @comments = @guide.latest_edition.comments
-      .order(created_at: :asc)
-      .includes(:user)
+    @comments = comments_list(@guide)
     @new_comment = @guide.latest_edition.comments.build
+
     ActiveRecord::Base.transaction do
-      if @guide.update_attributes(guide_params)
-        GuidePublisher.new(guide: @guide, edition: @edition).process
+      if @guide.update_attributes(guide_params({latest_edition_attributes: {state: edition_state_from_params, user_id: current_user.id}}))
+        GuidePublisher.new(guide: @guide).process
         redirect_to root_path, notice: "Guide has been updated"
       else
         render action: :edit
@@ -58,26 +55,16 @@ class GuidesController < ApplicationController
 
 private
 
-  def build_new_edition_version_for(guide)
-    template_edition = guide.latest_edition || Edition.new
-
-    guide.editions.build(
-      template_edition.copyable_attributes(
-        state: edition_state_from_params,
-        user_id: current_user.id
-      ).merge(edition_params)
-    )
+  def comments_list(guide)
+    guide.latest_edition.comments
+      .order(created_at: :asc)
+      .includes(:user)
   end
 
-  def guide_params
-    params.require(:guide).permit(:slug)
-  end
-
-  def edition_params
+  def guide_params(with={})
     params
       .require(:guide)
-      .require(:edition)
-      .permit(
+      .permit(:slug, latest_edition_attributes: [
         :title,
         :body,
         :description,
@@ -86,7 +73,7 @@ private
         :related_discussion_href,
         :related_discussion_title,
         :update_type
-      )
+      ]).deep_merge(with)
   end
 
   def edition_state_from_params
