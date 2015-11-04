@@ -6,4 +6,12 @@ module ApplicationHelper
       error: 'alert-danger'
     }[flash_type.to_sym]
   end
+
+  def disable_if_new_record(record)
+    if record.new_record?
+      { disable: true }
+    else
+      {}
+    end
+  end
 end
