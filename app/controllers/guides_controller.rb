@@ -55,13 +55,13 @@ class GuidesController < ApplicationController
 
 private
 
-  def comments_list guide
+  def comments_list(guide)
     guide.latest_edition.comments
       .order(created_at: :asc)
       .includes(:user)
   end
 
-  def guide_params with={}
+  def guide_params(with={})
     params
       .require(:guide)
       .permit(:slug, latest_edition_attributes: [
