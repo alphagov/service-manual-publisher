@@ -7,7 +7,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     allow_any_instance_of(GuidePublisher).to receive(:process)
   end
 
-  it "should create a new edition if there are no drafts" do
+  it "should create a new draft edition if the latest edition is published" do
     guide = given_a_published_guide_exists
     visit guides_path
     link = there_should_be_a_control_link "Create new edition", document: guide
@@ -22,7 +22,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition 2"]
   end
 
-  it "should create a new edition even when saving a draft" do
+  it "should not create a new edition if the latest edition isn't published" do
     guide = given_a_guide_exists state: 'draft'
     visit guides_path
     link = there_should_be_a_control_link "Continue editing", document: guide
@@ -31,35 +31,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     click_button "Save Draft"
     expect(current_path).to eq root_path
 
-    expect(guide.editions.draft.size).to eq 2
-    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition 2"]
-  end
-
-  it "should create a new edition when publishing a draft" do
-    guide = given_a_guide_exists state: 'draft'
-
-    visit edit_guide_path(guide)
-    fill_in "Title", with: "Sample Published Edition 2"
-    click_button "Save Draft"
-
-    visit edit_guide_path(guide)
-    click_button "Send for review"
-
-    visit edit_guide_path(guide)
-    click_button "Mark as Approved"
-
-    visit edit_guide_path(guide)
-    click_button "Publish"
-
-    expect(current_path).to eq root_path
-
-    expect(guide.editions.published.size).to eq 1
     expect(guide.editions.draft.size).to eq 1
-    expect(guide.editions.map(&:title)).to match_array [
-      "Sample Published Edition",
-      "Sample Published Edition 2",
-      "Sample Published Edition 2",
-    ]
+    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition 2"]
   end
 
   it "should record who's the last editor" do

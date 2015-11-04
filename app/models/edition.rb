@@ -36,14 +36,6 @@ class Edition < ActiveRecord::Base
     state == 'approved'
   end
 
-  def copyable_attributes(extra_attributes = {})
-    attributes.with_indifferent_access.except('id', 'updated_at', 'created_at').merge(extra_attributes)
-  end
-
-  def unsaved_copy
-    self.class.new(copyable_attributes)
-  end
-
 private
 
   def assign_publisher_href
