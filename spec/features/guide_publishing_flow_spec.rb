@@ -76,7 +76,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     click_link "Continue editing"
     fill_in "Title", with: "Agile"
     click_button "Save Draft"
-    expect(current_path).to eq root_path
+    expect(current_path).to eq edit_guide_path guide
 
     expect(guide.editions.draft.size).to eq 1
     expect(guide.editions.map(&:title)).to match_array ["Agile"]

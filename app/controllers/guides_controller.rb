@@ -59,6 +59,8 @@ private
     if params[:save_draft_and_preview]
       frontend_host = Rails.env.production? ? Plek.find('draft-origin') : Plek.find('government-frontend')
       [frontend_host, guide.slug].join
+    elsif request.referrer.present? && request.referrer != request.url
+      request.referrer
     else
       root_url
     end
