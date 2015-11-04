@@ -18,7 +18,7 @@ class GuidesController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @guide.save
-        GuidePublisher.new(guide: @guide, edition: @guide.latest_edition).process
+        GuidePublisher.new(guide: @guide).process
         redirect_to root_path, notice: "Guide has been created"
       else
         render action: :new
@@ -42,7 +42,7 @@ class GuidesController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @guide.update_attributes(guide_params({latest_edition_attributes: {state: edition_state_from_params, user_id: current_user.id}}))
-        GuidePublisher.new(guide: @guide, edition: @guide.latest_edition).process
+        GuidePublisher.new(guide: @guide).process
         redirect_to root_path, notice: "Guide has been updated"
       else
         render action: :edit

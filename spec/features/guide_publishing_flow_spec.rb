@@ -9,16 +9,50 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   it "should create a new draft edition if the latest edition is published" do
     guide = given_a_published_guide_exists
+
+    publisher_double = double(:publisher)
+    expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
+    expect(publisher_double).to receive(:process)
+
     visit guides_path
     click_button "Create new edition"
     the_form_should_be_prepopulated
-    fill_in "Title", with: "Sample Published Edition 2"
-    click_button "Save Draft"
-    expect(current_path).to eq root_path
-
     expect(guide.editions.published.size).to eq 1
     expect(guide.editions.draft.size).to eq 1
-    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition 2"]
+    expect(guide.editions.map(&:title)).to match_array ["Sample Published Edition", "Sample Published Edition"]
+  end
+
+  context "when guide publishing raises an exception" do
+    let :api_error do
+      GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
+    end
+
+    it "does not store a new draft edition" do
+      guide = given_a_published_guide_exists
+      expect(Guide.count).to eq 1
+      expect(Edition.count).to eq 1
+
+      expect_any_instance_of(GuidePublisher).to receive(:process).and_raise api_error
+
+      visit guides_path
+      click_button "Create new edition"
+
+      expect(Guide.count).to eq 1
+      expect(Edition.count).to eq 1
+    end
+
+    it "shows api errors" do
+      guide = given_a_published_guide_exists
+
+      expect_any_instance_of(GuidePublisher).to receive(:process).and_raise api_error
+
+      visit guides_path
+      click_button "Create new edition"
+
+      within ".alert" do
+        expect(page).to have_content('Error message stub')
+      end
+    end
   end
 
   it "should not create a new edition if the latest edition isn't published" do

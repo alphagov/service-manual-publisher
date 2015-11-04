@@ -139,7 +139,7 @@ RSpec.describe "creating guides", type: :feature do
         end
       end
 
-      it "does persist an extra edition" do
+      it "does not store a new extra edition" do
         edition = Generators.valid_edition(title: "Original Title")
         guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
 

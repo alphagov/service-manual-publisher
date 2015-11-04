@@ -7,7 +7,7 @@ RSpec.describe GuidePublisher do
     end
 
     it "saves draft items" do
-      publisher = GuidePublisher.new(guide: guide, edition: guide.latest_edition)
+      publisher = GuidePublisher.new(guide: guide)
 
       double_api = double(:publishing_api)
       expected_plek = Plek.new.find('publishing-api')
@@ -34,7 +34,7 @@ RSpec.describe GuidePublisher do
     end
 
     it "saves draft then publishes it" do
-      publisher = GuidePublisher.new(guide: guide, edition: guide.latest_edition)
+      publisher = GuidePublisher.new(guide: guide)
 
       double_api = double(:publishing_api)
       expected_plek = Plek.new.find('publishing-api')
