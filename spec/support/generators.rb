@@ -6,6 +6,7 @@ class Generators
       phase:           "beta",
       description:     "Description",
       update_type:     "major",
+      change_note:     "change note",
       body:            "# Heading",
       publisher_title: Edition::PUBLISHERS.keys.first,
       user:            User.new(name: "Generated User")

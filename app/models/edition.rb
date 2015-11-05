@@ -17,8 +17,15 @@ class Edition < ActiveRecord::Base
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href, :user]
   validates_inclusion_of :state, in: %w(draft published review_requested approved)
+  validates :change_note, presence: true, if: :major?
 
   before_validation :assign_publisher_href
+
+  %w{minor major}.each do |s|
+    define_method "#{s}?" do
+      update_type == s
+    end
+  end
 
   def draft?
     state == 'draft'

@@ -13,6 +13,9 @@ class GuidesController < ApplicationController
 
   def create
     @guide = Guide.new(guide_params)
+    # Temporarily set latest_edition manually.
+    # (There's always only one edition at this point)
+    @guide.latest_edition = @guide.editions.first
     @guide.latest_edition.state = "draft"
     @guide.latest_edition.user = current_user
 
@@ -41,7 +44,7 @@ class GuidesController < ApplicationController
     @new_comment = @guide.latest_edition.comments.build
 
     ActiveRecord::Base.transaction do
-      if @guide.update_attributes(guide_params({latest_edition_attributes: {state: edition_state_from_params, user_id: current_user.id}}))
+      if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: edition_state_from_params, user_id: current_user.id}}))
         GuidePublisher.new(guide: @guide).process
         redirect_to success_url(@guide), notice: "Guide has been updated"
       else
@@ -75,7 +78,8 @@ private
   def guide_params(with={})
     params
       .require(:guide)
-      .permit(:slug, latest_edition_attributes: [
+      .permit(:slug, editions_attributes: [
+        :id,
         :title,
         :body,
         :description,
@@ -83,7 +87,8 @@ private
         :phase,
         :related_discussion_href,
         :related_discussion_title,
-        :update_type
+        :update_type,
+        :change_note,
       ]).deep_merge(with)
   end
 

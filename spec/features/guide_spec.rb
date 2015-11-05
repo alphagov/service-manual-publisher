@@ -38,7 +38,8 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.phase).to eq "beta"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
-    expect(edition.update_type).to eq "minor"
+    expect(edition.update_type).to eq "major"
+    expect(edition.change_note).to eq "Change Note"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
 
@@ -67,7 +68,7 @@ RSpec.describe "creating guides", type: :feature do
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:publish)
                             .once
-                            .with(an_instance_of(String), 'minor')
+                            .with(an_instance_of(String), 'major')
 
     click_button "Save Draft"
     guide = Guide.first
@@ -189,6 +190,7 @@ private
     fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
 
-    select "Minor", from: "Update type"
+    select "Major", from: "Update type"
+    fill_in "Change note", with: "Change Note"
   end
 end

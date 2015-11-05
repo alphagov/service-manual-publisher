@@ -1,6 +1,7 @@
 <%# blocks for govuk_admin_template %>
 <% content_for :head do %>
   <%= stylesheet_link_tag "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tag %>
 <% end %>
 <% content_for :app_title do %>GOV.UK Service Manual Publisher<% end %>
