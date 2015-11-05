@@ -1,32 +1,5 @@
 <%= render 'form', guide: @guide%>
 
-<div class='well comments'>
-  <fieldset class='meta'>
-    <legend>Comments</legend>
+<%= render 'editions/comments', edition: @guide.latest_edition, comments: @comments %>
 
-    <% @comments.each do |comment| %>
-      <div class="comment panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <%= comment.user.name %>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <%= comment.comment %>
-        </div>
-      </div>
-    <% end %>
 
-    <%= form_for @new_comment do |f| %>
-      <%= f.hidden_field :edition_id, value: @guide.latest_edition.id %>
-
-      <div class='form-group'>
-        <%= f.label :comment %>
-        <%= f.text_area :comment, class: "form-control", rows: 3 %>
-      </div>
-      <div class='form-group'>
-        <%= f.submit "Comment", class: "btn btn-success" %>
-      </div>
-    <% end %>
-  </fieldset>
-</div>

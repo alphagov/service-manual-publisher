@@ -35,13 +35,11 @@ class GuidesController < ApplicationController
   def edit
     @guide = Guide.find(params[:id])
     @comments = comments_list(@guide)
-    @new_comment = @guide.latest_edition.comments.build
   end
 
   def update
     @guide = Guide.find(params[:id])
     @comments = comments_list(@guide)
-    @new_comment = @guide.latest_edition.comments.build
 
     ActiveRecord::Base.transaction do
       if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: edition_state_from_params, user_id: current_user.id}}))
