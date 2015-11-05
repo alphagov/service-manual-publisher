@@ -1,0 +1,23 @@
+<header>
+  <div class="page-title">
+    <h1>
+      <span class="small">
+        <%= @guide.slug %>
+      </span>
+      <%= @edition.title %>
+    </h1>
+  </div>
+  <p class="subtitle">
+    <%= state_label(@guide) %>
+  </p>
+</header>
+
+<p class="row">
+  <pre class="col-md-8">
+    <%= @edition.body %>
+  </pre>
+</p>
+
+<p class="row">
+  <%= render 'editions/comments', edition: @edition, comments: @comments %>
+</p>

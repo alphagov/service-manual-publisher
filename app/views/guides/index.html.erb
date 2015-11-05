@@ -13,7 +13,7 @@
     <% @guides.each do |guide| %>
       <tr>
         <td>
-          <%= guide.latest_edition.title %>
+          <%= link_to guide.latest_edition.title, guide.latest_edition %>
           <span class='text-muted'><%= guide.slug %></span>
         </td>
         <td class='last-edited-by'>

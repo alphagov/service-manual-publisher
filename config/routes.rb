@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     resources :drafts
   end
 
-  resources :editions, only: [] do
+  resources :editions, only: [:show] do
     resources :review_requests
   end
 

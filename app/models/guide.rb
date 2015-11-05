@@ -19,6 +19,10 @@ class Guide < ActiveRecord::Base
     latest_edition.try(:published?) == false
   end
 
+  def comments_for_rendering
+    latest_edition.comments.for_rendering
+  end
+
   def can_request_review?
     return false if latest_edition.nil?
     return false if !latest_edition.persisted?
