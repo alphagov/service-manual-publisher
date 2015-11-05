@@ -64,7 +64,7 @@ RSpec.describe "creating guides", type: :feature do
 
     expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice
     expect(api_double).to receive(:put_content)
-                            .twice
+                            .once
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:publish)
                             .once
@@ -76,15 +76,15 @@ RSpec.describe "creating guides", type: :feature do
     click_button "Send for review"
 
     login_as(User.new(name: "Reviewer")) do
-      visit edit_guide_path(guide)
+      visit edition_path(guide.latest_edition)
       click_button "Mark as Approved"
     end
 
-    visit edit_guide_path(guide)
+    visit edition_path(guide.latest_edition)
     click_button "Publish"
 
     within ".alert" do
-      expect(page).to have_content('updated')
+      expect(page).to have_content('published')
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
@@ -130,7 +130,7 @@ RSpec.describe "creating guides", type: :feature do
         edition = Generators.valid_edition(title: "something")
         guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
 
-        expect_any_instance_of(GuidePublisher).to receive(:process).once.and_raise(api_error)
+        expect_any_instance_of(GuidePublisher).to receive(:put_draft).once.and_raise(api_error)
 
         visit edit_guide_path(guide)
         click_button "Save Draft"
@@ -144,7 +144,7 @@ RSpec.describe "creating guides", type: :feature do
         edition = Generators.valid_edition(title: "Original Title")
         guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
 
-        expect_any_instance_of(GuidePublisher).to receive(:process).once.and_raise(api_error)
+        expect_any_instance_of(GuidePublisher).to receive(:put_draft).once.and_raise(api_error)
 
         visit edit_guide_path(guide)
         fill_in "Title", with: "Changed Title"

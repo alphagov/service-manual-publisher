@@ -77,9 +77,6 @@
         <div class='form-group'>
           <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft, data: disable_if_new_record(guide) %>
           <%= f.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
-          <% if guide.latest_edition.present? && guide.latest_edition.approved? %>
-            <%= f.submit "Publish", class: 'btn btn-success', name: :publish %>
-          <% end %>
         </div>
       </fieldset>
     <% end %>
@@ -90,14 +87,4 @@
       <%= f.submit "Send for review", class: 'btn btn-success' %>
     <% end %>
   <% end %>
-  <% if guide.can_mark_as_approved? %>
-    <%= form_for Approval.new do |f| %>
-      <fieldset class='meta'>
-        <legend>Approve</legend>
-        <%= f.hidden_field :edition_id, value: guide.latest_edition.id %>
-        <%= f.submit "Mark as Approved", class: 'btn btn-success' %>
-      </fieldset>
-    <% end %>
-  <% end %>
-
 </div>

@@ -1,3 +1,16 @@
 <%= render 'editions/header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
-<%= render 'form', guide: @guide%>
-<%= render 'editions/comments', edition: @guide.latest_edition, comments: @comments %>
+
+<% if @guide.latest_edition.published? %>
+  <div class="alert alert-info">
+    Looks like the latest draft of this guide has been published
+  </div>
+  <%= form_for :drafts, url: guide_drafts_path(guide_id: @guide.id) do |f| %>
+    <%= f.submit "Create new edition", class: 'btn btn-default' %>
+  <% end %>
+<% else %>
+  <%= render 'form', guide: @guide%>
+
+  <%= render 'editions/comments', edition: @guide.latest_edition, comments: @comments %>
+<% end %>
+
+

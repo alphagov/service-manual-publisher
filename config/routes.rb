@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :guides do
     resources :editions, only: :index
     resources :drafts
+    resources :publications, only: :create
   end
 
   resources :editions, only: [:show] do
@@ -14,7 +15,6 @@ Rails.application.routes.draw do
   end
 
   resources :approvals
-
   resources :comments
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -4,7 +4,7 @@ require 'capybara/rails'
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
 
   before do
-    allow_any_instance_of(GuidePublisher).to receive(:process)
+    allow_any_instance_of(GuidePublisher).to receive(:put_draft)
   end
 
   context "latest edition is published" do
@@ -13,7 +13,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       publisher_double = double(:publisher)
       expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
-      expect(publisher_double).to receive(:process)
+      expect(publisher_double).to receive(:put_draft)
 
       visit guides_path
       click_button "Create new edition"
@@ -47,7 +47,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(Guide.count).to eq 1
       expect(Edition.count).to eq 1
 
-      expect_any_instance_of(GuidePublisher).to receive(:process).and_raise api_error
+      expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
       visit guides_path
       click_button "Create new edition"
@@ -59,7 +59,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     it "shows api errors" do
       guide = given_a_published_guide_exists
 
-      expect_any_instance_of(GuidePublisher).to receive(:process).and_raise api_error
+      expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
       visit guides_path
       click_button "Create new edition"
@@ -99,7 +99,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     visit edit_guide_path(guide)
     fill_in "Title", with: "Changed Title"
 
-    expect_any_instance_of(GuidePublisher).to receive(:process)
+    expect_any_instance_of(GuidePublisher).to receive(:put_draft)
 
     expect_external_redirect_to "http://government-frontend.dev.gov.uk/service-manual/preview-test" do
       click_button "Save Draft and Preview"
@@ -121,13 +121,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "approved by another user" do
       it "lists editions that are approved" do
-        edition = Generators.valid_edition(state: "review_requested")
+        edition = Generators.valid_edition(state: "review_requested", title: "Standups")
         guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
         reviewer = User.new(name: "Some User")
         login_as reviewer
         visit guides_path
-        click_link "Continue editing"
+        click_link "Standups"
         click_button "Mark as Approved"
         expect(page).to have_content "Thanks for approving this guide"
         expect(page).to have_content "Approved"
