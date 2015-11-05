@@ -5,4 +5,10 @@ class ApplicationController < ActionController::Base
 
   include GDS::SSO::ControllerMethods
   before_filter :authenticate_user!
+
+  def guide_preview_url(guide)
+    frontend_host = Rails.env.production? ? Plek.find('draft-origin') : Plek.find('government-frontend')
+    [frontend_host, guide.slug].join
+  end
+  helper_method :guide_preview_url
 end

@@ -58,8 +58,7 @@ private
 
   def success_url(guide)
     if params[:save_draft_and_preview]
-      frontend_host = Rails.env.production? ? Plek.find('draft-origin') : Plek.find('government-frontend')
-      [frontend_host, guide.slug].join
+      guide_preview_url(guide)
     elsif request.referrer.present? && request.referrer != request.url
       request.referrer
     else
