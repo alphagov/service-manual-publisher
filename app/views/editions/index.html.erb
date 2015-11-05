@@ -1,8 +1,4 @@
-<h1>Change History: <%= @guide.editions.first.title %></h1>
-
-<p>
-  <%= link_to "New draft" , edit_guide_path(@guide), class: 'btn btn-primary' %>
-</p>
+<%= render 'header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
 
 <table class='table table-bordered'>
   <thead>

@@ -1,5 +1,3 @@
+<%= render 'editions/header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
 <%= render 'form', guide: @guide%>
-
 <%= render 'editions/comments', edition: @guide.latest_edition, comments: @comments %>
-
-

@@ -1,0 +1,21 @@
+<header>
+  <div class="page-title">
+    <h1>
+      <span class="small">
+        <%= guide.slug %>
+      </span>
+      <%= edition.title %>
+    </h1>
+  </div>
+  <p class="subtitle">
+    <%= state_label(guide) %>
+  </p>
+</header>
+
+<p>
+  <ul class="nav nav-tabs">
+    <%= active_link_to 'Show', edition_path(edition), wrap_tag: :li %>
+    <%= active_link_to "Edit", edit_guide_path(guide), wrap_tag: :li %>
+    <%= active_link_to 'History', guide_editions_path(guide), wrap_tag: :li %>
+  </ul>
+</p>
