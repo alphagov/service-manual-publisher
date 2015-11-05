@@ -8,14 +8,24 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   context "latest edition is published" do
-    it "should create a new draft edition if the latest edition is published" do
-      guide = given_a_published_guide_exists title: "Standups"
+    let(:guide){ given_a_published_guide_exists title: "Standups" }
 
+    before do
       publisher_double = double(:publisher)
       expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
-      expect(publisher_double).to receive(:put_draft)
+      expect(publisher_double).to receive(:put_draft).once
+    end
 
+    it "should create a new draft edition when navigating from the index page" do
       visit guides_path
+      click_button "Create new edition"
+      the_form_should_be_prepopulated_with_title "Standups"
+      expect(guide.editions.published.size).to eq 1
+      expect(guide.editions.draft.size).to eq 1
+    end
+
+    it "should create a new draft edition when navigating from an edition show page" do
+      visit edition_path(guide.latest_edition)
       click_button "Create new edition"
       the_form_should_be_prepopulated_with_title "Standups"
       expect(guide.editions.published.size).to eq 1
