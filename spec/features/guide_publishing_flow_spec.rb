@@ -47,7 +47,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
-  context "when guide publishing raises an exception" do
+  context "when publishing-api raises an exception" do
     let :api_error do
       GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
     end
@@ -66,7 +66,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(Edition.count).to eq 1
     end
 
-    it "shows api errors" do
+    it "shows api errors in the UI" do
       guide = given_a_published_guide_exists
 
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
@@ -76,6 +76,23 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       within ".alert" do
         expect(page).to have_content('Error message stub')
+      end
+    end
+
+    it "shows the correct state of the guide if publishing fails" do
+      guide = given_a_guide_exists(state: 'approved')
+
+      visit edition_path(guide.latest_edition)
+      expect_any_instance_of(GuidePublisher).to receive(:publish).and_raise api_error
+
+      click_button "Publish"
+
+      within ".alert" do
+        expect(page).to have_content('Error message stub')
+      end
+
+      within ".label" do
+        expect(page).to have_content('Approved')
       end
     end
   end

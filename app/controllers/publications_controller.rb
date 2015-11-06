@@ -9,6 +9,7 @@ class PublicationsController < ApplicationController
 
   rescue GdsApi::HTTPClientError => e
     flash[:error] = e.error_details["error"]["message"]
+    @guide = @guide.reload
     @edition = @guide.latest_edition
     @comments = @edition.comments.for_rendering
     render template: 'editions/show'
