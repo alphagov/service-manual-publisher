@@ -43,6 +43,12 @@ class Edition < ActiveRecord::Base
     state == 'approved'
   end
 
+  def can_be_published?
+    return false if published?
+    return false if self != guide.latest_edition
+    approved?
+  end
+
 private
 
   def assign_publisher_href

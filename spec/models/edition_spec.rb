@@ -41,4 +41,32 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:change_note).size).to eq 0
     end
   end
+
+    describe "#can_be_published?" do
+      before do
+        guide.save!
+      end
+
+      it "returns false if it's already published" do
+        edition.state = "published"
+        expect(edition.can_be_published?).to be false
+      end
+
+      it "returns false if it's not approved" do
+        edition.state = "review_requested"
+        expect(edition.can_be_published?).to be false
+      end
+
+      it "returns false if it's not the latest edition of a guide" do
+        edition.state = "approved"
+        guide.editions << edition.dup
+        expect(edition.can_be_published?).to be false
+      end
+
+      it "returns true if it's the latest edition and is approved" do
+        edition.state = "approved"
+        expect(edition.can_be_published?).to be true
+      end
+    end
+  end
 end

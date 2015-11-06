@@ -57,7 +57,7 @@
       <%= link_to "Preview", guide_preview_url(@guide), class: 'btn btn-primary' %>
     </p>
 
-    <% if @guide.latest_edition.present? && @guide.latest_edition.approved? %>
+    <% if @edition.can_be_published? %>
       <%= form_for :publication, url: guide_publications_path(guide_id: @guide.id) do |f| %>
         <%= f.submit "Publish Guide", class: 'btn btn-success', name: :publish %>
       <% end %>

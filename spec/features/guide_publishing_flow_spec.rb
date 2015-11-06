@@ -196,6 +196,27 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
+  describe "guide edition history" do
+    it "allows seeing previous editions of a guide, but not change them" do
+      guide = given_a_published_guide_exists(title: "First Edition")
+      guide.latest_edition.dup.update_attributes(title: "Current Draft Edition", state: 'draft')
+
+      expect(guide.editions.size).to eq 2
+
+      visit guides_path
+      click_link "Current Draft Edition"
+      click_link "History"
+      within("table tbody") do
+        expect(page.find_all("tr").size).to eq 2
+        page.find_all("tr a").last.click
+      end
+
+      expect(page).to have_content "First Edition"
+      expect(page).to_not have_button "Publish Guide"
+      expect(page).to_not have_button "Send for review"
+    end
+  end
+
 private
 
   def given_a_guide_exists(attributes = {})
