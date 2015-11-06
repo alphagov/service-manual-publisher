@@ -31,6 +31,27 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(guide.editions.published.size).to eq 1
       expect(guide.editions.draft.size).to eq 1
     end
+
+  end
+
+  it "should prevent editing the latest edition if someone has published it in the meantime" do
+    guide = given_a_guide_exists title: "Agile development"
+    visit guides_path
+    click_link "Continue editing"
+
+    guide.latest_edition.update_attributes(state: 'published')
+
+    fill_in "Title", with: "Agile"
+
+    expect_any_instance_of(GuidePublisher).to_not receive(:put_draft)
+    expect_any_instance_of(GuidePublisher).to_not receive(:publish)
+
+    click_button "Save Draft"
+
+    expect(guide.editions.map(&:title)).to match_array ["Agile development"]
+    within ".alert" do
+      expect(page).to have_content "the latest draft of this guide has been published"
+    end
   end
 
   context "latest edition is not published" do
