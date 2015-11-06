@@ -43,6 +43,18 @@ class Edition < ActiveRecord::Base
     state == 'approved'
   end
 
+  def can_request_review?
+    return false if !persisted?
+    return false if review_requested?
+    return false if published?
+    return false if approved?
+    true
+  end
+
+  def can_be_approved?
+    persisted? && review_requested?
+  end
+
   def can_be_published?
     return false if published?
     return false if self != guide.latest_edition

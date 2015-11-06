@@ -63,17 +63,17 @@
       <% end %>
     <% end %>
 
-    <% if @guide.can_request_review? %>
-      <%= form_for :review_request, url: edition_review_requests_path(edition_id: @guide.latest_edition.id) do |f| %>
+    <% if @edition.can_request_review? %>
+      <%= form_for :review_request, url: edition_review_requests_path(edition_id: @edition.id) do |f| %>
         <%= f.submit "Send for review", class: 'btn btn-primary' %>
       <% end %>
     <% end %>
 
-    <% if @guide.can_mark_as_approved? %>
+    <% if @edition.can_be_approved? %>
       <%= form_for Approval.new do |f| %>
         <fieldset class='meta'>
           <legend>Approve</legend>
-          <%= f.hidden_field :edition_id, value: @guide.latest_edition.id %>
+          <%= f.hidden_field :edition_id, value: @edition.id %>
           <%= f.submit "Mark as Approved", class: 'btn btn-primary' %>
         </fieldset>
       <% end %>

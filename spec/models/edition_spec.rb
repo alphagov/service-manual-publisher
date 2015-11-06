@@ -42,6 +42,56 @@ RSpec.describe Edition, type: :model do
     end
   end
 
+  context "review and approval" do
+    let :edition do
+      edition = Generators.valid_edition
+      allow(edition).to receive(:persisted?) { true }
+      edition
+    end
+
+    let :guide do
+      Guide.new(slug: "/service-manual/something", latest_edition: edition)
+    end
+
+    describe "#can_be_approved?" do
+      it "returns true when a review has been requested" do
+        edition.state = "review_requested"
+        edition.save!
+        expect(edition.can_be_approved?).to be true
+      end
+
+      it "returns false when latest_edition has not been saved" do
+        allow(edition).to receive(:persisted?) { false }
+        expect(edition.can_be_approved?).to be false
+      end
+    end
+
+    describe "#can_request_review?" do
+      it "returns true when a review can be requested" do
+        expect(edition.can_request_review?).to be true
+      end
+
+      it "returns false when latest_edition has not been saved" do
+        allow(edition).to receive(:persisted?) { false }
+        expect(edition.can_request_review?).to be false
+      end
+
+      it "returns false when a review has been requested" do
+        edition.state = "review_requested"
+        expect(edition.can_request_review?).to be false
+      end
+
+      it "returns false when a review has been published" do
+        edition.state = "published"
+        expect(edition.can_request_review?).to be false
+      end
+
+      it "returns false when a review has been approved" do
+        edition.state = "approved"
+        expect(edition.can_request_review?).to be false
+      end
+    end
+
     describe "#can_be_published?" do
       before do
         guide.save!
