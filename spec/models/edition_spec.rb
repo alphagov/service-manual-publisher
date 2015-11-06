@@ -28,5 +28,17 @@ RSpec.describe Edition, type: :model do
       edition.valid?
       expect(edition.errors.full_messages_for(:state).size).to eq 1
     end
+
+    it "does not allow empty change_note when the update_type is 'major'" do
+      edition = Generators.valid_edition(update_type: "major", change_note: "")
+      edition.valid?
+      expect(edition.errors.full_messages_for(:change_note)).to eq ["Change note can't be blank"]
+    end
+
+    it "allows empty change_note when the update_type is 'minor'" do
+      edition = Generators.valid_edition(update_type: "minor", change_note: "")
+      edition.valid?
+      expect(edition.errors.full_messages_for(:change_note).size).to eq 0
+    end
   end
 end

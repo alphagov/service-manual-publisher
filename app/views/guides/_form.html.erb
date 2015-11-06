@@ -5,16 +5,18 @@
 
 <div class='well'>
   <%= form_for guide do |f| %>
-    <fieldset class='meta'>
-      <legend>Meta</legend>
+    <fieldset class='guide'>
+      <legend>Guide</legend>
       <div class='form-group'>
         <%= f.label :slug  %>
         <%= f.error_list :slug  %>
         <%= f.text_field :slug, class: 'input-md-12 form-control' %>
       </div>
+    </fieldset>
 
-      <%= f.fields_for :latest_edition do |editions_form| %>
-
+    <%= f.fields_for :editions, guide.latest_edition do |editions_form| %>
+      <fieldset class='meta'>
+        <legend>Meta</legend>
         <div class='form-group'>
           <%= editions_form.label :related_discussion_title %>
           <%= editions_form.error_list :related_discussion_title %>
@@ -44,12 +46,11 @@
           <%= editions_form.error_list :description %>
           <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
         </div>
-      <% end %>
-    </fieldset>
+
+      </fieldset>
 
     <fieldset class='inputs'>
       <legend>Content</legend>
-      <%= f.fields_for :latest_edition do |editions_form| %>
         <div class="form-group">
           <%= editions_form.label :title %>
           <%= editions_form.error_list :title %>
@@ -60,28 +61,33 @@
           <%= editions_form.error_list :body %>
           <%= editions_form.text_area :body, class: 'input-md-12 form-control', rows: 14 %>
         </div>
-      <% end %>
-
     </fieldset>
+
 
     <fieldset class='update'>
+      <legend>Content</legend>
       <div class='form-group'>
-        <%= f.fields_for :latest_edition do |editions_form| %>
-          <div class='form-group'>
-            <%= editions_form.label :update_type %>
-            <%= editions_form.error_list :update_type %>
-            <%= editions_form.select :update_type, [["Major", "major"], ["Minor", "minor"], ["Republish", "republish"]], include_blank: true, class: 'input-md-12 form-control' %>
-          </div>
-        <% end %>
+        <%= editions_form.label :update_type %>
+        <%= editions_form.error_list :update_type %>
+        <%= editions_form.select :update_type, [["Major", "major"], ["Minor", "minor"]], {}, {class: 'update-type-select input-md-12 form-control'} %>
       </div>
-      <div class='form-group'>
-        <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft, data: disable_if_new_record(guide) %>
-        <%= f.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
-        <% if guide.latest_edition.present? && guide.latest_edition.approved? %>
-          <%= f.submit "Publish", class: 'btn btn-success', name: :publish %>
-        <% end %>
+      <div class="form-group change-note-form-group">
+        <%= editions_form.label :change_note %>
+        <%= editions_form.text_area :change_note, class: 'input-md-12 form-control', rows: 5 %>
       </div>
     </fieldset>
+
+      <fieldset class='publication'>
+        <legend>Publication</legend>
+        <div class='form-group'>
+          <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft, data: disable_if_new_record(guide) %>
+          <%= f.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
+          <% if guide.latest_edition.present? && guide.latest_edition.approved? %>
+            <%= f.submit "Publish", class: 'btn btn-success', name: :publish %>
+          <% end %>
+        </div>
+      </fieldset>
+    <% end %>
   <% end %>
 
   <% if guide.can_request_review? %>
