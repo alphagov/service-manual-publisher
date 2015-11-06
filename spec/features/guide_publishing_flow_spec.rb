@@ -212,6 +212,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
 
       expect(page).to have_content "First Edition"
+      within ".alert-info" do
+        expect(page).to have_content "You're looking at a past edition of this guide"
+      end
       expect(page).to_not have_button "Publish Guide"
       expect(page).to_not have_button "Send for review"
     end

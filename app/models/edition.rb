@@ -57,8 +57,12 @@ class Edition < ActiveRecord::Base
 
   def can_be_published?
     return false if published?
-    return false if self != guide.latest_edition
+    return false if !latest_edition?
     approved?
+  end
+
+  def latest_edition?
+    self == guide.latest_edition
   end
 
 private
