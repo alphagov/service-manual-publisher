@@ -21,7 +21,7 @@ class GuidesController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @guide.save
-        GuidePublisher.new(guide: @guide).process
+        GuidePublisher.new(guide: @guide).put_draft
         redirect_to success_url(@guide), notice: "Guide has been created"
       else
         render action: :new
@@ -34,21 +34,23 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
-    @comments = comments_list(@guide)
-    @new_comment = @guide.latest_edition.comments.build
+    @comments = @guide.comments_for_rendering
   end
 
   def update
     @guide = Guide.find(params[:id])
-    @comments = comments_list(@guide)
-    @new_comment = @guide.latest_edition.comments.build
+    @comments = @guide.comments_for_rendering
 
-    ActiveRecord::Base.transaction do
-      if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: edition_state_from_params, user_id: current_user.id}}))
-        GuidePublisher.new(guide: @guide).process
-        redirect_to success_url(@guide), notice: "Guide has been updated"
-      else
-        render action: :edit
+    if @guide.latest_edition.published?
+      render action: :edit
+    else
+      ActiveRecord::Base.transaction do
+        if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: 'draft', user_id: current_user.id}}))
+          GuidePublisher.new(guide: @guide).put_draft
+          redirect_to success_url(@guide), notice: "Guide has been updated"
+        else
+          render action: :edit
+        end
       end
     end
   rescue GdsApi::HTTPClientError => e
@@ -60,8 +62,7 @@ private
 
   def success_url(guide)
     if params[:save_draft_and_preview]
-      frontend_host = Rails.env.production? ? Plek.find('draft-origin') : Plek.find('government-frontend')
-      [frontend_host, guide.slug].join
+      guide_preview_url(guide)
     elsif request.referrer.present? && request.referrer != request.url
       request.referrer
     else
@@ -75,7 +76,7 @@ private
       .includes(:user)
   end
 
-  def guide_params(with={})
+  def guide_params(with = {})
     params
       .require(:guide)
       .permit(:slug, editions_attributes: [
@@ -90,13 +91,5 @@ private
         :update_type,
         :change_note,
       ]).deep_merge(with)
-  end
-
-  def edition_state_from_params
-    if params[:publish]
-      'published'
-    else
-      'draft'
-    end
   end
 end

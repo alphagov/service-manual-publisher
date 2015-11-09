@@ -1,32 +1,16 @@
-<%= render 'form', guide: @guide%>
+<%= render 'editions/header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
 
-<div class='well comments'>
-  <fieldset class='meta'>
-    <legend>Comments</legend>
+<% if @guide.latest_edition.published? %>
+  <div class="alert alert-info">
+    Looks like the latest draft of this guide has been published
+  </div>
+  <%= form_for :drafts, url: guide_drafts_path(guide_id: @guide.id) do |f| %>
+    <%= f.submit "Create new edition", class: 'btn btn-default' %>
+  <% end %>
+<% else %>
+  <%= render 'form', guide: @guide%>
 
-    <% @comments.each do |comment| %>
-      <div class="comment panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <%= comment.user.name %>
-          </h3>
-        </div>
-        <div class="panel-body">
-          <%= comment.comment %>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'editions/comments', edition: @guide.latest_edition, comments: @comments %>
+<% end %>
 
-    <%= form_for @new_comment do |f| %>
-      <%= f.hidden_field :edition_id, value: @guide.latest_edition.id %>
 
-      <div class='form-group'>
-        <%= f.label :comment %>
-        <%= f.text_area :comment, class: "form-control", rows: 3 %>
-      </div>
-      <div class='form-group'>
-        <%= f.submit "Comment", class: "btn btn-success" %>
-      </div>
-    <% end %>
-  </fieldset>
-</div>

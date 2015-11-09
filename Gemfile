@@ -15,6 +15,7 @@ gem 'gds-api-adapters', '~> 24.6.0'
 gem 'govspeak', '~> 3.4.0'
 gem 'kaminari', '~> 0.16.3'
 gem 'acts_as_commentable', '~> 4.0.2'
+gem 'active_link_to', '~> 1.0.3'
 
 group :development do
   gem 'better_errors'

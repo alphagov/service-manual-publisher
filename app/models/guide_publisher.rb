@@ -5,19 +5,22 @@ class GuidePublisher
     @guide = guide
   end
 
-  def process
-    publishing_api = GdsApi::PublishingApiV2.new(Plek.new.find('publishing-api'))
-
-    if @guide.persisted?
-      @guide.reload
-    end
-    latest_edition = @guide.latest_edition
-
+  def put_draft
     data = GuidePresenter.new(@guide, latest_edition).exportable_attributes
     publishing_api.put_content(@guide.content_id, data)
+  end
 
-    if latest_edition.published?
-      publishing_api.publish(@guide.content_id, latest_edition.update_type)
-    end
+  def publish
+    publishing_api.publish(@guide.content_id, latest_edition.update_type)
+  end
+
+private
+
+  def latest_edition
+    @guide.latest_edition
+  end
+
+  def publishing_api
+    GdsApi::PublishingApiV2.new(Plek.new.find('publishing-api'))
   end
 end

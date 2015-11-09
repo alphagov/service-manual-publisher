@@ -1,12 +1,9 @@
-<h1>Change History: <%= @guide.editions.first.title %></h1>
-
-<p>
-  <%= link_to "New draft" , edit_guide_path(@guide), class: 'btn btn-primary' %>
-</p>
+<%= render 'header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
 
 <table class='table table-bordered'>
   <thead>
     <tr class='table-header'>
+      <th></th>
       <th>Updated by</th>
       <th>State</th>
       <th>Updated at</th>
@@ -15,6 +12,9 @@
   <tbody>
     <% @editions.each do |edition| %>
       <tr>
+        <td>
+          <%= link_to "See edition", edition %>
+        </td>
         <td>
           <%= edition.user.name %>
         </td>

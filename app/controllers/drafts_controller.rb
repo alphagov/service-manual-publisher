@@ -11,7 +11,7 @@ class DraftsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       guide.editions << duplicated_edition
-      GuidePublisher.new(guide: guide).process
+      GuidePublisher.new(guide: guide).put_draft
       redirect_to edit_guide_path(guide)
     end
   rescue GdsApi::HTTPClientError => e

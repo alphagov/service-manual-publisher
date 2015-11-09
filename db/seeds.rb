@@ -43,13 +43,17 @@ if Rails.env.development?
         state:           state.present? ? state : "draft",
         phase:           "beta",
         description:     "Description",
-        update_type:     "major",
+        update_type:     "minor",
         body:            body,
         publisher_title: Edition::PUBLISHERS.keys.first,
         user:            author
       )
       guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
-      GuidePublisher.new(guide: guide).process
+
+      GuidePublisher.new(guide: guide).put_draft
+      if state == "published"
+        GuidePublisher.new(guide: guide).publish
+      end
     end
   end
 end

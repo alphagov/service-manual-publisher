@@ -5,4 +5,9 @@ class ApplicationController < ActionController::Base
 
   include GDS::SSO::ControllerMethods
   before_filter :authenticate_user!
+
+  def guide_preview_url(guide)
+    [Plek.find('draft-origin'), guide.slug].join('')
+  end
+  helper_method :guide_preview_url
 end

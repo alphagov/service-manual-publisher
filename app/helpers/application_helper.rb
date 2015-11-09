@@ -14,4 +14,10 @@ module ApplicationHelper
       {}
     end
   end
+
+  def css_class_if_current(path, class_name)
+    if current_page?(path)
+      class_name
+    end
+  end
 end
