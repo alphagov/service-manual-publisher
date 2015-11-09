@@ -1,0 +1,19 @@
+<div class="migrations">
+  <table class="table table-bordered">
+    <thead>
+      <th></th>
+      <th>Slug</th>
+      <th>Completed</th>
+    </thead>
+
+    <tbody>
+      <% @migrations.each do |migration| %>
+        <tr>
+          <td></td>
+          <td><%= migration.slug %></td>
+          <td><%= migration.completed %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

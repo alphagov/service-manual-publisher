@@ -22,4 +22,8 @@
   <%= yield %>
 <% end %>
 
+<% content_for :navbar_items do %>
+  <li><%= link_to "Manage Migrations", slug_migrations_path %></li>
+<% end %>
+
 <%= render template: 'layouts/govuk_admin_template' %>
