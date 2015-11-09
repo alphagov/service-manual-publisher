@@ -64,6 +64,15 @@ ActiveRecord::Schema.define(version: 20151112133846) do
     t.datetime "updated_at"
   end
 
+  create_table "slug_migrations", force: :cascade do |t|
+    t.string   "slug"
+    t.boolean  "completed",  default: false, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "slug_migrations", ["slug"], name: "index_slug_migrations_on_slug", unique: true, using: :btree
+
   create_table "users", force: :cascade do |t|
     t.text     "uid"
     t.text     "name"
