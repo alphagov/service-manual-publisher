@@ -64,3 +64,9 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
     end
   end
 end
+
+if Rails.env.development?
+  1.upto(10) do |i|
+    SlugMigration.create!(slug: "/service-manual/slug-#{i}")
+  end
+end
