@@ -149,7 +149,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     expect_any_instance_of(GuidePublisher).to receive(:put_draft)
 
-    expect_external_redirect_to "http://government-frontend.dev.gov.uk/service-manual/preview-test" do
+    expect_external_redirect_to "http://draft-origin.dev.gov.uk/service-manual/preview-test" do
       click_button "Save Draft and Preview"
     end
 
