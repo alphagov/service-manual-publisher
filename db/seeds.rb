@@ -1,12 +1,14 @@
 if Rails.env.development?
-  unless Dir.exist?("../government-service-design-manual")
+  directory = File.join(Dir.mktmpdir("government-service-design-manual"), "git")
+  unless Dir.exist?(directory)
     print "Cloning repository..."
-    sh "cd ../ && git clone https://github.com/alphagov/government-service-design-manual"
+    sh "git clone https://github.com/alphagov/government-service-design-manual #{directory}"
     puts " [done]"
   end
-  objects = Dir.glob("../government-service-design-manual/service-manual/**/*.md")
+
+  objects = Dir.glob("#{directory}/service-manual/**/*.md")
   .map do |path|
-    url = path.gsub("../government-service-design-manual", "")
+    url = path.gsub(directory, "")
     url = url.gsub(".md", "")
     url = url.gsub(/\/index$/, '')
     {
