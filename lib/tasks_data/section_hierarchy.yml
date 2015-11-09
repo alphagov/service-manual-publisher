@@ -9,7 +9,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:08:52+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:08:52+00:00'
   :details:
     :link_groups:
@@ -78,7 +78,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:08:55+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:08:55+00:00'
   :details:
     :link_groups: []
@@ -96,7 +96,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:08:55+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:08:55+00:00'
   :details:
     :link_groups: []
@@ -115,7 +115,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:08:55+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:08:55+00:00'
   :details:
     :link_groups: []
@@ -134,7 +134,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:08:55+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:08:55+00:00'
   :details:
     :link_groups:
@@ -183,7 +183,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:08:57+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:08:57+00:00'
   :details:
     :link_groups:
@@ -244,7 +244,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:09:00+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:09:00+00:00'
   :details:
     :link_groups: []
@@ -263,7 +263,7 @@
   :rendering_app: government-frontend
   :need_ids: []
   :locale: en
-  :updated_at: '2015-11-04T12:09:00+00:00'
+  :update_type: 'minor'
   :public_updated_at: '2015-11-04T12:09:00+00:00'
   :details:
     :link_groups:
