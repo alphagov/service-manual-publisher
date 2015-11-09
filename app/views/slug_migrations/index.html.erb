@@ -1,3 +1,8 @@
+<ul class="slug-filters">
+  <%= active_link_to 'Filter by completed', slug_migrations_path(completed: true), wrap_tag: :li %>
+  <%= active_link_to 'Filter by incompleted', slug_migrations_path(completed: false), wrap_tag: :li %>
+</ul>
+
 <div class="migrations">
   <table class="table table-bordered">
     <thead>
