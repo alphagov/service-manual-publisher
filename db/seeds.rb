@@ -1,4 +1,4 @@
-if Rails.env.development?
+if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
   directory = File.join(Dir.mktmpdir("government-service-design-manual"), "git")
   unless Dir.exist?(directory)
     print "Cloning repository..."
