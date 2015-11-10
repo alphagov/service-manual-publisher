@@ -2,8 +2,9 @@ class SlugMigration < ActiveRecord::Base
   belongs_to :guide
 
   validates :slug, uniqueness: true
-  validate :guide, :guide_must_be_nil_or_published
-  validate :guide, :guide_cant_be_empty_when_migrating
+  validate :guide_must_be_nil_or_published
+  validate :guide_cant_be_empty_when_migrating
+  validate :is_not_already_completed
 
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
@@ -18,6 +19,12 @@ class SlugMigration < ActiveRecord::Base
   def guide_cant_be_empty_when_migrating
     if completed? && guide.nil?
       errors.add(:guide, "must not be blank")
+    end
+  end
+
+  def is_not_already_completed
+    if completed_was
+      errors.add(:base, "must not already be completed")
     end
   end
 end

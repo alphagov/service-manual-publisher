@@ -40,4 +40,12 @@ RSpec.describe SlugMigration, type: :model do
     expect(migration.valid?).to eq false
     expect(migration.errors.full_messages_for(:guide).size).to eq 1
   end
+
+  it "does not allow saving if it is already marked as completed" do
+    edition = Generators.valid_published_edition
+    guide = Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+    migration = SlugMigration.create!(slug: "/something", guide: guide, completed: true)
+    expect(migration.valid?).to eq false
+    expect(migration.errors.full_messages_for(:base).size).to eq 1
+  end
 end
