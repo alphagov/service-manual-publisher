@@ -43,7 +43,7 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       edition = Edition.new(
         title:           title,
         state:           state.present? ? state : "draft",
-        phase:           "beta",
+        phase:           "alpha",
         description:     "Description",
         update_type:     "minor",
         body:            body,
