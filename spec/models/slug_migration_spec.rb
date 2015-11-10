@@ -27,4 +27,10 @@ RSpec.describe SlugMigration, type: :model do
     migration = SlugMigration.new(slug: "/something", guide: nil)
     expect(migration.valid?).to eq true
   end
+
+  it "does not allow empty guides when migrating" do
+    migration = SlugMigration.new(slug: "/something", guide: nil, completed: true)
+    expect(migration.valid?).to eq false
+    expect(migration.errors.full_messages_for(:guide).size).to eq 1
+  end
 end

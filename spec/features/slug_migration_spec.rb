@@ -45,8 +45,11 @@ RSpec.describe "Slug migration", type: :feature do
       @incompleted = (1..2).map do |i|
         SlugMigration.create!(completed: false, slug: "/old/bar#{i}")
       end
+
+      edition = Generators.valid_published_edition
+      guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
       @complete = (1..2).map do |i|
-        SlugMigration.create!(completed: true, slug: "/old/foo#{i}")
+        SlugMigration.create!(completed: true, slug: "/old/foo#{i}", guide: guide)
       end
 
       manage_migrations
@@ -99,5 +102,13 @@ RSpec.describe "Slug migration", type: :feature do
     ]
   end
 
-  it "can migrate an old url to a new url"
+  it "can not migrate an old slug to a new slug without a guide" do
+    SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+    manage_first_migration
+    click_button "Save and Migrate"
+    expect(page).to have_content "must not be blank"
+  end
+
+  it "does not allow editing of completed slug migrations"
+  it "is not completed if the slug redirect fails"
 end
