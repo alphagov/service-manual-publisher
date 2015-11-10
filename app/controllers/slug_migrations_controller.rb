@@ -20,7 +20,12 @@ class SlugMigrationsController < ApplicationController
     slug_migration.guide = guide
     slug_migration.completed = params[:save_and_migrate].present?
     if slug_migration.save
-      redirect_to edit_slug_migration_path(slug_migration), notice: "Slug Migration has been updated"
+      if slug_migration.completed?
+        SlugMigrationPublisher.new.process(slug_migration)
+        redirect_to slug_migration_path(slug_migration), notice: "Slug Migration has been completed"
+      else
+        redirect_to edit_slug_migration_path(slug_migration), notice: "Slug Migration has been saved"
+      end
     else
       @slug_migration = slug_migration
       @select_options = Guide.joins(:editions).where(editions: { state: "published" })
@@ -30,4 +35,7 @@ class SlugMigrationsController < ApplicationController
     end
   end
 
+  def show
+    @slug_migration = SlugMigration.find(params[:id])
+  end
 end

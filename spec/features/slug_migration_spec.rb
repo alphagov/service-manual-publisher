@@ -81,7 +81,7 @@ RSpec.describe "Slug migration", type: :feature do
     select "/service-manual/new-path", from: "Guide"
     click_button "Save"
 
-    expect(page).to have_content "Slug Migration has been updated"
+    expect(page).to have_content "Slug Migration has been saved"
     selected_text = find(:css, "#slug_migration_guide option[selected]").text
     expect(selected_text).to eq "/service-manual/new-path"
   end
@@ -107,6 +107,23 @@ RSpec.describe "Slug migration", type: :feature do
     manage_first_migration
     click_button "Save and Migrate"
     expect(page).to have_content "must not be blank"
+  end
+
+  it "migrates an old url to a new url" do
+    edition = Generators.valid_published_edition
+    Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+    slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+
+    manage_first_migration
+    select "/service-manual/new-path", from: "Guide"
+
+    click_button "Save and Migrate"
+
+    expect(page).to have_content "Slug Migration has been completed"
+    expect(slug_migration.reload.completed).to eq true
+    expect(page.current_path).to eq slug_migration_path(slug_migration)
   end
 
   it "does not allow editing of completed slug migrations"

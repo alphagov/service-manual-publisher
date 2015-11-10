@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe SlugMigration, type: :model do
+  describe "on create callbacks" do
+    it "generates and sets content_id on create" do
+      slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+      expect(slug_migration.content_id).to be_present
+    end
+  end
+
   it "is not completed by default" do
     migration = SlugMigration.create(slug: "/some/slug")
     expect(migration.completed).to eq false

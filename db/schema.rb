@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 20151112133846) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.integer  "guide_id"
+    t.string   "content_id",                 null: false
   end
 
   add_index "slug_migrations", ["slug"], name: "index_slug_migrations_on_slug", unique: true, using: :btree
