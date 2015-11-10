@@ -25,6 +25,7 @@ namespace :hierarchy_spike do
     with_payload(file_name) do |payload|
       validate_against_schema(payload)
       publishing_api.put_content(payload[:content_id], payload)
+      publishing_api.put_links(payload[:content_id], payload) if payload[:links].present?
       publishing_api.publish(payload[:content_id], 'minor')
     end
   end
