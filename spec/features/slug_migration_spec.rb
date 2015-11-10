@@ -8,7 +8,7 @@ RSpec.describe "Slug migration", type: :feature do
         row.all("td").map(&:text)
       end
 
-      expect(table_data).to eq(migrations.map { |m| ["Manage", m.slug, m.completed.to_s] })
+      expect(table_data).to eq(migrations.map { |m| [m.completed? ? "Show" : "Manage", m.slug, m.completed.to_s] })
     end
   end
 
@@ -23,6 +23,13 @@ RSpec.describe "Slug migration", type: :feature do
     manage_migrations
     within ".slug-migrations .table" do
       click_link "Manage"
+    end
+  end
+
+  def show_first_migration
+    manage_migrations
+    within ".slug-migrations .table" do
+      click_link "Show"
     end
   end
 
@@ -124,6 +131,16 @@ RSpec.describe "Slug migration", type: :feature do
     expect(page).to have_content "Slug Migration has been completed"
     expect(slug_migration.reload.completed).to eq true
     expect(page.current_path).to eq slug_migration_path(slug_migration)
+  end
+
+  context "completed slug migrations" do
+    it "only shows the migration, and does not allow editing" do
+      edition = Generators.valid_published_edition
+      guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+      slug_migration = SlugMigration.create!(completed: true, slug: "/old/foo", guide: guide)
+      show_first_migration
+      expect(page.current_path).to eq slug_migration_path(slug_migration)
+    end
   end
 
   it "does not allow editing of completed slug migrations"

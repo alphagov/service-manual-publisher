@@ -14,7 +14,13 @@
     <tbody>
       <% @migrations.each do |slug_migration| %>
         <tr>
-          <td><%= link_to "Manage", edit_slug_migration_path(slug_migration) %></td>
+          <td>
+            <% if slug_migration.completed? %>
+              <%= link_to "Show", slug_migration_path(slug_migration) %>
+            <% else %>
+              <%= link_to "Manage", edit_slug_migration_path(slug_migration) %>
+            <% end %>
+          </td>
           <td><%= slug_migration.slug %></td>
           <td><%= slug_migration.completed %></td>
         </tr>
