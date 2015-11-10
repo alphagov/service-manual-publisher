@@ -35,7 +35,6 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.related_discussion_title).to eq "Discussion on HackPad"
     expect(edition.related_discussion_href).to eq "https://designpatterns.hackpad.com/"
     expect(edition.publisher_title).to eq "Design Community"
-    expect(edition.phase).to eq "beta"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
     expect(edition.update_type).to eq "major"
@@ -184,7 +183,6 @@ private
     fill_in "Related discussion title", with: "Discussion on HackPad"
     fill_in "Link to related discussion", with: "https://designpatterns.hackpad.com/"
     select "Design Community", from: "Published by"
-    select "Beta", from: "Phase"
     fill_in "Description", with: "This guide acts as a test case"
 
     fill_in "Title", with: "First Edition Title"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105142126) do
+ActiveRecord::Schema.define(version: 20151110135512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,13 +42,13 @@ ActiveRecord::Schema.define(version: 20151105142126) do
     t.text     "description"
     t.text     "body"
     t.string   "update_type"
-    t.string   "phase"
+    t.text     "phase",                    default: "alpha"
     t.text     "publisher_title"
     t.text     "publisher_href"
     t.text     "related_discussion_href"
     t.text     "related_discussion_title"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.text     "state"
     t.text     "change_note"
   end

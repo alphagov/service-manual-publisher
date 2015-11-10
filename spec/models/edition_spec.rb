@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
+  describe "#phase" do
+    it "defaults to 'alpha'" do
+      expect(Edition.new.phase).to eq 'alpha'
+    end
+  end
+
   describe "validations" do
     it "requires user to be present" do
       edition = Generators.valid_edition(user: nil)

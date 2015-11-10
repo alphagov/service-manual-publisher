@@ -31,12 +31,6 @@
         </div>
 
         <div class='form-group'>
-          <%= editions_form.label :phase %>
-          <%= editions_form.error_list :phase %>
-          <%= editions_form.select :phase, [['Alpha', 'alpha'], ['Beta', 'beta'], ['Live', 'live']], class: 'input-md-12 form-control' %>
-        </div>
-
-        <div class='form-group'>
           <%= editions_form.label :description %>
           <%= editions_form.error_list :description %>
           <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
