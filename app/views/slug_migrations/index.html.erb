@@ -3,7 +3,7 @@
   <%= active_link_to 'Filter by incompleted', slug_migrations_path(completed: false), wrap_tag: :li %>
 </ul>
 
-<div class="migrations">
+<div class="slug-migrations">
   <table class="table table-bordered">
     <thead>
       <th></th>
@@ -12,11 +12,11 @@
     </thead>
 
     <tbody>
-      <% @migrations.each do |migration| %>
+      <% @migrations.each do |slug_migration| %>
         <tr>
-          <td></td>
-          <td><%= migration.slug %></td>
-          <td><%= migration.completed %></td>
+          <td><%= link_to "Manage", edit_slug_migration_path(slug_migration) %></td>
+          <td><%= slug_migration.slug %></td>
+          <td><%= slug_migration.completed %></td>
         </tr>
       <% end %>
     </tbody>

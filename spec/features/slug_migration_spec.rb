@@ -3,12 +3,26 @@ require 'capybara/rails'
 
 RSpec.describe "Slug migration", type: :feature do
   def expect_table_to_match_migrations migrations
-    within ".migrations .table" do
+    within ".slug-migrations .table" do
       table_data = page.all("tr").map do |row|
         row.all("td").map(&:text)
       end
 
-      expect(table_data).to eq(migrations.map { |m| ["", m.slug, m.completed.to_s] })
+      expect(table_data).to eq(migrations.map { |m| ["Manage", m.slug, m.completed.to_s] })
+    end
+  end
+
+  def manage_migrations
+    visit root_path
+    within "nav" do
+      click_link "Manage Migrations"
+    end
+  end
+
+  def manage_first_migration
+    manage_migrations
+    within ".slug-migrations .table" do
+      click_link "Manage"
     end
   end
 
@@ -20,11 +34,7 @@ RSpec.describe "Slug migration", type: :feature do
     end
 
     it "lists all migrations that are available" do
-      visit root_path
-
-      within "nav" do
-        click_link "Manage Migrations"
-      end
+      manage_migrations
 
       expect_table_to_match_migrations @migrations
     end
@@ -39,10 +49,7 @@ RSpec.describe "Slug migration", type: :feature do
         SlugMigration.create!(completed: true, slug: "/old/foo#{i}")
       end
 
-      visit root_path
-      within "nav" do
-        click_link "Manage Migrations"
-      end
+      manage_migrations
     end
 
     it "based on complete" do
@@ -60,5 +67,21 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  it "can complete a migration event for incompleted migrations"
+  it "can save a slug migration" do
+    edition = Generators.valid_published_edition
+    Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+
+    SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+
+    manage_first_migration
+
+    select "/service-manual/new-path", from: "Guide"
+    click_button "Save"
+
+    expect(page).to have_content "Slug Migration has been updated"
+    selected_text = find(:css, "#slug_migration_guide option[selected]").text
+    expect(selected_text).to eq "/service-manual/new-path"
+  end
+
+  it "can migrate an old url to a new url"
 end
