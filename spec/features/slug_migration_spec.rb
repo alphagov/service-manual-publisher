@@ -83,5 +83,21 @@ RSpec.describe "Slug migration", type: :feature do
     expect(selected_text).to eq "/service-manual/new-path"
   end
 
+  it "can only migrate guides with published editions" do
+    Guide.create!(slug: "/service-manual/path1", latest_edition: Generators.valid_edition(state: "draft"))
+    Guide.create!(slug: "/service-manual/path2", latest_edition: Generators.valid_edition(state: "review_requested"))
+    Guide.create!(slug: "/service-manual/path3", latest_edition: Generators.valid_edition(state: "published"))
+
+    SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+
+    manage_first_migration
+
+    options = all(:css, "#slug_migration_guide option").map(&:text)
+    expect(options).to eq [
+      "Please choose a guide to redirect to",
+      "/service-manual/path3",
+    ]
+  end
+
   it "can migrate an old url to a new url"
 end
