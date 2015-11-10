@@ -40,7 +40,10 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       end
       puts "Creating '#{title}'"
 
-      next if body.blank?
+      if body.blank?
+        puts "Body is blank, skipping."
+        next
+      end
 
       edition = Edition.new(
         title:           title,
