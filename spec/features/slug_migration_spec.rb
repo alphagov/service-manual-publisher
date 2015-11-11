@@ -143,6 +143,22 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  it "does not allow editing of completed slug migrations"
-  it "is not completed if the slug redirect fails"
+  context "with a failing publisher-api" do
+    it "is not marked as completed" do
+      edition = Generators.valid_published_edition
+      Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+      slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+
+      expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise "error"
+
+      manage_first_migration
+      select "/service-manual/new-path", from: "Guide"
+
+      click_button "Save and Migrate"
+
+      expect(page).to have_content "Slug Migration has failed"
+      expect(slug_migration.reload.completed).to eq false
+      expect(page.current_path).to eq slug_migration_path(slug_migration)
+    end
+  end
 end

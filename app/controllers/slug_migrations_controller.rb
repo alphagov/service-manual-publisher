@@ -19,20 +19,25 @@ class SlugMigrationsController < ApplicationController
 
     slug_migration.guide = guide
     slug_migration.completed = params[:save_and_migrate].present?
-    if slug_migration.save
+
+    ActiveRecord::Base.transaction do
+      slug_migration.save!
       if slug_migration.completed?
         SlugMigrationPublisher.new.process(slug_migration)
         redirect_to slug_migration_path(slug_migration), notice: "Slug Migration has been completed"
       else
         redirect_to edit_slug_migration_path(slug_migration), notice: "Slug Migration has been saved"
       end
-    else
-      @slug_migration = slug_migration
-      @select_options = Guide.joins(:editions).where(editions: { state: "published" })
-                          .map {|g| [g.slug, g.id] }
-      @selected_guide_id = guide.try(:id)
-      render action: :edit
     end
+  rescue
+    @slug_migration = slug_migration
+    @select_options = Guide.joins(:editions).where(editions: { state: "published" })
+      .map {|g| [g.slug, g.id] }
+    @selected_guide_id = guide.try(:id)
+    if slug_migration.completed?
+      flash[:notice] = "Slug Migration has failed"
+    end
+    render action: :edit
   end
 
   def show
