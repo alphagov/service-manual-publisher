@@ -9,7 +9,7 @@
       </div>
     </fieldset>
 
-    <%= f.fields_for :editions, guide.latest_edition do |editions_form| %>
+    <%= f.fields_for :editions, guide.latest_editable_edition do |editions_form| %>
       <fieldset class='meta'>
         <legend>Meta</legend>
         <div class='form-group'>

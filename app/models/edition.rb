@@ -18,6 +18,7 @@ class Edition < ActiveRecord::Base
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :publisher_title, :publisher_href, :user]
   validates_inclusion_of :state, in: %w(draft published review_requested approved)
   validates :change_note, presence: true, if: :major?
+  validate :published_cant_change
 
   before_validation :assign_publisher_href
 
@@ -66,6 +67,12 @@ class Edition < ActiveRecord::Base
   end
 
 private
+
+  def published_cant_change
+    if state_was == 'published' && changes.except('updated_at').present?
+      errors.add(:base, "can not be changed after it's been published. Perhaps someone has published it whilst you were editing it.")
+    end
+  end
 
   def assign_publisher_href
     self.publisher_href = PUBLISHERS[publisher_title] if publisher_title.present?

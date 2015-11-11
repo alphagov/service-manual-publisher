@@ -41,16 +41,15 @@ class GuidesController < ApplicationController
     @guide = Guide.find(params[:id])
     @comments = @guide.comments_for_rendering
 
-    if @guide.latest_edition.published?
-      render action: :edit
-    else
-      ActiveRecord::Base.transaction do
-        if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: 'draft', user_id: current_user.id}}))
-          GuidePublisher.new(guide: @guide).put_draft
-          redirect_to success_url(@guide), notice: "Guide has been updated"
-        else
-          render action: :edit
+    ActiveRecord::Base.transaction do
+      if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: 'draft', user_id: current_user.id}}))
+        GuidePublisher.new(guide: @guide).put_draft
+        redirect_to success_url(@guide), notice: "Guide has been updated"
+      else
+        if @guide.errors.messages[:"editions.base"].present?
+          flash[:error] = "Edition #{@guide.errors.messages[:"editions.base"].join(', ')}"
         end
+        render action: :edit
       end
     end
   rescue GdsApi::HTTPClientError => e
