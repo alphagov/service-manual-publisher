@@ -149,14 +149,15 @@ RSpec.describe "Slug migration", type: :feature do
       Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
       slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
 
-      expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise "error"
+      api_error = GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
+      expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
 
       manage_first_migration
       select "/service-manual/new-path", from: "Guide"
 
       click_button "Save and Migrate"
 
-      expect(page).to have_content "Slug Migration has failed"
+      expect(page).to have_content "Error message stub"
       expect(slug_migration.reload.completed).to eq false
       expect(page.current_path).to eq slug_migration_path(slug_migration)
     end

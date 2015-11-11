@@ -13,28 +13,29 @@ class SlugMigrationsController < ApplicationController
   end
 
   def update
-    slug_migration = SlugMigration.find(params[:id])
-    guide = Guide.find_by_id(params[:slug_migration][:guide])
+    @slug_migration = SlugMigration.find(params[:id])
+    @select_options = Guide.with_published_editions.map {|g| [g.slug, g.id] }
 
-    slug_migration.guide = guide
-    slug_migration.completed = params[:save_and_migrate].present?
+    guide = Guide.find_by_id(params[:slug_migration][:guide])
+    @selected_guide_id = guide.try(:id)
+
+    @slug_migration.guide = guide
+    @slug_migration.completed = params[:save_and_migrate].present?
 
     ActiveRecord::Base.transaction do
-      slug_migration.save!
-      if slug_migration.completed?
-        SlugMigrationPublisher.new.process(slug_migration)
-        redirect_to slug_migration_path(slug_migration), notice: "Slug Migration has been completed"
+      @slug_migration.save!
+
+      if @slug_migration.completed?
+        SlugMigrationPublisher.new.process(@slug_migration)
+        redirect_to slug_migration_path(@slug_migration), notice: "Slug Migration has been completed"
       else
-        redirect_to edit_slug_migration_path(slug_migration), notice: "Slug Migration has been saved"
+        redirect_to edit_slug_migration_path(@slug_migration), notice: "Slug Migration has been saved"
       end
     end
-  rescue
-    @slug_migration = slug_migration
-    @select_options = Guide.with_published_editions.map {|g| [g.slug, g.id] }
-    @selected_guide_id = guide.try(:id)
-    if slug_migration.completed?
-      flash[:notice] = "Slug Migration has failed"
-    end
+  rescue GdsApi::HTTPClientError => e
+    flash[:error] = e.error_details["error"]["message"]
+    render action: :edit
+  rescue ActiveRecord::RecordInvalid => e
     render action: :edit
   end
 
