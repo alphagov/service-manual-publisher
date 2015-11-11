@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151110135512) do
+ActiveRecord::Schema.define(version: 20151112133846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,11 @@ ActiveRecord::Schema.define(version: 20151110135512) do
   add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
+  create_table "content_owners", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "href",  null: false
+  end
+
   create_table "editions", force: :cascade do |t|
     t.integer  "guide_id"
     t.integer  "user_id"
@@ -43,14 +48,13 @@ ActiveRecord::Schema.define(version: 20151110135512) do
     t.text     "body"
     t.string   "update_type"
     t.text     "phase",                    default: "alpha"
-    t.text     "publisher_title"
-    t.text     "publisher_href"
     t.text     "related_discussion_href"
     t.text     "related_discussion_title"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.text     "state"
     t.text     "change_note"
+    t.integer  "content_owner_id",                           null: false
   end
 
   create_table "guides", force: :cascade do |t|

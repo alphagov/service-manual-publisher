@@ -83,7 +83,7 @@ private
         :title,
         :body,
         :description,
-        :publisher_title,
+        :content_owner_id,
         :related_discussion_href,
         :related_discussion_title,
         :update_type,
