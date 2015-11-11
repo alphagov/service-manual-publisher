@@ -8,8 +8,7 @@ class SlugMigrationsController < ApplicationController
 
   def edit
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.joins(:editions).where(editions: { state: "published" })
-                        .map {|g| [g.slug, g.id] }
+    @select_options = Guide.with_published_editions.map {|g| [g.slug, g.id] }
     @selected_guide_id = @slug_migration.guide.try(:id)
   end
 
@@ -31,8 +30,7 @@ class SlugMigrationsController < ApplicationController
     end
   rescue
     @slug_migration = slug_migration
-    @select_options = Guide.joins(:editions).where(editions: { state: "published" })
-      .map {|g| [g.slug, g.id] }
+    @select_options = Guide.with_published_editions.map {|g| [g.slug, g.id] }
     @selected_guide_id = guide.try(:id)
     if slug_migration.completed?
       flash[:notice] = "Slug Migration has failed"

@@ -15,6 +15,10 @@ class Guide < ActiveRecord::Base
     object.content_id = SecureRandom.uuid
   end
 
+  def self.with_published_editions
+    Guide.joins(:editions).where(editions: { state: "published" })
+  end
+
   def work_in_progress_edition?
     latest_edition.try(:published?) == false
   end
