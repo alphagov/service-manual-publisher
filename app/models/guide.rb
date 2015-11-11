@@ -16,7 +16,9 @@ class Guide < ActiveRecord::Base
   end
 
   def self.with_published_editions
-    Guide.joins(:editions).where(editions: { state: "published" })
+    joins(:editions)
+      .where(editions: { state: "published" })
+      .uniq
   end
 
   def work_in_progress_edition?

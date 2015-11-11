@@ -35,4 +35,29 @@ RSpec.describe Guide do
       expect(Guide.new.latest_editable_edition).to be_a_new_record
     end
   end
+
+  describe "#with_published_editions" do
+    it "only returns published editions" do
+      Guide.create!(
+        slug: "/service-manual/1",
+        latest_edition: Generators.valid_edition(state: "draft"),
+      )
+      guide2 = Guide.create!(
+        slug: "/service-manual/2",
+        latest_edition: Generators.valid_published_edition,
+      )
+      expect(Guide.with_published_editions.to_a).to eq [guide2]
+    end
+
+    it "does not return duplicates" do
+      guide2 = Guide.create!(
+        slug: "/service-manual/2",
+        editions: [
+          Generators.valid_published_edition,
+          Generators.valid_published_edition,
+        ],
+      )
+      expect(Guide.with_published_editions.to_a).to eq [guide2]
+    end
+  end
 end
