@@ -41,7 +41,7 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  feature "with incomplete migrations" do
+  context "with incomplete migrations" do
     before do
       @migrations = (1..3).map do |i|
         SlugMigration.create!(completed: false, slug: "/old/bar#{i}")
@@ -55,7 +55,7 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  feature "can filter migrations" do
+  context "can filter migrations" do
     before do
       @incompleted = (1..2).map do |i|
         SlugMigration.create!(completed: false, slug: "/old/bar#{i}")
