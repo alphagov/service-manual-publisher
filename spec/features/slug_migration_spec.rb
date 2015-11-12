@@ -8,7 +8,15 @@ RSpec.describe "Slug migration", type: :feature do
         row.all("td").map(&:text)
       end
 
-      expect(table_data).to eq(migrations.map { |m| [m.completed? ? "Show" : "Manage", m.slug, m.completed.to_s] })
+      expected = migrations.map do |m|
+        [
+          m.completed? ? "Show" : "Manage",
+          m.slug,
+          String(m.try(:guide).try(:slug)),
+          m.completed.to_s,
+        ]
+      end
+      expect(table_data).to eq(expected)
     end
   end
 

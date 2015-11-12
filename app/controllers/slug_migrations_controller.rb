@@ -1,6 +1,6 @@
 class SlugMigrationsController < ApplicationController
   def index
-    @migrations = SlugMigration.all
+    @migrations = SlugMigration.includes(:guide)
     if params[:completed].present?
       @migrations = @migrations.where(completed: params[:completed])
     end

@@ -8,6 +8,7 @@
     <thead>
       <th></th>
       <th>Slug</th>
+      <th>Redirect</th>
       <th>Completed</th>
     </thead>
 
@@ -22,6 +23,11 @@
             <% end %>
           </td>
           <td><%= slug_migration.slug %></td>
+          <td>
+            <% if slug_migration.guide.present? %>
+              <%= slug_migration.guide.slug %>
+            <% end %>
+          </td>
           <td><%= slug_migration.completed %></td>
         </tr>
       <% end %>
