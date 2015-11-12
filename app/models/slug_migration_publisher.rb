@@ -6,7 +6,7 @@ class SlugMigrationPublisher
       content_id: slug_migration.content_id,
       format: "redirect",
       publishing_app: "service-manual-publisher",
-      update_type: "minor",
+      base_path: slug_migration.slug,
       redirects: [
         {
           path: slug_migration.slug,
