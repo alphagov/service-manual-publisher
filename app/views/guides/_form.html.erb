@@ -5,7 +5,7 @@
       <div class='form-group'>
         <%= f.label :slug  %>
         <%= f.error_list :slug  %>
-        <%= f.text_field :slug, class: 'input-md-12 form-control' %>
+        <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug', disabled: guide.persisted? %>
       </div>
     </fieldset>
 
