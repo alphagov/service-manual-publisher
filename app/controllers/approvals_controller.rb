@@ -4,6 +4,6 @@ class ApprovalsController < ApplicationController
     edition.approvals.build(user: current_user)
     edition.state = "approved"
     edition.save!
-    redirect_to root_path, notice: "Thanks for approving this guide"
+    redirect_to edition_path(edition), notice: "Thanks for approving this guide"
   end
 end
