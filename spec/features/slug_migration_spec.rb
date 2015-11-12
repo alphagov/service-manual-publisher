@@ -72,14 +72,14 @@ RSpec.describe "Slug migration", type: :feature do
 
     it "based on complete" do
       within ".slug-filters" do
-        click_link "Filter by completed"
+        click_link "Completed 2"
       end
       expect_table_to_match_migrations @complete
     end
 
     it "based on incompleted" do
       within ".slug-filters" do
-        click_link "Filter by incompleted"
+        click_link "Not completed 2"
       end
       expect_table_to_match_migrations @incompleted
     end

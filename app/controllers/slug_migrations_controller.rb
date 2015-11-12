@@ -4,6 +4,9 @@ class SlugMigrationsController < ApplicationController
     if params[:completed].present?
       @migrations = @migrations.where(completed: params[:completed])
     end
+
+    @completed_count = SlugMigration.where(completed: true).count
+    @incompleted_count = SlugMigration.where(completed: false).count
   end
 
   def edit
