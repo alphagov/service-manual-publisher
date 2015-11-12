@@ -1,3 +1,5 @@
+require "English"
+
 if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
   directory = File.join(Dir.mktmpdir("government-service-design-manual"), "git")
   unless Dir.exist?(directory)
@@ -38,7 +40,10 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       end
       puts "Creating '#{title}'"
 
-      next if body.blank?
+      if body.blank?
+        puts "Body is blank, skipping."
+        next
+      end
 
       edition = Edition.new(
         title:           title,
@@ -53,7 +58,7 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
 
       GuidePublisher.new(guide: guide).put_draft
-      if state == "published"
+      if state == "published" && !Rails.env.production?
         GuidePublisher.new(guide: guide).publish
       end
     end
