@@ -16,56 +16,37 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(publisher_double).to receive(:put_draft).once
     end
 
-    it "should create a new draft edition when navigating from the index page" do
+    it "should create a new draft edition when saving changes" do
       visit guides_path
-      click_button "Create new edition"
+      click_link "Create new edition"
       the_form_should_be_prepopulated_with_title "Standups"
+      fill_in "Title", with: "Standup meetings"
+      click_button "Save Draft"
+
+      guide.reload
       expect(guide.editions.published.size).to eq 1
       expect(guide.editions.draft.size).to eq 1
+      expect(guide.latest_edition.title).to eq "Standup meetings"
     end
-
-    it "should create a new draft edition when navigating from an edition show page" do
-      visit edition_path(guide.latest_edition)
-      click_button "Create new edition"
-      the_form_should_be_prepopulated_with_title "Standups"
-      expect(guide.editions.published.size).to eq 1
-      expect(guide.editions.draft.size).to eq 1
-    end
-
   end
 
-  it "should prevent editing the latest edition if someone has published it in the meantime" do
+  it "prevents user from updating a draft if it has been published in the meantime" do
     guide = given_a_guide_exists title: "Agile development"
     visit guides_path
     click_link "Continue editing"
 
-    guide.latest_edition.update_attributes(state: 'published')
+    guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
 
     fill_in "Title", with: "Agile"
 
-    expect_any_instance_of(GuidePublisher).to_not receive(:put_draft)
-    expect_any_instance_of(GuidePublisher).to_not receive(:publish)
-
     click_button "Save Draft"
 
-    expect(guide.editions.map(&:title)).to match_array ["Agile development"]
     within ".alert" do
-      expect(page).to have_content "the latest draft of this guide has been published"
+      expect(page).to have_content "can not be changed after it's been published"
     end
-  end
 
-  context "latest edition is not published" do
-    it "should not save an extra draft if someone else clicks the link in the meantime" do
-      guide = given_a_published_guide_exists
-
-      visit guides_path
-      guide.latest_edition.state = "draft"
-      guide.latest_edition.save!
-      click_button "Create new edition"
-
-      expect(guide.editions.published.size).to eq 0
-      expect(guide.editions.draft.size).to eq 1
-    end
+    expect(guide.editions.map(&:title)).to match_array ["Agile development"]
+    expect(guide.editions.map(&:state)).to match_array ["published"]
   end
 
   context "when publishing-api raises an exception" do
@@ -81,7 +62,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
       visit guides_path
-      click_button "Create new edition"
+      click_link "Create new edition"
+      click_button "Save Draft"
 
       expect(Guide.count).to eq 1
       expect(Edition.count).to eq 1
@@ -93,7 +75,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
       visit guides_path
-      click_button "Create new edition"
+      click_link "Create new edition"
+      click_button "Save Draft"
 
       within ".alert" do
         expect(page).to have_content('Error message stub')

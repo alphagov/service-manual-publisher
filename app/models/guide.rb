@@ -22,4 +22,14 @@ class Guide < ActiveRecord::Base
   def comments_for_rendering
     latest_edition.comments.for_rendering
   end
+
+  def latest_editable_edition
+    return Edition.new unless latest_edition
+
+    if latest_edition.published?
+      latest_edition.dup
+    else
+      latest_edition
+    end
+  end
 end

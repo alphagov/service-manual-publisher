@@ -24,9 +24,7 @@
         </td>
         <td class='content-controls'>
           <% if guide.latest_edition.published? %>
-            <%= form_for :drafts, url: guide_drafts_path(guide_id: guide.id), html: {style: "display: inline;"} do |f| %>
-              <%= f.submit("Create new edition", class: 'btn btn-default btn-xs') %>
-            <% end %>
+            <%= link_to "Create new edition", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
           <% else %>
             <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
           <% end %>
