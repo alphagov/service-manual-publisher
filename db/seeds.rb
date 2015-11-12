@@ -46,14 +46,14 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       end
 
       edition = Edition.new(
-        title:           title,
-        state:           state.present? ? state : "draft",
-        phase:           "alpha",
-        description:     "Description",
-        update_type:     "minor",
-        body:            body,
-        publisher_title: Edition::PUBLISHERS.keys.first,
-        user:            author
+        title:         title,
+        state:         state.present? ? state : "draft",
+        phase:         "alpha",
+        description:   "Description",
+        update_type:   "minor",
+        body:          body,
+        content_owner: ContentOwner.first,
+        user:          author
       )
       guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
 

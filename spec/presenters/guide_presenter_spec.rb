@@ -3,15 +3,14 @@ require 'rails_helper'
 RSpec.describe GuidePresenter do
   let(:edition) do
     Edition.new(
-      title:           "The Title",
-      state:           "draft",
-      phase:           "beta",
-      description:     "Description",
-      update_type:     "major",
-      body:            "# Heading",
-      publisher_title: "Publisher Name",
-      publisher_href: "http://gov.uk",
-      updated_at: Time.now
+      title:               "The Title",
+      state:               "draft",
+      phase:               "beta",
+      description:         "Description",
+      update_type:         "major",
+      body:                "# Heading",
+      content_owner:       ContentOwner.new(title: "Publisher Name", href: "http://gov.uk"),
+      updated_at:          Time.now
     )
   end
 

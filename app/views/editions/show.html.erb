@@ -26,7 +26,7 @@
       <ul class="list-group">
         <li class="list-group-item">
           <label>Published by:</label>
-          <%= link_to @edition.publisher_title, @edition.publisher_href %>
+          <%= link_to @edition.content_owner.title, @edition.content_owner.href %>
         </li>
         <% if @edition.related_discussion_href.present? %>
           <li class="list-group-item">

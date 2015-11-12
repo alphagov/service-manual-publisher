@@ -6,6 +6,7 @@ RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
+    ContentOwner.create!(title: "Design Community", href: "http://sm-11.herokuapp.com/designing-services/design-community/")
     visit root_path
     click_link "Create a Guide"
   end
@@ -34,7 +35,8 @@ RSpec.describe "creating guides", type: :feature do
     expect(content_id).to be_present
     expect(edition.related_discussion_title).to eq "Discussion on HackPad"
     expect(edition.related_discussion_href).to eq "https://designpatterns.hackpad.com/"
-    expect(edition.publisher_title).to eq "Design Community"
+    expect(edition.content_owner.title).to eq "Design Community"
+    expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
     expect(edition.update_type).to eq "major"

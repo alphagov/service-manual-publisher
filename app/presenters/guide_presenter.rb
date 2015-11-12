@@ -34,9 +34,9 @@ private
     details = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
-      publisher: {
-        name: edition.publisher_title,
-        href: edition.publisher_href
+      content_owner: {
+        title: edition.content_owner.title,
+        href: edition.content_owner.href
       }
     }
 
