@@ -1,10 +1,8 @@
-require "English"
-
-if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
+def all_old_guides
   directory = File.join(Dir.mktmpdir("government-service-design-manual"), "git")
   unless Dir.exist?(directory)
     print "Cloning repository..."
-    sh "git clone https://github.com/alphagov/government-service-design-manual #{directory}"
+    sh "git clone --depth 1 https://github.com/alphagov/government-service-design-manual #{directory}"
     puts " [done]"
   end
 
@@ -20,53 +18,65 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
   end
 
   # https://github.com/jekyll/jekyll/blob/2807b8a012ead8b8fe7ed30f1a8ad1f6f9de7ba4/lib/jekyll/document.rb
-  YAML_FRONT_MATTER_REGEXP = /\A(---\s*\n.*?\n?)^((---|\.\.\.)\s*$\n?)/m
+  yaml_front_matter_regexp = /\A(---\s*\n.*?\n?)^((---|\.\.\.)\s*$\n?)/m
 
-  author = User.first || User.create!(name: "Unknown")
-
-  objects.each do |object|
-    content = File.read(object[:path])
+  objects.map do |o|
+    content = File.read(o[:path])
     title = ""
 
-    if content =~ YAML_FRONT_MATTER_REGEXP
+    if content =~ yaml_front_matter_regexp
       body = $POSTMATCH
       data_file = YAML.load($1)
       title = data_file["title"]
-      state = data_file["status"]
+      state = data_file["status"] || "draft"
+      {
+        url: o[:url],
+        path: o[:path],
+        title: title,
+        state: state,
+        body: body,
+      }
+    end
+  end
 
-      if Guide.find_by_slug(object[:url]).present?
-        next
-        puts "Ignoring '#{title}'"
-      end
-      puts "Creating '#{title}'"
+end
 
-      if body.blank?
-        puts "Body is blank, skipping."
-        next
-      end
+if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
+  author = User.first || User.create!(name: "Unknown")
 
-      edition = Edition.new(
-        title:         title,
-        state:         state.present? ? state : "draft",
-        phase:         "alpha",
-        description:   "Description",
-        update_type:   "minor",
-        body:          body,
-        content_owner: ContentOwner.first,
-        user:          author
-      )
-      guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
+  objects = all_old_guides
 
-      GuidePublisher.new(guide: guide).put_draft
-      if state == "published" && !Rails.env.production?
-        GuidePublisher.new(guide: guide).publish
-      end
+  objects.each do |object|
+    if Guide.find_by_slug(object[:url]).present?
+      next
+      puts "Ignoring '#{object[:title]}'"
+    end
+    puts "Creating '#{object[:title]}'"
+
+    next if object[:body].blank?
+
+    edition = Edition.new(
+      title:           object[:title],
+      state:           object[:state],
+      phase:           "beta",
+      description:     "Description",
+      update_type:     "minor",
+      body:            object[:body],
+      content_owner:   ContentOwner.first,
+      user:            author,
+    )
+    guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
+
+    GuidePublisher.new(guide: guide).put_draft
+    if object[:state] == "published"
+      GuidePublisher.new(guide: guide).publish
     end
   end
 end
 
 if Rails.env.development?
-  1.upto(10) do |i|
-    SlugMigration.create!(slug: "/service-manual/slug-#{i}")
+  all_old_guides.each do |old_guide|
+    next if SlugMigration.find_by_slug(old_guide[:url]).present?
+    SlugMigration.create!(slug: old_guide[:url])
   end
 end
