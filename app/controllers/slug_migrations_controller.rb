@@ -2,7 +2,7 @@ class SlugMigrationsController < ApplicationController
   def index
     @migrations = SlugMigration.includes(:guide)
     if params[:completed].present?
-      @migrations = @migrations.where(completed: params[:completed])
+      @migrations.where!(completed: params[:completed])
     end
 
     @completed_count = SlugMigration.where(completed: true).count
@@ -11,13 +11,13 @@ class SlugMigrationsController < ApplicationController
 
   def edit
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.with_published_editions.map {|g| [g.slug, g.id] }
-    @selected_guide_id = @slug_migration.guide.try(:id)
+    @select_options = Guide.with_published_editions.pluck(:slug, :id)
+    @selected_guide_id = @slug_migration.guide_id
   end
 
   def update
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.with_published_editions.map {|g| [g.slug, g.id] }
+    @select_options = Guide.with_published_editions.pluck(:slug, :id)
 
     guide = Guide.find_by_id(params[:slug_migration][:guide])
     @selected_guide_id = guide.try(:id)
