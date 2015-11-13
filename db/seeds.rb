@@ -1,3 +1,5 @@
+require "English"
+
 def all_old_guides
   directory = File.join(Dir.mktmpdir("government-service-design-manual"), "git")
   unless Dir.exist?(directory)
