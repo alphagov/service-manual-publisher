@@ -24,20 +24,21 @@ class SlugMigrationsController < ApplicationController
     slug_migration_parameters[:completed] = true if params[:save_and_migrate].present?
 
     ActiveRecord::Base.transaction do
-      @slug_migration.update_attributes!(slug_migration_parameters)
-      @selected_guide_id = @slug_migration.guide.try(:id)
+      if @slug_migration.update_attributes(slug_migration_parameters)
+        @selected_guide_id = @slug_migration.guide.try(:id)
 
-      if @slug_migration.completed?
-        SlugMigrationPublisher.new.process(@slug_migration)
-        redirect_to slug_migration_path(@slug_migration), notice: "Slug Migration has been completed"
+        if @slug_migration.completed?
+          SlugMigrationPublisher.new.process(@slug_migration)
+          redirect_to slug_migration_path(@slug_migration), notice: "Slug Migration has been completed"
+        else
+          redirect_to edit_slug_migration_path(@slug_migration), notice: "Slug Migration has been saved"
+        end
       else
-        redirect_to edit_slug_migration_path(@slug_migration), notice: "Slug Migration has been saved"
+        render action: :edit
       end
     end
   rescue GdsApi::HTTPClientError => e
     flash[:error] = e.error_details["error"]["message"]
-    render action: :edit
-  rescue ActiveRecord::RecordInvalid => e
     render action: :edit
   end
 
