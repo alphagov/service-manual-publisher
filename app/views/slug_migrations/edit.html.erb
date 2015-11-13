@@ -2,9 +2,9 @@
   <%= form_for @slug_migration do |f| %>
     <h2>Slug Migration <small><%= @slug_migration.slug %></small></h2>
     <div class="form-group">
-      <%= f.label :guide %>
+      <%= f.label :guide_id, "Guide" %>
       <%=
-        f.select :guide,
+        f.select :guide_id,
           options_for_select(@select_options, @selected_guide_id),
           {include_blank: "Please choose a guide to redirect to"},
           {class: "slug-migration-select-guide input-md-12 form-control"}

@@ -19,14 +19,13 @@ class SlugMigrationsController < ApplicationController
     @slug_migration = SlugMigration.find(params[:id])
     @select_options = Guide.with_published_editions.pluck(:slug, :id)
 
-    guide = Guide.find_by_id(params[:slug_migration][:guide])
-    @selected_guide_id = guide.try(:id)
-
-    @slug_migration.guide = guide
-    @slug_migration.completed = params[:save_and_migrate].present?
+    slug_migration_parameters = params.require(:slug_migration)
+      .permit(:guide_id)
+    slug_migration_parameters[:completed] = true if params[:save_and_migrate].present?
 
     ActiveRecord::Base.transaction do
-      @slug_migration.save!
+      @slug_migration.update_attributes!(slug_migration_parameters)
+      @selected_guide_id = @slug_migration.guide.try(:id)
 
       if @slug_migration.completed?
         SlugMigrationPublisher.new.process(@slug_migration)

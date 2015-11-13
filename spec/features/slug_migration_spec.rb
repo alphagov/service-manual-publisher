@@ -97,7 +97,7 @@ RSpec.describe "Slug migration", type: :feature do
     click_button "Save"
 
     expect(page).to have_content "Slug Migration has been saved"
-    selected_text = find(:css, "#slug_migration_guide option[selected]").text
+    selected_text = find(:css, ".slug-migration-select-guide option[selected]").text
     expect(selected_text).to eq "/service-manual/new-path"
   end
 
@@ -110,7 +110,7 @@ RSpec.describe "Slug migration", type: :feature do
 
     manage_first_migration
 
-    options = all(:css, "#slug_migration_guide option").map(&:text)
+    options = all(:css, ".slug-migration-select-guide option").map(&:text)
     expect(options).to eq [
       "Please choose a guide to redirect to",
       "/service-manual/path3",
