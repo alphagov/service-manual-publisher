@@ -11,11 +11,12 @@ gem 'plek', '~> 1.10'
 gem 'airbrake', '~> 4.2.1'
 gem 'govuk_admin_template', '~> 3.0.0'
 gem 'gds-sso', '~> 11.0.0'
-gem 'gds-api-adapters', '~> 24.6.0'
+gem 'gds-api-adapters', '~> 25.1.0'
 gem 'govspeak', '~> 3.4.0'
 gem 'kaminari', '~> 0.16.3'
 gem 'acts_as_commentable', '~> 4.0.2'
 gem 'active_link_to', '~> 1.0.3'
+gem 'select2-rails', '~> 4.0.0'
 
 group :development do
   gem 'better_errors'
