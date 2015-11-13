@@ -6,7 +6,9 @@ RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
-    ContentOwner.create!(title: "Design Community", href: "http://sm-11.herokuapp.com/designing-services/design-community/")
+    unless ContentOwner.find_by_title("Design Community").present?
+      ContentOwner.create!(title: "Design Community", href: "http://sm-11.herokuapp.com/designing-services/design-community/")
+    end
     visit root_path
     click_link "Create a Guide"
   end

@@ -13,7 +13,6 @@ RSpec.describe "Slug migration", type: :feature do
           m.completed? ? "Show" : "Manage",
           m.slug,
           String(m.try(:guide).try(:slug)),
-          m.completed.to_s,
         ]
       end
       expect(table_data).to eq(expected)
