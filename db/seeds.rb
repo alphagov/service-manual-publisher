@@ -73,7 +73,7 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
     guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
 
     GuidePublisher.new(guide: guide).put_draft
-    if object[:state] == "published"
+    if object[:state] == "published" && !Rails.env.production?
       GuidePublisher.new(guide: guide).publish
     end
   end
