@@ -28,7 +28,7 @@ class SlugMigration < ActiveRecord::Base
 
     def is_not_already_completed
       if completed_was
-        errors.add(:base, "must not already be completed")
+        errors.add(:base, "is completed and can not be modified")
       end
     end
 end
