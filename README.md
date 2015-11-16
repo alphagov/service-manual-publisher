@@ -25,7 +25,7 @@ PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no
 - [content-store](https://github.com/alphagov/content-store)
 - [publishing-api](https://github.com/alphagov/publishing-api)
 - PostgreSQL
-- [Publishing API](https://github.com/alphagov/publishing-api) - for publishing documents
+- [router](https://github.com/alphagov/router)
 
 You will need to clone down all these repositories, and run the following commands
 for each one:
@@ -45,7 +45,7 @@ The application runs on port `3111` by default. If you're using the GDS VM it's 
 Currently [government-frontend](alphagov/government-frontend) has a feature flag to enable rendering service manual content.
 
 ```
-FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend
+FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend frontend www
 ```
 
 The application has a style guide that can be accessed on `/style-guide`.
