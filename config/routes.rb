@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
   resources :slug_migrations
 
+  get '/edition_changes/:old_edition_id/:new_edition_id' => 'edition_changes#show', as: :edition_changes
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

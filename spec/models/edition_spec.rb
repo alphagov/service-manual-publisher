@@ -7,6 +7,24 @@ RSpec.describe Edition, type: :model do
     end
   end
 
+  describe "#previously_published_edition" do
+    let(:e1) { Generators.valid_published_edition }
+    let(:e2) { Generators.valid_published_edition }
+    let(:e3) { Generators.valid_published_edition }
+    let(:e4) { Generators.valid_published_edition }
+
+    before { Guide.create!(slug: '/service-manual/test', editions: [e1, e2, e3, e4]) }
+
+    it "returns an edition that was the latest edition published before the current one" do
+      expect(e3.previously_published_edition).to eq e2
+      expect(e4.previously_published_edition).to eq e3
+    end
+
+    it "returns nil if it has no prviously published editions" do
+      expect(e1.previously_published_edition).to eq nil
+    end
+  end
+
   describe "validations" do
     it "requires user to be present" do
       edition = Generators.valid_edition(user: nil)
