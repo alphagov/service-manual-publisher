@@ -78,10 +78,3 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
     end
   end
 end
-
-if Rails.env.development?
-  all_old_guides.each do |old_guide|
-    next if SlugMigration.find_by_slug(old_guide[:url]).present?
-    SlugMigration.create!(slug: "#{old_guide[:url]}.html")
-  end
-end
