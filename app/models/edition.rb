@@ -61,6 +61,14 @@ class Edition < ActiveRecord::Base
     self == guide.latest_edition
   end
 
+  def content_owner_title
+    content_owner.try(:title)
+  end
+
+  def previously_published_edition
+    guide.editions.published.where("id < ?", id).order(id: :desc).first
+  end
+
 private
 
   def published_cant_change
