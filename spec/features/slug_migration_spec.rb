@@ -14,7 +14,7 @@ RSpec.describe "Slug migration", type: :feature do
           m.slug,
           String(m.try(:guide).try(:slug)),
         ]
-      end
+      end.reverse
       expect(table_data).to eq(expected)
     end
   end
