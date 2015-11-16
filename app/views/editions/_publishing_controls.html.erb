@@ -7,7 +7,13 @@
     <%= form_for :publication, url: guide_publications_path(guide_id: guide.id) do |f| %>
       <%= f.submit "Publish Guide", class: 'btn btn-success', name: :publish %>
     <% end %>
+    <% if @edition.approval %>
+      <p class="text-info">
+        <strong>Changes approved by <%= @edition.approval.user.name %>.</strong>
+      </p>
+    <% end %>
   <% end %>
+
 
   <% if edition.can_request_review? %>
     <%= form_for :review_request, url: edition_review_requests_path(edition_id: edition.id) do |f| %>
