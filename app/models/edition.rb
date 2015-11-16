@@ -69,6 +69,15 @@ class Edition < ActiveRecord::Base
     guide.editions.published.where("id < ?", id).order(id: :desc).first
   end
 
+  def change_note_html
+    Redcarpet::Markdown.new(
+      Redcarpet::Render::HTML,
+      extensions = {
+        autolink: true,
+      },
+    ).render(change_note)
+  end
+
 private
 
   def published_cant_change

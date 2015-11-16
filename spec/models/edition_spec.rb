@@ -154,4 +154,16 @@ RSpec.describe Edition, type: :model do
       end
     end
   end
+
+  describe "#change_note_html" do
+    it "renders markdown" do
+      edition = Edition.new(change_note: "# heading")
+      expect(edition.change_note_html).to eq "<h1>heading</h1>\n"
+    end
+
+    it "auto links" do
+      edition = Edition.new(change_note: "http://example.org")
+      expect(edition.change_note_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
+    end
+  end
 end
