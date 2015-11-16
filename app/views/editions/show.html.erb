@@ -41,7 +41,7 @@
       </div>
       <% if @edition.change_note.present? %>
         <div class="panel-body">
-          <%= @edition.change_note %>
+          <%= @edition.change_note_html.html_safe %>
         </div>
       <% end %>
       <div class="panel-body">
