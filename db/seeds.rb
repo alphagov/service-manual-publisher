@@ -1,7 +1,7 @@
 require "English"
 
 def all_old_guides
-  directory = File.join(Dir.mktmpdir("government-service-design-manual"), "git")
+  directory = File.join(Dir.tmpdir, "government-service-design-manual", "git")
   unless Dir.exist?(directory)
     print "Cloning repository..."
     sh "git clone --depth 1 https://github.com/alphagov/government-service-design-manual #{directory}"
