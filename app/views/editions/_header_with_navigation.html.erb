@@ -17,6 +17,10 @@
     <%= active_link_to "Show", edition_path(edition), wrap_tag: :li %>
     <% if edition.previously_published_edition %>
       <%= active_link_to "Changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id), wrap_tag: :li %>
+    <% else %>
+      <li class="disabled" title="No previous editions to compare against">
+        <a>Changes</a>
+      </li>
     <% end %>
     <%= active_link_to "Edit", edit_guide_path(guide), wrap_tag: :li %>
     <%= active_link_to "History", guide_editions_path(guide), wrap_tag: :li %>
