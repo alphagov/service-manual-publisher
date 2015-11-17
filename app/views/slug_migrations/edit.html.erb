@@ -7,7 +7,7 @@
         f.select :guide_id,
           options_for_select(@select_options, @selected_guide_id),
           {include_blank: "Please choose a guide to redirect to"},
-          {class: "slug-migration-select-guide input-md-12 form-control"}
+          {class: "select2 slug-migration-select-guide input-md-12 form-control"}
       %>
       <%= f.error_list :guide %>
     </div>
