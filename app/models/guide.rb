@@ -33,7 +33,10 @@ class Guide < ActiveRecord::Base
     return Edition.new unless latest_edition
 
     if latest_edition.published?
-      latest_edition.dup
+      latest_edition.dup.tap do |e|
+        e.change_note = nil
+        e.update_type = "minor"
+      end
     else
       latest_edition
     end

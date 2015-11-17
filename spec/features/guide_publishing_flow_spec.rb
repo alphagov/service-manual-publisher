@@ -28,6 +28,16 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(guide.editions.draft.size).to eq 1
       expect(guide.latest_edition.title).to eq "Standup meetings"
     end
+
+    it "has a new default empty change note" do
+      visit guides_path
+
+      click_link "Create new edition"
+      expect(find_field('Change note').value).to be_blank
+      expect(page).to have_select("Update type", selected: "Minor")
+
+      click_button "Save Draft"
+    end
   end
 
   it "prevents user from updating a draft if it has been published in the meantime" do
