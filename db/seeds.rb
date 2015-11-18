@@ -45,6 +45,12 @@ end
 
 if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
   author = User.first || User.create!(name: "Unknown")
+  if ContentOwner.count == 0
+    ContentOwner.create!(
+      title: "Design Community",
+      href: "http://sm-11.herokuapp.com/designing-services/design-community/"
+    )
+  end
 
   objects = all_old_guides
 
