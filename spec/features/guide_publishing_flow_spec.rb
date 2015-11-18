@@ -241,6 +241,19 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         expect(page).to have_content("## Hi")
       end
     end
+
+    it "shows all fields as additions if there are no previous editions" do
+      guide = given_a_guide_exists(title: "First Edition", body: "Hello")
+      visit edition_changes_path(new_edition_id: guide.latest_edition.id)
+
+      within ".title ins" do
+        expect(page).to have_content("First Edition")
+      end
+
+      within ".body ins" do
+        expect(page).to have_content("Hello")
+      end
+    end
   end
 
 private

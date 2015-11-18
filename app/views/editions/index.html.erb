@@ -17,9 +17,7 @@
           <%= link_to "See edition", edition %>
         </td>
         <td>
-        <% if edition.previously_published_edition %>
           <%= link_to "See changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id) %>
-        <% end %>
         </td>
         <td>
           <%= edition.user.name %>
