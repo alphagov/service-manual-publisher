@@ -10,4 +10,12 @@ class ApplicationController < ActionController::Base
     [Plek.find('draft-origin'), guide.slug].join('')
   end
   helper_method :guide_preview_url
+
+  def back_or_default(fallback_uri = root_url)
+    if request.referrer.present? && request.referrer != request.url
+      request.referrer
+    else
+      fallback_uri
+    end
+  end
 end

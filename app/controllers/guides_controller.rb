@@ -62,10 +62,8 @@ private
   def success_url(guide)
     if params[:save_draft_and_preview]
       guide_preview_url(guide)
-    elsif request.referrer.present? && request.referrer != request.url
-      request.referrer
     else
-      root_url
+      back_or_default
     end
   end
 
