@@ -23,6 +23,17 @@ class Edition < ActiveRecord::Base
     end
   end
 
+  [:insert, :update].each do |action|
+    trigger.before(action) do
+      <<-SQL
+          NEW.tsv :=
+            setweight(to_tsvector('pg_catalog.english', coalesce(NEW.title,'')), 'A') ||
+            setweight(to_tsvector('pg_catalog.english', coalesce(NEW.body,'')), 'B')
+          ;
+      SQL
+    end
+  end
+
   def draft?
     state == 'draft'
   end
@@ -84,6 +95,16 @@ class Edition < ActiveRecord::Base
       e.update_type = "minor"
       e.state = "draft"
     end
+  end
+
+  def self.tsearch_query(search_terms)
+    words = sanitize(search_terms.scan(/\w+/) * "|")
+    Edition.from("editions, to_tsquery('pg_catalog.english', #{words}) as q")
+      .where("tsv @@ q").order("ts_rank_cd(tsv, q) DESC")
+  end
+
+  def self.search search_terms
+    select([:title, :body]).tsearch_query(search_terms)
   end
 
 private

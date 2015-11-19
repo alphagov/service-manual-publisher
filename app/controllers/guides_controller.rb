@@ -1,9 +1,15 @@
 class GuidesController < ApplicationController
   def index
-    @guides = Guide
-                .includes(latest_edition: :user)
-                .order(updated_at: :desc)
-                .page(params[:page])
+    @guides = if params[:q].present?
+                Guide.search(params[:q])
+                  .includes(latest_edition: :user)
+                  .page(params[:page])
+              else
+                Guide
+                  .includes(latest_edition: :user)
+                  .page(params[:page])
+                  .order(updated_at: :desc)
+              end
   end
 
   def new

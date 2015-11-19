@@ -21,6 +21,14 @@ class Guide < ActiveRecord::Base
       .uniq
   end
 
+  def self.search(search_terms)
+    ids = Edition.search(search_terms).pluck(:guide_id)
+    order = sanitize_sql_array(
+      ["position(id::text in ?)", ids.join(',')]
+    )
+    where(:id => ids).order(order)
+  end
+
   def work_in_progress_edition?
     latest_edition.try(:published?) == false
   end
