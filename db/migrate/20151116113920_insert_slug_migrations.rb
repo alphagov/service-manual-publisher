@@ -1,5 +1,7 @@
 class InsertSlugMigrations < ActiveRecord::Migration
   def change
+    return say("Skipping slug creation in test environment") if Rails.env.test?
+
     OLD_SLUGS.each do |s|
       execute "INSERT INTO slug_migrations (slug, created_at, updated_at, content_id) VALUES ('#{s}', now(), now(), '#{SecureRandom.uuid}')"
     end
