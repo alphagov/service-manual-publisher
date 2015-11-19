@@ -6,6 +6,6 @@ class CommentsController < ApplicationController
       comment: params[:comment][:comment],
     )
 
-    redirect_to root_path, notice: "Comment has been created"
+    redirect_to back_or_default(edition_path(edition)), notice: "Comment has been created"
   end
 end
