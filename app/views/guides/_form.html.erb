@@ -56,7 +56,7 @@
 
 
     <fieldset class='update'>
-      <legend>Content</legend>
+      <legend>Change summary</legend>
       <div class='form-group'>
         <%= editions_form.label :update_type %>
         <%= editions_form.error_list :update_type %>
@@ -69,7 +69,7 @@
     </fieldset>
 
       <fieldset class='publication'>
-        <legend>Publication</legend>
+        <legend>Actions</legend>
         <div class='form-group'>
           <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft, data: disable_if_new_record(guide) %>
           <%= f.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
