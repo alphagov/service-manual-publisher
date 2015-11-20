@@ -164,7 +164,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         edition = Generators.valid_edition(state: "review_requested", title: "Standups")
         guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
-        reviewer = User.new(name: "Some User")
+        reviewer = User.new(name: "Keanu Reviews")
         login_as reviewer
         visit guides_path
         click_link "Standups"
@@ -173,7 +173,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         expect(current_path).to eq edition_path(edition)
 
         expect(page).to have_content "Thanks for approving this guide"
-        expect(page).to have_content "Approved"
+        expect(page).to have_content "Changes approved by Keanu Reviews"
+        within ".label" do
+          expect(page).to have_content "Approved"
+        end
       end
     end
 

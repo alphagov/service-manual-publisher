@@ -87,7 +87,7 @@ RSpec.describe "creating guides", type: :feature do
     visit edition_path(guide.latest_edition)
     click_button "Publish"
 
-    within ".alert" do
+    within ".alert-success" do
       expect(page).to have_content('published')
     end
 

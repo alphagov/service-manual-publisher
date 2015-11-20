@@ -20,7 +20,7 @@ class Generators
   def self.valid_published_edition(attributes = {})
     attributes = {state: "published"}.merge(attributes)
     edition = valid_edition(attributes)
-    edition.approvals << Approval.new(user: User.first)
+    edition.create_approval(user: User.first)
     edition
   end
 end

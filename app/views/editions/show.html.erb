@@ -49,6 +49,24 @@
         <%= @edition.updated_at %>
       </div>
     </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Authors
+      </div>
+      <div class="panel-body">
+        <label>Changes by:</label>
+        <%= @edition.user.name %>
+      </div>
+      <% if @edition.approval %>
+        <div class="panel-body">
+          <label>Approved by:</label>
+          <%= @edition.approval.user.name %>
+        </div>
+      <% end %>
+    </div>
+
+
   </div>
 </div>
 
