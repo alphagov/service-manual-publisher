@@ -1,6 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe Guide do
+  describe "#ensure_draft_exists" do
+    let(:edition) { Generators.valid_published_edition }
+    let(:guide) do
+      Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+    end
+
+    it "does nothing if the latest edition is in a draft state" do
+      edition.update_attribute(:state, "draft")
+
+      guide.ensure_draft_exists
+
+      expect(guide.latest_edition).to eq edition
+      expect(guide.editions.count).to eq 1
+    end
+
+    it "builds an saves a draft copy of the latest edition if it's published" do
+      edition.update_attribute(:state, "published")
+
+      guide.ensure_draft_exists
+
+      expect(guide.latest_edition).to_not eq edition
+      expect(guide.editions.published.count).to eq 1
+      expect(guide.editions.draft.count).to eq 1
+    end
+  end
+
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
       edition = Generators.valid_published_edition

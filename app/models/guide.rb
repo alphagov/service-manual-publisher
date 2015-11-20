@@ -9,7 +9,7 @@ class Guide < ActiveRecord::Base
   has_many :editions
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
 
-  accepts_nested_attributes_for :editions
+  accepts_nested_attributes_for :latest_edition
 
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
@@ -29,14 +29,19 @@ class Guide < ActiveRecord::Base
     latest_edition.comments.for_rendering
   end
 
+  def ensure_draft_exists
+    if latest_edition.published?
+      editions << latest_edition.draft_copy
+      reload
+    end
+    self
+  end
+
   def latest_editable_edition
     return Edition.new unless latest_edition
 
     if latest_edition.published?
-      latest_edition.dup.tap do |e|
-        e.change_note = nil
-        e.update_type = "minor"
-      end
+      latest_edition.draft_copy
     else
       latest_edition
     end

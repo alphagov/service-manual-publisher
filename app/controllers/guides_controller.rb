@@ -8,16 +8,11 @@ class GuidesController < ApplicationController
 
   def new
     @guide = Guide.new(slug: "/service-manual/")
-    @guide.latest_edition = @guide.editions.build
+    @guide.build_latest_edition
   end
 
   def create
     @guide = Guide.new(guide_params)
-    # Temporarily set latest_edition manually.
-    # (There's always only one edition at this point)
-    @guide.latest_edition = @guide.editions.first
-    @guide.latest_edition.state = "draft"
-    @guide.latest_edition.user = current_user
 
     ActiveRecord::Base.transaction do
       if @guide.save
@@ -41,8 +36,10 @@ class GuidesController < ApplicationController
     @guide = Guide.find(params[:id])
     @comments = @guide.comments_for_rendering
 
+    @guide.ensure_draft_exists
+
     ActiveRecord::Base.transaction do
-      if @guide.update_attributes(guide_params(editions_attributes: { "0" => {state: 'draft', user_id: current_user.id}}))
+      if @guide.update_attributes(guide_params(latest_edition_attributes: { id: @guide.latest_edition.id }))
         GuidePublisher.new(guide: @guide).put_draft
         redirect_to success_url(@guide), notice: "Guide has been updated"
       else
@@ -74,10 +71,14 @@ private
   end
 
   def guide_params(with = {})
+    default_params = {
+      latest_edition_attributes: { state: 'draft', user: current_user }
+    }
+    with = default_params.deep_merge(with)
+
     params
       .require(:guide)
-      .permit(:slug, editions_attributes: [
-        :id,
+      .permit(:slug, latest_edition_attributes: [
         :title,
         :body,
         :description,
