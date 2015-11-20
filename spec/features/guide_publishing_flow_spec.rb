@@ -2,25 +2,23 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
-
   before do
     allow_any_instance_of(GuidePublisher).to receive(:put_draft)
   end
 
   context "latest edition is published" do
-    let(:guide){ given_a_published_guide_exists title: "Standups" }
+    let!(:guide) { given_a_published_guide_exists title: "Standups" }
 
-    before do
+    it "should create a new draft edition when saving changes" do
       publisher_double = double(:publisher)
       expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
       expect(publisher_double).to receive(:put_draft).once
-    end
 
-    it "should create a new draft edition when saving changes" do
       visit guides_path
       click_link "Create new edition"
       the_form_should_be_prepopulated_with_title "Standups"
       fill_in "Title", with: "Standup meetings"
+      fill_in "Change note", with: "Be more specific in the title"
       click_button "Save Draft"
 
       guide.reload
@@ -29,14 +27,12 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(guide.latest_edition.title).to eq "Standup meetings"
     end
 
-    it "has a new default empty change note" do
+    it "defaults to a major update and the new change note is empty" do
       visit guides_path
 
       click_link "Create new edition"
-      expect(find_field('Change note').value).to be_blank
-      expect(page).to have_select("Update type", selected: "Minor")
-
-      click_button "Save Draft"
+      expect(find_field("Change note").value).to be_blank
+      expect(page).to have_select("Update type", selected: "Major")
     end
   end
 
@@ -69,6 +65,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Updated Title"
+      fill_in "Change note", with: "Update Title"
       click_button "Save Draft"
 
       the_form_should_be_prepopulated_with_title "Updated Title"
@@ -85,6 +82,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Create new edition"
+      fill_in "Change note", with: "Fix a typo"
       click_button "Save Draft"
 
       within ".alert" do
@@ -221,6 +219,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit edit_guide_path(guide)
       fill_in "Title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
+      fill_in "Change note", with: "Better greeting"
       click_button "Save Draft"
       click_link "Changes"
 
