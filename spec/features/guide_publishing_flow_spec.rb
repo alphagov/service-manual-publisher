@@ -40,7 +40,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
-  it "prevents user from updating a draft if it has been published in the meantime" do
+  it "creates a new draft version if the original has been published in the meantime" do
     guide = given_a_guide_exists title: "Agile development"
     visit guides_path
     click_link "Continue editing"
@@ -51,12 +51,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     click_button "Save Draft"
 
-    within ".alert" do
-      expect(page).to have_content "can not be changed after it's been published"
-    end
-
-    expect(guide.editions.map(&:title)).to match_array ["Agile development"]
-    expect(guide.editions.map(&:state)).to match_array ["published"]
+    expect(guide.editions.published.map(&:title)).to match_array ["Agile development"]
+    expect(guide.editions.draft.map(&:title)).to match_array ["Agile"]
   end
 
   context "when publishing-api raises an exception" do
@@ -64,23 +60,26 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
     end
 
-    it "does not store a new draft edition" do
+    it "keeps the changes made in form fields" do
       guide = given_a_published_guide_exists
       expect(Guide.count).to eq 1
       expect(Edition.count).to eq 1
 
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
-      visit guides_path
-      click_link "Create new edition"
+      visit edit_guide_path(guide)
+      fill_in "Title", with: "Updated Title"
       click_button "Save Draft"
 
+      the_form_should_be_prepopulated_with_title "Updated Title"
+
       expect(Guide.count).to eq 1
-      expect(Edition.count).to eq 1
+      expect(Edition.published.count).to eq 1
+      expect(Edition.draft.count).to eq 1
     end
 
     it "shows api errors in the UI" do
-      guide = given_a_published_guide_exists
+      given_a_published_guide_exists
 
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 

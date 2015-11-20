@@ -78,6 +78,14 @@ class Edition < ActiveRecord::Base
     ).render(change_note)
   end
 
+  def draft_copy
+    dup.tap do |e|
+      e.change_note = nil
+      e.update_type = "minor"
+      e.state = "draft"
+    end
+  end
+
 private
 
   def published_cant_change
