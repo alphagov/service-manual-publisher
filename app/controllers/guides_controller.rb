@@ -43,9 +43,6 @@ class GuidesController < ApplicationController
         GuidePublisher.new(guide: @guide).put_draft
         redirect_to success_url(@guide), notice: "Guide has been updated"
       else
-        if @guide.errors.messages[:"editions.base"].present?
-          flash[:error] = "Edition #{@guide.errors.messages[:"editions.base"].join(', ')}"
-        end
         render action: :edit
       end
     end

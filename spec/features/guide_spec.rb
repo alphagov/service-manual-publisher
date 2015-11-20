@@ -131,6 +131,17 @@ RSpec.describe "creating guides", type: :feature do
       expect(find('input.guide-slug')['disabled']).to be_present
     end
 
+    it "shows the summary of validation errors" do
+      guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
+      visit edit_guide_path(guide)
+      fill_in "Title", with: ""
+      click_button "Save Draft"
+
+      within(".full-error-list") do
+        expect(page).to have_content("title can't be blank")
+      end
+    end
+
     context "when publishing raises an exception" do
       let :api_error do
         GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
