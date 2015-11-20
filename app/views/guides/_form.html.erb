@@ -1,5 +1,7 @@
 <div class='well'>
   <%= form_for guide do |f| %>
+    <%= render 'shared/form_error_summary', object: guide %>
+
     <fieldset class='guide'>
       <legend>Guide</legend>
       <div class='form-group'>

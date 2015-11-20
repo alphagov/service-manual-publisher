@@ -1,0 +1,16 @@
+<% if object.errors.any? %>
+  <div class="panel panel-danger full-error-list">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Some errors have prevented from saving your changes
+      </h3>
+    </div>
+      <ul class="list-group">
+        <% object.errors.full_messages.each do |err_message| %>
+          <li class="list-group-item">
+            <%= err_message %>
+          </li>
+        <% end %>
+      </ul>
+  </div>
+<% end %>
