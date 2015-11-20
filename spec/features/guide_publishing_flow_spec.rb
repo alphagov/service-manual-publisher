@@ -18,7 +18,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       click_link "Create new edition"
       the_form_should_be_prepopulated_with_title "Standups"
       fill_in "Title", with: "Standup meetings"
-      fill_in "Change note", with: "Be more specific in the title"
+      fill_in "Public change note", with: "Be more specific in the title"
       click_button "Save Draft"
 
       guide.reload
@@ -31,7 +31,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
 
       click_link "Create new edition"
-      expect(find_field("Change note").value).to be_blank
+      expect(find_field("Public change note").value).to be_blank
       expect(page).to have_select("Update type", selected: "Major")
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Updated Title"
-      fill_in "Change note", with: "Update Title"
+      fill_in "Public change note", with: "Update Title"
       click_button "Save Draft"
 
       the_form_should_be_prepopulated_with_title "Updated Title"
@@ -82,7 +82,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Create new edition"
-      fill_in "Change note", with: "Fix a typo"
+      fill_in "Public change note", with: "Fix a typo"
       click_button "Save Draft"
 
       within ".alert" do
@@ -219,7 +219,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit edit_guide_path(guide)
       fill_in "Title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
-      fill_in "Change note", with: "Better greeting"
+      fill_in "Public change note", with: "Better greeting"
       click_button "Save Draft"
       click_link "Changes"
 

@@ -63,7 +63,7 @@
         <%= editions_form.select :update_type, [["Major", "major"], ["Minor", "minor"]], {}, {class: 'update-type-select input-md-12 form-control'} %>
       </div>
       <div class="form-group change-note-form-group">
-        <%= editions_form.label :change_note %>
+        <%= editions_form.label :change_note, "Public change note" %>
         <%= editions_form.text_area :change_note, class: 'input-md-12 form-control', rows: 5 %>
       </div>
     </fieldset>
