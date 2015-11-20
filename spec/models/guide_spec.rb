@@ -86,4 +86,33 @@ RSpec.describe Guide do
       expect(Guide.with_published_editions.to_a).to eq [guide2]
     end
   end
+
+  describe "#search" do
+    it "has triggers setup" do
+      expect(HairTrigger::migrations_current?).to be true
+    end
+
+    it "searches title" do
+      titles = ["Standups", "Unit Testing"]
+      titles.each_with_index do |title, index|
+        edition = Generators.valid_edition(state: "review_requested", title: title)
+        Guide.create!(latest_edition: edition, slug: "/service-manual/#{index}")
+      end
+
+      results = Guide.search("testing").map {|e| e.latest_edition.title}
+      expect(results).to eq ["Unit Testing"]
+    end
+
+    it "prioritises title over body" do
+      edition = Generators.valid_edition(state: "review_requested", title: "nothing", body: "search")
+      Guide.create!(latest_edition: edition, slug: "/service-manual/1")
+
+      edition = Generators.valid_edition(state: "review_requested", title: "search", body: "nothing")
+      Guide.create!(latest_edition: edition, slug: "/service-manual/2")
+
+      results = Guide.search("search").map {|e| e.latest_edition.title}
+      expect(results).to eq ["search", "nothing"]
+    end
+  end
+
 end
