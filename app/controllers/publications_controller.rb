@@ -7,7 +7,7 @@ class PublicationsController < ApplicationController
       redirect_to @guide.latest_edition, notice: "Guide has been published"
     end
 
-  rescue GdsApi::HTTPClientError => e
+  rescue GdsApi::HTTPErrorResponse => e
     flash[:error] = e.error_details["error"]["message"]
     @guide = @guide.reload
     @edition = @guide.latest_edition
