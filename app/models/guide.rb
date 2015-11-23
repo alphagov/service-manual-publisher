@@ -29,6 +29,10 @@ class Guide < ActiveRecord::Base
     where(:id => ids).order(order)
   end
 
+  def self.with_state(state)
+    Guide.includes(:latest_edition).where(editions: {state: state})
+  end
+
   def work_in_progress_edition?
     latest_edition.try(:published?) == false
   end

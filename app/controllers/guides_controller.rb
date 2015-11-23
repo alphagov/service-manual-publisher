@@ -4,12 +4,19 @@ class GuidesController < ApplicationController
                 Guide.search(params[:q])
                   .includes(latest_edition: :user)
                   .page(params[:page])
+              elsif params[:state].present?
+                @guides = Guide
+                            .with_state(params[:state])
+                            .page(params[:page])
               else
                 Guide
                   .includes(latest_edition: :user)
                   .page(params[:page])
                   .order(updated_at: :desc)
               end
+    @states_and_counts = %w(draft published review_requested approved).map do |s|
+      OpenStruct.new(value: s, count: Guide.with_state(s).count)
+    end
   end
 
   def new

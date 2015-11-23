@@ -1,41 +1,57 @@
-<h1>Guides</h1>
+<div class="row">
+  <div class="col-md-3">
+    <div class="well sidebar-nav">
+      <ul class="filter-list nav nav-list">
+        <li class="nav-header">Filter by Status</li>
+        <% @states_and_counts.each do |s| %>
+          <li class="status-option">
+            <%= link_to guides_path(state: s.value) do %>
+              <%= s.value.titleize %> <span class="badge pull-right"><%= s.count %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <table class='table table-bordered'>
+      <thead>
+        <tr class='table-header'>
+          <th>Title</th>
+          <th>Last updated by</th>
+          <th>State</th>
+          <th>Controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @guides.each do |guide| %>
+          <tr>
+            <td>
+              <%= link_to guide.latest_edition.title, guide.latest_edition %>
+              <span class='text-muted'><%= guide.slug %></span>
+            </td>
+            <td class='last-edited-by'>
+              <%= latest_editor_name(guide) %>
+            </td>
+            <td>
+              <%= state_label(guide) %>
+            </td>
+            <td class='content-controls'>
+              <% if guide.latest_edition.published? %>
+                <%= link_to "Create new edition", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+              <% else %>
+                <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+              <% end %>
+              <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-<table class='table table-bordered'>
-  <thead>
-    <tr class='table-header'>
-      <th>Title</th>
-      <th>Last updated by</th>
-      <th>State</th>
-      <th>Controls</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @guides.each do |guide| %>
-      <tr>
-        <td>
-          <%= link_to guide.latest_edition.title, guide.latest_edition %>
-          <span class='text-muted'><%= guide.slug %></span>
-        </td>
-        <td class='last-edited-by'>
-          <%= latest_editor_name(guide) %>
-        </td>
-        <td>
-          <%= state_label(guide) %>
-        </td>
-        <td class='content-controls'>
-          <% if guide.latest_edition.published? %>
-            <%= link_to "Create new edition", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
-          <% else %>
-            <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
-          <% end %>
-          <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= paginate @guides %>
-<p>
-  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-</p>
+    <%= paginate @guides %>
+    <p>
+      <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
+    </p>
+  </div>
+</div>
