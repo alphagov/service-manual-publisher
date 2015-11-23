@@ -49,7 +49,9 @@ class Guide < ActiveRecord::Base
     return Edition.new unless latest_edition
 
     if latest_edition.published?
-      latest_edition.draft_copy
+      latest_edition.draft_copy.tap do |e|
+        e.update_type = "major"
+      end
     else
       latest_edition
     end

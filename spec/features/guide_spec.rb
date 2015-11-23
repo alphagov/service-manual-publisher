@@ -191,6 +191,6 @@ private
     fill_in "Body", with: "## First Edition Title"
 
     select "Major", from: "Update type"
-    fill_in "Change note", with: "Change Note"
+    fill_in "Public change note", with: "Change Note"
   end
 end

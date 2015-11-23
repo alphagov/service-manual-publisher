@@ -46,15 +46,21 @@ RSpec.describe Guide do
 
   describe "#latest_editable_edition" do
     it "returns the latest edition if it's not published" do
-      guide = Guide.create(slug: "/service-manual/ediatble", editions: [Generators.valid_edition])
+      guide = Guide.create(slug: "/service-manual/editable", editions: [Generators.valid_edition])
       expect(guide.latest_editable_edition).to eq guide.reload.latest_edition
     end
 
     it "returns an unsaved copy of the latest edition if the latter is published" do
-      guide = Guide.create(slug: "/service-manual/ediatble", editions: [Generators.valid_published_edition(title: "Agile Methodologies")])
+      guide = Guide.create(slug: "/service-manual/editable", editions: [Generators.valid_published_edition(title: "Agile Methodologies")])
 
       expect(guide.latest_editable_edition).to be_a_new_record
       expect(guide.latest_editable_edition.title).to eq "Agile Methodologies"
+    end
+
+    it "defaults to update_type 'major' for a new drafts" do
+      guide = Guide.create(slug: "/service-manual/editable", editions: [Generators.valid_published_edition(update_type: 'minor')])
+
+      expect(guide.latest_editable_edition.update_type).to eq "major"
     end
 
     it "returns a new edition for a guide with no latest edition" do
