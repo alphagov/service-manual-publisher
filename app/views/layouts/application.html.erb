@@ -14,17 +14,6 @@
 <% end %>
 
 <% content_for :content do %>
-  <div class="search">
-    <form action="<%=guides_path%>", method="get">
-      <div class="input-group">
-        <%= text_field_tag :q, params[:q], placeholder: "Search", class: "form-control" %>
-        <div class="input-group-btn">
-          <button class="btn btn-default" type="submit">Search</button>
-        </div>
-      </div>
-    </form>
-  </div>
-
   <% [:notice, :alert, :error].select { |k| flash[k].present? }.each do |k| %>
     <div class="alert <%= alert_css_class(k) %>">
       <%= flash[k] %>

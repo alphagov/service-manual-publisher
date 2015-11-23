@@ -100,10 +100,6 @@ RSpec.describe Guide do
   end
 
   describe "#search" do
-    it "has triggers setup" do
-      expect(HairTrigger::migrations_current?).to be true
-    end
-
     it "searches title" do
       titles = ["Standups", "Unit Testing"]
       titles.each_with_index do |title, index|
@@ -115,15 +111,24 @@ RSpec.describe Guide do
       expect(results).to eq ["Unit Testing"]
     end
 
-    it "prioritises title over body" do
-      edition = Generators.valid_edition(state: "review_requested", title: "nothing", body: "search")
+    it "does not return duplicates" do
+      edition1 = Generators.valid_edition(state: "draft", title: "dictionary")
+      edition2 = Generators.valid_edition(state: "published", title: "thesaurus")
+      Guide.create!(editions: [edition1, edition2], slug: "/service-manual/guide")
+
+      expect(Guide.search("dictionary").count).to eq 0
+      expect(Guide.search("thesaurus").count).to eq 1
+    end
+
+    it "searches for slug" do
+      edition = Generators.valid_edition(title: "1")
       Guide.create!(latest_edition: edition, slug: "/service-manual/1")
 
-      edition = Generators.valid_edition(state: "review_requested", title: "search", body: "nothing")
+      edition = Generators.valid_edition(title: "2")
       Guide.create!(latest_edition: edition, slug: "/service-manual/2")
 
-      results = Guide.search("search").map {|e| e.latest_edition.title}
-      expect(results).to eq ["search", "nothing"]
+      results = Guide.search("/service-manual/2").map {|e| e.latest_edition.title}
+      expect(results).to eq ["2"]
     end
   end
 

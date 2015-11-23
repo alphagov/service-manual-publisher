@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120120650) do
+ActiveRecord::Schema.define(version: 20151119131239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20151120120650) do
   end
 
   add_index "editions", ["tsv"], name: "editions_tsv_idx", using: :gin
-  add_index "editions", ["tsv"], name: "index_editions_on_tsv", using: :gin
 
   create_table "guides", force: :cascade do |t|
     t.string   "slug"
@@ -95,27 +94,5 @@ ActiveRecord::Schema.define(version: 20151120120650) do
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["organisation_content_id"], name: "index_users_on_organisation_content_id", using: :btree
   add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
-
-  create_trigger("editions_before_insert_row_tr", :generated => true, :compatibility => 1).
-      on("editions").
-      before(:insert) do
-    <<-SQL_ACTIONS
-          NEW.tsv :=
-            setweight(to_tsvector('pg_catalog.english', coalesce(NEW.title,'')), 'A') ||
-            setweight(to_tsvector('pg_catalog.english', coalesce(NEW.body,'')), 'B')
-          ;
-    SQL_ACTIONS
-  end
-
-  create_trigger("editions_before_update_row_tr", :generated => true, :compatibility => 1).
-      on("editions").
-      before(:update) do
-    <<-SQL_ACTIONS
-          NEW.tsv :=
-            setweight(to_tsvector('pg_catalog.english', coalesce(NEW.title,'')), 'A') ||
-            setweight(to_tsvector('pg_catalog.english', coalesce(NEW.body,'')), 'B')
-          ;
-    SQL_ACTIONS
-  end
 
 end

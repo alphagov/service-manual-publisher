@@ -22,11 +22,9 @@ class Guide < ActiveRecord::Base
   end
 
   def self.search(search_terms)
-    ids = Edition.search(search_terms).pluck(:guide_id)
-    order = sanitize_sql_array(
-      ["position(id::text in ?)", ids.join(',')]
-    )
-    where(:id => ids).order(order)
+    words = sanitize(search_terms.scan(/\w+/) * "|")
+    from("guides, to_tsquery('pg_catalog.english', #{words}) as q")
+      .where("tsv @@ q").order("ts_rank_cd(tsv, q) DESC")
   end
 
   def work_in_progress_edition?

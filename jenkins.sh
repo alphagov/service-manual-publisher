@@ -39,7 +39,7 @@ git merge --no-commit origin/master || git merge --abort
 export RAILS_ENV=test
 bundle install --path "${HOME}/bundles/${JOB_NAME}" --deployment --without development
 
-bundle exec rake db:drop db:create db:schema:load
+bundle exec rake db:drop db:create db:structure:load
 
 # Clone govuk-content-schemas depedency for tests
 rm -rf tmp/govuk-content-schemas
