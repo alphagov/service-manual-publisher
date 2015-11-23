@@ -190,7 +190,7 @@ private
     fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
 
-    select "Major", from: "Update type"
+    choose "Major update"
     fill_in "Change note", with: "Change Note"
   end
 end

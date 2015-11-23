@@ -32,7 +32,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       click_link "Create new edition"
       expect(find_field("Change note").value).to be_blank
-      expect(page).to have_select("Update type", selected: "Major")
+
+      expect(find_field("Major update")).to be_checked
     end
   end
 

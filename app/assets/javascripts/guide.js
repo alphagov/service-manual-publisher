@@ -4,7 +4,7 @@ $(function() {
 });
 
 function toggleChangeNote() {
-  var value = $(".update-type-select").val();
+  var value = $(".update-type-select:checked").val();
   var changeNote = $(".change-note-form-group");
 
   if (value == "major") {
