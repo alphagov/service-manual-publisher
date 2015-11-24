@@ -202,7 +202,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Current Draft Edition"
-      click_link "History"
+      click_link "Guide history"
       within("table tbody") do
         expect(page.find_all("tr").size).to eq 2
         page.find_all("tr a").last.click
@@ -225,7 +225,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       fill_in "Body", with: "## Hi"
       fill_in "Change to be made", with: "Better greeting"
       click_button "Save Draft"
-      click_link "Changes"
+      click_link "Compare changes"
 
       within ".title del" do
         expect(page).to have_content("First Edition")

@@ -9,9 +9,9 @@
 
 <p>
   <ul class="nav nav-tabs">
-    <%= active_link_to "Show", edition_path(edition), wrap_tag: :li %>
-    <%= active_link_to "Changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id), wrap_tag: :li %>
-    <%= active_link_to "Edit", edit_guide_path(guide), wrap_tag: :li %>
-    <%= active_link_to "History", guide_editions_path(guide), wrap_tag: :li %>
+    <%= active_link_to "View Govspeak", edition_path(edition), wrap_tag: :li %>
+    <%= active_link_to "Edit guide", edit_guide_path(guide), wrap_tag: :li %>
+    <%= active_link_to "Compare changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id), wrap_tag: :li %>
+    <%= active_link_to "Guide history", guide_editions_path(guide), wrap_tag: :li %>
   </ul>
 </p>
