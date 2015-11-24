@@ -56,11 +56,22 @@
 
 
     <fieldset class='update'>
-      <legend>Content</legend>
+      <legend>Change summary</legend>
       <div class='form-group'>
-        <%= editions_form.label :update_type %>
+        <label>Update type</label>
         <%= editions_form.error_list :update_type %>
-        <%= editions_form.select :update_type, [["Major", "major"], ["Minor", "minor"]], {}, {class: 'update-type-select input-md-12 form-control'} %>
+        <div class="radio">
+          <%= label_tag do %>
+            <%= editions_form.radio_button :update_type, "minor", { class: 'update-type-select'} %>
+            Minor update
+          <% end %>
+        </div>
+        <div class="radio">
+          <%= label_tag do %>
+            <%= editions_form.radio_button :update_type, "major", { class: 'update-type-select'} %>
+            Major update
+          <% end %>
+        </div>
       </div>
       <div class="form-group change-note-form-group">
         <%= editions_form.label :change_note %>
