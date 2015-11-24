@@ -38,7 +38,7 @@ class SlugMigrationsController < ApplicationController
         render action: :edit
       end
     end
-  rescue GdsApi::HTTPClientError => e
+  rescue GdsApi::HTTPErrorResponse => e
     flash[:error] = e.error_details["error"]["message"]
     render action: :edit
   end
