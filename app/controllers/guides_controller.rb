@@ -14,7 +14,7 @@ class GuidesController < ApplicationController
 
   def new
     @guide = Guide.new(slug: "/service-manual/")
-    @guide.build_latest_edition
+    @guide.build_latest_edition(update_type: 'major')
   end
 
   def create
