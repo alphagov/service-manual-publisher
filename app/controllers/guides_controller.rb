@@ -2,7 +2,7 @@ class GuidesController < ApplicationController
   def index
     @user_options = User.all.collect{ |u| [u.name, u.id] }
     @state_options = %w(draft published review_requested approved).map {|s| [s.titleize, s]}
-    @published_by_options = ContentOwner.pluck(:title, :id)
+    @content_owner_options = ContentOwner.pluck(:title, :id)
 
     @guides = Guide.includes(latest_edition: :user)
 
@@ -14,8 +14,8 @@ class GuidesController < ApplicationController
       @guides = @guides.where(editions: {state: params[:state]})
     end
 
-    if params[:published_by].present?
-      @guides = @guides.where(editions: {content_owner_id: params[:published_by]})
+    if params[:content_owner].present?
+      @guides = @guides.where(editions: {content_owner_id: params[:content_owner]})
     end
 
     if params[:q].present?

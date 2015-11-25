@@ -11,8 +11,8 @@
         <%= label_tag :state, nil, class: "add-top-margin nav-header" %>
         <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
 
-        <%= label_tag :published_by, nil, class: "add-top-margin nav-header" %>
-        <%= select_tag :published_by, options_for_select(@published_by_options, params[:published_by]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+        <%= label_tag :content_owner, "Published by", class: "add-top-margin nav-header" %>
+        <%= select_tag :content_owner, options_for_select(@content_owner_options, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
 
         <input type="submit" class="add-top-margin btn btn-default" value="Filter guides">
       </form>
