@@ -72,7 +72,7 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       phase:           "beta",
       description:     "Description",
       update_type:     "minor",
-      body:            object[:body],
+      body:            object[:body].gsub(/\n/, "\r\n"),
       content_owner:   ContentOwner.first,
       user:            author,
     )
