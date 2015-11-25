@@ -1,5 +1,5 @@
 class EditionDiff
-  TRACKABLE_FIELDS = [:title, :related_discussion_title, :related_discussion_href, :content_owner_title, :description, :body]
+  TRACKABLE_FIELDS = [:title, :content_owner_title, :description, :body]
 
   attr_reader :old_edition, :new_edition
 
