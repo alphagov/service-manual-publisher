@@ -31,7 +31,7 @@ class EditionDiff
     end
 
     def diff
-      diff = Diffy::Diff.new(old_text, new_text, allow_empty_diff: true)
+      diff = Diffy::Diff.new(old_text, new_text, allow_empty_diff: true, include_plus_and_minus_in_html: true)
       if diff.any?
         diff.to_s(:html).html_safe
       else
