@@ -178,32 +178,4 @@ RSpec.describe Edition, type: :model do
       expect(draft.change_note).to be_blank
     end
   end
-
-  describe "#search" do
-    it "has triggers setup" do
-      expect(HairTrigger::migrations_current?).to be true
-    end
-
-    it "searches title" do
-      titles = ["Standups", "Unit Testing"]
-      titles.each_with_index do |title, index|
-        edition = Generators.valid_edition(state: "review_requested", title: title)
-        Guide.create!(latest_edition: edition, slug: "/service-manual/#{index}")
-      end
-
-      results = Edition.search("testing").map {|e| e.title}
-      expect(results).to eq ["Unit Testing"]
-    end
-
-    it "prioritises title over body" do
-      edition = Generators.valid_edition(state: "review_requested", title: "nothing", body: "search")
-      Guide.create!(latest_edition: edition, slug: "/service-manual/1")
-
-      edition = Generators.valid_edition(state: "review_requested", title: "search", body: "nothing")
-      Guide.create!(latest_edition: edition, slug: "/service-manual/2")
-
-      results = Edition.search("search").map {|e| e.title}
-      expect(results).to eq ["search", "nothing"]
-    end
-  end
 end

@@ -1,41 +1,63 @@
-<h1>Guides</h1>
+<div class="row">
+  <div class="col-md-3">
+    <div class="filters well sidebar-nav">
+      <form action="<%= guides_path%>" method="get">
+        <%= label_tag :q, "Title or slug", class: "nav-header" %>
+        <%= text_field_tag :q, params[:q], type: :search, class: "form-control" %>
 
-<table class='table table-bordered'>
-  <thead>
-    <tr class='table-header'>
-      <th>Title</th>
-      <th>Last updated by</th>
-      <th>State</th>
-      <th>Controls</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @guides.each do |guide| %>
-      <tr>
-        <td>
-          <%= link_to guide.latest_edition.title, guide.latest_edition %>
-          <span class='text-muted'><%= guide.slug %></span>
-        </td>
-        <td class='last-edited-by'>
-          <%= latest_editor_name(guide) %>
-        </td>
-        <td>
-          <%= state_label(guide) %>
-        </td>
-        <td class='content-controls'>
-          <% if guide.latest_edition.published? %>
-            <%= link_to "Create new edition", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
-          <% else %>
-            <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
-          <% end %>
-          <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <%= label_tag :user, nil, class: "add-top-margin nav-header" %>
+        <%= select_tag :user, options_for_select(@user_options, params[:user]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
 
-<%= paginate @guides %>
-<p>
-  <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-</p>
+        <%= label_tag :state, nil, class: "add-top-margin nav-header" %>
+        <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+
+        <%= label_tag :content_owner, "Published by", class: "add-top-margin nav-header" %>
+        <%= select_tag :content_owner, options_for_select(@content_owner_options, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+
+        <input type="submit" class="add-top-margin btn btn-default" value="Filter guides">
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    <table class='table table-bordered'>
+      <thead>
+        <tr class='table-header'>
+          <th>Title</th>
+          <th>Last updated by</th>
+          <th>State</th>
+          <th>Controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @guides.each do |guide| %>
+          <tr>
+            <td>
+              <%= link_to guide.latest_edition.title, guide.latest_edition %>
+              <span class='text-muted'><%= guide.slug %></span>
+            </td>
+            <td class='last-edited-by'>
+              <%= latest_editor_name(guide) %>
+            </td>
+            <td>
+              <%= state_label(guide) %>
+            </td>
+            <td class='content-controls'>
+              <% if guide.latest_edition.published? %>
+                <%= link_to "Create new edition", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+              <% else %>
+                <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
+              <% end %>
+              <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%= paginate @guides %>
+    <p>
+      <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
+    </p>
+  </div>
+</div>

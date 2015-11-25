@@ -1,15 +1,28 @@
 class GuidesController < ApplicationController
   def index
-    @guides = if params[:q].present?
-                Guide.search(params[:q])
-                  .includes(latest_edition: :user)
-                  .page(params[:page])
-              else
-                Guide
-                  .includes(latest_edition: :user)
-                  .page(params[:page])
-                  .order(updated_at: :desc)
-              end
+    @user_options = User.all.collect{ |u| [u.name, u.id] }
+    @state_options = %w(draft published review_requested approved).map {|s| [s.titleize, s]}
+    @content_owner_options = ContentOwner.pluck(:title, :id)
+
+    @guides = Guide.includes(latest_edition: :user)
+
+    if params[:user].present?
+      @guides = @guides.where(editions: {user_id: params[:user]})
+    end
+
+    if params[:state].present?
+      @guides = @guides.where(editions: {state: params[:state]})
+    end
+
+    if params[:content_owner].present?
+      @guides = @guides.where(editions: {content_owner_id: params[:content_owner]})
+    end
+
+    if params[:q].present?
+      @guides = @guides.search(params[:q])
+    end
+
+    @guides = @guides.page(params[:page])
   end
 
   def new
