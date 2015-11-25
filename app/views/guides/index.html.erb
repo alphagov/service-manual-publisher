@@ -20,13 +20,19 @@
   </div>
 
   <div class="col-md-9">
+    <p>
+      <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
+    </p>
+    <%= paginate @guides %>
     <table class='table table-bordered'>
       <thead>
         <tr class='table-header'>
-          <th>Title</th>
-          <th>Last updated by</th>
+          <th>Guide</th>
+          <th>Published by</th>
+          <th>Author</th>
+          <th>Last update</th>
           <th>State</th>
-          <th>Controls</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -36,19 +42,21 @@
               <%= link_to guide.latest_edition.title, guide.latest_edition %>
               <span class='text-muted'><%= guide.slug %></span>
             </td>
+            <td>
+              <%= guide.latest_edition.content_owner.title %>
+            </td>
             <td class='last-edited-by'>
               <%= latest_editor_name(guide) %>
+            </td>
+            <td>
+              <%= guide.latest_edition.updated_at.strftime("%d %b %Y") %>
             </td>
             <td>
               <%= state_label(guide) %>
             </td>
             <td class='content-controls'>
-              <% if guide.latest_edition.published? %>
-                <%= link_to "Create new edition", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
-              <% else %>
-                <%= link_to "Continue editing", edit_guide_path(guide), class: 'btn btn-default btn-xs' %>
-              <% end %>
-              <%= link_to "View history", guide_editions_path(guide), class: 'btn btn-default btn-xs' %>
+              <% action_title = @state_titles.fetch(guide.latest_edition.state.to_sym) %>
+              <%= link_to action_title, edit_guide_path(guide), class: "btn btn-default btn-xs" %>
             </td>
           </tr>
         <% end %>
@@ -56,8 +64,5 @@
     </table>
 
     <%= paginate @guides %>
-    <p>
-      <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-    </p>
   </div>
 </div>

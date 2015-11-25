@@ -1,10 +1,16 @@
 class GuidesController < ApplicationController
   def index
+    @state_titles = {
+      draft: "Edit draft",
+      review_requested: "Review guide",
+      approved: "Publish",
+      published: "Create new edition",
+    }
     @user_options = User.all.collect{ |u| [u.name, u.id] }
     @state_options = %w(draft published review_requested approved).map {|s| [s.titleize, s]}
     @content_owner_options = ContentOwner.pluck(:title, :id)
 
-    @guides = Guide.includes(latest_edition: :user)
+    @guides = Guide.includes(latest_edition: [:user, :content_owner])
 
     if params[:user].present?
       @guides = @guides.where(editions: {user_id: params[:user]})
