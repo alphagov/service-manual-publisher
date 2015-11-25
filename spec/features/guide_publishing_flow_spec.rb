@@ -16,8 +16,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
       click_link "Create new edition"
       the_form_should_be_prepopulated_with_title "Standups"
-      fill_in "Title", with: "Standup meetings"
-      fill_in "Change note", with: "Be more specific in the title"
+      fill_in "Guide title", with: "Standup meetings"
+      fill_in "Change to be made", with: "Be more specific in the title"
       click_button "Save Draft"
 
       guide.reload
@@ -31,7 +31,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
 
       click_link "Create new edition"
-      expect(find_field("Change note").value).to be_blank
+      expect(find_field("Change to be made").value).to be_blank
 
       expect(find_field("Major update")).to be_checked
     end
@@ -44,7 +44,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
 
-    fill_in "Title", with: "Agile"
+    fill_in "Guide title", with: "Agile"
 
     click_button "Save Draft"
 
@@ -65,8 +65,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
       visit edit_guide_path(guide)
-      fill_in "Title", with: "Updated Title"
-      fill_in "Change note", with: "Update Title"
+      fill_in "Guide title", with: "Updated Title"
+      fill_in "Change to be made", with: "Update Title"
       click_button "Save Draft"
 
       the_form_should_be_prepopulated_with_title "Updated Title"
@@ -83,7 +83,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Create new edition"
-      fill_in "Change note", with: "Fix a typo"
+      fill_in "Change to be made", with: "Fix a typo"
       click_button "Save Draft"
 
       within ".alert" do
@@ -113,7 +113,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     guide = given_a_guide_exists state: 'draft', title: "Agile methodologies"
     visit guides_path
     click_link "Continue editing"
-    fill_in "Title", with: "Agile"
+    fill_in "Guide title", with: "Agile"
     click_button "Save Draft"
     expect(current_path).to eq edit_guide_path guide
 
@@ -125,7 +125,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     stub_user.update_attribute :name, "John Smith"
     guide = given_a_guide_exists state: 'draft'
     visit edit_guide_path(guide)
-    fill_in "Title", with: "An amended title"
+    fill_in "Guide title", with: "An amended title"
     click_button "Save Draft"
     visit guides_path
     within ".last-edited-by" do
@@ -136,7 +136,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should save a draft locally, sent it to Publishing API, then redirect to the front end when previewing" do
     guide = given_a_guide_exists state: 'draft', title: 'Test guide', slug: '/service-manual/preview-test'
     visit edit_guide_path(guide)
-    fill_in "Title", with: "Changed Title"
+    fill_in "Guide title", with: "Changed Title"
 
     expect_any_instance_of(GuidePublisher).to receive(:put_draft)
 
@@ -202,7 +202,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Current Draft Edition"
-      click_link "History"
+      click_link "Guide history"
       within("table tbody") do
         expect(page.find_all("tr").size).to eq 2
         page.find_all("tr a").last.click
@@ -221,11 +221,11 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     it "shows exact changes in any fields" do
       guide = given_a_published_guide_exists(title: "First Edition", body: "### Hello")
       visit edit_guide_path(guide)
-      fill_in "Title", with: "Second Edition"
+      fill_in "Guide title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
-      fill_in "Change note", with: "Better greeting"
+      fill_in "Change to be made", with: "Better greeting"
       click_button "Save Draft"
-      click_link "Changes"
+      click_link "Compare changes"
 
       within ".title del" do
         expect(page).to have_content("First Edition")
@@ -273,7 +273,7 @@ private
   end
 
   def the_form_should_be_prepopulated_with_title(title)
-    expect(find_field('Title').value).to eq title
+    expect(find_field('Guide title').value).to eq title
   end
 
   def expect_external_redirect_to(external_url)

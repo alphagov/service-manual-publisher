@@ -36,8 +36,6 @@ RSpec.describe "creating guides", type: :feature do
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
-    expect(edition.related_discussion_title).to eq "Discussion on HackPad"
-    expect(edition.related_discussion_href).to eq "https://designpatterns.hackpad.com/"
     expect(edition.content_owner.title).to eq "Design Community"
     expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
     expect(edition.title).to eq "First Edition Title"
@@ -48,7 +46,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq false
 
     visit edit_guide_path(guide)
-    fill_in "Title", with: "Second Edition Title"
+    fill_in "Guide title", with: "Second Edition Title"
     click_button "Save Draft"
 
     within ".alert" do
@@ -134,7 +132,7 @@ RSpec.describe "creating guides", type: :feature do
     it "shows the summary of validation errors" do
       guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
       visit edit_guide_path(guide)
-      fill_in "Title", with: ""
+      fill_in "Guide title", with: ""
       click_button "Save Draft"
 
       within(".full-error-list") do
@@ -168,7 +166,7 @@ RSpec.describe "creating guides", type: :feature do
         expect_any_instance_of(GuidePublisher).to receive(:put_draft).once.and_raise(api_error)
 
         visit edit_guide_path(guide)
-        fill_in "Title", with: "Changed Title"
+        fill_in "Guide title", with: "Changed Title"
         click_button "Save Draft"
 
         expect(Guide.count).to eq 1
@@ -182,15 +180,13 @@ private
 
   def fill_in_guide_form
     fill_in "Slug", with: "/service-manual/the/path"
-    fill_in "Related discussion title", with: "Discussion on HackPad"
-    fill_in "Link to related discussion", with: "https://designpatterns.hackpad.com/"
     select "Design Community", from: "Published by"
-    fill_in "Description", with: "This guide acts as a test case"
+    fill_in "Guide description", with: "This guide acts as a test case"
 
-    fill_in "Title", with: "First Edition Title"
+    fill_in "Guide title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
 
     choose "Major update"
-    fill_in "Change note", with: "Change Note"
+    fill_in "Change to be made", with: "Change Note"
   end
 end

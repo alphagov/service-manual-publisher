@@ -1,62 +1,40 @@
-<div class='well'>
+<div class='well col-md-8'>
   <%= form_for guide do |f| %>
     <%= render 'shared/form_error_summary', object: guide %>
 
-    <fieldset class='guide'>
-      <legend>Guide</legend>
+    <%= f.fields_for :latest_edition, guide.latest_editable_edition do |editions_form| %>
+      <div class="form-group">
+        <%= editions_form.label :title, "Guide title" %>
+        <%= editions_form.error_list :title %>
+        <%= editions_form.text_field :title, class: 'input-md-12 form-control' %>
+      </div>
+
       <div class='form-group'>
         <%= f.label :slug  %>
         <%= f.error_list :slug  %>
         <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug', disabled: guide.persisted? %>
+        <span class="help-block">Must start with '/service-manual/' and contain only letters and dashes e.g. '/service-manual/stand-up-meetings'</span>
       </div>
-    </fieldset>
 
-    <%= f.fields_for :latest_edition, guide.latest_editable_edition do |editions_form| %>
-      <fieldset class='meta'>
-        <legend>Meta</legend>
-        <div class='form-group'>
-          <%= editions_form.label :related_discussion_title %>
-          <%= editions_form.error_list :related_discussion_title %>
-          <%= editions_form.text_field :related_discussion_title, class: 'input-md-12 form-control' %>
-        </div>
+      <div class='form-group'>
+        <%= editions_form.label :description, "Guide description" %>
+        <%= editions_form.error_list :description %>
+        <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
+        <span class="help-block">To be used for displaying search results, linking content etc.</span>
+      </div>
 
-        <div class='form-group'>
-          <%= editions_form.label :related_discussion_href, "Link to related discussion" %>
-          <%= editions_form.error_list :related_discussion_href %>
-          <%= editions_form.text_field :related_discussion_href, class: 'input-md-12 form-control' %>
-        </div>
+      <div class="form-group">
+        <%= editions_form.label :body %>
+        <%= editions_form.error_list :body %>
+        <%= editions_form.text_area :body, class: 'input-md-12 form-control', rows: 14 %>
+      </div>
 
-        <div class='form-group'>
-          <%= editions_form.label :content_owner_id, "Published by" %>
-          <%= editions_form.error_list :content_owner_id %>
-          <%= editions_form.select :content_owner_id, ContentOwner.all.pluck(:title, :id), {}, {class: 'select2 input-md-12 form-control'} %>
-        </div>
+      <div class='form-group'>
+        <%= editions_form.label :content_owner_id, "Published by" %>
+        <%= editions_form.error_list :content_owner_id %>
+        <%= editions_form.select :content_owner_id, ContentOwner.all.pluck(:title, :id), {}, {class: 'select2 input-md-12 form-control'} %>
+      </div>
 
-        <div class='form-group'>
-          <%= editions_form.label :description %>
-          <%= editions_form.error_list :description %>
-          <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
-        </div>
-
-      </fieldset>
-
-    <fieldset class='inputs'>
-      <legend>Content</legend>
-        <div class="form-group">
-          <%= editions_form.label :title %>
-          <%= editions_form.error_list :title %>
-          <%= editions_form.text_field :title, class: 'input-md-12 form-control' %>
-        </div>
-        <div class="form-group">
-          <%= editions_form.label :body %>
-          <%= editions_form.error_list :body %>
-          <%= editions_form.text_area :body, class: 'input-md-12 form-control', rows: 14 %>
-        </div>
-    </fieldset>
-
-
-    <fieldset class='update'>
-      <legend>Change summary</legend>
       <div class='form-group'>
         <label>Update type</label>
         <%= editions_form.error_list :update_type %>
@@ -74,18 +52,16 @@
         </div>
       </div>
       <div class="form-group change-note-form-group">
-        <%= editions_form.label :change_note %>
+        <%= editions_form.label :change_note, "Change to be made" %>
+        <span>(visible publicly)</span>
         <%= editions_form.text_area :change_note, class: 'input-md-12 form-control', rows: 5 %>
+        <span class="help-block">Explain the change, the reason for the change and provide some context.</span>
       </div>
-    </fieldset>
 
-      <fieldset class='publication'>
-        <legend>Publication</legend>
-        <div class='form-group'>
-          <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft, data: disable_if_new_record(guide) %>
-          <%= f.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
-        </div>
-      </fieldset>
+      <div class='form-group'>
+        <%= f.submit "Save Draft", class: 'btn btn-success', name: :save_draft, data: disable_if_new_record(guide) %>
+        <%= f.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
+      </div>
     <% end %>
   <% end %>
 
@@ -94,4 +70,23 @@
       <%= f.submit "Send for review", class: 'btn btn-success' %>
     <% end %>
   <% end %>
+</div>
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">Help</div>
+
+    <ul class="nav nav-pills nav-stacked">
+      <li>
+        <a href="https://www.gov.uk/guidance/style-guide">Style guide</a>
+      </li>
+      <li>
+        <a href="https://www.gov.uk/guidance/content-design/writing-for-gov-uk">Writing for GOV.UK</a>
+      </li>
+      <li>
+        <a href="https://github.com/alphagov/govspeak/wiki/Using-govspeak-on-GOV.UK">Formatting text using Govspeak</a>
+      </li>
+    </ul>
+  </div>
+
 </div>
