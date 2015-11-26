@@ -1,10 +1,11 @@
-<div class='well comments'>
-  <fieldset class='meta'>
-    <legend>Comments</legend>
-
+<div class='comments'>
+  <h3 class="section-header">Comments</h3>
     <% comments.each do |comment| %>
       <div class="comment panel panel-default">
         <div class="panel-heading">
+          <span class="text-muted pull-right">
+            <%= comment.created_at.to_s(:govuk_date) %>
+          </span>
           <h3 class="panel-title">
             <%= comment.user.name %>
           </h3>
@@ -26,5 +27,4 @@
         <%= f.submit "Comment", class: "btn btn-success" %>
       </div>
     <% end %>
-  </fieldset>
 </div>
