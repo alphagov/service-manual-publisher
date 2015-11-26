@@ -1,5 +1,5 @@
 class EditionDiff
-  TRACKABLE_FIELDS = [:title, :related_discussion_title, :related_discussion_href, :content_owner_title, :description, :body]
+  TRACKABLE_FIELDS = [:title, :content_owner_title, :description, :body]
 
   attr_reader :old_edition, :new_edition
 
@@ -31,7 +31,7 @@ class EditionDiff
     end
 
     def diff
-      diff = Diffy::Diff.new(old_text, new_text, allow_empty_diff: true)
+      diff = Diffy::Diff.new(old_text, new_text, allow_empty_diff: true, include_plus_and_minus_in_html: true)
       if diff.any?
         diff.to_s(:html).html_safe
       else

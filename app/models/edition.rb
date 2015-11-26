@@ -66,7 +66,7 @@ class Edition < ActiveRecord::Base
   end
 
   def previously_published_edition
-    guide.editions.published.where("id < ?", id).order(id: :desc).first
+    @previously_published_edition ||= guide.editions.published.where("id < ?", id).order(id: :desc).first
   end
 
   def change_note_html

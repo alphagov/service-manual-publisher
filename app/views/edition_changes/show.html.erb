@@ -1,14 +1,33 @@
-<%= render 'editions/header_with_navigation', edition: @edition, guide: @edition.guide %>
-<%= render 'editions/old_edition_alert', edition: @edition, guide: @edition.guide %>
+<div class="row">
+  <%= render 'editions/header_with_navigation', edition: @edition, guide: @edition.guide %>
+</div>
+<div class="row">
+  <%= render 'editions/old_edition_alert', edition: @edition, guide: @edition.guide %>
+</div>
 
-<% @edition_diff.changes.each do |field, change| %>
-  <div class="row">
-    <div class="col-md-8 <%= field %>">
-      <label><%= change.field_name %>:</label>
-      <%= change.diff %>
+<div class="row">
+  <h2>
+    Compare changes
+    <% if @edition.previously_published_edition %>
+      <br/>
+      <small>
+        Changes between this draft and
+        <%= link_to_if @edition.previously_published_edition, "the previous version",  @edition.previously_published_edition %>.
+      </small>
+    <% end %>
+  </h2>
+</div>
+
+<div class="row compare-changes">
+  <% @edition_diff.changes.each do |field, change| %>
+    <div class="row">
+      <div class="col-md-8 <%= field %>">
+        <label><%= change.field_name %></label>
+        <pre><%= change.diff %></pre>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
 
 <div class="row">
   <%= render 'editions/publishing_controls', edition: @edition, guide: @edition.guide %>

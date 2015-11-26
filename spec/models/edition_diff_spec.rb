@@ -18,8 +18,8 @@ RSpec.describe EditionDiff, type: :model do
       )
 
       diff_markup = edition_diff.changes[:title].diff
-      expect(diff_markup).to include "<ins><strong>Bye</strong></ins>"
-      expect(diff_markup).to include "<del><strong>Hello</strong></del>"
+      expect(diff_markup).to include "<ins><span class=\"symbol\">+</span><strong>Bye</strong></ins>"
+      expect(diff_markup).to include "<del><span class=\"symbol\">-</span><strong>Hello</strong></del>"
     end
   end
 end
