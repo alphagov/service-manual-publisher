@@ -40,7 +40,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "creates a new draft version if the original has been published in the meantime" do
     guide = given_a_guide_exists title: "Agile development"
     visit guides_path
-    click_link "Continue editing"
+    click_link "Edit draft"
 
     guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
 
@@ -112,7 +112,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should not create a new edition if the latest edition isn't published" do
     guide = given_a_guide_exists state: 'draft', title: "Agile methodologies"
     visit guides_path
-    click_link "Continue editing"
+    click_link "Edit draft"
     fill_in "Guide title", with: "Agile"
     click_button "Save Draft"
     expect(current_path).to eq edit_guide_path guide
