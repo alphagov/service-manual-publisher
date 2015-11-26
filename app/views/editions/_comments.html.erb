@@ -1,10 +1,10 @@
 <div class='comments'>
   <h3 class="section-header">Comments</h3>
     <% comments.each do |comment| %>
-      <div class="comment panel panel-default">
+      <div class="comment panel panel-default" id="<%= comment.html_id %>">
         <div class="panel-heading">
           <span class="text-muted pull-right">
-            <%= comment.created_at.to_s(:govuk_date) %>
+            <%= link_to comment.created_at.to_s(:govuk_date), url_for(params.merge(anchor: comment.html_id)) %>
           </span>
           <h3 class="panel-title">
             <%= comment.user.name %>

@@ -35,5 +35,10 @@ RSpec.describe ApplicationController do
       allow(request).to receive(:url).and_return('infinite_loop_url')
       expect(controller.back_or_default('fallback_url')).to eq 'fallback_url'
     end
+
+    it "adds an anchor if provided" do
+      request.env['HTTP_REFERER'] = 'referer_url'
+      expect(controller.back_or_default('default', anchor: 'anchovy')).to eq 'referer_url#anchovy'
+    end
   end
 end

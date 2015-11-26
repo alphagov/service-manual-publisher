@@ -11,11 +11,15 @@ class ApplicationController < ActionController::Base
   end
   helper_method :guide_preview_url
 
-  def back_or_default(fallback_uri = root_url)
-    if request.referrer.present? && request.referrer != request.url
+  def back_or_default(fallback_uri = root_url, anchor: nil)
+    uri = if request.referrer.present? && request.referrer != request.url
       request.referrer
     else
       fallback_uri
     end
+    if anchor && uri.exclude?("#")
+      uri += "##{anchor}"
+    end
+    uri
   end
 end
