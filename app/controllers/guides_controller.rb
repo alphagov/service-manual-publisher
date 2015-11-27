@@ -54,12 +54,10 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
-    @comments = @guide.comments_for_rendering
   end
 
   def update
     @guide = Guide.find(params[:id])
-    @comments = @guide.comments_for_rendering
 
     @guide.ensure_draft_exists
 
@@ -84,12 +82,6 @@ private
     else
       back_or_default
     end
-  end
-
-  def comments_list(guide)
-    guide.latest_edition.comments
-      .order(created_at: :asc)
-      .includes(:user)
   end
 
   def guide_params(with = {})

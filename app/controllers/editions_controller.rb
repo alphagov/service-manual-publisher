@@ -7,6 +7,11 @@ class EditionsController < ApplicationController
   def show
     @edition = Edition.find(params[:id])
     @guide = @edition.guide
+  end
+
+  def comments
+    @edition = Edition.find(params[:id])
+    @guide = @edition.guide
     @comments = @edition.comments.for_rendering
   end
 end
