@@ -13,8 +13,8 @@ RSpec.describe "Commenting", type: :feature do
   it "allows discourse on edit page" do
     visit edit_guide_path(guide)
     within ".comments" do
-      fill_in "Comment", with: "This is my comment"
-      click_button "Comment"
+      fill_in "Add new comment", with: "This is my comment"
+      click_button "Save comment"
     end
 
     expect(page.current_path).to eq edit_guide_path(guide)
@@ -28,8 +28,8 @@ RSpec.describe "Commenting", type: :feature do
   it "allows discourse on show page" do
     visit edition_path(guide.latest_edition)
     within ".comments" do
-      fill_in "Comment", with: "This is my comment"
-      click_button "Comment"
+      fill_in "Add new comment", with: "This is my comment"
+      click_button "Save comment"
     end
 
     expect(page.current_path).to eq edition_path(guide.latest_edition)
