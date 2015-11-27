@@ -1,5 +1,8 @@
 <div class="row">
   <div class="col-md-3">
+    <p>
+      <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-block btn-success' %>
+    </p>
     <div class="filters well sidebar-nav">
       <form action="<%= guides_path%>" method="get">
         <%= label_tag :q, "Title or slug", class: "nav-header" %>
@@ -20,10 +23,6 @@
   </div>
 
   <div class="col-md-9">
-    <p>
-      <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-primary' %>
-    </p>
-    <%= paginate @guides %>
     <table class='table table-bordered'>
       <thead>
         <tr class='table-header'>
