@@ -1,10 +1,10 @@
 class GuidesController < ApplicationController
   def index
     @state_titles = {
-      draft: "Edit draft",
+      draft: "Edit",
       review_requested: "Review guide",
       approved: "Publish",
-      published: "Create new edition",
+      published: "Edit",
     }
     @user_options = User.all.collect{ |u| [u.name, u.id] }
     @state_options = %w(draft published review_requested approved).map {|s| [s.titleize, s]}
