@@ -1,10 +1,24 @@
-<div class='well comments'>
-  <fieldset class='meta'>
-    <legend>Comments</legend>
+<div class='comments'>
+  <h3 class="section-header">Comments</h3>
+
+    <%= form_for Comment.new do |f| %>
+      <%= f.hidden_field :edition_id, value: edition.id %>
+
+      <div class='form-group'>
+        <%= f.label :comment, "Add new comment" %>
+        <%= f.text_area :comment, class: "form-control", rows: 3 %>
+      </div>
+      <div class='form-group'>
+        <%= f.submit "Save comment", class: "btn btn-success" %>
+      </div>
+    <% end %>
 
     <% comments.each do |comment| %>
-      <div class="comment panel panel-default">
+      <div class="comment panel panel-default" id="<%= comment.html_id %>">
         <div class="panel-heading">
+          <span class="text-muted pull-right">
+            <%= link_to comment.created_at.to_s(:govuk_date), url_for(params.merge(anchor: comment.html_id)) %>
+          </span>
           <h3 class="panel-title">
             <%= comment.user.name %>
           </h3>
@@ -14,17 +28,4 @@
         </div>
       </div>
     <% end %>
-
-    <%= form_for Comment.new do |f| %>
-      <%= f.hidden_field :edition_id, value: edition.id %>
-
-      <div class='form-group'>
-        <%= f.label :comment %>
-        <%= f.text_area :comment, class: "form-control", rows: 3 %>
-      </div>
-      <div class='form-group'>
-        <%= f.submit "Comment", class: "btn btn-success" %>
-      </div>
-    <% end %>
-  </fieldset>
 </div>

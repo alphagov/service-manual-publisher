@@ -14,7 +14,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(publisher_double).to receive(:put_draft).once
 
       visit guides_path
-      click_link "Create new edition"
+      click_link "Edit"
       the_form_should_be_prepopulated_with_title "Standups"
       fill_in "Guide title", with: "Standup meetings"
       fill_in "Change to be made", with: "Be more specific in the title"
@@ -30,7 +30,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       given_a_published_guide_exists title: "Standups"
       visit guides_path
 
-      click_link "Create new edition"
+      click_link "Edit"
       expect(find_field("Change to be made").value).to be_blank
 
       expect(find_field("Major update")).to be_checked
@@ -40,7 +40,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "creates a new draft version if the original has been published in the meantime" do
     guide = given_a_guide_exists title: "Agile development"
     visit guides_path
-    click_link "Edit draft"
+    click_link "Edit"
 
     guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
 
@@ -82,7 +82,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
 
       visit guides_path
-      click_link "Create new edition"
+      click_link "Edit"
       fill_in "Change to be made", with: "Fix a typo"
       click_button "Save Draft"
 
@@ -112,7 +112,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should not create a new edition if the latest edition isn't published" do
     guide = given_a_guide_exists state: 'draft', title: "Agile methodologies"
     visit guides_path
-    click_link "Edit draft"
+    click_link "Edit"
     fill_in "Guide title", with: "Agile"
     click_button "Save Draft"
     expect(current_path).to eq edit_guide_path guide
