@@ -48,7 +48,7 @@
               <%= latest_editor_name(guide) %>
             </td>
             <td>
-              <%= guide.latest_edition.updated_at.strftime("%d %b %Y") %>
+              <%= time_ago_in_words(guide.latest_edition.updated_at) %> ago
             </td>
             <td>
               <%= state_label(guide) %>
