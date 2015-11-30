@@ -153,7 +153,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
       visit edit_guide_path(guide)
-      click_button "Send for review"
+      click_button "Send it for review"
       visit guides_path
       expect(page).to have_content "Review Requested"
     end
@@ -167,12 +167,12 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         login_as reviewer
         visit guides_path
         click_link "Standups"
-        click_button "Mark as Approved"
+        click_button "Mark it as approved"
 
         expect(current_path).to eq edition_path(edition)
 
         expect(page).to have_content "Thanks for approving this guide"
-        expect(page).to have_content "Changes approved by Keanu Reviews"
+        expect(page).to have_content "It was approved by Keanu Reviews"
         within ".label" do
           expect(page).to have_content "Approved"
         end
@@ -212,8 +212,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       within ".alert-info" do
         expect(page).to have_content "You're looking at a past edition of this guide"
       end
-      expect(page).to_not have_button "Publish Guide"
-      expect(page).to_not have_button "Send for review"
+      expect(page).to_not have_button "Publish it"
+      expect(page).to_not have_button "Send it for review"
     end
   end
 
