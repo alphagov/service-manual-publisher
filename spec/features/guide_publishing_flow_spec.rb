@@ -154,7 +154,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       click_button "Send for review"
-      visit guides_path
       expect(page).to have_content "Review Requested"
     end
 
@@ -170,9 +169,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         click_button "Mark as Approved"
 
         expect(current_path).to eq edition_path(edition)
-
         expect(page).to have_content "Thanks for approving this guide"
         expect(page).to have_content "Changes approved by Keanu Reviews"
+
+        visit root_path
         within ".label" do
           expect(page).to have_content "Approved"
         end
