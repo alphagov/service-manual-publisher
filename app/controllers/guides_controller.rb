@@ -26,6 +26,8 @@ class GuidesController < ApplicationController
 
     if params[:q].present?
       @guides = @guides.search(params[:q])
+    else
+      @guides = @guides.order(updated_at: :desc)
     end
 
     @guides = @guides.page(params[:page])
