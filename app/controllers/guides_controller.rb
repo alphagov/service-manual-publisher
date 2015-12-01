@@ -44,7 +44,7 @@ class GuidesController < ApplicationController
     ActiveRecord::Base.transaction do
       if @guide.save
         GuidePublisher.new(guide: @guide).put_draft
-        redirect_to success_url(@guide), notice: "Guide has been created"
+        redirect_to edit_guide_path(@guide), notice: "Guide has been created"
       else
         render action: :new
       end
