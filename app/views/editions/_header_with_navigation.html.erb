@@ -2,23 +2,49 @@
   <div class="page-title">
     <h1>
       <%= edition.title %>
-      <%= state_label(guide) %>
     </h1>
+    <% if edition == guide.latest_edition %>
+      <div class="callout callout-info">
+        <div class="callout-body">
+          This guide is marked as <%= state_label(edition.state || "new") %>
+          <% if edition.can_request_review? %>
+            <%= form_for :review_request, url: edition_review_requests_path(edition_id: edition.id), html: {class: "form-inline"} do |f| %>
+              When you are done editing it <%= f.submit "Send it for review", class: 'btn btn-success' %>
+            <% end %>
+          <% elsif edition.can_be_approved? %>
+              <%= form_for Approval.new do |f| %>
+                <%= f.hidden_field :edition_id, value: edition.id %>
+                If you have reviewed it, you can
+                <%= f.submit "Mark it as approved", class: 'btn btn-success' %>
+              <% end %>
+          <% elsif edition.can_be_published? %>
+            <% if edition.approval.present? %>
+              It was approved by <strong><%= edition.approval.user.name %></strong>
+            <% end %>
+            <%= form_for :publication, url: guide_publications_path(guide_id: guide.id) do |f| %>
+              You can now
+              <%= f.submit "Publish it", class: 'btn btn-success', name: :publish %>
+            <% end %>
+          <% elsif edition.published? %>
+            You can <%= link_to "edit it", edit_guide_path(guide), class: "btn btn-default" %> to create a new draft version
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </header>
 
 <p>
   <ul class="nav nav-tabs">
     <%= active_link_to "View Govspeak", edition_path(edition), wrap_tag: :li %>
-
     <%
       conversation_title = "Conversation"
-      if guide.latest_edition.comments.any?
-        conversation_title = "#{conversation_title} (#{guide.latest_edition.comments.count})"
+      if edition.comments.any?
+        conversation_title = "#{conversation_title} (#{edition.comments.count})"
       end
     %>
 
-    <%= active_link_to conversation_title, edition_comments_path(guide.latest_edition), wrap_tag: :li %>
+    <%= active_link_to conversation_title, edition_comments_path(edition), wrap_tag: :li %>
 
     <%= active_link_to "Edit guide", edit_guide_path(guide), wrap_tag: :li %>
     <%= active_link_to "Compare changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id), wrap_tag: :li %>

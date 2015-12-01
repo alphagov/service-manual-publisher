@@ -51,7 +51,7 @@
               <%= time_ago_in_words(guide.latest_edition.updated_at) %> ago
             </td>
             <td>
-              <%= state_label(guide) %>
+              <%= state_label(guide.latest_edition.state) %>
             </td>
             <td class='content-controls'>
               <% action_title = @state_titles.fetch(guide.latest_edition.state.to_sym) %>

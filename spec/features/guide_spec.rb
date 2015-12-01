@@ -75,11 +75,11 @@ RSpec.describe "creating guides", type: :feature do
     click_button "Save Draft"
     guide = Guide.first
     visit edit_guide_path(guide)
-    click_button "Send for review"
+    click_button "Send it for review"
 
     login_as(User.new(name: "Reviewer")) do
       visit edition_path(guide.latest_edition)
-      click_button "Mark as Approved"
+      click_button "Mark it as approved"
     end
 
     visit edition_path(guide.latest_edition)
