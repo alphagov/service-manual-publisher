@@ -1,1 +1,8 @@
-<%= render 'form', guide: @guide, edition: @edition%>
+<div class="row">
+  <%= render 'editions/header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
+</div>
+
+<div class="row">
+  <%= render 'form', guide: @guide%>
+</div>
+
