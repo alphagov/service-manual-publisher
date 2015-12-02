@@ -2,8 +2,25 @@
   <div class="page-title">
     <h1>
       <%= edition.title %>
-      <%= state_label(guide) %>
+      <%# <%= state_label(guide.latest_edition.state || "new") %1> %>
     </h1>
+    <div class="callout callout-info">
+      <div class="callout-body">
+        This guide is marked as <%= state_label(guide.latest_edition.state || "new") %>.
+        <%=
+          case guide.latest_edition.state
+          when "draft"
+            "When you are done editing it, send it for review."
+          when "review_requested"
+            "Once someone reviews it, it will become #{state_label("approved")}. At this point, it can be published by you."
+          when "approved"
+            "You may now publish it."
+          when "published"
+            "You may edit it to create a new draft version."
+          end.html_safe
+        %>
+      </div>
+    </div>
   </div>
 </header>
 

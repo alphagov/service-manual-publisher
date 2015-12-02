@@ -7,8 +7,7 @@ module GuideHelper
     "published"        => "info",
   }
 
-  def state_label(guide)
-    state     = guide.latest_edition.try(:state) || "new"
+  def state_label(state)
     title     = state.titleize
     css_class = STATE_CSS_CLASSES[state]
     content_tag :span, title, title: 'State', class: "label label-#{css_class}"
