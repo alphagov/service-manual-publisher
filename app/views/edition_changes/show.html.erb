@@ -6,6 +6,10 @@
 </div>
 
 <div class="row">
+  <%= form_for @edition.guide do |f| %>
+    <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @edition.guide, edition: @edition %>
+  <% end %>
+
   <h2>
     Compare changes
     <% if @edition.previously_published_edition %>
@@ -27,8 +31,4 @@
       </div>
     </div>
   <% end %>
-</div>
-
-<div class="row">
-  <%= render 'editions/publishing_controls', edition: @edition, guide: @edition.guide %>
 </div>

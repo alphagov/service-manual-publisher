@@ -61,6 +61,14 @@ class GuidesController < ApplicationController
   def update
     @guide = Guide.find(params[:id])
 
+    if params[:send_for_review].present?
+      return send_for_review
+    elsif params[:publish].present?
+      return publish
+    elsif params[:approve].present?
+      return approve
+    end
+
     @guide.ensure_draft_exists
 
     ActiveRecord::Base.transaction do
@@ -77,6 +85,32 @@ class GuidesController < ApplicationController
   end
 
 private
+
+  def send_for_review
+    @guide.latest_edition.state = 'review_requested'
+    @guide.latest_edition.save!
+    redirect_to back_or_default, notice: "A review has been requested"
+  end
+
+  def approve
+    @guide.latest_edition.build_approval(user: current_user)
+    @guide.latest_edition.state = "approved"
+    @guide.latest_edition.save!
+    redirect_to back_or_default, notice: "Thanks for approving this guide"
+  end
+
+  def publish
+    ActiveRecord::Base.transaction do
+      @guide.latest_edition.update_attributes!(state: 'published')
+      GuidePublisher.new(guide: @guide).publish
+      redirect_to back_or_default, notice: "Guide has been published"
+    end
+  rescue GdsApi::HTTPErrorResponse => e
+    flash[:error] = e.error_details["error"]["message"]
+    @guide = @guide.reload
+    @edition = @guide.latest_edition
+    render template: 'editions/show'
+  end
 
   def success_url(guide)
     if params[:save_draft_and_preview]

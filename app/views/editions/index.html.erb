@@ -1,34 +1,39 @@
 <%= render 'header_with_navigation', edition: @guide.latest_edition, guide: @guide %>
 
-<table class='table table-bordered'>
-  <thead>
-    <tr class='table-header'>
-      <th></th>
-      <th></th>
-      <th>Updated by</th>
-      <th>State</th>
-      <th>Updated at</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @editions.each do |edition| %>
-      <tr>
-        <td>
-          <%= link_to "See edition", edition %>
-        </td>
-        <td>
-          <%= link_to "See changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id) %>
-        </td>
-        <td>
-          <%= edition.user.name %>
-        </td>
-        <td>
-          <%= edition.state %>
-        </td>
-        <td>
-          <%= edition.updated_at.to_s %>
-        </td>
+<div class="row">
+  <%= form_for @guide do |f| %>
+    <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @guide.latest_edition %>
+  <% end %>
+  <table class='table table-bordered'>
+    <thead>
+      <tr class='table-header'>
+        <th></th>
+        <th></th>
+        <th>Updated by</th>
+        <th>State</th>
+        <th>Updated at</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @editions.each do |edition| %>
+        <tr>
+          <td>
+            <%= link_to "See edition", edition %>
+          </td>
+          <td>
+            <%= link_to "See changes", edition_changes_path(old_edition_id: edition.previously_published_edition, new_edition_id: edition.id) %>
+          </td>
+          <td>
+            <%= edition.user.name %>
+          </td>
+          <td>
+            <%= edition.state %>
+          </td>
+          <td>
+            <%= edition.updated_at.to_s %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

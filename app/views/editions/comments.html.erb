@@ -2,5 +2,8 @@
 <%= render 'editions/old_edition_alert', edition: @edition, guide: @guide %>
 
 <p class="row">
+  <%= form_for @guide do |f| %>
+    <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
+  <% end %>
   <%= render 'editions/comments', edition: @edition, comments: @comments %>
 </p>

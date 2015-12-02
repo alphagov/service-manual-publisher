@@ -1,0 +1,21 @@
+<div class="row">
+  <div class='form-group'>
+    <% if !publish_controls_only %>
+      <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default' %>
+      <%= form.submit "Save Draft", class: 'btn btn-default', name: :save_draft, data: disable_if_new_record(guide) %>
+      <%= form.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
+    <% end %>
+
+    <% if edition.persisted? %>
+      <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: !edition.can_request_review? %>
+      <%= form.submit "Mark as Approved", name: :approve, class: 'btn btn-success', disabled: !edition.can_be_approved? %>
+
+      <%= form.submit "Publish Guide", class: 'btn btn-success', name: :publish, disabled: !edition.can_be_published? %>
+    <% end %>
+    <% if edition.approval %>
+      <p class="text-info">
+        <strong>Changes approved by <%= edition.approval.user.name %>.</strong>
+      </p>
+    <% end %>
+  </div>
+</div>
