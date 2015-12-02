@@ -170,6 +170,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-nav (0.2.4)
+      pry (>= 0.9.10, < 0.11.0)
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -298,6 +300,7 @@ DEPENDENCIES
   pg (~> 0.18)
   plek (~> 1.10)
   pry
+  pry-nav
   rails (= 4.2.4)
   redcarpet (~> 3.3.3)
   rspec-rails (~> 3.3)

@@ -2,6 +2,10 @@
 <%= render 'editions/old_edition_alert', edition: @edition, guide: @guide %>
 
 <div class="row">
+  <%= form_for @guide do |f| %>
+    <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
+  <% end %>
+
   <div class="col-md-8">
     <pre><%= @edition.body %></pre>
   </div>
@@ -68,8 +72,4 @@
 
 
   </div>
-</div>
-
-<div class="row">
-  <%= render 'editions/publishing_controls', edition: @edition, guide: @guide %>
 </div>
