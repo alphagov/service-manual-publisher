@@ -1,7 +1,9 @@
 <div class="row">
   <div class='form-group'>
     <% if !publish_controls_only %>
-      <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default' %>
+      <% if edition.persisted? %>
+        <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default' %>
+      <% end %>
       <%= form.submit "Save Draft", class: 'btn btn-default', name: :save_draft, data: disable_if_new_record(guide) %>
       <%= form.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
     <% end %>
