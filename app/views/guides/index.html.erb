@@ -54,8 +54,7 @@
               <%= state_label(guide) %>
             </td>
             <td class='content-controls'>
-              <% action_title = @state_titles.fetch(guide.latest_edition.state.to_sym) %>
-              <%= link_to action_title, edit_guide_path(guide), class: "btn btn-block btn-default btn-xs" %>
+              <%= guide_action_button(guide) %>
             </td>
           </tr>
         <% end %>
