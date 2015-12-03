@@ -176,6 +176,64 @@ RSpec.describe "creating guides", type: :feature do
     end
   end
 
+  describe "action buttons" do
+    {
+      review_requested: "Send for review",
+      mark_as_approved: "Mark as Approved",
+      publish:          "Publish Guide",
+    }.each do |name, title|
+      define_method :"expect_#{name}_to_be" do |state|
+        if state == :visible
+          expect(page).to have_button title
+        else
+          expect(page).to_not have_button title
+        end
+      end
+    end
+
+    context "when a review can be requested" do
+      before do
+        edition = Generators.valid_edition
+        Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        visit edition_path(edition)
+      end
+
+      it "only allows requesting of reviews" do
+        expect_review_requested_to_be :visible
+        expect_mark_as_approved_to_be :hidden
+        expect_publish_to_be :hidden
+      end
+    end
+
+    context "when it can be marked as approved" do
+      before do
+        edition = Generators.valid_edition(state: "review_requested")
+        Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        visit edition_path(edition)
+      end
+
+      it "only allows being marked at approved" do
+        expect_review_requested_to_be :hidden
+        expect_mark_as_approved_to_be :visible
+        expect_publish_to_be :hidden
+      end
+    end
+
+    context "when it can be published" do
+      before do
+        edition = Generators.valid_edition(state: "approved")
+        Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        visit edition_path(edition)
+      end
+
+      it "only allows publishing" do
+        expect_review_requested_to_be :hidden
+        expect_mark_as_approved_to_be :hidden
+        expect_publish_to_be :visible
+      end
+    end
+  end
+
 private
 
   def fill_in_guide_form

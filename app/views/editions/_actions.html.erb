@@ -7,10 +7,18 @@
     <% end %>
 
     <% if edition.persisted? %>
-      <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: !edition.can_request_review? %>
-      <%= form.submit "Mark as Approved", name: :approve, class: 'btn btn-success', disabled: !edition.can_be_approved? %>
+      <% if edition.can_request_review? %>
+        <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success' %>
+      <% end %>
+      <% if edition.can_be_approved? %>
+        <%= form.submit "Mark as Approved", name: :approve, class: 'btn btn-success' %>
+      <% end %>
 
-      <%= form.submit "Publish Guide", class: 'btn btn-success', name: :publish, disabled: !edition.can_be_published? %>
+      <% if edition.can_be_published? %>
+        <%= form.submit "Publish Guide", class: 'btn btn-success', name: :publish %>
+      <% end %>
+    <% else %>
+      <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
     <% end %>
     <% if edition.approval %>
       <p class="text-info">
