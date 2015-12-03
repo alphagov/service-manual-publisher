@@ -5,17 +5,25 @@
     </p>
     <div class="filters well sidebar-nav">
       <form action="<%= guides_path%>" method="get">
-        <%= label_tag :q, "Title or slug", class: "nav-header" %>
-        <%= text_field_tag :q, params[:q], type: :search, class: "form-control" %>
+        <div class="form-group">
+          <%= label_tag :q, "Title or slug", class: "nav-header" %>
+          <%= text_field_tag :q, params[:q], type: :search, class: "form-control" %>
+        </div>
 
-        <%= label_tag :user, nil, class: "add-top-margin nav-header" %>
-        <%= select_tag :user, options_for_select(@user_options, params[:user]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
+        <div class="form-group">
+          <%= label_tag :user, nil, class: "add-top-margin nav-header" %>
+          <%= select_tag :user, options_for_select(@user_options, params[:user]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
+        </div>
 
-        <%= label_tag :state, nil, class: "add-top-margin nav-header" %>
-        <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+        <div class="form-group">
+          <%= label_tag :state, nil, class: "add-top-margin nav-header" %>
+          <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+        </div>
 
-        <%= label_tag :content_owner, "Published by", class: "add-top-margin nav-header" %>
-        <%= select_tag :content_owner, options_for_select(@content_owner_options, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+        <div class="form-group">
+          <%= label_tag :content_owner, "Published by", class: "add-top-margin nav-header" %>
+          <%= select_tag :content_owner, options_for_select(@content_owner_options, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+        </div>
 
         <input type="submit" class="add-top-margin btn btn-default" value="Filter guides">
       </form>
@@ -23,43 +31,46 @@
   </div>
 
   <div class="col-md-9">
-    <table class='table table-bordered'>
-      <thead>
-        <tr class='table-header'>
-          <th>Guide</th>
-          <th>Published by</th>
-          <th>Author</th>
-          <th>Last update</th>
-          <th>State</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @guides.each do |guide| %>
-          <tr>
-            <td>
-              <%= link_to guide.latest_edition.title, guide.latest_edition %>
-              <span class='text-muted'><%= guide.slug %></span>
-            </td>
-            <td>
-              <%= guide.latest_edition.content_owner.title %>
-            </td>
-            <td class='last-edited-by'>
-              <%= latest_editor_name(guide) %>
-            </td>
-            <td>
-              <%= time_ago_in_words(guide.latest_edition.updated_at) %> ago
-            </td>
-            <td>
-              <%= state_label(guide) %>
-            </td>
-            <td class='content-controls'>
-              <%= guide_action_button(guide) %>
-            </td>
+
+    <div class="table-responsive">
+      <table class='table table-bordered'>
+        <thead>
+          <tr class='table-header'>
+            <th>Guide</th>
+            <th>Published by</th>
+            <th>Author</th>
+            <th>Last update</th>
+            <th>State</th>
+            <th>Action</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @guides.each do |guide| %>
+            <tr>
+              <td>
+                <%= link_to guide.latest_edition.title, guide.latest_edition %>
+                <span class='text-muted'><%= guide.slug %></span>
+              </td>
+              <td>
+                <%= guide.latest_edition.content_owner.title %>
+              </td>
+              <td class='last-edited-by'>
+                <%= latest_editor_name(guide) %>
+              </td>
+              <td>
+                <%= time_ago_in_words(guide.latest_edition.updated_at) %> ago
+              </td>
+              <td>
+                <%= state_label(guide) %>
+              </td>
+              <td class='content-controls'>
+                <%= guide_action_button(guide) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
 
     <%= paginate @guides %>
   </div>

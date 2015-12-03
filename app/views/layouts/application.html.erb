@@ -19,6 +19,30 @@
       <%= flash[k] %>
     </div>
   <% end %>
+  <div class="js-search">
+    <form action="<%= guides_path%>" method="get">
+      <div class="row">
+        <div class="input-group input-group-lg">
+          <%= text_field_tag :q, params[:q], type: :search, class: "form-control", placeholder: "Search for" %>
+          <span class="input-group-btn">
+            <input type="submit" class="btn btn-default" value="Search">
+          </span>
+        </div>
+        <div class="js-advanced-search form-group" style="display:none;">
+          <%= label_tag :user %>
+          <%= select_tag :user, options_for_select(user_options, params[:user]), {include_blank: "User", class: 'select2 input-md-12 form-control'} %>
+
+          <%= label_tag :state %>
+          <%= select_tag :state, options_for_select(state_options, params[:state]), {include_blank: "State", class: "select2 input-md-12 form-control"} %>
+
+          <%= label_tag :content_owner, "Published by" %>
+          <%= select_tag :content_owner, options_for_select(content_owner_options, params[:content_owner]), {include_blank: "Published by", class: "select2 input-md-12 form-control"} %>
+        </div>
+      </div>
+      <div class="row">
+      </div>
+    </form>
+  </div>
   <%= yield %>
 <% end %>
 
