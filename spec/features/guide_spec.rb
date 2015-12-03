@@ -26,7 +26,7 @@ RSpec.describe "creating guides", type: :feature do
                             .twice
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
 
-    click_button "Save Draft"
+    click_button "Save"
 
     within ".alert" do
       expect(page).to have_content('created')
@@ -47,7 +47,7 @@ RSpec.describe "creating guides", type: :feature do
 
     visit edit_guide_path(guide)
     fill_in "Guide title", with: "Second Edition Title"
-    click_button "Save Draft"
+    click_button "Save"
 
     within ".alert" do
       expect(page).to have_content('updated')
@@ -72,14 +72,14 @@ RSpec.describe "creating guides", type: :feature do
                             .once
                             .with(an_instance_of(String), 'major')
 
-    click_button "Save Draft"
+    click_button "Save"
     guide = Guide.first
     visit edit_guide_path(guide)
     click_button "Send for review"
 
     login_as(User.new(name: "Reviewer")) do
       visit edition_path(guide.latest_edition)
-      click_button "Mark as Approved"
+      click_button "Approve for publication"
     end
 
     visit edition_path(guide.latest_edition)
@@ -105,7 +105,7 @@ RSpec.describe "creating guides", type: :feature do
 
       it "shows api errors" do
         fill_in_guide_form
-        click_button "Save Draft"
+        click_button "Save"
 
         within ".alert" do
           expect(page).to have_content('Error message stub')
@@ -114,7 +114,7 @@ RSpec.describe "creating guides", type: :feature do
 
       it "does not store a guide" do
         fill_in_guide_form
-        click_button "Save Draft"
+        click_button "Save"
 
         expect(Guide.count).to eq 0
         expect(Edition.count).to eq 0
@@ -133,7 +133,7 @@ RSpec.describe "creating guides", type: :feature do
       guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
       visit edit_guide_path(guide)
       fill_in "Guide title", with: ""
-      click_button "Save Draft"
+      click_button "Save"
 
       within(".full-error-list") do
         expect(page).to have_content("title can't be blank")
@@ -152,7 +152,7 @@ RSpec.describe "creating guides", type: :feature do
         expect_any_instance_of(GuidePublisher).to receive(:put_draft).once.and_raise(api_error)
 
         visit edit_guide_path(guide)
-        click_button "Save Draft"
+        click_button "Save"
 
         within ".alert" do
           expect(page).to have_content('Error message stub')
@@ -167,7 +167,7 @@ RSpec.describe "creating guides", type: :feature do
 
         visit edit_guide_path(guide)
         fill_in "Guide title", with: "Changed Title"
-        click_button "Save Draft"
+        click_button "Save"
 
         expect(Guide.count).to eq 1
         expect(Guide.first.latest_edition.title).to_not eq "Changed Title"
@@ -178,9 +178,9 @@ RSpec.describe "creating guides", type: :feature do
 
   describe "action buttons" do
     {
-      review_requested: "Send for review",
-      mark_as_approved: "Mark as Approved",
-      publish:          "Publish Guide",
+      send_for_review: "Send for review",
+      approve_for_publication: "Approve for publication",
+      publish:          "Publish",
     }.each do |name, title|
       define_method :"expect_#{name}_to_be" do |state|
         if state == :visible
@@ -199,8 +199,8 @@ RSpec.describe "creating guides", type: :feature do
       end
 
       it "only allows requesting of reviews" do
-        expect_review_requested_to_be :visible
-        expect_mark_as_approved_to_be :hidden
+        expect_send_for_review_to_be :visible
+        expect_approve_for_publication_to_be :hidden
         expect_publish_to_be :hidden
       end
     end
@@ -213,8 +213,8 @@ RSpec.describe "creating guides", type: :feature do
       end
 
       it "only allows being marked at approved" do
-        expect_review_requested_to_be :hidden
-        expect_mark_as_approved_to_be :visible
+        expect_send_for_review_to_be :hidden
+        expect_approve_for_publication_to_be :visible
         expect_publish_to_be :hidden
       end
     end
@@ -227,8 +227,8 @@ RSpec.describe "creating guides", type: :feature do
       end
 
       it "only allows publishing" do
-        expect_review_requested_to_be :hidden
-        expect_mark_as_approved_to_be :hidden
+        expect_send_for_review_to_be :hidden
+        expect_approve_for_publication_to_be :hidden
         expect_publish_to_be :visible
       end
     end

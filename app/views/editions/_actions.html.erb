@@ -4,8 +4,11 @@
       <% if edition.persisted? %>
         <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default' %>
       <% end %>
-      <%= form.submit "Save Draft", class: 'btn btn-default', name: :save_draft, data: disable_if_new_record(guide) %>
-      <%= form.submit "Save Draft and Preview", class: 'btn btn-default', name: :save_draft_and_preview, data: disable_if_new_record(guide) %>
+        <%= form.submit "Save", class: 'btn btn-default', name: :save, data: disable_if_new_record(guide) %>
+      <%= form.submit "Save and preview", class: 'btn btn-default', name: :save_and_preview, data: disable_if_new_record(guide) %>
+      <% if !edition.persisted? %>
+        <%= link_to "Discard new guide", guides_path, class: "btn btn-danger" %>
+      <% end %>
     <% end %>
 
     <% if edition.persisted? %>
@@ -13,15 +16,16 @@
         <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success' %>
       <% end %>
       <% if edition.can_be_approved? %>
-        <%= form.submit "Mark as Approved", name: :approve, class: 'btn btn-success' %>
+        <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success' %>
       <% end %>
 
       <% if edition.can_be_published? %>
-        <%= form.submit "Publish Guide", class: 'btn btn-success', name: :publish %>
+        <%= form.submit "Publish", class: 'btn btn-success', name: :publish %>
       <% end %>
     <% else %>
       <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
     <% end %>
+
     <% if edition.approval %>
       <p class="text-info">
         <strong>Changes approved by <%= edition.approval.user.name %>.</strong>
