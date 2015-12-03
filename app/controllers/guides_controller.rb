@@ -59,8 +59,8 @@ class GuidesController < ApplicationController
       return send_for_review
     elsif params[:publish].present?
       return publish
-    elsif params[:approve].present?
-      return approve
+    elsif params[:approve_for_publication].present?
+      return approve_for_publication
     end
 
     @guide.ensure_draft_exists
@@ -86,7 +86,7 @@ private
     redirect_to back_or_default, notice: "A review has been requested"
   end
 
-  def approve
+  def approve_for_publication
     @guide.latest_edition.build_approval(user: current_user)
     @guide.latest_edition.state = "approved"
     @guide.latest_edition.save!
@@ -107,7 +107,7 @@ private
   end
 
   def success_url(guide)
-    if params[:save_draft_and_preview]
+    if params[:save_and_preview]
       guide_preview_url(guide)
     else
       back_or_default
