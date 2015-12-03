@@ -1,6 +1,6 @@
 class GuidesController < ApplicationController
   def index
-    @user_options = User.all.collect{ |u| [u.name, u.id] }
+    @user_options = User.pluck(:name, :id)
     @state_options = %w(draft published review_requested approved).map {|s| [s.titleize, s]}
     @content_owner_options = ContentOwner.pluck(:title, :id)
 
