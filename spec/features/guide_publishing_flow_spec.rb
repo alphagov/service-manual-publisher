@@ -4,6 +4,8 @@ require 'capybara/rails'
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
   before do
     allow_any_instance_of(GuidePublisher).to receive(:put_draft)
+    allow_any_instance_of(GuidePublisher).to receive(:publish)
+    allow_any_instance_of(SearchIndexer).to receive(:index)
   end
 
   context "latest edition is published" do
@@ -34,6 +36,18 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(find_field("Change to be made").value).to be_blank
 
       expect(find_field("Major update")).to be_checked
+    end
+
+    it "indexes documents for search" do
+      given_a_guide_exists
+      indexer = double(:indexer)
+      expect(SearchIndexer).to receive(:new).with(Guide.first).and_return(indexer)
+      expect(indexer).to receive(:index)
+      visit guides_path
+      click_link "Edit"
+      click_button "Send for review"
+      click_button "Approve for publication"
+      click_button "Publish"
     end
   end
 
