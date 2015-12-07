@@ -202,11 +202,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Current Draft Edition"
-      click_link "Guide history"
-      within("table tbody") do
-        expect(page.find_all("tr").size).to eq 2
-        page.find_all("tr a").last.click
-      end
+      click_link "Comments and history"
+      view_edition_links = page.find_all("a").select {|a| a.text == "View edition"}
+      expect(view_edition_links.size).to eq 2
+      view_edition_links.last.click
 
       expect(page).to have_content "First Edition"
       within ".alert-info" do

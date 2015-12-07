@@ -13,7 +13,7 @@ RSpec.describe "Commenting", type: :feature do
   it "allows discourse" do
     visit root_path
     click_link "Edit"
-    click_link "Conversation"
+    click_link "Comments and history"
 
     within ".comments" do
       fill_in "Add new comment", with: "This is my comment"
