@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   root 'guides#index'
 
   resources :guides do
-    resources :editions, only: :index
     resources :drafts
     resources :publications, only: :create
   end
