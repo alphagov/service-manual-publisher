@@ -1,6 +1,10 @@
 <%= form_for guide do |f| %>
-  <%= render 'editions/actions', publish_controls_only: false, form: f, guide: @guide, edition: @guide.latest_edition %>
-  <div class='col-md-8'>
+
+  <div class="col-md-12">
+    <%= render 'editions/actions', publish_controls_only: false, form: f, guide: @guide, edition: @guide.latest_edition %>
+  </div>
+
+  <div class="col-md-8">
     <div class="well">
       <%= render 'shared/form_error_summary', object: guide %>
 
@@ -80,4 +84,5 @@
       </ul>
     </div>
   </div>
+
 <% end %>
