@@ -85,4 +85,8 @@
     </div>
   </div>
 
+  <div class="col-md-12">
+    <%= render 'editions/actions', publish_controls_only: false, form: f, guide: @guide, edition: @guide.latest_edition %>
+  </div>
+
 <% end %>
