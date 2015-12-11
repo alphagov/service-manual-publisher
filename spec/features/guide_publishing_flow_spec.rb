@@ -18,7 +18,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       the_form_should_be_prepopulated_with_title "Standups"
       fill_in "Guide title", with: "Standup meetings"
       fill_in "Change to be made", with: "Be more specific in the title"
-      click_button "Save"
+      click_first_button 'Save'
 
       guide.reload
       expect(guide.editions.published.size).to eq 1
@@ -46,7 +46,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     fill_in "Guide title", with: "Agile"
 
-    click_button "Save"
+    click_first_button 'Save'
 
     expect(guide.editions.published.map(&:title)).to match_array ["Agile development"]
     expect(guide.editions.draft.map(&:title)).to match_array ["Agile"]
@@ -67,7 +67,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit edit_guide_path(guide)
       fill_in "Guide title", with: "Updated Title"
       fill_in "Change to be made", with: "Update Title"
-      click_button "Save"
+      click_first_button 'Save'
 
       the_form_should_be_prepopulated_with_title "Updated Title"
 
@@ -84,7 +84,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
       click_link "Edit"
       fill_in "Change to be made", with: "Fix a typo"
-      click_button "Save"
+      click_first_button 'Save'
 
       within ".alert" do
         expect(page).to have_content('Error message stub')
@@ -97,7 +97,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit edition_path(guide.latest_edition)
       expect_any_instance_of(GuidePublisher).to receive(:publish).and_raise api_error
 
-      click_button "Publish"
+      click_first_button "Publish"
 
       within ".alert" do
         expect(page).to have_content('Error message stub')
@@ -114,7 +114,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     visit guides_path
     click_link "Edit"
     fill_in "Guide title", with: "Agile"
-    click_button "Save"
+    click_first_button 'Save'
     expect(current_path).to eq edit_guide_path guide
 
     expect(guide.editions.draft.size).to eq 1
@@ -126,7 +126,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     guide = given_a_guide_exists state: 'draft'
     visit edit_guide_path(guide)
     fill_in "Guide title", with: "An amended title"
-    click_button "Save"
+    click_first_button 'Save'
     visit guides_path
     within ".last-edited-by" do
       expect(page).to have_content "John Smith"
@@ -141,7 +141,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     expect_any_instance_of(GuidePublisher).to receive(:put_draft)
 
     expect_external_redirect_to "http://draft-origin.dev.gov.uk/service-manual/preview-test" do
-      click_button "Save and preview"
+      click_first_button "Save and preview"
     end
 
     expect(guide.editions.map(&:title)).to match_array ["Changed Title"]
@@ -153,7 +153,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
 
       visit edit_guide_path(guide)
-      click_button "Send for review"
+      click_first_button "Send for review"
       expect(page).to have_content "Review Requested"
     end
 
@@ -166,7 +166,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         login_as reviewer
         visit guides_path
         click_link "Standups"
-        click_button "Approve for publication"
+        click_first_button "Approve for publication"
 
         expect(current_path).to eq edition_path(edition)
         expect(page).to have_content "Thanks for approving this guide"
@@ -223,7 +223,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       fill_in "Guide title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
       fill_in "Change to be made", with: "Better greeting"
-      click_button "Save"
+      click_first_button 'Save'
       click_link "Compare changes"
 
       within ".title del" do

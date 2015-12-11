@@ -4,6 +4,7 @@
 <%= form_for @guide do |f| %>
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>
+
 <% @editions.each do |edition| %>
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -20,4 +21,8 @@
       <%= render 'editions/comments', edition: edition, comments: edition.comments.for_rendering %>
     </div>
   </div>
+<% end %>
+
+<%= form_for @guide do |f| %>
+  <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>

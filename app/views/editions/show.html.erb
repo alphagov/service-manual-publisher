@@ -71,7 +71,11 @@
         </div>
       <% end %>
     </div>
+  </div>
 
-
+  <div class="col-md-12">
+    <%= form_for @guide do |f| %>
+      <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
+    <% end %>
   </div>
 </div>
