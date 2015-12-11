@@ -28,12 +28,12 @@
           <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
         <% end %>
 
-        <% if edition.approval %>
-          <p class="text-info">
-            <strong>Changes approved by <%= edition.approval.user.name %>.</strong>
-          </p>
-        <% end %>
       </div>
     </div>
+    <% if edition.approval %>
+      <p class="text-info">
+        <strong>Changes approved by <%= edition.approval.user.name %>.</strong>
+      </p>
+    <% end %>
   </div>
 </div>
