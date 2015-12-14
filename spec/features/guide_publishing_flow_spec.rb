@@ -8,6 +8,22 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     allow_any_instance_of(SearchIndexer).to receive(:index)
   end
 
+  context "trying to publish while it's disabled" do
+    it "should prevent it from happening" do
+      ENV['DISABLE_PUBLISHING'] = '1'
+      expect_any_instance_of(GuidePublisher).to_not receive(:publish)
+      guide = given_a_guide_exists title: "Standups", state: 'approved'
+      visit edit_guide_path(guide)
+      click_first_button "Publish"
+
+      within ".alert" do
+        expect(page).to have_content("Publishing is currently disabled")
+      end
+    end
+
+    after { ENV.delete('DISABLE_PUBLISHING') }
+  end
+
   context "latest edition is published" do
     it "should create a new draft edition when saving changes" do
       guide = given_a_published_guide_exists title: "Standups"
