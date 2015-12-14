@@ -9,7 +9,9 @@ gem 'unicorn', '~> 4.9.0'
 gem 'logstasher', '0.6.2'
 gem 'plek', '~> 1.10'
 gem 'airbrake', '~> 4.2.1'
-gem 'govuk_admin_template', '~> 3.0.0'
+
+gem 'govuk_admin_template', '~> 3.5.0'
+
 gem 'gds-sso', '~> 11.0.0'
 gem 'gds-api-adapters', '~> 25.1.0'
 gem 'govspeak', '~> 3.4.0'
