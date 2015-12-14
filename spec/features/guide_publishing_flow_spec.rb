@@ -17,7 +17,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       click_link "Edit"
       the_form_should_be_prepopulated_with_title "Standups"
       fill_in "Guide title", with: "Standup meetings"
-      fill_in "Change to be made", with: "Be more specific in the title"
+      fill_in "Why the change is being made", with: "Be more specific in the title"
       click_first_button 'Save'
 
       guide.reload
@@ -31,7 +31,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
 
       click_link "Edit"
-      expect(find_field("Change to be made").value).to be_blank
+      expect(find_field("Why the change is being made").value).to be_blank
 
       expect(find_field("Major update")).to be_checked
     end
@@ -66,7 +66,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Guide title", with: "Updated Title"
-      fill_in "Change to be made", with: "Update Title"
+      fill_in "Why the change is being made", with: "Update Title"
       click_first_button 'Save'
 
       the_form_should_be_prepopulated_with_title "Updated Title"
@@ -83,7 +83,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       click_link "Edit"
-      fill_in "Change to be made", with: "Fix a typo"
+      fill_in "Why the change is being made", with: "Fix a typo"
       click_first_button 'Save'
 
       within ".alert" do
@@ -222,7 +222,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit edit_guide_path(guide)
       fill_in "Guide title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
-      fill_in "Change to be made", with: "Better greeting"
+      fill_in "Why the change is being made", with: "Better greeting"
       click_first_button 'Save'
       click_link "Compare changes"
 

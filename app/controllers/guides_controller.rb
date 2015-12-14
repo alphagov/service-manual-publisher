@@ -131,6 +131,7 @@ private
         :related_discussion_title,
         :update_type,
         :change_note,
+        :change_summary,
       ]).deep_merge(with)
   end
 end

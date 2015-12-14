@@ -3,15 +3,16 @@ class Generators
     content_owner = ContentOwner.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
 
     attributes = {
-      title:         "The Title",
-      state:         "draft",
-      phase:         "beta",
-      description:   "Description",
-      update_type:   "major",
-      change_note:   "change note",
-      body:          "# Heading",
-      content_owner: content_owner,
-      user:          User.new(name: "Generated User")
+      title:          "The Title",
+      state:          "draft",
+      phase:          "beta",
+      description:    "Description",
+      update_type:    "major",
+      change_note:    "change note",
+      change_summary: "change summary",
+      body:           "# Heading",
+      content_owner:  content_owner,
+      user:           User.new(name: "Generated User")
     }.merge(attributes)
 
     Edition.new(attributes)
