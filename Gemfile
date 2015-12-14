@@ -19,6 +19,7 @@ gem 'active_link_to', '~> 1.0.3'
 gem 'select2-rails', '~> 4.0.0'
 gem 'diffy', '~> 3.0', '>= 3.0.7'
 gem 'redcarpet', '~> 3.3.3'
+gem 'rummageable', '1.2.0'
 
 group :development do
   gem 'better_errors'

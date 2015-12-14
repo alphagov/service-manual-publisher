@@ -12,6 +12,8 @@ RSpec.describe "creating guides", type: :feature do
     ).save!
     visit root_path
     click_link "Create a Guide"
+
+    allow_any_instance_of(SearchIndexer).to receive(:index)
   end
 
   it "has a prepopulated slug field" do

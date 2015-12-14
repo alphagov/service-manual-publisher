@@ -97,6 +97,7 @@ private
     ActiveRecord::Base.transaction do
       @guide.latest_edition.update_attributes!(state: 'published')
       GuidePublisher.new(guide: @guide).publish
+      SearchIndexer.new(@guide).index
       redirect_to back_or_default, notice: "Guide has been published"
     end
   rescue GdsApi::HTTPErrorResponse => e
