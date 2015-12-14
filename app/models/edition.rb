@@ -15,6 +15,7 @@ class Edition < ActiveRecord::Base
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :content_owner, :user]
   validates_inclusion_of :state, in: %w(draft published review_requested approved)
   validates :change_note, presence: true, if: :major?
+  validates :change_summary, presence: true, if: :major?
   validate :published_cant_change
 
   %w{minor major}.each do |s|

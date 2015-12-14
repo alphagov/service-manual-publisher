@@ -245,6 +245,7 @@ private
     fill_in "Body", with: "## First Edition Title"
 
     choose "Major update"
-    fill_in "Change to be made", with: "Change Note"
+    fill_in "Summary of change", with: "Factual change"
+    fill_in "Why the change is being made", with: "Change Note"
   end
 end
