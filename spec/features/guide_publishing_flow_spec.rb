@@ -45,9 +45,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(indexer).to receive(:index)
       visit guides_path
       click_link "Edit"
-      click_button "Send for review"
-      click_button "Approve for publication"
-      click_button "Publish"
+      click_first_button "Send for review"
+      click_first_button "Approve for publication"
+      click_first_button "Publish"
     end
   end
 
