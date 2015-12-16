@@ -1,7 +1,19 @@
 <%= Diffy::CSS %>
 
 .diff {
+  $symbol-spacing: 1.5em;
+
+  del {
+    text-decoration: line-through;
+  }
   ul {
     background: transparent;
+    padding-left: $symbol-spacing;
+  }
+  span.symbol {
+    display: inline-block;
+    margin-left: -$symbol-spacing;
+    width: $symbol-spacing;
+    font-weight: bold;
   }
 }
