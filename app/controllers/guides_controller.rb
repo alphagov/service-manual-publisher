@@ -97,7 +97,7 @@ private
     ActiveRecord::Base.transaction do
       @guide.latest_edition.update_attributes!(state: 'published')
       GuidePublisher.new(guide: @guide).publish
-      SearchIndexer.new(@guide).index
+      index_for_search(@guide)
       redirect_to back_or_default, notice: "Guide has been published"
     end
   rescue GdsApi::HTTPErrorResponse => e
@@ -134,5 +134,12 @@ private
         :change_note,
         :change_summary,
       ]).deep_merge(with)
+  end
+
+  def index_for_search(guide)
+    SearchIndexer.new(guide).index
+  rescue => e
+    notify_airbrake(e)
+    Rails.logger.error(e.message)
   end
 end
