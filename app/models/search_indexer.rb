@@ -14,7 +14,7 @@ class SearchIndexer
       "indexable_content": @edition.body,
       "title":             @edition.title,
       "link":              @guide.slug,
-      "manual":            "/service-manual",
+      "manual":            "service-manual",
       "organisations":     ["government-digital-service"],
     }])
   end

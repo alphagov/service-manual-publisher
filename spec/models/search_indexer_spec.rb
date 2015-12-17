@@ -12,7 +12,7 @@ RSpec.describe SearchIndexer do
       indexable_content: guide.latest_edition.body,
       title:             guide.latest_edition.title,
       link:              guide.slug,
-      manual:            "/service-manual",
+      manual:            "service-manual",
       organisations:     ["government-digital-service"]
     }])
     SearchIndexer.new(guide).index
