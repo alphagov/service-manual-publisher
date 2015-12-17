@@ -45,7 +45,7 @@ The application runs on port `3111` by default. If you're using the GDS VM it's 
 Currently [government-frontend](alphagov/government-frontend) has a feature flag to enable rendering service manual content.
 
 ```
-FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router
+bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router
 ```
 
 The application has a style guide that can be accessed on `/style-guide`.
