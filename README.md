@@ -4,7 +4,9 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 ## Screenshots
 
-TODO
+![Landing page screenshot](http://i.imgur.com/UHqjufR.png)
+
+![Edit interface screenshot](http://i.imgur.com/sFP1IUD.png)
 
 ## Live examples
 
