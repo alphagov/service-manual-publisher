@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GuidesController, type: :controller do
   before do
-    login_as User.create(name: "Content Designer")
+    login_as User.create(name: "Content Designer", permissions: ["signin"])
     allow_any_instance_of(GuidePublisher).to receive(:publish)
   end
 

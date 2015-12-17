@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include GDS::SSO::ControllerMethods
-  before_filter :authenticate_user!
+  before_filter :require_signin_permission!
 
   def guide_preview_url(guide)
     [Plek.find('draft-origin'), guide.slug].join('')
