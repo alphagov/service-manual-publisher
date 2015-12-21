@@ -1,30 +1,20 @@
 class GuidesController < ApplicationController
   def index
     @user_options = User.pluck(:name, :id)
-    @state_options = %w(draft published review_requested approved).map {|s| [s.titleize, s]}
+    @state_options = %w(draft published review_requested approved).map { |s| [s.titleize, s] }
     @content_owner_options = ContentOwner.pluck(:title, :id)
 
     @guides = Guide.includes(latest_edition: [:user, :content_owner])
-
-    if params[:user].present?
-      @guides = @guides.where(editions: {user_id: params[:user]})
-    end
-
-    if params[:state].present?
-      @guides = @guides.where(editions: {state: params[:state]})
-    end
-
-    if params[:content_owner].present?
-      @guides = @guides.where(editions: {content_owner_id: params[:content_owner]})
-    end
+                   .by_user(params[:user])
+                   .in_state(params[:state])
+                   .owned_by(params[:content_owner])
+                   .page(params[:page])
 
     if params[:q].present?
       @guides = @guides.search(params[:q])
     else
       @guides = @guides.order(updated_at: :desc)
     end
-
-    @guides = @guides.page(params[:page])
   end
 
   def new
