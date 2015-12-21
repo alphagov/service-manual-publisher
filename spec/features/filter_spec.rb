@@ -75,6 +75,24 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to_not have_text "Standups"
   end
 
+  it "combines keywords with state filters" do
+    edition1 = Generators.valid_edition(state: "draft", title: "Draft Standups")
+    Guide.create!(latest_edition: edition1, slug: "/service-manual/something")
+
+    edition2 = Generators.valid_edition(state: "review_requested", title: "Reviewed Standups")
+    Guide.create!(latest_edition: edition2, slug: "/service-manual/something")
+
+    visit root_path
+    within ".filters" do
+      fill_in "Title or slug", with: "standups"
+      select "Draft", from: "State"
+      click_button "Filter guides"
+    end
+
+    expect(page).to have_text "Draft Standups"
+    expect(page).to_not have_text "Reviewed Standups"
+  end
+
   [:user, :state, :published_by].each do |n|
     define_method("filter_by_#{n}") do |value|
       visit root_path
@@ -84,6 +102,7 @@ RSpec.describe "filtering guides", type: :feature do
       end
     end
   end
+
 
   def search_for(q)
     visit root_path

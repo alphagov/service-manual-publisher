@@ -26,8 +26,8 @@ class Guide < ActiveRecord::Base
 
   def self.search(search_terms)
     words = sanitize(search_terms.scan(/\w+/) * "|")
-    from("guides, to_tsquery('pg_catalog.english', #{words}) as q")
-      .where("tsv @@ q").order("ts_rank_cd(tsv, q) DESC")
+    where("tsv @@ to_tsquery('pg_catalog.english', #{words})")
+      .order("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC")
   end
 
   def work_in_progress_edition?
