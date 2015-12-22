@@ -13,7 +13,8 @@ gem 'airbrake', '~> 4.2.1'
 gem 'govuk_admin_template', '~> 3.5.0'
 
 gem 'gds-sso', '~> 11.0.0'
-gem 'gds-api-adapters', '~> 25.1.0'
+# Awaiting release of https://github.com/alphagov/gds-api-adapters/pull/413
+gem 'gds-api-adapters', git: "https://github.com/alphagov/gds-api-adapters", ref: "cf3251"
 gem 'govspeak', '~> 3.4.0'
 gem 'kaminari', '~> 0.16.3'
 gem 'acts_as_commentable', '~> 4.0.2'
