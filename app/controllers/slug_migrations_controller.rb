@@ -46,4 +46,11 @@ class SlugMigrationsController < ApplicationController
   def show
     @slug_migration = SlugMigration.find(params[:id])
   end
+
+  def delete_search_index
+    @slug_migration = SlugMigration.find(params[:slug_migration_id])
+    @slug_migration.delete_search_document!
+
+    redirect_to edit_slug_migration_path(@slug_migration), notice: "Document has been removed from search"
+  end
 end

@@ -2,6 +2,12 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "Slug migration", type: :feature do
+  before do
+    @rummager_double = double(:rummager)
+    allow(GdsApi::Rummager).to receive(:new).and_return @rummager_double
+    allow(@rummager_double).to receive(:get_content!).and_return(true)
+  end
+
   def expect_table_to_match_migrations migrations
     within ".slug-migrations .table" do
       table_data = page.all("tr").map do |row|
@@ -167,6 +173,39 @@ RSpec.describe "Slug migration", type: :feature do
       expect(page).to have_content "Error message stub"
       expect(slug_migration.reload.completed).to eq false
       expect(page.current_path).to eq slug_migration_path(slug_migration)
+    end
+  end
+
+  context "with a slug migration" do
+    before do
+      edition = Generators.valid_published_edition
+      guide = Guide.create!(slug: "/service-manual/path", latest_edition: edition)
+      @slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/path.html", guide: guide)
+    end
+
+    context "that has a search index" do
+      it "allows the search index to be deleted" do
+        expect(@rummager_double).to receive(:get_content!).with(@slug_migration.slug).twice.and_return(true)
+        expect(@rummager_double).to receive(:delete_content!).with(@slug_migration.slug)
+
+        visit root_path
+        click_link "Manage Migrations"
+        click_link "Manage"
+        click_button "Delete from search index"
+        expect(page).to have_content "Document has been removed from search"
+      end
+    end
+
+    context "that does not have a search index" do
+      it "does not allow the search index to be deleted" do
+        not_found_error = GdsApi::HTTPNotFound.new(404, "error", "error")
+        expect(@rummager_double).to receive(:get_content!).with(@slug_migration.slug).and_raise(not_found_error)
+
+        visit root_path
+        click_link "Manage Migrations"
+        click_link "Manage"
+        expect(page).to_not have_button "Delete from search index"
+      end
     end
   end
 end
