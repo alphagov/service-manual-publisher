@@ -15,17 +15,17 @@
 
         <% if edition.persisted? %>
           <% if edition.can_request_review? %>
-            <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success' %>
+            <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success disable-when-dirty' %>
           <% end %>
           <% if edition.can_be_approved? %>
-            <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success' %>
+            <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success disable-when-dirty' %>
           <% end %>
 
           <% if edition.can_be_published? %>
-            <%= form.submit "Publish", class: 'btn btn-success', name: :publish %>
+            <%= form.submit "Publish", class: 'btn btn-success disable-when-dirty', name: :publish %>
           <% end %>
         <% else %>
-          <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
+          <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success disable-when-dirty', disabled: true %>
         <% end %>
 
       </div>
