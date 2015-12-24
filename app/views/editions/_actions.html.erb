@@ -3,7 +3,7 @@
     <div class="btn-toolbar" role="toolbar">
       <div class='btn-group'>
         <% if edition.persisted? %>
-          <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default' %>
+          <%= link_to "Preview", guide_preview_url(guide), target: '_blank', class: 'btn btn-default' %>
         <% end %>
         <% if !publish_controls_only %>
           <%= form.submit "Save", class: 'btn btn-default', name: :save, data: disable_if_new_record(guide) %>
