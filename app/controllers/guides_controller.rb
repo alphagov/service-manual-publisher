@@ -70,12 +70,20 @@ class GuidesController < ApplicationController
         GuidePublisher.new(guide: @guide).put_draft
         redirect_to success_url(@guide), notice: "Guide has been updated"
       else
-        render action: :edit
+        respond_to do |format|
+          format.js { head :unprocessable_entity }
+          format.html { render action: :edit }
+        end
       end
     end
   rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details["error"]["message"]
-    render template: 'guides/edit'
+    respond_to do |format|
+      format.js { head :unprocessable_entity }
+      format.html do
+        flash[:error] = e.error_details["error"]["message"]
+        render template: 'guides/edit'
+      end
+    end
   end
 
 private

@@ -7,7 +7,8 @@
         <% end %>
         <% if !publish_controls_only %>
           <%= form.submit "Save", class: 'btn btn-default', name: :save, data: disable_if_new_record(guide) %>
-          <%= form.submit "Save and preview", class: 'btn btn-default', name: :save_and_preview, data: disable_if_new_record(guide) %>
+          <%# form.submit "Save and preview", class: 'btn btn-default', name: :save_and_preview, data: disable_if_new_record(guide) %>
+          <%= link_to "Save and Preview", guide_preview_url(guide), target: '_blank', class: 'btn btn-default js-save-before-continuing' %>
           <% if !edition.persisted? %>
             <%= link_to "Discard new guide", guides_path, class: "btn btn-danger" %>
           <% end %>
