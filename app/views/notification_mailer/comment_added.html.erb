@@ -1,0 +1,13 @@
+<p>Hello,</p>
+
+<p>
+  <b><%= @comment.user.name %></b> left a comment on "<%= @edition.title %>" Service Manual Guide.
+</p>
+
+<blockquote>
+  <%= @comment.comment %>
+</blockquote>
+
+<p>
+  To see the comment in context or to reply visit <%= link_to "comments and history", edition_comments_url(@edition, anchor: "comment-#{@comment.id}") %>.
+</p>

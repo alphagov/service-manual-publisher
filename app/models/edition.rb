@@ -87,6 +87,10 @@ class Edition < ActiveRecord::Base
     end
   end
 
+  def notification_subscribers
+    [user, guide.latest_edition.user].uniq
+  end
+
 private
 
   def published_cant_change

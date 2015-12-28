@@ -12,4 +12,12 @@ class ApplicationMailer < ActionMailer::Base
 
   default from: no_reply_email_address
   layout 'mailer'
+
+private
+
+  def user_email(user)
+    address = Mail::Address.new(user.email)
+    address.display_name = user.name
+    address.format
+  end
 end

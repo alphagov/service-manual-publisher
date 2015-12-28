@@ -1,6 +1,31 @@
 require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
+  describe "#notification_subscribers" do
+    let(:joe) { Generators.valid_user(name: "Joe") }
+    let(:liz) { Generators.valid_user(name: "Liz") }
+
+    it "is the edition author and the current edition author" do
+      edition = Generators.valid_edition(user: joe)
+      current_edition = Generators.valid_edition(user: liz)
+      guide = Guide.create(slug: "/service-manual", editions: [edition])
+      guide.latest_edition = current_edition
+      guide.save
+
+      expect(edition.notification_subscribers).to match_array [joe, liz]
+    end
+
+    it "avoids duplicates" do
+      edition = Generators.valid_edition(user: joe)
+      current_edition = Generators.valid_edition(user: joe)
+      guide = Guide.create(slug: "/service-manual", editions: [edition])
+      guide.latest_edition = current_edition
+      guide.save
+
+      expect(edition.notification_subscribers).to match_array [joe]
+    end
+  end
+
   describe "#phase" do
     it "defaults to 'alpha'" do
       expect(Edition.new.phase).to eq 'alpha'
