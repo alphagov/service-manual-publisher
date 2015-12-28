@@ -44,6 +44,23 @@ RSpec.describe NotificationMailer, type: :mailer do
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"
         expect(part.body.to_s).to include "\"Agile\""
+        expect(part.body.to_s).to include "/editions/#{edition.id}"
+      end
+    end
+  end
+
+  describe "#published" do
+    it "contains the edition title, publisher's name and a link" do
+      email = NotificationMailer.published(edition, luke).deliver_now
+
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(email.to).to eq ["gary@example.com"]
+      expect(email.subject).to eq "\"Agile\" has been published"
+
+      email.parts.each do |part|
+        expect(part.body.to_s).to include "Luke"
+        expect(part.body.to_s).to include "\"Agile\""
+        expect(part.body.to_s).to include "/editions/#{edition.id}"
       end
     end
   end

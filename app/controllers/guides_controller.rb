@@ -108,6 +108,10 @@ private
       index_for_search(@guide)
       redirect_to back_or_default, notice: "Guide has been published"
     end
+
+    unless @guide.latest_edition.notification_subscribers == [current_user]
+      NotificationMailer.published(@guide.latest_edition, current_user).deliver_later
+    end
   rescue GdsApi::HTTPErrorResponse => e
     flash[:error] = e.error_details["error"]["message"]
     @guide = @guide.reload

@@ -16,4 +16,13 @@ class NotificationMailer < ApplicationMailer
       subject: "\"#{@edition.title}\" approved for publishing"
     )
   end
+
+  def published(edition, user)
+    @edition = edition
+    @user = user
+    mail(
+      to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
+      subject: "\"#{@edition.title}\" has been published"
+    )
+  end
 end
