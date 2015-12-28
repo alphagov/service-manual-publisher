@@ -7,4 +7,13 @@ class NotificationMailer < ApplicationMailer
       subject: "New comment on \"#{@edition.title}\""
     )
   end
+
+  def approved_for_publishing(edition)
+    @edition = edition
+    @approval = edition.approval
+    mail(
+      to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
+      subject: "\"#{@edition.title}\" approved for publishing"
+    )
+  end
 end

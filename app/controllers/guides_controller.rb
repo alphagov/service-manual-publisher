@@ -87,9 +87,11 @@ private
   end
 
   def approve_for_publication
-    @guide.latest_edition.build_approval(user: current_user)
-    @guide.latest_edition.state = "approved"
-    @guide.latest_edition.save!
+    edition = @guide.latest_edition
+    edition.build_approval(user: current_user)
+    edition.state = "approved"
+    edition.save!
+    NotificationMailer.approved_for_publishing(edition).deliver_later
     redirect_to back_or_default, notice: "Thanks for approving this guide"
   end
 
