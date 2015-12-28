@@ -12,7 +12,7 @@ class Generators
       change_summary: "change summary",
       body:           "# Heading",
       content_owner:  content_owner,
-      user:           User.new(name: "Generated User")
+      user:           User.new(name: "Generated User", email: "generated.user@example.com")
     }.merge(attributes)
 
     Edition.new(attributes)

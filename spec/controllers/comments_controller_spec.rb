@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-  before { login_as User.create(name: "Commenter", permissions: ['signin']) }
+  before { login_as User.create(name: "Commenter", permissions: ['signin'], email: "commenter@example.com") }
 
   describe "#create" do
     it 'redirects to a url with a unique anchor tag pointing to a comment' do

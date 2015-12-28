@@ -22,8 +22,8 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
   it "filters by user" do
-    dave = User.create!(name: "Dave")
-    linda = User.create!(name: "Linda")
+    dave = User.create!(name: "Dave", email: "dave@example.com")
+    linda = User.create!(name: "Linda", email: "linda@example.com")
     Guide.create!(
       slug: "/service-manual/a",
       latest_edition: Generators.valid_edition(user: dave),

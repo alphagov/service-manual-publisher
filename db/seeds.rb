@@ -44,7 +44,7 @@ def all_old_guides
 end
 
 if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
-  author = User.first || User.create!(name: "Unknown")
+  author = User.first || User.create!(name: "Unknown", email: "unknown@example.com")
   if ContentOwner.count == 0
     ContentOwner.create!(
       title: "Design Community",
