@@ -1,0 +1,2 @@
+class NotificationMailer < ApplicationMailer
+end
