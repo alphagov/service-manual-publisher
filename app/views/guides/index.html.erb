@@ -23,6 +23,11 @@
   </div>
 
   <div class="col-md-9">
+    <% SearchHeaderPresenter.new(params, current_user).tap do |search_header| %>
+      <% if search_header.search? %>
+        <h2><%= search_header.to_s %></h2>
+      <% end %>
+    <% end %>
     <table class='table table-bordered'>
       <thead>
         <tr class='table-header'>
