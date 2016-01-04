@@ -4,7 +4,9 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 ## Screenshots
 
-TODO
+![Landing page screenshot](http://i.imgur.com/UHqjufR.png)
+
+![Edit interface screenshot](http://i.imgur.com/sFP1IUD.png)
 
 ## Live examples
 
@@ -20,12 +22,23 @@ PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no
 
 ### Dependencies
 
-- [url-arbiter](https://github.com/alphagov/url-arbiter)
-- [router-api](https://github.com/alphagov/router-api)
-- [content-store](https://github.com/alphagov/content-store)
 - [publishing-api](https://github.com/alphagov/publishing-api)
 - PostgreSQL
-- [router](https://github.com/alphagov/router)
+
+#### Optional dependencies
+
+**To persist and render guides**
+
+- [content-store](https://github.com/alphagov/content-store)
+- [government-frontend](https://github.com/alphagov/government-frontend)
+
+**To index and search published guides**
+
+- [rummager](https://github.com/alphagov/rummager)
+- [designprinciples](https://github.com/alphagov/design-principles)
+- [frontend](https://github.com/alphagov/frontend)
+
+_NB: Every application above may have its own dependencies_
 
 You will need to clone down all these repositories, and run the following commands
 for each one:
@@ -45,7 +58,9 @@ The application runs on port `3111` by default. If you're using the GDS VM it's 
 Currently [government-frontend](alphagov/government-frontend) has a feature flag to enable rendering service manual content.
 
 ```
-FLAG_ENABLE_SERVICE_MANUAL=1 bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router
+bowl service-manual-publisher
+# to run everything you might need:
+# bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router
 ```
 
 The application has a style guide that can be accessed on `/style-guide`.
