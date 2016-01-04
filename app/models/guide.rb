@@ -6,6 +6,9 @@ class Guide < ActiveRecord::Base
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
 
   accepts_nested_attributes_for :latest_edition
+  scope :by_user, ->(user_id) { where(editions: { user_id: user_id }) if user_id.present? }
+  scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
+  scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
 
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
@@ -19,8 +22,8 @@ class Guide < ActiveRecord::Base
 
   def self.search(search_terms)
     words = sanitize(search_terms.scan(/\w+/) * "|")
-    from("guides, to_tsquery('pg_catalog.english', #{words}) as q")
-      .where("tsv @@ q").order("ts_rank_cd(tsv, q) DESC")
+    where("tsv @@ to_tsquery('pg_catalog.english', #{words})")
+      .order("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC")
   end
 
   def work_in_progress_edition?
