@@ -1,10 +1,6 @@
 class Guide < ActiveRecord::Base
   validates :content_id, presence: true, uniqueness: true
-  validates :slug, presence: true
-  validates :slug, format: {
-    with: /\A\/service-manual\//,
-    message: "must be be prefixed with /service-manual/"
-  }
+  validate :slug_format
 
   has_many :editions
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
@@ -52,6 +48,16 @@ class Guide < ActiveRecord::Base
       end
     else
       latest_edition
+    end
+  end
+
+private
+
+  def slug_format
+    if !slug.to_s.match(/\A\/service-manual\//)
+      errors.add(:slug, "must be present and start with '/service-manual/'")
+    elsif !slug.to_s.match(/\A\/service-manual\/\w+/)
+      errors.add(:slug, "must be filled in")
     end
   end
 end

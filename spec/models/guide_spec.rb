@@ -40,7 +40,14 @@ RSpec.describe Guide do
       edition = Generators.valid_published_edition
       edition = Guide.new(slug: "/something", latest_edition: edition)
       edition.valid?
-      expect(edition.errors.full_messages_for(:slug)).to eq ["Slug must be be prefixed with /service-manual/"]
+      expect(edition.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/'"]
+    end
+
+    it "reminds users if they've forgotten to change the default pre-filled slug value" do
+      edition = Generators.valid_published_edition
+      edition = Guide.new(slug: "/service-manual/", latest_edition: edition)
+      edition.valid?
+      expect(edition.errors.full_messages_for(:slug)).to eq ["Slug must be filled in"]
     end
   end
 
