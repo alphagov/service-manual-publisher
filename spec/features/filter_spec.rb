@@ -93,6 +93,21 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to_not have_text "Reviewed Standups"
   end
 
+  it "displays a page header that's based on the query" do
+    ContentOwner.create!(title: "Design Community", href: "example.com")
+    User.create!(name: "Ronan", email: "ronan@example.com")
+    visit root_path
+    within ".filters" do
+      fill_in "Title or slug", with: "Form Design"
+      select "Ronan", from: "User"
+      select "Design Community", from: "Published by"
+      select "Draft", from: "State"
+      click_button "Filter guides"
+    end
+
+    expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by Design Community"
+  end
+
   [:user, :state, :published_by].each do |n|
     define_method("filter_by_#{n}") do |value|
       visit root_path
