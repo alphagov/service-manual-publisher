@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Guide do
+  let(:edition) { Generators.valid_published_edition }
+
   describe "#ensure_draft_exists" do
-    let(:edition) { Generators.valid_published_edition }
     let(:guide) do
       Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
     end
@@ -29,7 +30,6 @@ RSpec.describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      edition = Generators.valid_published_edition
       guide = Guide.create!(slug: "/service-manual/slug", content_id: nil, latest_edition: edition)
       expect(guide.content_id).to be_present
     end
@@ -37,17 +37,21 @@ RSpec.describe Guide do
 
   describe "validations" do
     it "doesn't allow slugs without /service-manual/ prefix" do
-      edition = Generators.valid_published_edition
-      edition = Guide.new(slug: "/something", latest_edition: edition)
-      edition.valid?
-      expect(edition.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/'"]
+      guide = Guide.new(slug: "/something", latest_edition: edition)
+      guide.valid?
+      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/'"]
     end
 
     it "reminds users if they've forgotten to change the default pre-filled slug value" do
-      edition = Generators.valid_published_edition
-      edition = Guide.new(slug: "/service-manual/", latest_edition: edition)
-      edition.valid?
-      expect(edition.errors.full_messages_for(:slug)).to eq ["Slug must be filled in"]
+      guide = Guide.new(slug: "/service-manual/", latest_edition: edition)
+      guide.valid?
+      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be filled in"]
+    end
+
+    it "does not allow unsupported characters in slugs" do
+      guide = Guide.new(slug: "/service-manual/financing$$$.xml}", latest_edition: edition)
+      guide.valid?
+      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can only contain letters, numbers and dashes"]
     end
   end
 
