@@ -236,6 +236,30 @@ RSpec.describe "creating guides", type: :feature do
     end
   end
 
+  describe "slug generation" do
+    it "generates slug", js: true do
+      {
+        "Guide title": "guide-title",
+        "slug--with-----hyphens": "slug-with-hyphens",
+        "       space    slugs  ": "space-slugs",
+        'other things !@#$%^&*()_-+=/\\': "other-things",
+      }.each do |title, expected_slug|
+        expected_slug = "/service-manual/#{expected_slug}"
+
+        fill_in "Guide title", with: title
+        expect(find_field('Slug').value).to eq expected_slug
+      end
+    end
+
+    context "user edits slug manually" do
+      it "does not generate slug" do
+        fill_in "Slug", with: "/service-manual/something"
+        fill_in "Guide title", with: "My Guide Title"
+        expect(find_field('Slug').value).to eq '/service-manual/something'
+      end
+    end
+  end
+
 private
 
   def fill_in_guide_form
