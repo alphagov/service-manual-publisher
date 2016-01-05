@@ -1,3 +1,5 @@
+require 'gds_api/rummager'
+
 class SlugMigration < ActiveRecord::Base
   belongs_to :guide
 
@@ -10,6 +12,20 @@ class SlugMigration < ActiveRecord::Base
 
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
+  end
+
+  def has_search_document?
+    @search_client ||= GdsApi::Rummager.new(Plek.current.find('rummager'), disable_cache: true)
+    begin
+      @search_client.get_content!(slug)
+    rescue GdsApi::HTTPNotFound => e
+      false
+    end
+  end
+
+  def delete_search_document!
+    @search_client ||= GdsApi::Rummager.new(Plek.current.find('rummager'), disable_cache: true)
+    @search_client.delete_content!(slug)
   end
 
   private
