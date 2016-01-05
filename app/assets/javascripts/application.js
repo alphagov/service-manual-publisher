@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require select2
+//= require protect_form_data
 //= require_tree .
