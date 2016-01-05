@@ -252,7 +252,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     context "user edits slug manually" do
-      it "does not generate slug" do
+      it "does not generate slug", js: true do
         fill_in "Slug", with: "/service-manual/something"
         fill_in "Guide title", with: "My Guide Title"
         expect(find_field('Slug').value).to eq '/service-manual/something'
