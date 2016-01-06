@@ -33,5 +33,6 @@ module ServiceManualPublisher
     config.active_record.raise_in_transactional_callbacks = true
 
     config.active_record.schema_format = :sql
+    config.action_mailer.default_url_options = { host: Plek.current.find("service-manual-publisher") }
   end
 end

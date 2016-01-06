@@ -77,9 +77,11 @@ private
   end
 
   def approve_for_publication
-    @guide.latest_edition.build_approval(user: current_user)
-    @guide.latest_edition.state = "approved"
-    @guide.latest_edition.save!
+    edition = @guide.latest_edition
+    edition.build_approval(user: current_user)
+    edition.state = "approved"
+    edition.save!
+    NotificationMailer.approved_for_publishing(edition).deliver_later
     redirect_to back_or_default, notice: "Thanks for approving this guide"
   end
 
@@ -95,6 +97,10 @@ private
       GuidePublisher.new(guide: @guide).publish
       index_for_search(@guide)
       redirect_to back_or_default, notice: "Guide has been published"
+    end
+
+    unless @guide.latest_edition.notification_subscribers == [current_user]
+      NotificationMailer.published(@guide.latest_edition, current_user).deliver_later
     end
   rescue GdsApi::HTTPErrorResponse => e
     flash[:error] = e.error_details["error"]["message"]

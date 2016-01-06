@@ -1,0 +1,9 @@
+Hello,
+
+<%= @comment.user.name %> left a comment on "<%= @edition.title %>" Service Manual Guide:
+
+
+<%= @comment.comment %>
+
+
+To see the comment in context or to reply visit comments and history <%= edition_comments_url(@edition, anchor: "comment-#{@comment.id}") %>.

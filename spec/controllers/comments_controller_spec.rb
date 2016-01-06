@@ -1,15 +1,38 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-  before { login_as User.create(name: "Commenter", permissions: ['signin']) }
+
+  let(:commenter) { User.create(name: "Commenter", permissions: ['signin'], email: "commenter@example.com") }
+  let(:edition) do
+    edition = Generators.valid_edition(guide: Guide.new(slug: "/service-manual/commentable"))
+    edition.save!
+    edition
+  end
+
+  before do
+    login_as commenter
+    ActionMailer::Base.deliveries.clear
+  end
 
   describe "#create" do
     it 'redirects to a url with a unique anchor tag pointing to a comment' do
-      edition = Generators.valid_edition
-      edition.save!
       post :create, comment: { edition_id: edition.id, comment: "LGMT!" }
 
       expect(response).to redirect_to(edition_path(edition, anchor: "comment-#{Comment.last.id}"))
+    end
+
+    it 'sends a notification email' do
+      post :create, comment: { edition_id: edition.id, comment: "LGMT!" }
+
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+    end
+
+    it 'does not send a notification email if edition author is the commenter' do
+      edition.update_attribute(:user, commenter)
+
+      post :create, comment: { edition_id: edition.id, comment: "LGMT!" }
+
+      expect(ActionMailer::Base.deliveries.size).to eq 0
     end
   end
 end

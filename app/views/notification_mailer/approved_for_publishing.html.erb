@@ -1,0 +1,13 @@
+<p>Hello,</p>
+
+<p>
+  <b><%= @approval.user.name %></b> has approved "<%= @edition.title %>" Service Manual Guide for publishing.
+</p>
+
+<p>
+  In order for the changes to be visible publically the guide needs to be published.
+</p>
+
+<p>
+  <%= link_to "See \"#{@edition.title}\" in Service Manual Publisher", edition_url(@edition) %>
+</p>

@@ -1,0 +1,9 @@
+<p>Hello,</p>
+
+<p>
+  <b><%= @user.name %></b> has published "<%= @edition.title %>".
+</p>
+
+<p>
+  <%= link_to "See \"#{@edition.title}\" in Service Manual Publisher", edition_url(@edition) %>.
+</p>
