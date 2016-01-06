@@ -1,34 +1,33 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="btn-toolbar" role="toolbar">
-      <div class='btn-group'>
-        <% if edition.persisted? %>
-          <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default' %>
-        <% end %>
-        <% if !publish_controls_only %>
-          <%= form.submit "Save", class: 'btn btn-default js-ok-to-navigate-away', name: :save, data: disable_if_new_record(guide) %>
-          <%= form.submit "Save and preview", class: 'btn btn-default js-ok-to-navigate-away', name: :save_and_preview, data: disable_if_new_record(guide) %>
-          <% if !edition.persisted? %>
-            <%= link_to "Discard new guide", guides_path, class: "btn btn-danger" %>
-          <% end %>
-        <% end %>
 
-        <% if edition.persisted? %>
-          <% if edition.can_request_review? %>
-            <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success' %>
-          <% end %>
-          <% if edition.can_be_approved? %>
-            <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success' %>
-          <% end %>
+      <% if edition.persisted? %>
+        <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default add-right-margin' %>
+      <% end %>
+      <% if !publish_controls_only %>
+        <%= form.submit "Save", class: 'btn btn-default add-right-margin', name: :save, data: disable_if_new_record(guide) %>
+        <%= form.submit "Save and preview", class: 'btn btn-default add-right-margin', name: :save_and_preview, data: disable_if_new_record(guide) %>
+        <% if !edition.persisted? %>
+          <%= link_to "Discard new guide", guides_path, class: "btn btn-danger add-right-margin" %>
+        <% end %>
+      <% end %>
 
-          <% if edition.can_be_published? %>
-            <%= form.submit "Publish", class: 'btn btn-success', name: :publish %>
-          <% end %>
-        <% else %>
-          <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
+      <% if edition.persisted? %>
+        <% if edition.can_request_review? %>
+          <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success add-right-margin' %>
+        <% end %>
+        <% if edition.can_be_approved? %>
+          <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success add-right-margin' %>
         <% end %>
 
-      </div>
+        <% if edition.can_be_published? %>
+          <%= form.submit "Publish", class: 'btn btn-success add-right-margin', name: :publish %>
+        <% end %>
+      <% else %>
+        <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
+      <% end %>
+
     </div>
     <% if edition.approval %>
       <p class="text-info">
