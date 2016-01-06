@@ -14,4 +14,13 @@ RSpec.describe "Preventing users from losing unsaved changes in the form", type:
     click_first_button "Send for review"
     expect(page.driver.browser.modal_message).to include "unsaved changes"
   end
+
+  it "does not notify the user when navigating away via 'Save'", js: true do
+    edition = Generators.valid_edition(title: "Standups", state: 'draft')
+    guide = Guide.create!(latest_edition: edition, slug: "/service-manual/test")
+    visit edit_guide_path(guide)
+    fill_in "Body", with: "This has changed"
+    click_first_button "Save"
+    expect(page.driver.browser.modal_message).to be_blank
+  end
 end
