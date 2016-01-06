@@ -114,16 +114,28 @@ RSpec.describe Edition, type: :model do
     end
 
     describe "#can_be_approved?" do
+      let :user do
+        User.new
+      end
+
       it "returns true when a review has been requested" do
         edition.state = "review_requested"
         edition.save!
-        expect(edition.can_be_approved?).to be true
+        expect(edition.can_be_approved?(user)).to be true
+      end
+
+      it "returns false when the user is also the editor" do
+        edition.state = "review_requested"
+        edition.user = User.create!(name: "anotehr", email: "email@address.org")
+        edition.save!
+        expect(edition.can_be_approved?(edition.user)).to eq false
       end
 
       it "returns false when latest_edition has not been saved" do
         allow(edition).to receive(:persisted?) { false }
-        expect(edition.can_be_approved?).to be false
+        expect(edition.can_be_approved?(user)).to be false
       end
+
     end
 
     describe "#can_request_review?" do

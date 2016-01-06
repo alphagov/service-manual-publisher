@@ -79,10 +79,14 @@ RSpec.describe "creating guides", type: :feature do
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    login_as(User.new(name: "Reviewer")) do
-      visit edition_path(guide.latest_edition)
-      click_first_button "Approve for publication"
+    Edition.first.tap do |edition|
+      # set editor to another user so we can approve this edition
+      edition.user = User.create!(name: "Editor", email: "email@example.org")
+      edition.save!
     end
+
+    visit edition_path(guide.latest_edition)
+    click_first_button "Approve for publication"
 
     visit edition_path(guide.latest_edition)
     click_first_button "Publish"
