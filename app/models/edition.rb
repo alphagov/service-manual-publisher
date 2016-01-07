@@ -48,8 +48,8 @@ class Edition < ActiveRecord::Base
     true
   end
 
-  def can_be_approved?
-    persisted? && review_requested?
+  def can_be_approved?(by_user)
+    persisted? && review_requested? && user != by_user
   end
 
   def can_be_published?

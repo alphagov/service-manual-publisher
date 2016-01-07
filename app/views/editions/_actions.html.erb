@@ -13,13 +13,15 @@
         <% end %>
       <% end %>
 
-      <% if edition.persisted? %>
-        <% if edition.can_request_review? %>
-          <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success add-right-margin' %>
-        <% end %>
-        <% if edition.can_be_approved? %>
-          <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success add-right-margin' %>
-        <% end %>
+        <% if edition.persisted? %>
+          <% if edition.can_request_review? %>
+            <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success add-right-margin' %>
+          <% end %>
+          <% if edition.can_be_approved? current_user %>
+            <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success add-right-margin' %>
+          <% else %>
+            <%= form.submit "Approve for publication", disabled: true, title: "You can't approve an edition that you created", class: 'btn btn-success add-right-margin' %>
+          <% end %>
 
         <% if edition.can_be_published? %>
           <%= form.submit "Publish", class: 'btn btn-success add-right-margin', name: :publish %>

@@ -217,10 +217,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         expect(page).to_not have_button "Publish"
       end
     end
-
-    context "approved by the same user" do
-      it "does not allow the same user to approve it"
-    end
   end
 
   describe "guide edition history" do
