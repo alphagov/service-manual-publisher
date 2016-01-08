@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   resources :approvals
   resources :comments
+  resources :uploads, only: [:create]
 
   resources :slug_migrations do
     post '/delete_search_index' => 'slug_migrations#delete_search_index', as: :delete_search_index
