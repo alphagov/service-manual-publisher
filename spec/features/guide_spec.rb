@@ -42,8 +42,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
-    expect(edition.update_type).to eq "major"
-    expect(edition.change_note).to eq "Change Note"
+    expect(edition.update_type).to eq "minor"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
 
@@ -72,7 +71,7 @@ RSpec.describe "creating guides", type: :feature do
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:publish)
                             .once
-                            .with(an_instance_of(String), 'major')
+                            .with(an_instance_of(String), 'minor')
 
     click_first_button "Save"
     guide = Guide.first
@@ -273,9 +272,5 @@ private
 
     fill_in "Guide title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
-
-    choose "Major update"
-    fill_in "Summary of change", with: "Factual change"
-    fill_in "Why the change is being made", with: "Change Note"
   end
 end
