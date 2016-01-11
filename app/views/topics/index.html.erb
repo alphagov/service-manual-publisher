@@ -1,0 +1,6 @@
+<%= link_to "Create a new topic", new_topic_path %>
+<% Topic.all.each do |topic| %>
+  <h2>
+    <%= link_to topic.title, edit_topic_path(topic) %>
+  </h2>
+<% end %>

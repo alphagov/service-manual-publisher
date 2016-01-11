@@ -1,0 +1,57 @@
+<div class="topics">
+  <% all_editions = Guide.all.map {|g| g.latest_edition} %>
+  <% values = options_for_select(all_editions.map {|e| [e.title, e.id]}) %>
+
+  <%= form_for @topic do |f| %>
+    <div class="form-group">
+      <%= f.label :path %>
+      <%= f.text_field :path, class: "form-control", disabled: @topic.persisted? %>
+    </div>
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_field :description, class: "form-control" %>
+    </div>
+
+    <ul class="list-group js-sortable-topic-list">
+    </ul>
+
+    <ul class="list-group">
+      <li class="list-group-item">
+        <%= button_tag "Add Heading", type: "button", class: "js-add-heading btn btn-success" %>
+        <%= button_tag "Add Edition", type: "button", class: "js-add-edition btn btn-success", disabled: true %>
+      </li>
+    </ul>
+
+    <%= f.hidden_field :tree, value: @topic.tree.to_json, class: "js-topic-tree" %>
+    <%= f.submit "Save", class: "btn btn-success btn-save" %>
+  <% end %>
+
+  <div class="topics-templates">
+    <li class="list-group-item js-heading-template hidden">
+      <div class="left">
+        <span class="glyphicon glyphicon-move"></span>
+        <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+      </div>
+      <div class="right">
+        <div class="form-group">
+          <input type="text" placeholder="Heading Title" class="js-topic-input js-topic-title form-control">
+        </div>
+        <input type="text" placeholder="Heading Description" class="js-topic-input js-topic-description form-control">
+      </div>
+    </li>
+    <li class="list-group-item js-edition-template hidden">
+      <div class="left">
+        <span class="glyphicon glyphicon-move"></span>
+        <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+      </div>
+      <div class="right">
+        <%= select_tag nil, values, {class: 'js-topic-input js-topic-edition input-md-12 form-control'} %>
+      </div>
+    </li>
+  </div>
+
+</div>

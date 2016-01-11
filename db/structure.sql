@@ -262,6 +262,38 @@ ALTER SEQUENCE slug_migrations_id_seq OWNED BY slug_migrations.id;
 
 
 --
+-- Name: topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE topics (
+    id integer NOT NULL,
+    path character varying NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL,
+    tree json DEFAULT '{}'::json NOT NULL
+);
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -345,6 +377,13 @@ ALTER TABLE ONLY slug_migrations ALTER COLUMN id SET DEFAULT nextval('slug_migra
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -394,6 +433,14 @@ ALTER TABLE ONLY guides
 
 ALTER TABLE ONLY slug_migrations
     ADD CONSTRAINT slug_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY topics
+    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -517,6 +564,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151119131239');
 INSERT INTO schema_migrations (version) VALUES ('20151211164627');
 
 INSERT INTO schema_migrations (version) VALUES ('20151216125006');
+
+INSERT INTO schema_migrations (version) VALUES ('20160107144631');
 
 INSERT INTO schema_migrations (version) VALUES ('20160113110500');
 

@@ -1,0 +1,16 @@
+.topics {
+  .left {
+    display: inline;
+  }
+  .right {
+    display: inline;
+  }
+
+  .glyphicon {
+    cursor: pointer;
+  }
+
+  .glyphicon-trash {
+    color: $brand-danger;
+  }
+}
