@@ -8,45 +8,49 @@
     <%= render 'shared/form_error_summary', object: guide %>
     <%= f.fields_for :latest_edition, guide.latest_editable_edition do |editions_form| %>
 
-      <div class="well">
-        <h2>About this update</h2>
+      <% if guide.new_record? %>
+        <%= editions_form.hidden_field :update_type, value: "minor" %>
+      <% else %>
+        <div class="well">
+          <h2>About this update</h2>
 
-        <div class='form-group'>
-          <label>Impact of the update</label>
-          <%= editions_form.error_list :update_type %>
-          <div class="radio">
-            <%= label_tag do %>
-              <%= editions_form.radio_button :update_type, "minor", { class: 'update-type-select'} %>
-              Minor update
-              <span class='text-muted'>e.g. spelling or typographic corrections.</span>
-            <% end %>
+          <div class='form-group'>
+            <label>Impact of the update</label>
+            <%= editions_form.error_list :update_type %>
+            <div class="radio">
+              <%= label_tag do %>
+                <%= editions_form.radio_button :update_type, "minor", { class: 'update-type-select'} %>
+                Minor update
+                <span class='text-muted'>e.g. spelling or typographic corrections.</span>
+              <% end %>
+            </div>
+            <div class="radio">
+              <%= label_tag do %>
+                <%= editions_form.radio_button :update_type, "major", { class: 'update-type-select'} %>
+                Major update
+                <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
+              <% end %>
+            </div>
           </div>
-          <div class="radio">
-            <%= label_tag do %>
-              <%= editions_form.radio_button :update_type, "major", { class: 'update-type-select'} %>
-              Major update
-              <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
-            <% end %>
+
+          <div class="form-group change-note-form-group">
+            <%= editions_form.label :change_summary, "Summary of change" %>
+            <div class="help-block">What is being changed in this update</div>
+            <%= editions_form.text_field :change_summary, class: 'input-md-12 form-control', rows: 5 %>
           </div>
-        </div>
 
-        <div class="form-group change-note-form-group">
-          <%= editions_form.label :change_summary, "Summary of change" %>
-          <div class="help-block">What is being changed in this update</div>
-          <%= editions_form.text_field :change_summary, class: 'input-md-12 form-control', rows: 5 %>
-        </div>
+          <div class="form-group change-note-form-group">
+            <%= editions_form.label :change_note, "Why the change is being made" %>
+            <div class="help-block">Include any evidence from research and links to any related discussions</div>
+            <%= editions_form.text_area :change_note, class: 'input-md-12 form-control', rows: 5 %>
+          </div>
 
-        <div class="form-group change-note-form-group">
-          <%= editions_form.label :change_note, "Why the change is being made" %>
-          <div class="help-block">Include any evidence from research and links to any related discussions</div>
-          <%= editions_form.text_area :change_note, class: 'input-md-12 form-control', rows: 5 %>
+          <p class="text-strong change-note-form-group">
+            <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
+            <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
+          </p>
         </div>
-
-        <p class="text-strong change-note-form-group">
-          <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
-          <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
-        </p>
-      </div>
+      <% end %>
 
       <div class="well">
         <h2>Guide content</h2>
