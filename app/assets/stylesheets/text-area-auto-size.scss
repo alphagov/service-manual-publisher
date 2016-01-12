@@ -1,0 +1,9 @@
+textarea.text-area-auto-size {
+  box-sizing: border-box;
+  min-height: 31 * 5px;
+  overflow-x: hidden; /* for Firefox (issue #5) */
+}
+
+textarea.text-area-auto-size-large {
+  min-height: 31 * 14px;
+}
