@@ -64,7 +64,7 @@
         <div class='form-group'>
           <%= f.label :slug  %>
           <%= f.error_list :slug  %>
-          <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug js-guide-slug', disabled: guide.persisted? %>
+          <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug js-guide-slug', disabled: guide.has_published_edition? %>
           <span class="help-block">Must start with '/service-manual/' and contain only letters and dashes e.g. '/service-manual/stand-up-meetings'. See <a href="https://insidegovuk.blog.gov.uk/url-standards-for-gov-uk/">URL standards for GOV.UK</a>.</span>
         </div>
 

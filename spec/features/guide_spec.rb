@@ -128,10 +128,15 @@ RSpec.describe "creating guides", type: :feature do
   end
 
   context "when updating a guide" do
-    it "prevents users from editing the url slug" do
-      guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
-      visit edit_guide_path(guide)
-      expect(find('input.guide-slug')['disabled']).to be_present
+    context "the guide has previously been published" do
+      before do
+        @guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_published_edition)
+      end
+
+      it "prevents users from editing the url slug" do
+        visit edit_guide_path(@guide)
+        expect(find('input.guide-slug')['disabled']).to be_present
+      end
     end
 
     it "shows the summary of validation errors" do

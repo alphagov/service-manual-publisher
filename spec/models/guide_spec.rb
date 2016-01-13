@@ -53,6 +53,18 @@ RSpec.describe Guide do
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can only contain letters, numbers and dashes"]
     end
+
+    context "has a published edition" do
+      it "does not allow changing the slug" do
+        guide = Guide.create!(
+          slug: "/service-manual/agile",
+          latest_edition: Generators.valid_published_edition,
+        )
+        guide.slug = "/service-manual/something-else"
+        guide.valid?
+        expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can't be changed if guide has a published edition"]
+      end
+    end
   end
 
   describe "#latest_editable_edition" do
