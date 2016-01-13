@@ -37,6 +37,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
+  gem 'jasmine'
 end
 
 group :test do
