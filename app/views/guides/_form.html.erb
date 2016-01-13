@@ -42,7 +42,7 @@
           <div class="form-group change-note-form-group">
             <%= editions_form.label :change_note, "Why the change is being made" %>
             <div class="help-block">Include any evidence from research and links to any related discussions</div>
-            <%= editions_form.text_area :change_note, class: 'input-md-12 form-control', rows: 5 %>
+            <%= editions_form.text_area :change_note, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
           </div>
 
           <p class="text-strong change-note-form-group">
@@ -71,14 +71,14 @@
         <div class='form-group'>
           <%= editions_form.label :description, "Guide description" %>
           <%= editions_form.error_list :description %>
-          <%= editions_form.text_area :description, rows: 4, class: 'input-md-12 form-control' %>
+          <%= editions_form.text_area :description, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
           <span class="help-block">To be used for displaying search results, linking content etc.</span>
         </div>
 
         <div class="form-group">
           <%= editions_form.label :body %>
           <%= editions_form.error_list :body %>
-          <%= editions_form.text_area :body, class: 'input-md-12 form-control markdown-textarea', rows: 14 %>
+          <%= editions_form.text_area :body, class: 'input-md-12 form-control markdown-textarea text-area-auto-size text-area-auto-size-large js-text-area-auto-size', rows: 14 %>
         </div>
 
         <div class='form-group'>
