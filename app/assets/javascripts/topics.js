@@ -9,6 +9,7 @@ $(function() {
     $edition.find(".js-topic-edition").val(value);
     $edition.removeClass("js-edition-template");
     $edition.removeClass("hidden");
+    $edition.addClass("draggable-edition");
     $topics.find(".js-sortable-topic-list").append($edition);
   }
 
