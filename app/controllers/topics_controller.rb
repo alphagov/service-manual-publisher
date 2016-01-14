@@ -26,8 +26,7 @@ class TopicsController < ApplicationController
 
   def update
     @topic = Topic.find(params[:id])
-    @topic.title = params[:topic][:title]
-    @topic.description = params[:topic][:description]
+    @topic.attributes = params.require(:topic).permit(:title, :description)
     @topic.tree = JSON.parse(params[:topic][:tree])
     if @topic.save
       redirect_to topics_path, notice: "Topic has been updated"
