@@ -38,6 +38,6 @@ class TopicsController < ApplicationController
 private
 
   def instantiate_latest_editions
-    @latest_editions = Guide.all.includes(:latest_edition).map(&:latest_edition)
+    @latest_editions = Guide.all.includes(:latest_edition).map(&:latest_edition).sort_by(&:title)
   end
 end
