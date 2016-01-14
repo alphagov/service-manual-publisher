@@ -1,7 +1,4 @@
 <div class="topics">
-  <% all_editions = Guide.all.map {|g| g.latest_edition} %>
-  <% values = options_for_select(all_editions.map {|e| [e.title, e.id]}) %>
-
   <%= form_for @topic do |f| %>
     <div class="form-group">
       <%= f.label :path %>
@@ -49,7 +46,7 @@
         <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
       </div>
       <div class="right">
-        <%= select_tag nil, values, {class: 'js-topic-input js-topic-edition input-md-12 form-control'} %>
+        <%= select_tag nil, options_for_select(@latest_editions.map { |e| [e.title, e.id] }), {class: 'js-topic-input js-topic-edition input-md-12 form-control'} %>
       </div>
     </li>
   </div>

@@ -1,4 +1,6 @@
 class TopicsController < ApplicationController
+  before_action :instantiate_latest_editions, only: [:new, :edit]
+
   def index
   end
 
@@ -31,5 +33,11 @@ class TopicsController < ApplicationController
     else
       render :new
     end
+  end
+
+private
+
+  def instantiate_latest_editions
+    @latest_editions = Guide.all.includes(:latest_edition).map(&:latest_edition)
   end
 end
