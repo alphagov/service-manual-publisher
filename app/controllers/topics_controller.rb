@@ -2,6 +2,7 @@ class TopicsController < ApplicationController
   before_action :instantiate_latest_editions, only: [:new, :edit]
 
   def index
+    @topics = Topic.all.order(updated_at: :desc)
   end
 
   def new

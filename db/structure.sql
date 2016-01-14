@@ -267,6 +267,8 @@ ALTER SEQUENCE slug_migrations_id_seq OWNED BY slug_migrations.id;
 
 CREATE TABLE topics (
     id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     path character varying NOT NULL,
     title character varying NOT NULL,
     description character varying NOT NULL,
