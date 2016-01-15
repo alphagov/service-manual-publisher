@@ -89,7 +89,7 @@ private
     if ENV['DISABLE_PUBLISHING']
       @edition = @guide.latest_edition
       flash[:error] = "Publishing is currently disabled. The guide has not been published."
-      return render template: 'editions/show'
+      return render template: 'guides/edit'
     end
 
     ActiveRecord::Base.transaction do
@@ -106,7 +106,7 @@ private
     flash[:error] = e.error_details["error"]["message"]
     @guide = @guide.reload
     @edition = @guide.latest_edition
-    render template: 'editions/show'
+    render template: 'guides/edit'
   end
 
   def success_url(guide)

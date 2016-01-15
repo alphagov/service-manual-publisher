@@ -13,8 +13,8 @@
         Edition <%= edition.id %>
       </a>
       <%= link_to(
-            "View edition",
-            edition_path(edition),
+            "View changes",
+            edition_changes_path(edition),
             class: "pull-right") %>
     </div>
     <div class="panel-body collapse <%= edition.latest_edition? ? "in" : nil %>" id="edition<%=edition.id%>">
