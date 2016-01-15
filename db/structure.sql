@@ -272,7 +272,8 @@ CREATE TABLE topics (
     path character varying NOT NULL,
     title character varying NOT NULL,
     description character varying NOT NULL,
-    tree json DEFAULT '{}'::json NOT NULL
+    tree json DEFAULT '{}'::json NOT NULL,
+    content_id character varying
 );
 
 
@@ -489,6 +490,13 @@ CREATE UNIQUE INDEX index_slug_migrations_on_slug ON slug_migrations USING btree
 
 
 --
+-- Name: index_topics_on_content_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_content_id ON topics USING btree (content_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -570,6 +578,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151216125006');
 INSERT INTO schema_migrations (version) VALUES ('20160107144631');
 
 INSERT INTO schema_migrations (version) VALUES ('20160113110500');
+
+INSERT INTO schema_migrations (version) VALUES ('20160115104456');
 
 INSERT INTO schema_migrations (version) VALUES ('20160209114249');
 

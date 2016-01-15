@@ -1,4 +1,5 @@
 class Topic < ActiveRecord::Base
+  include ContentIdentifiable
   validate :path_can_be_set_once
   validate :path_format
 

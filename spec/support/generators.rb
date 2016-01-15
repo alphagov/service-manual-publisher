@@ -31,4 +31,10 @@ class Generators
     attrs[:email] ||= "#{attrs[:name].parameterize}@example.com"
     User.new(attrs)
   end
+
+  def self.valid_topic(attributes = {})
+    attrs = { title: "Agile Delivery", path: "/service-manual/agile-delivery", description: "Agile description" }
+    attrs.merge!(attributes)
+    Topic.new(attrs)
+  end
 end

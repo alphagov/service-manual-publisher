@@ -25,4 +25,12 @@ RSpec.describe Topic do
     topic.valid?
     expect(topic.errors.full_messages_for(:path)).to eq ["Path can only contain letters, numbers and dashes"]
   end
+
+  describe "on create callbacks" do
+    it "generates and sets content_id" do
+      topic = Generators.valid_topic(content_id: nil)
+      topic.save!
+      expect(topic.content_id).to be_present
+    end
+  end
 end
