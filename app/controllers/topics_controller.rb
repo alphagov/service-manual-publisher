@@ -1,6 +1,4 @@
 class TopicsController < ApplicationController
-  before_action :instantiate_latest_editions, only: [:new, :edit]
-
   def index
     @topics = Topic.all.order(updated_at: :desc)
   end
@@ -37,7 +35,8 @@ class TopicsController < ApplicationController
 
 private
 
-  def instantiate_latest_editions
-    @latest_editions = Guide.all.includes(:latest_edition).map(&:latest_edition).sort_by(&:title)
+  def latest_editions
+    @latest_editions ||= Guide.all.includes(:latest_edition).map(&:latest_edition).sort_by(&:title)
   end
+  helper_method :latest_editions
 end
