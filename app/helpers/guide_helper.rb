@@ -15,18 +15,11 @@ module GuideHelper
   end
 
   def guide_action_button(guide)
-    state = guide.latest_edition.state
-    if state == "draft" || state == "published"
-      title = "Edit"
-      path =  edit_guide_path(guide)
-    elsif state == "review_requested"
-      title = "Review guide"
-      path = edition_path(guide.latest_edition)
-    elsif state == "approved"
-      title = "Publish"
-      path = edition_path(guide.latest_edition)
-    end
-    link_to title, path, class: "btn btn-block btn-default btn-xs"
+    title = {
+      "review_requested" => "Review guide",
+      "approved" => "Publish",
+    }[guide.latest_edition.state] || "Edit"
+    link_to title, edit_guide_path(guide), class: "btn btn-block btn-default btn-xs"
   end
 
   def latest_editor_name(guide)

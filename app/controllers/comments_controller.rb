@@ -10,6 +10,6 @@ class CommentsController < ApplicationController
       NotificationMailer.comment_added(comment).deliver_later
     end
 
-    redirect_to back_or_default(edition_path(edition), anchor: comment.html_id), notice: "Comment has been created"
+    redirect_to back_or_default(edit_guide_path(edition.guide), anchor: comment.html_id), notice: "Comment has been created"
   end
 end

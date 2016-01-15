@@ -43,7 +43,7 @@
         <% @guides.each do |guide| %>
           <tr>
             <td>
-              <%= link_to guide.latest_edition.title, guide.latest_edition %>
+              <%= link_to guide.latest_edition.title, edit_guide_path(guide) %>
               <span class='text-muted'><%= guide.slug %></span>
             </td>
             <td>

@@ -124,7 +124,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     it "shows the correct state of the guide if publishing fails" do
       guide = given_a_guide_exists(state: 'approved')
 
-      visit edition_path(guide.latest_edition)
+      visit edit_guide_path(guide)
       expect_any_instance_of(GuidePublisher).to receive(:publish).and_raise api_error
 
       click_first_button "Publish"
@@ -198,7 +198,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         click_link "Standups"
         click_first_button "Approve for publication"
 
-        expect(current_path).to eq edition_path(edition)
+        expect(current_path).to eq edit_guide_path(guide)
         expect(page).to have_content "Thanks for approving this guide"
         expect(page).to have_content "Changes approved by Keanu Reviews"
 
@@ -220,7 +220,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   describe "guide edition history" do
-    it "allows seeing previous editions of a guide, but not change them" do
+    it "allows seeing previous edition changes" do
       guide = given_a_published_guide_exists(title: "First Edition")
       guide.latest_edition.dup.update_attributes(title: "Current Draft Edition", state: 'draft')
 
@@ -229,7 +229,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
       click_link "Current Draft Edition"
       click_link "Comments and history"
-      view_edition_links = page.find_all("a").select {|a| a.text == "View edition"}
+      view_edition_links = page.find_all("a").select {|a| a.text == "View changes"}
       expect(view_edition_links.size).to eq 2
       view_edition_links.last.click
 

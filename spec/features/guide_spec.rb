@@ -84,10 +84,10 @@ RSpec.describe "creating guides", type: :feature do
       edition.save!
     end
 
-    visit edition_path(guide.latest_edition)
+    visit edit_guide_path(guide)
     click_first_button "Approve for publication"
 
-    visit edition_path(guide.latest_edition)
+    visit edit_guide_path(guide)
     click_first_button "Publish"
 
     within ".alert-success" do
@@ -204,8 +204,8 @@ RSpec.describe "creating guides", type: :feature do
     context "when a review can be requested" do
       before do
         edition = Generators.valid_edition
-        Guide.create!(slug: "/service-manual/something", latest_edition: edition)
-        visit edition_path(edition)
+        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        visit edit_guide_path(guide)
       end
 
       it "only allows requesting of reviews" do
@@ -218,8 +218,8 @@ RSpec.describe "creating guides", type: :feature do
     context "when it can be marked as approved" do
       before do
         edition = Generators.valid_edition(state: "review_requested")
-        Guide.create!(slug: "/service-manual/something", latest_edition: edition)
-        visit edition_path(edition)
+        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        visit edit_guide_path(guide)
       end
 
       it "only allows being marked at approved" do
@@ -232,8 +232,8 @@ RSpec.describe "creating guides", type: :feature do
     context "when it can be published" do
       before do
         edition = Generators.valid_edition(state: "approved")
-        Guide.create!(slug: "/service-manual/something", latest_edition: edition)
-        visit edition_path(edition)
+        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        visit edit_guide_path(guide)
       end
 
       it "only allows publishing" do
