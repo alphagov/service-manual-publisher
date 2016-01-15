@@ -1,14 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Topic do
-  it "allows setting the topic initially" do
-    topic = Topic.new(path: "/service-manual/hello", title: "anything", description: "anything")
+  it "allows setting the topic path that starts with '/service-manual/'" do
+    topic = Generators.valid_topic(path: "/service-manual/hello")
     topic.valid?
     expect(topic.errors[:path].size).to eq 0
   end
 
   it "doesn't allow changing the path again" do
-    topic = Topic.create!(path: "/service-manual/something", title: "anything", description: "anything")
+    topic = Generators.valid_topic(path: "/service-manual/hello")
+    topic.save!
     topic.path = "/service-manual/wemklfenlkwecw"
     topic.valid?
     expect(topic.errors[:path].size).to eq 1
