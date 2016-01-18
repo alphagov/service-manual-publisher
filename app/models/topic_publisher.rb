@@ -1,0 +1,38 @@
+require "gds_api/publishing_api_v2"
+
+class TopicPublisher
+  def initialize(topic)
+    @topic = topic
+  end
+
+  def put_draft
+    data = TopicPresenter.new(topic).exportable_attributes
+    publishing_api.put_content(topic.content_id, data)
+  end
+
+  def publish
+    publishing_api.publish(topic.content_id, 'minor')
+  end
+
+  def put_links
+    link_data = TopicPresenter.new(topic).links
+    publishing_api.put_links(topic.content_id, link_data)
+  end
+
+  def publish_immediately
+    put_draft
+    put_links
+    publish
+  end
+
+private
+
+  attr_reader :topic
+
+  def publishing_api
+    @publishing_api ||= GdsApi::PublishingApiV2.new(
+                          Plek.new.find('publishing-api'),
+                          bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example'
+                        )
+  end
+end

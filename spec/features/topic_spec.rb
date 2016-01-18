@@ -3,6 +3,8 @@ require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
 RSpec.describe "create topics", type: :feature do
+  before { allow_any_instance_of(TopicPublisher).to receive(:publish_immediately) }
+
   it "can create a new topic", js: true do
     edition1 = Generators.valid_edition(title: "Title 1")
     edition2 = Generators.valid_edition(title: "Title 2")

@@ -25,6 +25,11 @@ class Generators
     edition
   end
 
+  def self.valid_guide(attributes = {})
+    default_attributes = { slug: "/service-manual/test-guide#{SecureRandom.hex}" }
+    Guide.new(default_attributes.merge(attributes))
+  end
+
   def self.valid_user(attributes = {})
     attrs = { name: "Test User", permissions: ["signin"] }
     attrs.merge!(attributes)

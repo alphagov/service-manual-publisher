@@ -8,13 +8,20 @@ class TopicsController < ApplicationController
   end
 
   def create
-    topic = Topic.new(params.require(:topic).permit(:path, :title, :description))
-    topic.tree = JSON.parse(params[:topic][:tree])
-    if topic.save
-      redirect_to topics_path, notice: "Topic has been created"
-    else
-      render :new
+    @topic = Topic.new(params.require(:topic).permit(:path, :title, :description))
+    @topic.tree = JSON.parse(params[:topic][:tree])
+
+    ActiveRecord::Base.transaction do
+      if @topic.save
+        TopicPublisher.new(@topic).publish_immediately
+        redirect_to topics_path, notice: "Topic has been created"
+      else
+        render :new
+      end
     end
+  rescue GdsApi::HTTPErrorResponse => e
+    flash[:error] = e.error_details.fetch("error", {})["message"]
+    render :new
   end
 
   def edit
@@ -26,11 +33,18 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.attributes = params.require(:topic).permit(:title, :description)
     @topic.tree = JSON.parse(params[:topic][:tree])
-    if @topic.save
-      redirect_to topics_path, notice: "Topic has been updated"
-    else
-      render :new
+
+    ActiveRecord::Base.transaction do
+      if @topic.save
+        TopicPublisher.new(@topic).publish_immediately
+        redirect_to topics_path, notice: "Topic has been updated"
+      else
+        render :new
+      end
     end
+  rescue GdsApi::HTTPErrorResponse => e
+    flash[:error] = e.error_details.fetch("error", {})["message"]
+    render :new
   end
 
 private
