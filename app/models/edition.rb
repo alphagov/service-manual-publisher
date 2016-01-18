@@ -49,7 +49,9 @@ class Edition < ActiveRecord::Base
   end
 
   def can_be_approved?(by_user)
-    persisted? && review_requested? && user != by_user
+    return false if new_record?
+    return false unless review_requested?
+    user != by_user || ENV['ALLOW_SELF_APPROVAL'].present?
   end
 
   def can_be_published?

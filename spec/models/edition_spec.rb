@@ -131,11 +131,19 @@ RSpec.describe Edition, type: :model do
         expect(edition.can_be_approved?(edition.user)).to eq false
       end
 
+      it "returns true when the user is also the editor but the ALLOW_SELF_APPROVAL flag is set" do
+        edition.state = "review_requested"
+        edition.user = User.create!(name: "anotehr", email: "email@address.org")
+        edition.save!
+        ENV['ALLOW_SELF_APPROVAL'] = '1'
+        expect(edition.can_be_approved?(edition.user)).to eq true
+        ENV.delete('ALLOW_SELF_APPROVAL')
+      end
+
       it "returns false when latest_edition has not been saved" do
         allow(edition).to receive(:persisted?) { false }
         expect(edition.can_be_approved?(user)).to be false
       end
-
     end
 
     describe "#can_request_review?" do
