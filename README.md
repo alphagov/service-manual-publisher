@@ -27,6 +27,10 @@ PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no
 
 #### Optional dependencies
 
+**To handle image uploads**
+
+- [asset_manager](https://github.com/alphagov/asset-manager)
+
 **To persist and render guides**
 
 - [content-store](https://github.com/alphagov/content-store)
@@ -51,7 +55,7 @@ bundle exec rake db:migrate
 
 ### Development
 
-To launch the application, run `./startup.sh` in the `service-manual-publisher` dirctory on the VM.
+To launch the application, run `./startup.sh` in the `service-manual-publisher` directory on the VM.
 
 The application runs on port `3111` by default. If you're using the GDS VM it's exposed on http://service-manual-publisher.dev.gov.uk.
 
@@ -60,7 +64,7 @@ Currently [government-frontend](alphagov/government-frontend) has a feature flag
 ```
 bowl service-manual-publisher
 # to run everything you might need:
-# bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router
+# bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router asset_manager
 ```
 
 The application has a style guide that can be accessed on `/style-guide`.
