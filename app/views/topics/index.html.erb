@@ -1,6 +1,31 @@
-<%= link_to "Create a new topic", new_topic_path %>
-<% @topics.each do |topic| %>
-  <h2>
-    <%= link_to topic.title, edit_topic_path(topic) %>
-  </h2>
-<% end %>
+<div class="row">
+  <div class="col-md-3">
+    <p>
+      <%= link_to "Create a Topic" , new_topic_path, class: 'btn btn-block btn-success' %>
+    </p>
+  </div>
+
+  <div class="col-md-9">
+    <table class='table table-bordered'>
+      <thead>
+        <tr class='table-header'>
+          <th>Topic</th>
+          <th>Last update</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @topics.each do |topic| %>
+          <tr>
+            <td>
+              <%= link_to topic.title, edit_topic_path(topic) %>
+              <div class='text-muted'><%= topic.path %></div>
+            </td>
+            <td>
+              <%= time_ago_in_words(topic.updated_at) %> ago
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
