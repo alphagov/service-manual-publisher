@@ -1,24 +1,21 @@
 // This is a modified version of https://github.com/stuartnelson3/blog/blob/master/public/js/script.js
 
-function ImageUploadMarkdown(event){
+function ImageUploadMarkdown(files){
   var that = this;
 
   this.init = function(){
-    event.preventDefault();
-    this.$textarea = $(event.currentTarget);
-    var dataTransfer = event.originalEvent.dataTransfer;
+    this.$textarea = $(".js-markdown-image-upload");
 
-    this.addUploadPlaceholders(dataTransfer);
-    for (var i = 0; i < dataTransfer.files.length; i++) {
-      var file = dataTransfer.files[i];
-      this.handleFileUpload(file);
+    this.addUploadPlaceholders();
+    for (var i = 0; i < files.length; i++) {
+      this.handleFileUpload(files[i]);
     }
   };
 
-  this.addUploadPlaceholders = function(dataTransfer) {
+  this.addUploadPlaceholders = function() {
     var placeholders = [];
-    for (var i = 0; i < dataTransfer.files.length; i++) {
-      var fileName = dataTransfer.files[i].name;
+    for (var i = 0; i < files.length; i++) {
+      var fileName = files[i].name;
       placeholders.push(this.placeholderValue(fileName));
     }
 
@@ -69,6 +66,15 @@ function ImageUploadMarkdown(event){
   return this;
 }
 
+$(document).on("click", ".js-markdown-file-input-trigger", function() {
+  $(".js-markdown-file-input").click();
+});
+
+$(document).on("change", ".js-markdown-file-input", function(e) {
+  ImageUploadMarkdown(e.target.files).init();
+});
+
 $(document).on('drop', '.js-markdown-image-upload', function(e) {
-  ImageUploadMarkdown(e).init();
+  e.preventDefault();
+  ImageUploadMarkdown(e.originalEvent.dataTransfer.files).init();
 });

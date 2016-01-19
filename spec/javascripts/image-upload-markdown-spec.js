@@ -2,7 +2,7 @@ describe("Drag and drop image upload", function() {
   "use strict";
 
   var uploadableTextarea,
-      mockDropEvent;
+      mockFiles;
 
   beforeEach(function() {
     uploadableTextarea = $("<textarea class='js-markdown-image-upload'>First paragraph\n\nSecond paragraph</textarea>");
@@ -10,16 +10,7 @@ describe("Drag and drop image upload", function() {
     $('body').append(uploadableTextarea);
     setCursorAfter("First paragraph\n");
 
-    mockDropEvent = {
-      preventDefault: function(){},
-      currentTarget: $('body .js-markdown-image-upload'),
-      originalEvent: {
-        dataTransfer: {
-          files: [{ name: "nice-pic.jpg"}]
-        }
-      }
-    };
-
+    mockFiles = [{ name: "nice-pic.jpg"}];
     jasmine.Ajax.install();
   });
 
@@ -34,7 +25,7 @@ describe("Drag and drop image upload", function() {
       status: '201'
     });
 
-    var upload = new ImageUploadMarkdown(mockDropEvent);
+    var upload = new ImageUploadMarkdown(mockFiles);
     upload.init();
     var markdown = "First paragraph\n![nice-pic.jpg](http://asset-api.dev.gov.uk/nice-pic.jpg)\nSecond paragraph";
     expect($('body .js-markdown-image-upload').val()).toEqual(markdown);
@@ -47,7 +38,7 @@ describe("Drag and drop image upload", function() {
     });
     spyOn(window, 'alert');
 
-    var upload = new ImageUploadMarkdown(mockDropEvent);
+    var upload = new ImageUploadMarkdown(mockFiles);
     upload.init();
     var markdown = "First paragraph\n\nSecond paragraph";
 
