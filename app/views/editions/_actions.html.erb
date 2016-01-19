@@ -29,6 +29,7 @@
       <% else %>
         <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
       <% end %>
+      <%= link_to "Back to all guides", guides_path, class: "btn btn-link back-to-all-guides" %>
 
     </div>
     <% if edition.approval %>
