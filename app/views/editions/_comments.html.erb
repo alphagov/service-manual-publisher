@@ -1,6 +1,8 @@
 <div class='comments'>
-  <%= form_for Comment.new do |f| %>
+  <%= form_for @comment do |f| %>
     <%= f.hidden_field :edition_id, value: edition.id %>
+
+    <%= render 'shared/form_error_summary', object: @comment %>
 
     <div class='form-group'>
       <%= f.text_area :comment, class: "form-control", rows: 3, placeholder: "Add new comment" %>
