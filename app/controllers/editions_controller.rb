@@ -3,5 +3,6 @@ class EditionsController < ApplicationController
     @edition = Edition.find(params[:id])
     @guide = @edition.guide
     @editions = @guide.editions.order(created_at: :desc)
+    @comment = Comment.new
   end
 end

@@ -6,6 +6,8 @@ class Comment < ActiveRecord::Base
 
   scope :for_rendering, ->{ order(created_at: :desc).includes(:user) }
 
+  validates :comment, presence: true
+
   def html_id
     "comment-#{id}"
   end
