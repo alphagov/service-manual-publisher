@@ -1,5 +1,6 @@
 class Topic < ActiveRecord::Base
   include ContentIdentifiable
+  has_and_belongs_to_many :content_owners
   validate :path_can_be_set_once
   validate :path_format
 

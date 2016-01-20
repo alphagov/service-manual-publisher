@@ -8,7 +8,7 @@ class TopicsController < ApplicationController
   end
 
   def create
-    @topic = Topic.new(params.require(:topic).permit(:path, :title, :description))
+    @topic = Topic.new(params.require(:topic).permit(:path, :title, :description, content_owner_ids: []))
     @topic.tree = JSON.parse(params[:topic][:tree])
 
     ActiveRecord::Base.transaction do
@@ -31,7 +31,7 @@ class TopicsController < ApplicationController
 
   def update
     @topic = Topic.find(params[:id])
-    @topic.attributes = params.require(:topic).permit(:title, :description)
+    @topic.attributes = params.require(:topic).permit(:title, :description, content_owner_ids: [])
     @topic.tree = JSON.parse(params[:topic][:tree])
 
     ActiveRecord::Base.transaction do
