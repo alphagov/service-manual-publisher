@@ -13,7 +13,7 @@ RSpec.describe "create topics", type: :feature do
 
     visit root_path
     click_link "Manage Topics"
-    click_link "Create a new topic"
+    click_link "Create a Topic"
     fill_in "Path", with: "/service-manual/something"
     fill_in "Title", with: "The title"
     fill_in "Description", with: "The description"
@@ -22,10 +22,10 @@ RSpec.describe "create topics", type: :feature do
     fill_in "Heading Title", with: "The heading title"
     fill_in "Heading Description", with: "The heading description"
 
-    click_button "Add Edition"
+    click_button "Add Guide"
     all(".js-topic-edition")[0].find("option[value='#{edition1.id}']").select_option
 
-    click_button "Add Edition"
+    click_button "Add Guide"
     all(".js-topic-edition")[1].find("option[value='#{edition2.id}']").select_option
 
     click_button "Save"
@@ -37,8 +37,8 @@ RSpec.describe "create topics", type: :feature do
     expect(topic.tree.to_json).to eq(
       [
         {
-          "title":"The heading title",
-          "editions": ["12", "13"],
+          "title": "The heading title",
+          "editions": [edition1.id.to_s, edition2.id.to_s],
           "description": "The heading description",
         }
       ].to_json
