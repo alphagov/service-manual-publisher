@@ -17,6 +17,12 @@ class TopicPublisher
   def put_links
     link_data = TopicPresenter.new(topic).links
     publishing_api.put_links(topic.content_id, link_data)
+
+    GuideTaggerJob.batch_perform_later(
+      guide_ids: link_data[:links][:linked_items],
+      topic_id: topic.content_id,
+      publishing_api: publishing_api
+    )
   end
 
   def publish_immediately
