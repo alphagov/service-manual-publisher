@@ -20,8 +20,7 @@ class TopicPublisher
 
     GuideTaggerJob.batch_perform_later(
       guide_ids: link_data[:links][:linked_items],
-      topic_id: topic.content_id,
-      publishing_api: publishing_api
+      topic_id: topic.content_id
     )
   end
 
@@ -36,9 +35,6 @@ private
   attr_reader :topic
 
   def publishing_api
-    @publishing_api ||= GdsApi::PublishingApiV2.new(
-                          Plek.new.find('publishing-api'),
-                          bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example'
-                        )
+    PUBLISHING_API
   end
 end
