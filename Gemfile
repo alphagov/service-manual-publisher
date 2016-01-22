@@ -35,6 +35,7 @@ group :development, :test do
   gem 'simplecov', '0.10.0', require: false
   gem 'simplecov-rcov', '0.2.3', require: false
   gem 'pry'
+  gem 'pry-remote'
   gem 'pry-nav'
   gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
   gem 'jasmine'
