@@ -45,10 +45,19 @@ end
 
 if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
   author = User.first || User.create!(name: "Unknown", email: "unknown@example.com")
-  if ContentOwner.count == 0
-    ContentOwner.create!(
-      title: "Design Community",
-      href: "http://sm-11.herokuapp.com/designing-services/design-community/"
+  if !GuideCommunity.any?
+    community_guide_edition = Edition.new(
+      title:          'Design Community',
+      state:          "draft",
+      phase:          "beta",
+      description:    "Description",
+      update_type:    "minor",
+      body:           "# Heading",
+      user:           author,
+      )
+    GuideCommunity.create!(
+      latest_edition: community_guide_edition,
+      slug: "/service-manual/design-community"
     )
   end
 
@@ -73,7 +82,7 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       description:     "Description",
       update_type:     "minor",
       body:            object[:body].gsub(/\n/, "\r\n"),
-      content_owner:   ContentOwner.first,
+      content_owner:   GuideCommunity.first,
       user:            author,
     )
     guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)

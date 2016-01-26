@@ -113,36 +113,6 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
--- Name: content_owners; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE content_owners (
-    id integer NOT NULL,
-    title character varying NOT NULL,
-    href character varying NOT NULL
-);
-
-
---
--- Name: content_owners_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE content_owners_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: content_owners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE content_owners_id_seq OWNED BY content_owners.id;
-
-
---
 -- Name: editions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -161,8 +131,8 @@ CREATE TABLE editions (
     updated_at timestamp without time zone NOT NULL,
     state text,
     change_note text,
-    content_owner_id integer,
-    change_summary text
+    change_summary text,
+    content_owner_id integer
 );
 
 
@@ -353,13 +323,6 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY content_owners ALTER COLUMN id SET DEFAULT nextval('content_owners_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY editions ALTER COLUMN id SET DEFAULT nextval('editions_id_seq'::regclass);
 
 
@@ -405,14 +368,6 @@ ALTER TABLE ONLY approvals
 
 ALTER TABLE ONLY comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: content_owners_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY content_owners
-    ADD CONSTRAINT content_owners_pkey PRIMARY KEY (id);
 
 
 --
@@ -601,4 +556,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160225090417');
 INSERT INTO schema_migrations (version) VALUES ('20160225101236');
 
 INSERT INTO schema_migrations (version) VALUES ('20160225113207');
+
+INSERT INTO schema_migrations (version) VALUES ('20160225130400');
 
