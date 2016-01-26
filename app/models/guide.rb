@@ -10,10 +10,13 @@ class Guide < ActiveRecord::Base
   scope :by_user, ->(user_id) { where(editions: { user_id: user_id }) if user_id.present? }
   scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
+  scope :community_guides, -> { where(community: true) }
 
   before_validation on: :create do |object|
     object.content_id = SecureRandom.uuid
   end
+
+  delegate :title, to: :latest_edition
 
   def self.with_published_editions
     joins(:editions)

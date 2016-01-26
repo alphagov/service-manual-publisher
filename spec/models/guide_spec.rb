@@ -3,6 +3,22 @@ require 'rails_helper'
 RSpec.describe Guide do
   let(:edition) { Generators.valid_published_edition }
 
+  describe '.community_guides' do
+    it 'returns community flavoured guides only' do
+      design_community_guide = Guide.create!(
+        community: true,
+        latest_edition: Generators.valid_edition(title: 'Design Community'),
+        slug: "/service-manual/design-community"
+      )
+      Guide.create!(
+        latest_edition: Generators.valid_edition(title: 'A proper guide page'),
+        slug: "/service-manual/proper-guide"
+      )
+
+      expect(Guide.community_guides).to eq([design_community_guide])
+    end
+  end
+
   describe "#ensure_draft_exists" do
     let(:guide) do
       Guide.create!(slug: "/service-manual/slug", latest_edition: edition)

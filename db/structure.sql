@@ -195,7 +195,8 @@ CREATE TABLE guides (
     content_id character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    tsv tsvector
+    tsv tsvector,
+    community boolean DEFAULT false
 );
 
 
@@ -572,4 +573,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160113110500');
 INSERT INTO schema_migrations (version) VALUES ('20160125182431');
 
 INSERT INTO schema_migrations (version) VALUES ('20160126093503');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126150430');
 

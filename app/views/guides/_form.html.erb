@@ -88,7 +88,7 @@
         <div class='form-group'>
           <%= editions_form.label :content_owner_id, "Published by" %>
           <%= editions_form.error_list :content_owner_id %>
-          <%= editions_form.select :content_owner_id, ContentOwner.all.pluck(:title, :id), {}, {class: 'select2 input-md-12 form-control'} %>
+          <%= editions_form.collection_select :content_owner_id, Guide.community_guides, :id, :title, { include_blank: true }, { class: 'select2 input-md-12 form-control' } %>
         </div>
       </div>
     <% end %>
