@@ -113,36 +113,6 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
--- Name: content_owners; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE content_owners (
-    id integer NOT NULL,
-    title character varying,
-    href character varying
-);
-
-
---
--- Name: content_owners_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE content_owners_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: content_owners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE content_owners_id_seq OWNED BY content_owners.id;
-
-
---
 -- Name: editions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -350,13 +320,6 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY content_owners ALTER COLUMN id SET DEFAULT nextval('content_owners_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY editions ALTER COLUMN id SET DEFAULT nextval('editions_id_seq'::regclass);
 
 
@@ -402,14 +365,6 @@ ALTER TABLE ONLY approvals
 
 ALTER TABLE ONLY comments
     ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: content_owners_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY content_owners
-    ADD CONSTRAINT content_owners_pkey PRIMARY KEY (id);
 
 
 --
@@ -575,4 +530,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160125182431');
 INSERT INTO schema_migrations (version) VALUES ('20160126093503');
 
 INSERT INTO schema_migrations (version) VALUES ('20160126150430');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126183222');
+
+INSERT INTO schema_migrations (version) VALUES ('20160127165107');
 
