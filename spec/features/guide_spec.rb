@@ -120,11 +120,14 @@ RSpec.describe "creating guides", type: :feature do
       end
 
       it "does not store a guide" do
-        fill_in_guide_form
+        fill_in_guide_form(guide_title: 'Getting things done')
         click_first_button "Save"
 
-        expect(Guide.count).to eq 0
-        expect(Edition.count).to eq 0
+        relevant_editions = Edition.where(title: 'Getting things done')
+        relevant_guides = Guide.joins(:editions).merge(relevant_editions)
+
+        expect(relevant_guides.count).to eq 0
+        expect(relevant_editions.count).to eq 0
       end
     end
   end
@@ -272,12 +275,14 @@ RSpec.describe "creating guides", type: :feature do
 
 private
 
-  def fill_in_guide_form
+  def fill_in_guide_form(attributes = {})
+    guide_title = attributes.fetch(:guide_title, "First Edition Title")
+
     fill_in "Slug", with: "/service-manual/the/path"
     select "Design Community", from: "Published by"
     fill_in "Guide description", with: "This guide acts as a test case"
 
-    fill_in "Guide title", with: "First Edition Title"
+    fill_in "Guide title", with: guide_title
     fill_in "Body", with: "## First Edition Title"
   end
 
