@@ -40,13 +40,13 @@ RSpec.describe "creating guides", type: :feature do
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
-    expect(edition.content_owner.title).to eq "Design Community"
-    expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
     expect(edition.update_type).to eq "minor"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
+
+    expect(find_published_by_dropdown('Design Community')).to be_selected
 
     visit edit_guide_path(guide)
     fill_in "Guide title", with: "Second Edition Title"
@@ -279,5 +279,11 @@ private
 
     fill_in "Guide title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
+  end
+
+  # The select2 plugin makes Capybara's have_select helper unusable for the
+  # Published By dropdown
+  def find_published_by_dropdown(text)
+    find(:css, '#guide_latest_edition_attributes_content_owner_id option', text: text)
   end
 end
