@@ -184,9 +184,8 @@ RSpec.describe "creating guides", type: :feature do
         fill_in "Guide title", with: "Changed Title"
         click_first_button "Save"
 
-        expect(Guide.count).to eq 1
-        expect(Guide.first.latest_edition.title).to_not eq "Changed Title"
-        expect(Edition.count).to eq 1
+        expect(guide.latest_edition.title).to_not eq "Changed Title"
+        expect(guide.editions.count).to eq 1
       end
     end
   end
