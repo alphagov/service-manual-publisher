@@ -44,7 +44,12 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "filters by published by" do
     [1, 2].each do |i|
-      content_owner = ContentOwner.create!(title: "Content Owner #{i}", href: "some href")
+      content_owner = Guide.create!(
+        community: true,
+        latest_edition: Generators.valid_edition(title: "Content Owner #{i}"),
+        slug: "/service-manual/content-owner-#{i}"
+      )
+
       edition = Generators.valid_edition(
         state: "review_requested",
         title: "Edition #{i}",
@@ -94,7 +99,11 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
   it "displays a page header that's based on the query" do
-    ContentOwner.create!(title: "Design Community", href: "example.com")
+    Guide.create!(
+      community: true,
+      latest_edition: Generators.valid_edition(title: 'Design Community'),
+      slug: "/service-manual/design-community")
+
     User.create!(name: "Ronan", email: "ronan@example.com")
     visit root_path
     within ".filters" do
