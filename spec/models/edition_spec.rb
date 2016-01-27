@@ -190,6 +190,8 @@ RSpec.describe Edition, type: :model do
       it "returns false if it's not the latest edition of a guide" do
         edition.state = "approved"
         guide.editions << edition.dup
+
+        edition.guide.reload
         expect(edition.can_be_published?).to be false
       end
 
