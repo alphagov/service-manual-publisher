@@ -9,7 +9,6 @@ RSpec.describe GuidePresenter do
       description:         "Description",
       update_type:         "major",
       body:                "# Heading",
-      content_owner:       ContentOwner.new(title: "Publisher Name", href: "http://gov.uk"),
       updated_at:          Time.now
     )
   end

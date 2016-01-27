@@ -33,11 +33,7 @@ private
   def details
     details = {
       body: govspeak_body.to_html,
-      header_links: level_two_headers,
-      content_owner: {
-        title: edition.content_owner.title,
-        href: edition.content_owner.href
-      }
+      header_links: level_two_headers
     }
 
     if edition.related_discussion_title.present? && edition.related_discussion_href.present?
