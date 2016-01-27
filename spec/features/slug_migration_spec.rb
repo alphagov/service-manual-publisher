@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'capybara/rails'
+require 'gds_api/rummager'
 
 RSpec.describe "Slug migration", type: :feature do
   before do
@@ -106,27 +107,10 @@ RSpec.describe "Slug migration", type: :feature do
     expect(selected_text).to eq "/service-manual/new-path"
   end
 
-  it "can only migrate guides with published editions" do
-    Guide.create!(slug: "/service-manual/path1", latest_edition: Generators.valid_edition(state: "draft"))
-    Guide.create!(slug: "/service-manual/path2", latest_edition: Generators.valid_edition(state: "review_requested"))
-    Guide.create!(slug: "/service-manual/path3", latest_edition: Generators.valid_edition(state: "published"))
-
-    SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
-
-    manage_first_migration
-
-    options = all(:css, ".slug-migration-select-guide option").map(&:text)
-    expect(options).to eq [
-      "Please choose a guide to redirect to",
-      "/service-manual/path3",
-    ]
-  end
-
   it "can not migrate an old slug to a new slug without a guide" do
     SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
     manage_first_migration
-    click_button "Save and Migrate"
-    expect(page).to have_content "must not be blank"
+    expect(page).to have_button('Needs a published guide to migrate', disabled: true)
   end
 
   it "migrates an old url to a new url" do
@@ -139,7 +123,8 @@ RSpec.describe "Slug migration", type: :feature do
     manage_first_migration
     select "/service-manual/new-path", from: "Guide"
 
-    click_button "Save and Migrate"
+    click_button "Save"
+    click_button "Migrate"
 
     expect(page).to have_content "Slug Migration has been completed"
     expect(slug_migration.reload.completed).to eq true
@@ -168,7 +153,8 @@ RSpec.describe "Slug migration", type: :feature do
       manage_first_migration
       select "/service-manual/new-path", from: "Guide"
 
-      click_button "Save and Migrate"
+      click_button "Save"
+      click_button "Migrate"
 
       expect(page).to have_content "Error message stub"
       expect(slug_migration.reload.completed).to eq false

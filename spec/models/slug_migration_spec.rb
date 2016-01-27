@@ -25,9 +25,17 @@ RSpec.describe SlugMigration, type: :model do
     edition = Generators.valid_edition(state: "draft")
     guide = Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
 
-    migration = SlugMigration.new(slug: "/something", guide: guide)
+    migration = SlugMigration.new(slug: "/something", guide: guide, completed: true)
     expect(migration.valid?).to eq false
     expect(migration.errors.full_messages_for(:guide).size).to eq 1
+  end
+
+  it "allows non-published guides for migrations that are not completed" do
+    edition = Generators.valid_edition(state: "draft")
+    guide = Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+
+    migration = SlugMigration.new(slug: "/something", guide: guide)
+    expect(migration).to be_valid
   end
 
   it "allows empty guides" do
