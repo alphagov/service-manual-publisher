@@ -2,6 +2,34 @@ require 'rails_helper'
 require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
+RSpec.describe "creating community guides", type: :feature do
+  let(:api_double) { double(:publishing_api) }
+
+  it 'persists the community flag' do
+    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double)
+    expect(api_double).to receive(:put_content)
+                            .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+
+    visit root_path
+    click_link "Create a Guide"
+
+    check 'Is community page'
+    fill_in "Slug", with: "/service-manual/the/path"
+    fill_in "Guide description", with: "This guide acts as a test case"
+    fill_in "Guide title", with: 'Design Community'
+    fill_in "Body", with: "## First Edition Title"
+
+    click_first_button "Save"
+
+    visit root_path
+    within_guide_index_row('Design Community') do
+      click_link 'Edit'
+    end
+
+    expect(page).to have_checked_field('Is community page')
+  end
+end
+
 RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 

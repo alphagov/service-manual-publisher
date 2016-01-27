@@ -90,6 +90,15 @@
           <%= editions_form.error_list :content_owner_id %>
           <%= editions_form.collection_select :content_owner_id, Guide.community_guides, :id, :title, { include_blank: true }, { class: 'select2 input-md-12 form-control' } %>
         </div>
+
+        <div class='form-group'>
+          <%= f.label :community, 'Is community page' %>
+          <%= f.error_list :community %>
+          <p class="help-block">
+            Each guide links to a community page. The 'Published by' dropdown above will be populated with guides marked as 'Is community page'.
+          </p>
+          <%= f.check_box :community %>
+        </div>
       </div>
     <% end %>
   </div>

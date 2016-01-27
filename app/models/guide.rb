@@ -4,7 +4,7 @@ class Guide < ActiveRecord::Base
   validate :slug_cant_be_changed_if_an_edition_has_been_published
 
   has_many :editions
-  has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
+  has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
   accepts_nested_attributes_for :latest_edition
   scope :by_user, ->(user_id) { where(editions: { user_id: user_id }) if user_id.present? }

@@ -125,7 +125,7 @@ private
 
     params
       .require(:guide)
-      .permit(:slug, latest_edition_attributes: [
+      .permit(:community, :slug, latest_edition_attributes: [
         :title,
         :body,
         :description,
