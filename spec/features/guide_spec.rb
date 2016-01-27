@@ -2,14 +2,44 @@ require 'rails_helper'
 require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
+RSpec.describe "creating community guides", type: :feature do
+  let(:api_double) { double(:publishing_api) }
+
+  it 'persists the community flag' do
+    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double)
+    expect(api_double).to receive(:put_content)
+                            .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+
+    visit root_path
+    click_link "Create a Guide"
+
+    check 'Is community page'
+    fill_in "Slug", with: "/service-manual/the/path"
+    fill_in "Guide description", with: "This guide acts as a test case"
+    fill_in "Guide title", with: 'Design Community'
+    fill_in "Body", with: "## First Edition Title"
+
+    click_first_button "Save"
+
+    visit root_path
+    within_guide_index_row('Design Community') do
+      click_link 'Edit'
+    end
+
+    expect(page).to have_checked_field('Is community page')
+  end
+end
+
 RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
-    ContentOwner.first_or_initialize(
-      title: "Design Community",
-      href:  "http://sm-11.herokuapp.com/designing-services/design-community/"
-    ).save!
+    community_guide_edition = Generators.valid_edition(title: 'Design Community')
+    community_guide = Guide.create!(
+      community: true,
+      latest_edition: community_guide_edition,
+      slug: "/service-manual/design-community"
+    )
     visit root_path
     click_link "Create a Guide"
 
@@ -38,13 +68,13 @@ RSpec.describe "creating guides", type: :feature do
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
-    expect(edition.content_owner.title).to eq "Design Community"
-    expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
     expect(edition.update_type).to eq "minor"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
+
+    expect(find_published_by_dropdown('Design Community')).to be_selected
 
     visit edit_guide_path(guide)
     fill_in "Guide title", with: "Second Edition Title"
@@ -74,11 +104,11 @@ RSpec.describe "creating guides", type: :feature do
                             .with(an_instance_of(String), 'minor')
 
     click_first_button "Save"
-    guide = Guide.first
+    guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    Edition.first.tap do |edition|
+    guide.editions.first.tap do |edition|
       # set editor to another user so we can approve this edition
       edition.user = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
@@ -118,11 +148,14 @@ RSpec.describe "creating guides", type: :feature do
       end
 
       it "does not store a guide" do
-        fill_in_guide_form
+        fill_in_guide_form(guide_title: 'Getting things done')
         click_first_button "Save"
 
-        expect(Guide.count).to eq 0
-        expect(Edition.count).to eq 0
+        relevant_editions = Edition.where(title: 'Getting things done')
+        relevant_guides = Guide.joins(:editions).merge(relevant_editions)
+
+        expect(relevant_guides.count).to eq 0
+        expect(relevant_editions.count).to eq 0
       end
     end
   end
@@ -179,9 +212,8 @@ RSpec.describe "creating guides", type: :feature do
         fill_in "Guide title", with: "Changed Title"
         click_first_button "Save"
 
-        expect(Guide.count).to eq 1
-        expect(Guide.first.latest_edition.title).to_not eq "Changed Title"
-        expect(Edition.count).to eq 1
+        expect(guide.latest_edition.title).to_not eq "Changed Title"
+        expect(guide.editions.count).to eq 1
       end
     end
   end
@@ -270,12 +302,20 @@ RSpec.describe "creating guides", type: :feature do
 
 private
 
-  def fill_in_guide_form
+  def fill_in_guide_form(attributes = {})
+    guide_title = attributes.fetch(:guide_title, "First Edition Title")
+
     fill_in "Slug", with: "/service-manual/the/path"
     select "Design Community", from: "Published by"
     fill_in "Guide description", with: "This guide acts as a test case"
 
-    fill_in "Guide title", with: "First Edition Title"
+    fill_in "Guide title", with: guide_title
     fill_in "Body", with: "## First Edition Title"
+  end
+
+  # The select2 plugin makes Capybara's have_select helper unusable for the
+  # Published By dropdown
+  def find_published_by_dropdown(text)
+    find(:css, '#guide_latest_edition_attributes_content_owner_id option', text: text)
   end
 end

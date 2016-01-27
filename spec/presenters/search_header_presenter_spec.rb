@@ -44,7 +44,12 @@ RSpec.describe SearchHeaderPresenter do
     end
 
     it "appends the selected content owner" do
-      agile_community = ContentOwner.create!(title: "Agile Community", href: 'example.com')
+      agile_community = Guide.create!(
+        community: true,
+        latest_edition: Generators.valid_edition(title: "Agile Community"),
+        slug: "/service-manual/agile-community"
+      )
+
       header = described_class.new({ content_owner: agile_community.id }, User.new).to_s
       expect(header).to end_with "published by Agile Community"
     end

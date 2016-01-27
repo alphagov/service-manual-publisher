@@ -3,7 +3,7 @@ require 'capybara/rails'
 
 RSpec.describe "Commenting", type: :feature do
   let!(:guide) do
-    edition = Generators.valid_edition
+    edition = Generators.valid_edition(title: 'The Title')
     Guide.create!(
       latest_edition: edition,
       slug: "/service-manual/test/comment"
@@ -12,7 +12,9 @@ RSpec.describe "Commenting", type: :feature do
 
   it "allows discourse" do
     visit root_path
-    click_link "Edit"
+    within_guide_index_row('The Title') do
+      click_link "Edit"
+    end
     click_link "Comments and history"
 
     within ".comments" do

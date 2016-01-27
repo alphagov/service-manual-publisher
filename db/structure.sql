@@ -113,36 +113,6 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
--- Name: content_owners; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE content_owners (
-    id integer NOT NULL,
-    title character varying NOT NULL,
-    href character varying NOT NULL
-);
-
-
---
--- Name: content_owners_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE content_owners_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: content_owners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE content_owners_id_seq OWNED BY content_owners.id;
-
-
---
 -- Name: editions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -161,7 +131,7 @@ CREATE TABLE editions (
     updated_at timestamp without time zone NOT NULL,
     state text,
     change_note text,
-    content_owner_id integer NOT NULL,
+    content_owner_id integer,
     change_summary text
 );
 
@@ -195,7 +165,8 @@ CREATE TABLE guides (
     content_id character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    tsv tsvector
+    tsv tsvector,
+    community boolean DEFAULT false
 );
 
 
@@ -262,6 +233,38 @@ ALTER SEQUENCE slug_migrations_id_seq OWNED BY slug_migrations.id;
 
 
 --
+-- Name: topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE topics (
+    id integer NOT NULL,
+    path character varying NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL,
+    tree json DEFAULT '{}'::json NOT NULL
+);
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -317,13 +320,6 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY content_owners ALTER COLUMN id SET DEFAULT nextval('content_owners_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY editions ALTER COLUMN id SET DEFAULT nextval('editions_id_seq'::regclass);
 
 
@@ -339,6 +335,13 @@ ALTER TABLE ONLY guides ALTER COLUMN id SET DEFAULT nextval('guides_id_seq'::reg
 --
 
 ALTER TABLE ONLY slug_migrations ALTER COLUMN id SET DEFAULT nextval('slug_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
 
 
 --
@@ -365,14 +368,6 @@ ALTER TABLE ONLY comments
 
 
 --
--- Name: content_owners_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY content_owners
-    ADD CONSTRAINT content_owners_pkey PRIMARY KEY (id);
-
-
---
 -- Name: editions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -394,6 +389,14 @@ ALTER TABLE ONLY guides
 
 ALTER TABLE ONLY slug_migrations
     ADD CONSTRAINT slug_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY topics
+    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -518,5 +521,17 @@ INSERT INTO schema_migrations (version) VALUES ('20151211164627');
 
 INSERT INTO schema_migrations (version) VALUES ('20151216125006');
 
+INSERT INTO schema_migrations (version) VALUES ('20160107144631');
+
 INSERT INTO schema_migrations (version) VALUES ('20160113110500');
+
+INSERT INTO schema_migrations (version) VALUES ('20160125182431');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126093503');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126150430');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126183222');
+
+INSERT INTO schema_migrations (version) VALUES ('20160127165107');
 

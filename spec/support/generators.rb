@@ -1,9 +1,20 @@
 class Generators
   def self.valid_edition(attributes = {})
-    content_owner = ContentOwner.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
+    content_owner = attributes.delete(:content_owner) || valid_community_guide
 
     attributes = {
-      title:          "The Title",
+      content_owner: content_owner
+    }.merge(attributes)
+
+    valid_edition_minus_content_owner(attributes)
+  end
+
+  def self.valid_edition_minus_content_owner(attributes = {})
+    content_owner = attributes.delete(:content_owner)
+    title = attributes.delete(:title) || "The Title"
+
+    attributes = {
+      title:          title,
       state:          "draft",
       phase:          "beta",
       description:    "Description",
@@ -30,5 +41,18 @@ class Generators
     attrs.merge!(attributes)
     attrs[:email] ||= "#{attrs[:name].parameterize}@example.com"
     User.new(attrs)
+  end
+
+  def self.valid_community_guide(attributes = {})
+    editions = attributes.delete(:editions) || [valid_edition_minus_content_owner(title: 'Community Guide')]
+    slug = attributes.delete(:slug) || '/service-manual/community-guide'
+
+    attributes = {
+      community: true,
+      editions: editions,
+      slug: slug
+    }.merge(attributes)
+
+    Guide.new(attributes)
   end
 end

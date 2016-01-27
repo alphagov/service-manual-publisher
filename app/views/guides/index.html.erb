@@ -15,7 +15,7 @@
         <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
 
         <%= label_tag :content_owner, "Published by", class: "add-top-margin nav-header" %>
-        <%= select_tag :content_owner, options_for_select(@content_owner_options, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
+        <%= select_tag :content_owner, options_for_select(Guide.community_guides.map{|g| [g.title, g.id] }, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
 
         <input type="submit" class="add-top-margin btn btn-default" value="Filter guides">
       </form>
@@ -47,7 +47,9 @@
               <div class='text-muted'><%= guide.slug %></div>
             </td>
             <td>
-              <%= guide.latest_edition.content_owner.title %>
+              <% if guide.latest_edition.content_owner %>
+                <%= guide.latest_edition.content_owner.latest_edition.title %>
+              <% end %>
             </td>
             <td class='last-edited-by'>
               <%= latest_editor_name(guide) %>

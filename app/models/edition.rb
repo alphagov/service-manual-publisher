@@ -6,13 +6,14 @@ class Edition < ActiveRecord::Base
 
   has_one :approval
 
-  belongs_to :content_owner
+  belongs_to :content_owner, class_name: 'Guide'
 
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
   scope :review_requested, -> { where(state: 'review_requested') }
 
-  validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :content_owner, :user]
+  validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :user]
+  validates_presence_of :content_owner, unless: :community_guide?
   validates_inclusion_of :state, in: %w(draft published review_requested approved)
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
@@ -94,6 +95,10 @@ class Edition < ActiveRecord::Base
   end
 
 private
+
+  def community_guide?
+    guide.present? && guide.community?
+  end
 
   def published_cant_change
     if state_was == 'published' && changes.except('updated_at').present?

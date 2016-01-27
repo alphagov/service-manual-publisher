@@ -1,5 +1,3 @@
-require 'gds_api/rummager'
-
 class SlugMigration < ActiveRecord::Base
   belongs_to :guide
 
