@@ -96,9 +96,8 @@ class Edition < ActiveRecord::Base
 
 private
 
-  # TODO: Not all guides are community guides..
   def community_guide?
-    true
+    guide.present? && guide.community?
   end
 
   def published_cant_change

@@ -57,6 +57,23 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
+    describe "content owner" do
+      it "requires a content owner" do
+        edition = Edition.new
+
+        expect(edition).to be_invalid
+        expect(edition.errors.messages).to include(content_owner: ["can't be blank"])
+      end
+
+      it "does not require a content owner when it is part of a community guide" do
+        guide = Guide.new(community: true)
+        edition = Edition.new(guide: guide)
+
+        expect(edition).to be_invalid
+        expect(edition.errors.messages).to_not have_key(:content_owner)
+      end
+    end
+
     it "does not allow updating already published editions" do
       edition = Generators.valid_published_edition
       edition.save!
