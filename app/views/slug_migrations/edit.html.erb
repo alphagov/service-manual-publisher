@@ -13,7 +13,11 @@
     </div>
     <div class="form-group">
       <%= f.submit "Save", class: "btn btn-success" %>
-      <%= f.submit "Save and Migrate", name: :save_and_migrate, class: "btn btn-warning" %>
+      <% if @slug_migration.guide.try(:has_published_edition?) %>
+        <%= f.submit "Migrate", name: :save_and_migrate, class: "btn btn-warning" %>
+      <% else %>
+        <%= f.submit "Needs a published guide to migrate", class: "btn btn-disabled", disabled: true %>
+      <% end %>
     </div>
   <% end %>
 </div>

@@ -12,13 +12,13 @@ class SlugMigrationsController < ApplicationController
 
   def edit
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.with_published_editions.pluck(:slug, :id)
+    @select_options = Guide.order(:slug).pluck(:slug, :id)
     @selected_guide_id = @slug_migration.guide_id
   end
 
   def update
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.with_published_editions.pluck(:slug, :id)
+    @select_options = Guide.order(:slug).pluck(:slug, :id)
 
     slug_migration_parameters = params.require(:slug_migration)
       .permit(:guide_id)

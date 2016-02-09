@@ -5,8 +5,7 @@ class SlugMigration < ActiveRecord::Base
 
   validates :slug, uniqueness: true
   validate(
-    :guide_must_be_nil_or_published,
-    :guide_cant_be_empty_when_migrating,
+    :has_published_guide_when_migrating,
     :is_not_already_completed,
   )
 
@@ -30,15 +29,9 @@ class SlugMigration < ActiveRecord::Base
 
   private
 
-    def guide_must_be_nil_or_published
-      if guide && !guide.editions.where(state: "published").any?
-        errors.add(:guide, "must have a published edition")
-      end
-    end
-
-    def guide_cant_be_empty_when_migrating
-      if completed? && guide.nil?
-        errors.add(:guide, "must not be blank")
+    def has_published_guide_when_migrating
+      if completed? && (guide.nil? || !guide.has_published_edition?)
+        errors.add(:guide, "must have a published guide in order to migrate")
       end
     end
 
