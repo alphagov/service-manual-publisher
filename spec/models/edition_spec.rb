@@ -27,8 +27,8 @@ RSpec.describe Edition, type: :model do
   end
 
   describe "#phase" do
-    it "defaults to 'alpha'" do
-      expect(Edition.new.phase).to eq 'alpha'
+    it "defaults to 'beta'" do
+      expect(Edition.new.phase).to eq 'beta'
     end
   end
 
