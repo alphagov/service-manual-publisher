@@ -1,6 +1,6 @@
 module PublicRoutesHelper
-  def document_preview_url(document)
+  def document_preview_url(base_path)
     frontend_host = Rails.env.production? ? Plek.find('draft-origin') : Plek.find('government-frontend')
-    [frontend_host, document.slug].join
+    [frontend_host, base_path].join
   end
 end

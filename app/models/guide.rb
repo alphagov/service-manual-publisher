@@ -1,5 +1,5 @@
 class Guide < ActiveRecord::Base
-  validates :content_id, presence: true, uniqueness: true
+  include ContentIdentifiable
   validate :slug_format
   validate :slug_cant_be_changed_if_an_edition_has_been_published
 
@@ -10,10 +10,6 @@ class Guide < ActiveRecord::Base
   scope :by_user, ->(user_id) { where(editions: { user_id: user_id }) if user_id.present? }
   scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
-
-  before_validation on: :create do |object|
-    object.content_id = SecureRandom.uuid
-  end
 
   def self.with_published_editions
     joins(:editions)

@@ -11,18 +11,14 @@ RSpec.describe GuidePublisher do
         publisher = GuidePublisher.new(guide: guide)
 
         double_api = double(:publishing_api)
-        expected_plek = Plek.new.find('publishing-api')
-        expected_json = {test: :json}
-        expected_token = { bearer_token: 'example' }
+        stub_const("PUBLISHING_API", double_api)
+        expected_json = { test: :json }
         double_guide_presenter = double(:guide_presenter)
         expect(double_guide_presenter).to receive(:exportable_attributes)
                                             .and_return(expected_json)
         expect(GuidePresenter).to receive(:new)
                                     .with(guide, guide.latest_edition)
                                     .and_return(double_guide_presenter)
-        expect(GdsApi::PublishingApiV2).to receive(:new)
-                                           .with(expected_plek, expected_token)
-                                           .and_return(double_api)
         expect(double_api).to receive(:put_content)
                                 .with(guide.content_id, expected_json)
         publisher.put_draft
@@ -38,13 +34,7 @@ RSpec.describe GuidePublisher do
       publisher = GuidePublisher.new(guide: guide)
 
       double_api = double(:publishing_api)
-      expected_plek = Plek.new.find('publishing-api')
-      expected_token = { bearer_token: 'example' }
-      payload_double = { test: :json }
-
-      expect(GdsApi::PublishingApiV2).to receive(:new)
-                                        .with(expected_plek, expected_token)
-                                        .and_return(double_api)
+      stub_const("PUBLISHING_API", double_api)
 
       expect(double_api).to receive(:publish)
                               .once

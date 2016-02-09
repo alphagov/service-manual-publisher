@@ -23,7 +23,7 @@ RSpec.describe "creating guides", type: :feature do
   it "saves draft guide editions" do
     fill_in_guide_form
 
-    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice # save and update
+    stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
                             .twice
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
@@ -65,7 +65,7 @@ RSpec.describe "creating guides", type: :feature do
   it "publishes guide editions" do
     fill_in_guide_form
 
-    expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double).twice
+    stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
                             .once
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))

@@ -25,10 +25,21 @@ class Generators
     edition
   end
 
+  def self.valid_guide(attributes = {})
+    default_attributes = { slug: "/service-manual/test-guide#{SecureRandom.hex}" }
+    Guide.new(default_attributes.merge(attributes))
+  end
+
   def self.valid_user(attributes = {})
     attrs = { name: "Test User", permissions: ["signin"] }
     attrs.merge!(attributes)
     attrs[:email] ||= "#{attrs[:name].parameterize}@example.com"
     User.new(attrs)
+  end
+
+  def self.valid_topic(attributes = {})
+    attrs = { title: "Agile Delivery", path: "/service-manual/agile-delivery", description: "Agile description" }
+    attrs.merge!(attributes)
+    Topic.new(attrs)
   end
 end

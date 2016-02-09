@@ -1,0 +1,21 @@
+.topics {
+  .left {
+    display: inline;
+  }
+  .right {
+    display: inline;
+  }
+
+  .glyphicon {
+    cursor: pointer;
+  }
+
+  .glyphicon-trash {
+    color: $brand-danger;
+  }
+}
+
+.draggable-edition {
+  margin-left: 2em;
+  background-color: #f5f5f5;
+}

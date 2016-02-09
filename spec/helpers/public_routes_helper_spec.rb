@@ -6,7 +6,7 @@ RSpec.describe PublicRoutesHelper do
       expect(Plek).to receive(:find).once.and_return("http://frontend-host.dev.gov.uk")
       guide = Guide.new(slug: "/guide/slug")
 
-      expect(document_preview_url(guide)).to eq "http://frontend-host.dev.gov.uk/guide/slug"
+      expect(document_preview_url(guide.slug)).to eq "http://frontend-host.dev.gov.uk/guide/slug"
     end
   end
 end
