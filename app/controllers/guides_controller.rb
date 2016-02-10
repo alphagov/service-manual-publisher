@@ -86,12 +86,6 @@ private
   end
 
   def publish
-    if ENV['DISABLE_PUBLISHING']
-      @edition = @guide.latest_edition
-      flash[:error] = "Publishing is currently disabled. The guide has not been published."
-      return render template: 'guides/edit'
-    end
-
     ActiveRecord::Base.transaction do
       @guide.latest_edition.update_attributes!(state: 'published')
       GuidePublisher.new(guide: @guide).publish
