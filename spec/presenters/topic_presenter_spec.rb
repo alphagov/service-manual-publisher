@@ -57,5 +57,18 @@ RSpec.describe TopicPresenter do
         expect(edition.guide.content_id).to be_in(linked_items)
       end
     end
+
+    it 'contains the service manual root as a parent for use in generating the breadcrumbs' do
+      expect(presented_topic.links[:links]).to a_hash_including(
+        parent: [
+          {
+            content_id: '51dd8775-cd2a-4fb3-b6df-8ed03591122d',
+            title: 'Service manual',
+            base_path: '/service-manual',
+            locale: 'en'
+          }
+        ]
+      )
+    end
   end
 end

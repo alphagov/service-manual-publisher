@@ -1,4 +1,6 @@
 class TopicPresenter
+  SERVICE_MANUAL_ROOT_CONTENT_ID = '51dd8775-cd2a-4fb3-b6df-8ed03591122d'
+
   def initialize(topic)
     @topic = topic
   end
@@ -28,6 +30,14 @@ class TopicPresenter
   def links
     {
       links: {
+        parent: [
+          {
+            content_id: SERVICE_MANUAL_ROOT_CONTENT_ID,
+            title: 'Service manual',
+            base_path: '/service-manual',
+            locale: 'en'
+          }
+        ],
         linked_items: eagerloaded_editions.map { |edition| edition.guide.content_id }
       }
     }
