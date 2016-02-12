@@ -8,7 +8,7 @@ class TopicPresenter
       content_id: topic.content_id,
       publishing_app: "service-manual-publisher",
       rendering_app: "government-frontend",
-      format: "topic",
+      format: "service_manual_topic",
       locale: "en",
       update_type: "minor",
       base_path: topic.path,

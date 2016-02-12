@@ -24,7 +24,7 @@ RSpec.describe TopicPresenter do
 
   describe "#exportable_attributes" do
     it "conforms to the schema" do
-      expect(presented_topic.exportable_attributes).to be_valid_against_schema('topic')
+      expect(presented_topic.exportable_attributes).to be_valid_against_schema('service_manual_topic')
     end
 
     it "exports all necessary metadata" do
@@ -34,7 +34,7 @@ RSpec.describe TopicPresenter do
         phase: "beta",
         publishing_app: "service-manual-publisher",
         rendering_app: "government-frontend",
-        format: "topic",
+        format: "service_manual_topic",
         locale: "en",
         base_path: "/service-manual/test-topic"
       )
