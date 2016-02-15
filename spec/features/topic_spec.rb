@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
-RSpec.describe "create topics", type: :feature do
+RSpec.describe "topic editor", type: :feature do
   before do
     allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
     ContentOwner.create!(title: "Design Community", href: "example.com/design")
@@ -51,5 +51,17 @@ RSpec.describe "create topics", type: :feature do
         }
       ].to_json
     )
+  end
+
+  it "can view topics" do
+    topic = Topic.create!(
+      path: "/service-manual/topic1",
+      title: "Topic 1",
+      description: "A Description",
+    )
+    visit root_path
+    click_link "Manage Topics"
+    click_link "Topic 1"
+    expect(page).to have_link "View", href: "http://www.dev.gov.uk/service-manual/topic1"
   end
 end
