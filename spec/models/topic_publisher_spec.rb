@@ -26,6 +26,16 @@ RSpec.describe TopicPublisher do
 
       publisher.publish
     end
+
+    it "indexes the topic in rummager" do
+      topic = Topic.new(content_id: "content-id-hello", title: "Test Topic")
+      publisher = described_class.new(topic)
+      indexer_double = double(:indexer)
+      allow_any_instance_of(GdsApi::PublishingApiV2).to receive(:publish).with("content-id-hello", "minor").and_return(true)
+      expect(TopicSearchIndexer).to receive(:new).with(anything).and_return(indexer_double)
+      expect(indexer_double).to receive(:index)
+      publisher.index_for_search
+    end
   end
 
   describe "#put_links" do
