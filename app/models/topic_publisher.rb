@@ -24,10 +24,15 @@ class TopicPublisher
     )
   end
 
+  def index_for_search
+    TopicSearchIndexer.new(topic).index
+  end
+
   def publish_immediately
     put_draft
     put_links
     publish
+    index_for_search
   end
 
 private
