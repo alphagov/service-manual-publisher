@@ -175,7 +175,7 @@ GEM
       omniauth (~> 1.2)
     pg (0.18.3)
     phantomjs (1.9.8.0)
-    plek (1.11.0)
+    plek (1.12.0)
     poltergeist (1.8.1)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -326,7 +326,7 @@ DEPENDENCIES
   launchy
   logstasher (= 0.6.2)
   pg (~> 0.18)
-  plek (~> 1.10)
+  plek (~> 1.12)
   poltergeist
   pry
   pry-nav
