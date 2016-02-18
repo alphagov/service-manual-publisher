@@ -8,6 +8,8 @@ RSpec.describe GuidesController, type: :controller do
     login_as content_designer
     allow_any_instance_of(GuidePublisher).to receive(:publish)
     ActionMailer::Base.deliveries.clear
+    allow_any_instance_of(Guide).to receive(:topic).and_return Generators.valid_topic
+    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   describe "#update" do

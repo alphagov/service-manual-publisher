@@ -23,6 +23,19 @@ class Guide < ActiveRecord::Base
       .order("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC")
   end
 
+  def topic
+    @topic ||= Topic.select do |topic|
+                 topic.tree.select do |element|
+                   element["editions"].map { |e| Integer(e) }
+                     .include? self.latest_edition.id
+                 end.any?
+               end.first
+  end
+
+  def included_in_a_topic?
+    topic.present?
+  end
+
   def has_published_edition?
     editions.where(state: "published").any?
   end
