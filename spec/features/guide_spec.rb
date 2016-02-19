@@ -187,40 +187,18 @@ RSpec.describe "creating guides", type: :feature do
       end
     end
 
-    context "when publishing raises an exception" do
-      let :api_error do
-        GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
-      end
+    it 'displays an alert if it fails' do
+      publication = Publisher::PublicationResponse.new(success: false, errors: ['trouble'])
+      allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
 
-      it "shows api errors" do
-        edition = Generators.valid_edition(title: "something")
-        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+      edition = Generators.valid_edition(title: "something")
+      guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
 
-        expect(api_double).to receive(:put_content).once.and_raise(api_error)
-        stub_const("PUBLISHING_API", api_double)
+      visit edit_guide_path(guide)
+      click_first_button "Save"
 
-        visit edit_guide_path(guide)
-        click_first_button "Save"
-
-        within ".alert" do
-          expect(page).to have_content('Error message stub')
-        end
-      end
-
-      it "does not store a new extra edition" do
-        edition = Generators.valid_edition(title: "Original Title")
-        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
-
-        expect(api_double).to receive(:put_content).once.and_raise(api_error)
-        stub_const("PUBLISHING_API", api_double)
-
-        visit edit_guide_path(guide)
-        fill_in "Guide title", with: "Changed Title"
-        click_first_button "Save"
-
-        expect(Guide.count).to eq 1
-        expect(Guide.first.latest_edition.title).to_not eq "Changed Title"
-        expect(Edition.count).to eq 1
+      within ".alert" do
+        expect(page).to have_content('trouble')
       end
     end
   end
