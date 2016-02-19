@@ -56,18 +56,13 @@ class GuidesController < ApplicationController
 private
 
   def send_for_review
-    @guide.latest_edition.state = 'review_requested'
-    @guide.latest_edition.save!
+    ApprovalProcess.new(content_model: @guide).request_review
 
     redirect_to back_or_default, notice: "A review has been requested"
   end
 
   def approve_for_publication
-    edition = @guide.latest_edition
-    edition.build_approval(user: current_user)
-    edition.state = "approved"
-    edition.save!
-    NotificationMailer.approved_for_publishing(edition).deliver_later
+    ApprovalProcess.new(content_model: @guide).give_approval(approver: current_user)
 
     redirect_to back_or_default, notice: "Thanks for approving this guide"
   end
