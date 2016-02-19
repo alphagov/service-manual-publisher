@@ -28,6 +28,57 @@ RSpec.describe Guide do
     end
   end
 
+  context "with a topic" do
+    let(:guide) do
+      Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+    end
+
+    let!(:topic) do
+      topic = Generators.valid_topic(
+        tree: [
+          {
+            "title"       => "Title",
+            "description" => "Description",
+            "editions"    => [guide.latest_edition.id],
+          },
+        ],
+      )
+      topic.save!
+      topic
+    end
+
+    describe "#included_in_a_topic?" do
+      it "returns true" do
+        expect(guide).to be_included_in_a_topic
+      end
+    end
+
+    describe "#topic" do
+      it "returns the topic" do
+        expect(guide.topic).to eq topic
+      end
+    end
+
+  end
+
+  context "without a topic" do
+    let(:guide) do
+      Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+    end
+
+    describe "#included_in_a_topic?" do
+      it "returns false" do
+        expect(guide).to_not be_included_in_a_topic
+      end
+    end
+
+    describe "#topic" do
+      it "returns nil" do
+        expect(guide.topic).to be_nil
+      end
+    end
+  end
+
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
       guide = Guide.create!(slug: "/service-manual/slug", content_id: nil, latest_edition: edition)

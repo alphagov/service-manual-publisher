@@ -25,6 +25,13 @@ class Generators
     edition
   end
 
+  def self.valid_approved_edition(attributes = {})
+    attributes = {state: "approved"}.merge(attributes)
+    edition = valid_edition(attributes)
+    edition.create_approval(user: User.first)
+    edition
+  end
+
   def self.valid_guide(attributes = {})
     default_attributes = { slug: "/service-manual/test-guide#{SecureRandom.hex}" }
     Guide.new(default_attributes.merge(attributes))

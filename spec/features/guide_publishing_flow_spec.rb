@@ -6,6 +6,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     allow_any_instance_of(GuidePublisher).to receive(:put_draft)
     allow_any_instance_of(GuidePublisher).to receive(:publish)
     allow_any_instance_of(SearchIndexer).to receive(:index)
+    allow_any_instance_of(Guide).to receive(:topic).and_return Generators.valid_topic
+    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   context "latest edition is published" do

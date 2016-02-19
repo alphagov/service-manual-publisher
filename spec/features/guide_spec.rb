@@ -14,6 +14,14 @@ RSpec.describe "creating guides", type: :feature do
     click_link "Create a Guide"
 
     allow_any_instance_of(SearchIndexer).to receive(:index)
+    allow_any_instance_of(Guide).to receive(:topic).and_return topic
+    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
+  end
+
+  let(:topic) do
+    topic = Generators.valid_topic
+    topic.save!
+    topic
   end
 
   it "has a prepopulated slug field" do
@@ -99,6 +107,47 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.title).to eq "First Edition Title"
     expect(edition.draft?).to eq false
     expect(edition.published?).to eq true
+  end
+
+  context "guide is not included in a topic" do
+    before do
+      expect_any_instance_of(Guide).to receive(:topic).and_return nil
+    end
+
+    let :guide do
+      Guide.create!(
+        slug: "/service-manual/something",
+        latest_edition: Generators.valid_approved_edition
+      )
+    end
+
+    it "does not publish the guide" do
+      visit edit_guide_path(guide)
+      click_first_button "Publish"
+      expect(page).to have_content "This guide could not be published because it is not included in a topic page."
+    end
+  end
+
+  context "guide is included in a topic" do
+    let :guide do
+      Guide.create!(
+        slug: "/service-manual/something",
+        latest_edition: Generators.valid_approved_edition
+      )
+    end
+
+    it "republishes the topic" do
+      stub_const("PUBLISHING_API", api_double)
+      allow(api_double).to receive(:put_content)
+      allow(api_double).to receive(:publish)
+
+      publisher_double = double(:topic_publisher)
+      expect(TopicPublisher).to receive(:new).with(topic).and_return publisher_double
+      expect(publisher_double).to receive(:publish_immediately)
+
+      visit edit_guide_path(guide)
+      click_first_button "Publish"
+    end
   end
 
   context "when creating a new guide" do

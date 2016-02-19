@@ -86,12 +86,21 @@ private
   end
 
   def publish
+    unless @guide.included_in_a_topic?
+      @edition = @guide.latest_edition
+      flash[:error] = "This guide could not be published because it is not included in a topic page."
+      render template: 'guides/edit'
+      return
+    end
+
     ActiveRecord::Base.transaction do
       @guide.latest_edition.update_attributes!(state: 'published')
       GuidePublisher.new(guide: @guide).publish
       index_for_search(@guide)
       redirect_to back_or_default, notice: "Guide has been published"
     end
+
+    TopicPublisher.new(@guide.topic).publish_immediately
 
     unless @guide.latest_edition.notification_subscribers == [current_user]
       NotificationMailer.published(@guide.latest_edition, current_user).deliver_later
