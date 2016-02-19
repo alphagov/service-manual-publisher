@@ -25,17 +25,13 @@ class GuidesController < ApplicationController
   def create
     @guide = Guide.new(guide_params)
 
-    ActiveRecord::Base.transaction do
-      if @guide.save
-        GuidePublisher.new(guide: @guide).put_draft
-        redirect_to edit_guide_path(@guide), notice: "Guide has been created"
-      else
-        render action: :new
-      end
+    publication = Publisher.new(content_model: @guide).save_draft
+    if publication.success?
+      redirect_to edit_guide_path(@guide), notice: 'Guide has been created'
+    else
+      flash.now[:error] = publication.errors
+      render 'new'
     end
-  rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details["error"]["message"]
-    render template: 'guides/new'
   end
 
   def edit
