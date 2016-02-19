@@ -43,23 +43,13 @@ class GuidesController < ApplicationController
     @guide = Guide.find(params[:id])
 
     if params[:send_for_review].present?
-      return send_for_review
-    elsif params[:publish].present?
-      return publish
+      send_for_review
     elsif params[:approve_for_publication].present?
-      return approve_for_publication
-    end
-
-    @guide.ensure_draft_exists
-    @guide.assign_attributes(guide_params(latest_edition_attributes: { id: @guide.latest_edition.id }))
-
-    publication = Publisher.new(content_model: @guide).
-                            save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
-    if publication.success?
-      redirect_to success_url(@guide), notice: "Guide has been updated"
+      approve_for_publication
+    elsif params[:publish].present?
+      publish
     else
-      flash.now[:error] = publication.errors
-      render 'edit'
+      save_draft
     end
   end
 
@@ -68,6 +58,7 @@ private
   def send_for_review
     @guide.latest_edition.state = 'review_requested'
     @guide.latest_edition.save!
+
     redirect_to back_or_default, notice: "A review has been requested"
   end
 
@@ -77,6 +68,7 @@ private
     edition.state = "approved"
     edition.save!
     NotificationMailer.approved_for_publishing(edition).deliver_later
+
     redirect_to back_or_default, notice: "Thanks for approving this guide"
   end
 
@@ -102,9 +94,24 @@ private
 
       redirect_to back_or_default, notice: "Guide has been published"
     else
-      flash.now[:error] = publication.errors
       @guide = @guide.reload
       @edition = @guide.latest_edition
+
+      flash.now[:error] = publication.errors
+      render 'edit'
+    end
+  end
+
+  def save_draft
+    @guide.ensure_draft_exists
+    @guide.assign_attributes(guide_params(latest_edition_attributes: { id: @guide.latest_edition.id }))
+
+    publication = Publisher.new(content_model: @guide).
+                            save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
+    if publication.success?
+      redirect_to success_url(@guide), notice: "Guide has been updated"
+    else
+      flash.now[:error] = publication.errors
       render 'edit'
     end
   end
