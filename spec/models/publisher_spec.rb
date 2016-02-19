@@ -76,3 +76,17 @@ RSpec.describe Publisher, '#save_draft' do
     end
   end
 end
+
+RSpec.describe Publisher, '#publish' do
+  it 'sends the draft to the publishing api' do
+    guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
+    guide.save!
+    publishing_api = double(:publishing_api)
+
+    expect(publishing_api).to receive(:publish).
+                              with(guide.content_id, guide.latest_edition.update_type)
+
+    Publisher.new(content_model: guide, publishing_api: publishing_api).
+              publish
+  end
+end

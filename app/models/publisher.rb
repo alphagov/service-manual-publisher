@@ -7,10 +7,24 @@ class Publisher
   end
 
   def save_draft(content_for_publication)
+    save_catching_gds_api_errors do
+      publishing_api.put_content(content_model.content_id, content_for_publication.exportable_attributes)
+    end
+  end
+
+  def publish
+    save_catching_gds_api_errors do
+      publishing_api.publish(content_model.content_id, content_model.latest_edition.update_type)
+    end
+  end
+
+private
+
+  def save_catching_gds_api_errors(&block)
     begin
       ActiveRecord::Base.transaction do
         if content_model.save
-          publishing_api.put_content(content_model.content_id, content_for_publication.exportable_attributes)
+          block.call
 
           PublicationResponse.new(success: true)
         else

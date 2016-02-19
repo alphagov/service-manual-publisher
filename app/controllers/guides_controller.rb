@@ -88,23 +88,25 @@ private
       return
     end
 
-    ActiveRecord::Base.transaction do
-      @guide.latest_edition.update_attributes!(state: 'published')
-      GuidePublisher.new(guide: @guide).publish
+    @guide.latest_edition.assign_attributes(state: 'published')
+
+    publication = Publisher.new(content_model: @guide).publish
+    if publication.success?
       index_for_search(@guide)
+
+      TopicPublisher.new(@guide.topic).publish_immediately
+
+      unless @guide.latest_edition.notification_subscribers == [current_user]
+        NotificationMailer.published(@guide.latest_edition, current_user).deliver_later
+      end
+
       redirect_to back_or_default, notice: "Guide has been published"
+    else
+      flash.now[:error] = publication.errors
+      @guide = @guide.reload
+      @edition = @guide.latest_edition
+      render 'edit'
     end
-
-    TopicPublisher.new(@guide.topic).publish_immediately
-
-    unless @guide.latest_edition.notification_subscribers == [current_user]
-      NotificationMailer.published(@guide.latest_edition, current_user).deliver_later
-    end
-  rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details["error"]["message"]
-    @guide = @guide.reload
-    @edition = @guide.latest_edition
-    render template: 'guides/edit'
   end
 
   def success_url(guide)

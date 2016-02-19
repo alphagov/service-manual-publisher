@@ -6,7 +6,9 @@ RSpec.describe GuidesController, type: :controller do
   before do
     content_designer.save!
     login_as content_designer
-    allow_any_instance_of(GuidePublisher).to receive(:publish)
+    publishing_api = double(:publishing_api)
+    allow(publishing_api).to receive(:publish)
+    stub_const('PUBLISHING_API', publishing_api)
     ActionMailer::Base.deliveries.clear
     allow_any_instance_of(Guide).to receive(:topic).and_return Generators.valid_topic
     allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
