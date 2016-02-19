@@ -28,4 +28,16 @@ RSpec.describe Publisher, '#save_draft' do
     Publisher.new(content_model: guide, publishing_api: publishing_api).
               save_draft
   end
+
+  it 'does not send the draft to the publishing api if the content model is not valid' do
+    guide = Generators.valid_guide(slug: '/invalid-slug')
+    expect(guide).to_not be_valid
+
+    publishing_api = double(:publishing_api)
+
+    expect(publishing_api).to_not receive(:put_content)
+
+    Publisher.new(content_model: guide, publishing_api: publishing_api).
+              save_draft
+  end
 end

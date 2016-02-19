@@ -7,7 +7,8 @@ class Publisher
   end
 
   def save_draft
-    content_model.save
-    publishing_api.put_content(content_model.content_id, {})
+    if content_model.save
+      publishing_api.put_content(content_model.content_id, {})
+    end
   end
 end
