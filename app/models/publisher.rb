@@ -17,18 +17,19 @@ class Publisher
           PublicationResponse.new(success: false)
         end
       end
-    rescue GdsApi::HTTPErrorResponse
-      PublicationResponse.new(success: false)
+    rescue GdsApi::HTTPErrorResponse => e
+      PublicationResponse.new(success: false, errors: e.error_details['error']['message'])
     end
   end
 
   class PublicationResponse
-    attr_reader :success
+    attr_reader :success, :errors
 
     alias_method :success?, :success
 
     def initialize(opts = {})
       @success = opts.fetch(:success)
+      @errors = opts.fetch(:errors, [])
     end
   end
 end

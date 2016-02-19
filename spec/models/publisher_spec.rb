@@ -60,4 +60,18 @@ RSpec.describe Publisher, '#save_draft' do
     expect(guide).to be_new_record
     expect(publication_response).to_not be_success
   end
+
+  it 'returns the gds api error messages when the publishing api call fails' do
+    guide = Generators.valid_guide
+    publishing_api = double(:publishing_api)
+    gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
+                                          'https://some-service.gov.uk',
+                                          {'error' => {'message' => 'trouble'}})
+    allow(publishing_api).to receive(:put_content).and_raise(gds_api_exception)
+
+    publication_response =
+      Publisher.new(content_model: guide, publishing_api: publishing_api).save_draft
+
+    expect(publication_response.errors).to include('trouble')
+  end
 end
