@@ -208,7 +208,8 @@ RSpec.describe "creating guides", type: :feature do
         edition = Generators.valid_edition(title: "something")
         guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
 
-        expect_any_instance_of(GuidePublisher).to receive(:put_draft).once.and_raise(api_error)
+        expect(api_double).to receive(:put_content).once.and_raise(api_error)
+        stub_const("PUBLISHING_API", api_double)
 
         visit edit_guide_path(guide)
         click_first_button "Save"
@@ -222,7 +223,8 @@ RSpec.describe "creating guides", type: :feature do
         edition = Generators.valid_edition(title: "Original Title")
         guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
 
-        expect_any_instance_of(GuidePublisher).to receive(:put_draft).once.and_raise(api_error)
+        expect(api_double).to receive(:put_content).once.and_raise(api_error)
+        stub_const("PUBLISHING_API", api_double)
 
         visit edit_guide_path(guide)
         fill_in "Guide title", with: "Changed Title"

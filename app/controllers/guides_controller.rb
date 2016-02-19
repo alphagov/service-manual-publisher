@@ -51,18 +51,16 @@ class GuidesController < ApplicationController
     end
 
     @guide.ensure_draft_exists
+    @guide.assign_attributes(guide_params(latest_edition_attributes: { id: @guide.latest_edition.id }))
 
-    ActiveRecord::Base.transaction do
-      if @guide.update_attributes(guide_params(latest_edition_attributes: { id: @guide.latest_edition.id }))
-        GuidePublisher.new(guide: @guide).put_draft
-        redirect_to success_url(@guide), notice: "Guide has been updated"
-      else
-        render action: :edit
-      end
+    publication = Publisher.new(content_model: @guide).
+                            save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
+    if publication.success?
+      redirect_to success_url(@guide), notice: "Guide has been updated"
+    else
+      flash.now[:error] = publication.errors
+      render 'edit'
     end
-  rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details["error"]["message"]
-    render template: 'guides/edit'
   end
 
 private

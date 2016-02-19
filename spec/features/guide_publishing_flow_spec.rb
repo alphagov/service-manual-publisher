@@ -2,9 +2,11 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
+
+  let(:fake_publishing_api) { FakePublishingApi.new }
+
   before do
-    allow_any_instance_of(GuidePublisher).to receive(:put_draft)
-    allow_any_instance_of(GuidePublisher).to receive(:publish)
+    stub_const('PUBLISHING_API', fake_publishing_api)
     allow_any_instance_of(SearchIndexer).to receive(:index)
     allow_any_instance_of(Guide).to receive(:topic).and_return Generators.valid_topic
     allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
@@ -13,9 +15,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   context "latest edition is published" do
     it "should create a new draft edition when saving changes" do
       guide = given_a_published_guide_exists title: "Standups"
-      publisher_double = double(:publisher)
-      expect(GuidePublisher).to receive(:new).with(guide: guide).and_return(publisher_double)
-      expect(publisher_double).to receive(:put_draft).once
 
       visit guides_path
       click_link "Edit"
@@ -78,7 +77,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(Guide.count).to eq 1
       expect(Edition.count).to eq 1
 
-      expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
+      expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
       visit edit_guide_path(guide)
       fill_in "Guide title", with: "Updated Title"
@@ -95,7 +94,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     it "shows api errors in the UI" do
       given_a_published_guide_exists
 
-      expect_any_instance_of(GuidePublisher).to receive(:put_draft).and_raise api_error
+      expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
       visit guides_path
       click_link "Edit"
@@ -111,7 +110,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       guide = given_a_guide_exists(state: 'approved')
 
       visit edit_guide_path(guide)
-      expect_any_instance_of(GuidePublisher).to receive(:publish).and_raise api_error
+      expect(fake_publishing_api).to receive(:publish).and_raise api_error
 
       click_first_button "Publish"
 
@@ -154,7 +153,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     visit edit_guide_path(guide)
     fill_in "Guide title", with: "Changed Title"
 
-    expect_any_instance_of(GuidePublisher).to receive(:put_draft)
+    expect(fake_publishing_api).to receive(:put_content)
 
     expect_external_redirect_to "http://draft-origin.dev.gov.uk/service-manual/preview-test" do
       click_first_button "Save and preview"
@@ -293,5 +292,13 @@ private
     expect(current_url).to eq external_url
   else
     raise "Missing external redirect"
+  end
+
+  class FakePublishingApi
+    def put_content(*args)
+    end
+
+    def publish(*args)
+    end
   end
 end
