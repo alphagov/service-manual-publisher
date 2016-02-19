@@ -6,11 +6,11 @@ class Publisher
     @publishing_api = publishing_api
   end
 
-  def save_draft
+  def save_draft(content_for_publication)
     begin
       ActiveRecord::Base.transaction do
         if content_model.save
-          publishing_api.put_content(content_model.content_id, {})
+          publishing_api.put_content(content_model.content_id, content_for_publication.exportable_attributes)
 
           PublicationResponse.new(success: true)
         else
