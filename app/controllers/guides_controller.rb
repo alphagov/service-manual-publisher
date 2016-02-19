@@ -25,7 +25,8 @@ class GuidesController < ApplicationController
   def create
     @guide = Guide.new(guide_params)
 
-    publication = Publisher.new(content_model: @guide).save_draft
+    publication = Publisher.new(content_model: @guide).
+                            save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
     if publication.success?
       redirect_to edit_guide_path(@guide), notice: 'Guide has been created'
     else
