@@ -90,7 +90,6 @@ private
       redirect_to back_or_default, notice: "Guide has been published"
     else
       @guide = @guide.reload
-      @edition = @guide.latest_edition
 
       flash.now[:error] = publication.errors
       render 'edit'
