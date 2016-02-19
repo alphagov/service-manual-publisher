@@ -7,8 +7,13 @@ class Publisher
   end
 
   def save_draft
-    if content_model.save
-      publishing_api.put_content(content_model.content_id, {})
+    begin
+      ActiveRecord::Base.transaction do
+        if content_model.save
+          publishing_api.put_content(content_model.content_id, {})
+        end
+      end
+    rescue GdsApi::HTTPErrorResponse
     end
   end
 end

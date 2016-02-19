@@ -40,4 +40,18 @@ RSpec.describe Publisher, '#save_draft' do
     Publisher.new(content_model: guide, publishing_api: publishing_api).
               save_draft
   end
+
+  it 'does not persist the content model if the publishing api call fails' do
+    guide = Generators.valid_guide
+    publishing_api = double(:publishing_api)
+    gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
+                                          'https://some-service.gov.uk',
+                                          {'error' => {'message' => 'trouble'}})
+    allow(publishing_api).to receive(:put_content).and_raise(gds_api_exception)
+
+    Publisher.new(content_model: guide, publishing_api: publishing_api).
+              save_draft
+
+    expect(guide).to be_new_record
+  end
 end
