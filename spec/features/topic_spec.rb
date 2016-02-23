@@ -12,8 +12,8 @@ RSpec.describe "topic editor", type: :feature do
   it "can create a new topic", js: true do
     edition1 = Generators.valid_edition(title: "Title 1")
     edition2 = Generators.valid_edition(title: "Title 2")
-    Guide.create!(slug: "/service-manual/edition1", latest_edition: edition1)
-    Guide.create!(slug: "/service-manual/edition2", latest_edition: edition2)
+    guide1 = Guide.create!(slug: "/service-manual/edition1", latest_edition: edition1)
+    guide2 = Guide.create!(slug: "/service-manual/edition2", latest_edition: edition2)
 
     visit root_path
     click_link "Manage Topics"
@@ -30,10 +30,10 @@ RSpec.describe "topic editor", type: :feature do
     fill_in "Heading Description", with: "The heading description"
 
     click_button "Add Guide"
-    all(".js-topic-edition")[0].find("option[value='#{edition1.id}']").select_option
+    all(".js-topic-guide")[0].find("option[value='#{guide1.id}']").select_option
 
     click_button "Add Guide"
-    all(".js-topic-edition")[1].find("option[value='#{edition2.id}']").select_option
+    all(".js-topic-guide")[1].find("option[value='#{guide2.id}']").select_option
 
     click_button "Save"
 
@@ -46,7 +46,7 @@ RSpec.describe "topic editor", type: :feature do
       [
         {
           "title": "The heading title",
-          "editions": [edition1.id.to_s, edition2.id.to_s],
+          "guides": [guide1.id.to_s, guide2.id.to_s],
           "description": "The heading description",
         }
       ].to_json

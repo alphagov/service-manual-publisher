@@ -28,7 +28,7 @@ class TopicPresenter
   def links
     {
       links: {
-        linked_items: eagerloaded_editions.map { |edition| edition.guide.content_id }
+        linked_items: eagerloaded_guides.map { |guide| guide.content_id }
       }
     }
   end
@@ -39,30 +39,24 @@ private
 
   def groups
     topic_groups.map do |group|
+      guides = Guide.where(id: group["guides"]).pluck(:slug, :content_id)
       {
         name: group['title'],
         description: group['description'],
-        contents: attributes_of(group['editions'], :slug),
-        content_ids: attributes_of(group['editions'], :content_id)
+        contents: guides.map {|g| g.first},
+        content_ids: guides.map {|g| g.last},
       }
     end
   end
 
-  def eagerloaded_editions
-    @eagerloaded_editions ||= begin
-      ids = topic_groups.flat_map { |group| group['editions'] }.uniq
-      Edition.where(id: ids).includes(:guide)
+  def eagerloaded_guides
+    @eagerloaded_guides ||= begin
+      ids = topic_groups.flat_map { |group| group['guides'] }.uniq
+      Guide.where(id: ids)
     end
   end
 
   def topic_groups
     @topic_groups ||= topic.tree.select { |h| h.is_a?(Hash) }
-  end
-
-  def attributes_of(edition_ids, guide_attribute)
-    edition_ids.map do |edition_id|
-      guide = eagerloaded_editions.find { |edition| edition.id.to_s == edition_id.to_s }.guide
-      guide.public_send(guide_attribute)
-    end
   end
 end

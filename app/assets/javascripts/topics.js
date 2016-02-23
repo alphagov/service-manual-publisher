@@ -4,17 +4,17 @@ $(function() {
     return;
   }
 
-  function createNewEdition(value) {
-    var $edition = $topics.find(".topics-templates .js-edition-template").clone();
-    $edition.find(".js-topic-edition").val(value);
-    $edition.removeClass("js-edition-template");
-    $edition.removeClass("hidden");
-    $edition.addClass("draggable-edition");
-    $topics.find(".js-sortable-topic-list").append($edition);
+  function createNewGuide(value) {
+    var $guide = $topics.find(".topics-templates .js-guide-template").clone();
+    $guide.find(".js-topic-guide").val(value);
+    $guide.removeClass("js-guide-template");
+    $guide.removeClass("hidden");
+    $guide.addClass("draggable-guide");
+    $topics.find(".js-sortable-topic-list").append($guide);
   }
 
   function createNewHeading(title, description) {
-    $(".js-add-edition").attr("disabled", false);
+    $(".js-add-guide").attr("disabled", false);
 
     var heading = $topics.find(".topics-templates .js-heading-template").clone();
     heading.find(".js-topic-title").val(title);
@@ -24,7 +24,7 @@ $(function() {
     heading.removeClass("hidden");
   }
 
-  $topics.on("click", ".js-add-edition", function(){createNewEdition("")});
+  $topics.on("click", ".js-add-guide", function(){createNewGuide("")});
   $topics.on("click", ".js-add-heading", function(){createNewHeading("","")});
 
   $topics.on("click", ".js-delete-list-group-item", function() {
@@ -49,11 +49,11 @@ $(function() {
         if (currentTopic != null) {
           topics.push(currentTopic);
         }
-        currentTopic = {title: topicInput.val(), editions: []};
+        currentTopic = {title: topicInput.val(), guides: []};
       } else if (topicInput.hasClass("js-topic-description")) {
         currentTopic["description"] = topicInput.val();
-      } else if (topicInput.hasClass("js-topic-edition")) {
-        currentTopic["editions"].push(topicInput.children(":selected").val());
+      } else if (topicInput.hasClass("js-topic-guide")) {
+        currentTopic["guides"].push(topicInput.children(":selected").val());
       }
     });
 
@@ -65,8 +65,8 @@ $(function() {
   for (topicIndex = 0; topicIndex < json.length; topicIndex++) {
     var topic = json[topicIndex];
     createNewHeading(topic.title, topic.description);
-    for (editionIndex = 0; editionIndex < topic.editions.length; editionIndex++) {
-      createNewEdition(topic.editions[editionIndex]);
+    for (guideIndex = 0; guideIndex < topic.guides.length; guideIndex++) {
+      createNewGuide(topic.guides[guideIndex]);
     }
   }
 });
