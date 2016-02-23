@@ -34,7 +34,7 @@
 
         <div class="form-group">
           <%= button_tag "Add Heading", type: "button", class: "js-add-heading btn btn-success" %>
-          <%= button_tag "Add Guide", type: "button", class: "js-add-edition btn btn-success", disabled: true %>
+          <%= button_tag "Add Guide", type: "button", class: "js-add-guide btn btn-success", disabled: true %>
         </div>
       </div>
 
@@ -59,13 +59,13 @@
           <input type="text" placeholder="Heading Description" class="js-topic-input js-topic-description form-control">
         </div>
       </li>
-      <li class="list-group-item js-edition-template hidden">
+      <li class="list-group-item js-guide-template hidden">
         <div class="left">
           <span class="glyphicon glyphicon-move"></span>
           <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
         </div>
         <div class="right">
-          <%= select_tag nil, options_for_select(latest_editions.map { |e| [e.title, e.id] }), {class: 'js-topic-input js-topic-edition input-md-12 form-control'} %>
+          <%= select_tag nil, options_for_select(latest_editions.map { |e| [e.title, e.guide.id] }), {class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
         </div>
       </li>
     </div>

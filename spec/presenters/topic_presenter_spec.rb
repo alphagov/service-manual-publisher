@@ -10,11 +10,11 @@ RSpec.describe TopicPresenter do
       path: "/service-manual/test-topic",
       description: "Topic description",
       tree: [{ title: "Group 1",
-               editions: [edition_1.id, edition_2.id],
+               guides: [edition_1.guide.id, edition_2.guide.id],
                description: "Fruits"
              }, {
                title: "Group 2",
-               editions: [edition_3.id],
+               guides: [edition_3.guide.id],
                description: "Berries"
              }].to_json
     )
