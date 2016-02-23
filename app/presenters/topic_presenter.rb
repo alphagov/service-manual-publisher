@@ -39,12 +39,15 @@ private
 
   def groups
     topic_groups.map do |group|
-      guides = Guide.where(id: group["guides"]).pluck(:slug, :content_id)
+      ids = group["guides"]
+      guides = Guide.find(ids)
+      guides = ids.map{|id| guides.detect{|guide| guide.id == id}}
+
       {
         name: group['title'],
         description: group['description'],
-        contents: guides.map {|g| g.first},
-        content_ids: guides.map {|g| g.last},
+        contents: guides.map {|g| g.slug},
+        content_ids: guides.map {|g| g.content_id},
       }
     end
   end
