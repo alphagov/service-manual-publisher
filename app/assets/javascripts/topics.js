@@ -46,14 +46,14 @@ $(function() {
     $(".js-topic-input").each(function() {
       var topicInput = $(this);
       if (topicInput.hasClass("js-topic-title")) {
-	if (currentTopic != null) {
-	  topics.push(currentTopic);
-	}
-	currentTopic = {title: topicInput.val(), editions: []};
+        if (currentTopic != null) {
+          topics.push(currentTopic);
+        }
+        currentTopic = {title: topicInput.val(), editions: []};
       } else if (topicInput.hasClass("js-topic-description")) {
-	currentTopic["description"] = topicInput.val();
+        currentTopic["description"] = topicInput.val();
       } else if (topicInput.hasClass("js-topic-edition")) {
-	currentTopic["editions"].push(topicInput.children(":selected").val());
+        currentTopic["editions"].push(topicInput.children(":selected").val());
       }
     });
 
