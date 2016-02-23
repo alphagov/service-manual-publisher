@@ -41,7 +41,7 @@ private
     topic_groups.map do |group|
       ids = group["guides"]
       guides = Guide.find(ids)
-      guides = ids.map{|id| guides.detect{|guide| guide.id == id}}
+      guides = ids.map{|id| guides.detect{|guide| guide.id == Integer(id)}}
 
       {
         name: group['title'],
