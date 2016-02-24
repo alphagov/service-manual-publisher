@@ -26,8 +26,8 @@ class Guide < ActiveRecord::Base
   def topic
     @topic ||= Topic.select do |topic|
                  topic.tree.select do |element|
-                   element["editions"].map { |e| Integer(e) }
-                     .include? self.latest_edition.id
+                   element["guides"].map { |e| Integer(e) }
+                     .include? self.id
                  end.any?
                end.first
   end

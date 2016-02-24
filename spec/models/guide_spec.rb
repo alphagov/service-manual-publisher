@@ -39,7 +39,7 @@ RSpec.describe Guide do
           {
             "title"       => "Title",
             "description" => "Description",
-            "editions"    => [guide.latest_edition.id],
+            "guides"    => [guide.id],
           },
         ],
       )
