@@ -69,11 +69,11 @@ class Guide < ActiveRecord::Base
     end
   end
 
-private
-
   def requires_content_owner?
     true
   end
+
+private
 
   def slug_format
     if !slug.to_s.match(/\A\/service-manual\//)

@@ -28,4 +28,11 @@ RSpec.describe 'Create a guide community', type: :feature do
     expect(page).to have_field('Guide title', with: 'First Edition Title')
     expect(page).to have_field('Body', with: '## First Edition Title')
   end
+
+  it 'does not have a content owner field' do
+    visit root_path
+    click_link "Create a Guide Community"
+
+    expect(page).to_not have_field('Published by')
+  end
 end
