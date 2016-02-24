@@ -3,7 +3,9 @@
     <h2>Slug Migration <small><%= @slug_migration.slug %></small></h2>
 
     <div class="form-group">
-      <%= f.label :redirect_to, "Redirect to" %>
+      <%= f.label :redirect_to do %>
+        Redirect to (<span class="text-info">only published guides and topics will appear in this list</span>)
+      <% end %>
       <%=
         f.select :redirect_to,
           grouped_options_for_select(@select_options),
