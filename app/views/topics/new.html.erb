@@ -21,10 +21,6 @@
           <%= f.label :description %>
           <%= f.text_field :description, class: "form-control" %>
         </div>
-        <div class="form-group">
-          <%= f.label :content_owner_ids, "Content Owners" %>
-          <%= f.select :content_owner_ids, options_for_select(ContentOwner.order(:title).map { |co| [co.title, co.id] }, selected: @topic.content_owner_ids), {}, {class: "form-control select2", multiple: true} %>
-        </div>
       </div>
 
       <div class="well">

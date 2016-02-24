@@ -143,38 +143,6 @@ ALTER SEQUENCE content_owners_id_seq OWNED BY content_owners.id;
 
 
 --
--- Name: content_owners_topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE content_owners_topics (
-    id integer NOT NULL,
-    content_owner_id integer,
-    topic_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: content_owners_topics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE content_owners_topics_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: content_owners_topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE content_owners_topics_id_seq OWNED BY content_owners_topics.id;
-
-
---
 -- Name: editions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -392,13 +360,6 @@ ALTER TABLE ONLY content_owners ALTER COLUMN id SET DEFAULT nextval('content_own
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY content_owners_topics ALTER COLUMN id SET DEFAULT nextval('content_owners_topics_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY editions ALTER COLUMN id SET DEFAULT nextval('editions_id_seq'::regclass);
 
 
@@ -452,14 +413,6 @@ ALTER TABLE ONLY comments
 
 ALTER TABLE ONLY content_owners
     ADD CONSTRAINT content_owners_pkey PRIMARY KEY (id);
-
-
---
--- Name: content_owners_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY content_owners_topics
-    ADD CONSTRAINT content_owners_topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -528,20 +481,6 @@ CREATE INDEX index_comments_on_commentable_type ON comments USING btree (comment
 --
 
 CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
-
-
---
--- Name: index_content_owners_topics_on_content_owner_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_content_owners_topics_on_content_owner_id ON content_owners_topics USING btree (content_owner_id);
-
-
---
--- Name: index_content_owners_topics_on_topic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_content_owners_topics_on_topic_id ON content_owners_topics USING btree (topic_id);
 
 
 --
@@ -660,4 +599,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160224143937');
 INSERT INTO schema_migrations (version) VALUES ('20160225090417');
 
 INSERT INTO schema_migrations (version) VALUES ('20160225101236');
+
+INSERT INTO schema_migrations (version) VALUES ('20160225113207');
 
