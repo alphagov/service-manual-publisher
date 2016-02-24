@@ -3,6 +3,9 @@
     <p>
       <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-block btn-success' %>
     </p>
+    <p>
+      <%= link_to "Create a Guide Community" , new_guide_path(community: true), class: 'btn btn-block btn-success' %>
+    </p>
     <div class="filters well sidebar-nav">
       <form action="<%= guides_path%>" method="get">
         <%= label_tag :q, "Title or slug", class: "nav-header" %>
