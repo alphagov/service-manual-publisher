@@ -6,7 +6,7 @@ class Edition < ActiveRecord::Base
 
   has_one :approval
 
-  belongs_to :content_owner
+  belongs_to :content_owner, class_name: 'GuideCommunity'
 
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }

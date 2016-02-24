@@ -1,8 +1,7 @@
 class Generators
   def self.valid_edition(attributes = {})
-    default_content_owner = ContentOwner.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
+    default_content_owner = GuideCommunity.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
     content_owner = attributes.fetch(:content_owner, default_content_owner)
-
 
     attributes = {
       title:          "The Title",
@@ -37,6 +36,11 @@ class Generators
   def self.valid_guide(attributes = {})
     default_attributes = { slug: "/service-manual/test-guide#{SecureRandom.hex}" }
     Guide.new(default_attributes.merge(attributes))
+  end
+
+  def self.valid_guide_community(attributes = {})
+    default_attributes = { slug: "/service-manual/test-guide#{SecureRandom.hex}" }
+    GuideCommunity.new(default_attributes.merge(attributes))
   end
 
   def self.valid_user(attributes = {})

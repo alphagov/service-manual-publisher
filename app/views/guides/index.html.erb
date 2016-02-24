@@ -50,7 +50,9 @@
               <div class='text-muted'><%= guide.slug %></div>
             </td>
             <td>
-              <%= guide.latest_edition.content_owner.title %>
+              <% if guide.latest_edition.content_owner %>
+                <%= guide.latest_edition.content_owner.title %>
+              <% end %>
             </td>
             <td class='last-edited-by'>
               <%= latest_editor_name(guide) %>

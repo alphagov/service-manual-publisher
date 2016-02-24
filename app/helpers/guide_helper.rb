@@ -25,4 +25,10 @@ module GuideHelper
   def latest_editor_name(guide)
     guide.latest_edition.user.try(:name).to_s
   end
+
+  def guide_community_options_for_select
+    GuideCommunity.includes(:latest_edition).
+          sort_by{ |guide| guide.title }.
+          map{ |g| [g.title, g.id] }
+  end
 end

@@ -6,10 +6,10 @@ RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
-    ContentOwner.first_or_initialize(
-      title: "Design Community",
-      href:  "http://sm-11.herokuapp.com/designing-services/design-community/"
-    ).save!
+    Generators.valid_guide_community(
+      latest_edition: Generators.valid_edition(content_owner: nil, title: 'Technology Community')
+      ).tap(&:save!)
+
     visit root_path
     click_link "Create a Guide"
 
@@ -289,7 +289,7 @@ private
 
   def fill_in_guide_form
     fill_in "Slug", with: "/service-manual/the/path"
-    select "Design Community", from: "Published by"
+    select "Technology Community", from: "Published by"
     fill_in "Guide description", with: "This guide acts as a test case"
 
     fill_in "Guide title", with: "First Edition Title"
