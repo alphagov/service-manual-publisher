@@ -17,7 +17,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       guide = given_a_published_guide_exists title: "Standups"
 
       visit guides_path
-      click_link "Edit"
+      within_guide_index_row('Standups') do
+        click_link "Edit"
+      end
       the_form_should_be_prepopulated_with_title "Standups"
       fill_in "Guide title", with: "Standup meetings"
       fill_in "Why the change is being made", with: "Be more specific in the title"
@@ -33,19 +35,23 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       given_a_published_guide_exists title: "Standups"
       visit guides_path
 
-      click_link "Edit"
+      within_guide_index_row('Standups') do
+        click_link "Edit"
+      end
       expect(find_field("Why the change is being made").value).to be_blank
 
       expect(find_field("Major update")).to be_checked
     end
 
     it "indexes documents for search" do
-      given_a_guide_exists
+      given_a_guide_exists(title: 'My Article')
       indexer = double(:indexer)
       expect(SearchIndexer).to receive(:new).with(Guide.first).and_return(indexer)
       expect(indexer).to receive(:index)
       visit guides_path
-      click_link "Edit"
+      within_guide_index_row('My Article') do
+        click_link "Edit"
+      end
       click_first_button "Send for review"
       click_first_button "Approve for publication"
       click_first_button "Publish"
@@ -55,7 +61,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "creates a new draft version if the original has been published in the meantime" do
     guide = given_a_guide_exists title: "Agile development"
     visit guides_path
-    click_link "Edit"
+    within_guide_index_row('Agile development') do
+      click_link "Edit"
+    end
 
     guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
 
@@ -73,9 +81,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "keeps the changes made in form fields" do
-      guide = given_a_published_guide_exists
-      expect(Guide.count).to eq 1
-      expect(Edition.count).to eq 1
+      guide = given_a_published_guide_exists title: 'My Guide'
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -86,18 +92,19 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       the_form_should_be_prepopulated_with_title "Updated Title"
 
-      expect(Guide.count).to eq 1
-      expect(Edition.published.count).to eq 1
-      expect(Edition.draft.count).to eq 1
+      expect(guide.editions.published.count).to eq 1
+      expect(guide.editions.draft.count).to eq 1
     end
 
     it "shows api errors in the UI" do
-      given_a_published_guide_exists
+      given_a_published_guide_exists(title: 'My Article')
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
       visit guides_path
-      click_link "Edit"
+      within_guide_index_row('My Article') do
+        click_link "Edit"
+      end
       fill_in "Why the change is being made", with: "Fix a typo"
       click_first_button 'Save'
 
@@ -127,7 +134,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should not create a new edition if the latest edition isn't published" do
     guide = given_a_guide_exists state: 'draft', title: "Agile methodologies"
     visit guides_path
-    click_link "Edit"
+    within_guide_index_row('Agile methodologies') do
+      click_link "Edit"
+    end
     fill_in "Guide title", with: "Agile"
     click_first_button 'Save'
     expect(current_path).to eq edit_guide_path guide
@@ -138,13 +147,15 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   it "should record who's the last editor" do
     stub_user.update_attribute :name, "John Smith"
-    guide = given_a_guide_exists state: 'draft'
+    guide = given_a_guide_exists title: 'Agile methodologies', state: 'draft'
     visit edit_guide_path(guide)
     fill_in "Guide title", with: "An amended title"
     click_first_button 'Save'
     visit guides_path
-    within ".last-edited-by" do
-      expect(page).to have_content "John Smith"
+    within_guide_index_row('An amended title') do
+      within ".last-edited-by" do
+        expect(page).to have_content "John Smith"
+      end
     end
   end
 
@@ -188,8 +199,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         expect(page).to have_content "Changes approved by Keanu Reviews"
 
         visit root_path
-        within ".label" do
-          expect(page).to have_content "Approved"
+        within_guide_index_row('Standups') do
+          within ".label" do
+            expect(page).to have_content "Approved"
+          end
         end
       end
     end
