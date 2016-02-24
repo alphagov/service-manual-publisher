@@ -105,6 +105,24 @@ RSpec.describe Guide do
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can only contain letters, numbers and dashes"]
     end
 
+    describe "content owner" do
+      it "requires the latest edition to have a content owner" do
+        edition_without_content_owner = Generators.valid_edition(content_owner: nil)
+        guide = Guide.new(slug: "/service-manual/tech", latest_edition: edition_without_content_owner)
+        guide.valid?
+
+        expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a content owner')
+      end
+
+      it "requires the latest edition to have a content owner unless it is a GuideCommunity" do
+        edition_without_content_owner = Generators.valid_edition(content_owner: nil)
+        guide = GuideCommunity.new(slug: "/service-manual/tech", latest_edition: edition_without_content_owner)
+        guide.valid?
+
+        expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
+      end
+    end
+
     context "has a published edition" do
       it "does not allow changing the slug" do
         guide = Guide.create!(
@@ -121,7 +139,8 @@ RSpec.describe Guide do
   describe "#latest_editable_edition" do
     it "returns the latest edition if it's not published" do
       guide = Guide.create(slug: "/service-manual/editable", editions: [Generators.valid_edition])
-      expect(guide.latest_editable_edition).to eq guide.reload.latest_edition
+
+      expect(guide.reload.latest_editable_edition).to eq guide.reload.latest_edition
     end
 
     it "returns an unsaved copy of the latest edition if the latter is published" do
@@ -131,7 +150,7 @@ RSpec.describe Guide do
               )
 
       expect(guide.latest_editable_edition).to be_a_new_record
-      expect(guide.latest_editable_edition.title).to eq "Agile Methodologies"
+      expect(guide.reload.latest_editable_edition.title).to eq "Agile Methodologies"
     end
 
     it "defaults to a 'major' update for a new drafts" do
@@ -140,7 +159,7 @@ RSpec.describe Guide do
                 editions: [Generators.valid_published_edition(update_type: "minor")]
               )
 
-      expect(guide.latest_editable_edition.update_type).to eq "major"
+      expect(guide.reload.latest_editable_edition.update_type).to eq "major"
     end
 
     it "returns a new edition for a guide with no latest edition" do

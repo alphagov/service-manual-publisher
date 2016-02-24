@@ -58,6 +58,12 @@ RSpec.describe GuidePresenter do
       expect(presenter.exportable_attributes[:details][:related_discussion]).to be_blank
     end
 
+    it "omits the content owner if the edition doesn't have one" do
+      edition.content_owner = nil
+
+      expect(presenter.exportable_attributes[:details][:content_owner]).to be_blank
+    end
+
     it "includes h2 links for the sidebar" do
       edition.body = "## Header 1 \n\n### Subheader \n\n## Header 2\n\ntext"
       expect(presenter.exportable_attributes[:details][:header_links]).to match_array([

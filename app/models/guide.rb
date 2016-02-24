@@ -2,6 +2,7 @@ class Guide < ActiveRecord::Base
   include ContentIdentifiable
   validate :slug_format
   validate :slug_cant_be_changed_if_an_edition_has_been_published
+  validate :latest_edition_has_content_owner, if: :requires_content_owner?
 
   has_many :editions
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
@@ -70,6 +71,10 @@ class Guide < ActiveRecord::Base
 
 private
 
+  def requires_content_owner?
+    true
+  end
+
   def slug_format
     if !slug.to_s.match(/\A\/service-manual\//)
       errors.add(:slug, "must be present and start with '/service-manual/'")
@@ -83,6 +88,12 @@ private
   def slug_cant_be_changed_if_an_edition_has_been_published
     if slug_changed? && has_published_edition?
       errors.add(:slug, "can't be changed if guide has a published edition")
+    end
+  end
+
+  def latest_edition_has_content_owner
+    if latest_edition && latest_edition.content_owner.nil?
+      errors.add(:latest_edition, 'must have a content owner')
     end
   end
 end

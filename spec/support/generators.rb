@@ -1,6 +1,8 @@
 class Generators
   def self.valid_edition(attributes = {})
-    content_owner = ContentOwner.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
+    default_content_owner = ContentOwner.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
+    content_owner = attributes.fetch(:content_owner, default_content_owner)
+
 
     attributes = {
       title:          "The Title",

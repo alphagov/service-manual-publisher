@@ -193,7 +193,7 @@ CREATE TABLE editions (
     updated_at timestamp without time zone NOT NULL,
     state text,
     change_note text,
-    content_owner_id integer NOT NULL,
+    content_owner_id integer,
     change_summary text
 );
 
@@ -227,7 +227,8 @@ CREATE TABLE guides (
     content_id character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    tsv tsvector
+    tsv tsvector,
+    type character varying
 );
 
 
@@ -655,4 +656,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160223160404');
 INSERT INTO schema_migrations (version) VALUES ('20160224111338');
 
 INSERT INTO schema_migrations (version) VALUES ('20160224143937');
+
+INSERT INTO schema_migrations (version) VALUES ('20160225090417');
+
+INSERT INTO schema_migrations (version) VALUES ('20160225101236');
 

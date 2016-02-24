@@ -1,4 +1,6 @@
-<%= form_for guide, html: { class: "js-protect-data" } do |f| %>
+<%= form_for guide, as: :guide, url: url_for(guide.becomes(Guide)), html: { class: "js-protect-data" } do |f| %>
+
+  <%= f.hidden_field :type %>
 
   <div class="col-md-12">
     <%= render 'editions/actions', publish_controls_only: false, form: f, guide: @guide, edition: @guide.latest_edition %>

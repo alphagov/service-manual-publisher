@@ -34,11 +34,16 @@ private
     details = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
-      content_owner: {
-        title: edition.content_owner.title,
-        href: edition.content_owner.href
-      }
     }
+
+    if edition.content_owner
+      details.merge!(
+        content_owner: {
+          title: edition.content_owner.title,
+          href: edition.content_owner.href,
+        }
+      )
+    end
 
     if edition.related_discussion_title.present? && edition.related_discussion_href.present?
       details[:related_discussion] = {

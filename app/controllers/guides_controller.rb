@@ -18,7 +18,9 @@ class GuidesController < ApplicationController
   end
 
   def new
-    @guide = Guide.new(slug: "/service-manual/")
+    type = params[:community].present? ? 'GuideCommunity' : nil
+
+    @guide = Guide.new(slug: "/service-manual/", type: type)
     @guide.build_latest_edition(update_type: 'major')
   end
 
@@ -126,7 +128,7 @@ private
 
     params
       .require(:guide)
-      .permit(:slug, latest_edition_attributes: [
+      .permit(:slug, :type, latest_edition_attributes: [
         :title,
         :body,
         :description,
