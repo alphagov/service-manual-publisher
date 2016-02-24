@@ -40,9 +40,7 @@
                 <%= link_to slug_migration.slug, "#{Plek.find('www')}#{slug_migration.slug}" %>
               </td>
               <td>
-                <% if slug_migration.guide.present? %>
-                  <%= slug_migration.guide.slug %>
-                <% end %>
+                <%= slug_migration.redirect_to %>
               </td>
             </tr>
           <% end %>

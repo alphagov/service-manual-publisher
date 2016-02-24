@@ -2,7 +2,7 @@
   <h2>Slug Migration <small><%= @slug_migration.slug %></small></h2>
   <% if @slug_migration.completed? %>
     <p>
-      This migration has been completed, and redirects to: <%= @slug_migration.guide.try(:slug) %>
+      This migration has been completed, and redirects to: <%= @slug_migration.redirect_to %>
     </p>
   <% else %>
     <p>

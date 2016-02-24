@@ -1,15 +1,11 @@
 require 'gds_api/rummager'
 
 class SlugMigration < ActiveRecord::Base
-  belongs_to :guide
-
   validates :slug, uniqueness: true
-  validate(
-    :has_published_guide_when_migrating,
-    :is_not_already_completed,
-  )
+  validates :redirect_to, presence: true
+  validate :is_not_already_completed
 
-  before_validation on: :create do |object|
+  before_save do |object|
     object.content_id = SecureRandom.uuid
   end
 
@@ -18,6 +14,8 @@ class SlugMigration < ActiveRecord::Base
     begin
       @search_client.get_content!(slug)
     rescue GdsApi::HTTPNotFound => e
+      false
+    rescue GdsApi::HTTPServerError => e
       false
     end
   end
@@ -28,12 +26,6 @@ class SlugMigration < ActiveRecord::Base
   end
 
   private
-
-    def has_published_guide_when_migrating
-      if completed? && (guide.nil? || !guide.has_published_edition?)
-        errors.add(:guide, "must have a published guide in order to migrate")
-      end
-    end
 
     def is_not_already_completed
       if completed_was
