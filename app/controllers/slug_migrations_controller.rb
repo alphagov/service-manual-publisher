@@ -12,7 +12,6 @@ class SlugMigrationsController < ApplicationController
   def edit
     @slug_migration = SlugMigration.find(params[:id])
     @select_options = select_options
-    @selected_slug = @slug_migration.redirect_to
   end
 
   def select_options
@@ -39,8 +38,6 @@ class SlugMigrationsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @slug_migration.update_attributes(slug_migration_parameters)
-        @selected_slug = @slug_migration.redirect_to
-
         SlugMigrationPublisher.new.process(@slug_migration)
         redirect_to slug_migration_path(@slug_migration), notice: "Slug Migration has been completed"
       else

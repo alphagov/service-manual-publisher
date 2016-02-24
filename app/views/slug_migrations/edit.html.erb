@@ -6,7 +6,7 @@
       <%= f.label :redirect_to, "Redirect to" %>
       <%=
         f.select :redirect_to,
-          grouped_options_for_select(@select_options, @selected_slug),
+          grouped_options_for_select(@select_options),
           {include_blank: "Please choose a path to redirect to"},
           {class: "select2 slug-migration-redirect-to input-md-12 form-control"}
       %>
