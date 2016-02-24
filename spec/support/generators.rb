@@ -1,7 +1,13 @@
 class Generators
   def self.valid_edition(attributes = {})
-    default_content_owner = GuideCommunity.first || ContentOwner.create(title: "content owner title", href: "content_owner_href")
-    content_owner = attributes.fetch(:content_owner, default_content_owner)
+    if attributes.has_key?(:content_owner)
+      content_owner = attributes.fetch(:content_owner)
+    else
+      content_owner = GuideCommunity.first ||
+                      Generators.valid_guide_community(
+                        latest_edition: valid_edition(content_owner: nil)
+                        )
+    end
 
     attributes = {
       title:          "The Title",
