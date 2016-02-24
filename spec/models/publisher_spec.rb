@@ -63,7 +63,7 @@ RSpec.describe Publisher, '#save_draft' do
         Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails).
                   save_draft(GuidePresenter.new(guide, guide.latest_edition))
 
-      expect(guide).to be_new_record
+      expect(Guide.find_by_id(guide.id)).to eq(nil)
       expect(publication_response).to_not be_success
     end
 
