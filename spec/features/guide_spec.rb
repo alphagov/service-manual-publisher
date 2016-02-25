@@ -81,11 +81,11 @@ RSpec.describe "creating guides", type: :feature do
                             .with(an_instance_of(String), 'minor')
 
     click_first_button "Save"
-    guide = Guide.first
+    guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    Edition.first.tap do |edition|
+    guide.editions.first.tap do |edition|
       # set editor to another user so we can approve this edition
       edition.user = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
