@@ -1,7 +1,6 @@
 class SlugMigrationsController < ApplicationController
   def index
-    @migrations = SlugMigration.includes(:guide)
-                  .order(updated_at: :desc)
+    @migrations = SlugMigration.order(updated_at: :desc)
     if params[:completed].present?
       @migrations.where!(completed: params[:completed])
     end
@@ -12,28 +11,36 @@ class SlugMigrationsController < ApplicationController
 
   def edit
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.order(:slug).pluck(:slug, :id)
-    @selected_guide_id = @slug_migration.guide_id
+    @select_options = select_options
+  end
+
+  def select_options
+    guide_select_options = Guide
+      .with_published_editions
+      .order(:slug).pluck(:slug)
+      .map{|g| [g, g]}
+    topic_select_options = Topic
+      .order(:path).pluck(:path)
+      .map{|g| [g, g]}
+    {
+      "Other" => ["/service-manual"],
+      "Topics" => topic_select_options,
+      "Guides" => guide_select_options,
+    }
   end
 
   def update
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = Guide.order(:slug).pluck(:slug, :id)
+    @select_options = select_options
 
     slug_migration_parameters = params.require(:slug_migration)
-      .permit(:guide_id)
-    slug_migration_parameters[:completed] = true if params[:save_and_migrate].present?
+      .permit(:redirect_to)
+    slug_migration_parameters[:completed] = true
 
     ActiveRecord::Base.transaction do
       if @slug_migration.update_attributes(slug_migration_parameters)
-        @selected_guide_id = @slug_migration.guide.try(:id)
-
-        if @slug_migration.completed?
-          SlugMigrationPublisher.new.process(@slug_migration)
-          redirect_to slug_migration_path(@slug_migration), notice: "Slug Migration has been completed"
-        else
-          redirect_to edit_slug_migration_path(@slug_migration), notice: "Slug Migration has been saved"
-        end
+        SlugMigrationPublisher.new.process(@slug_migration)
+        redirect_to slug_migration_path(@slug_migration), notice: "Slug Migration has been completed"
       else
         render action: :edit
       end

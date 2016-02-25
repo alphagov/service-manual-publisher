@@ -11,7 +11,7 @@ class SlugMigrationPublisher
         {
           path: slug_migration.slug,
           type: "exact",
-          destination: slug_migration.guide.slug,
+          destination: slug_migration.redirect_to,
         }
       ]
     }

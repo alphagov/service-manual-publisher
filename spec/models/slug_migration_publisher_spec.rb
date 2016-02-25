@@ -4,7 +4,11 @@ RSpec.describe SlugMigrationPublisher, type: :model do
   it "publishes slug migrations" do
     edition = Generators.valid_published_edition
     guide = Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
-    slug_migration = SlugMigration.create!(completed: true, slug: "/service-manual/some-jekyll-path.html", guide: guide)
+    slug_migration = SlugMigration.create!(
+      completed: true,
+      slug: "/service-manual/some-jekyll-path.html",
+      redirect_to: guide.slug,
+    )
 
     expected_redirect = {
       content_id: slug_migration.content_id,
@@ -15,7 +19,7 @@ RSpec.describe SlugMigrationPublisher, type: :model do
         {
           path: slug_migration.slug,
           type: "exact",
-          destination: slug_migration.guide.slug,
+          destination: slug_migration.redirect_to,
         }
       ]
     }
@@ -33,7 +37,11 @@ RSpec.describe SlugMigrationPublisher, type: :model do
   it "publishes slug migrations that are valid" do
     edition = Generators.valid_published_edition
     guide = Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
-    slug_migration = SlugMigration.create!(completed: true, slug: "/service-manual/some-jekyll-path.html", guide: guide)
+    slug_migration = SlugMigration.create!(
+      completed: true,
+      slug: "/service-manual/some-jekyll-path.html",
+      redirect_to: guide.slug,
+    )
 
     api_double = double(:publishing_api)
     expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double)

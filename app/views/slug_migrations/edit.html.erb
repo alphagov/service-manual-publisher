@@ -1,23 +1,22 @@
 <div class='well'>
   <%= form_for @slug_migration do |f| %>
     <h2>Slug Migration <small><%= @slug_migration.slug %></small></h2>
+
     <div class="form-group">
-      <%= f.label :guide_id, "Guide" %>
-      <%=
-        f.select :guide_id,
-          options_for_select(@select_options, @selected_guide_id),
-          {include_blank: "Please choose a guide to redirect to"},
-          {class: "select2 slug-migration-select-guide input-md-12 form-control"}
-      %>
-      <%= f.error_list :guide %>
-    </div>
-    <div class="form-group">
-      <%= f.submit "Save", class: "btn btn-success" %>
-      <% if @slug_migration.guide.try(:has_published_edition?) %>
-        <%= f.submit "Migrate", name: :save_and_migrate, class: "btn btn-warning" %>
-      <% else %>
-        <%= f.submit "Needs a published guide to migrate", class: "btn btn-disabled", disabled: true %>
+      <%= f.label :redirect_to do %>
+        Redirect to (<span class="text-info">only published guides and topics will appear in this list</span>)
       <% end %>
+      <%=
+        f.select :redirect_to,
+          grouped_options_for_select(@select_options),
+          {include_blank: "Please choose a path to redirect to"},
+          {class: "select2 slug-migration-redirect-to input-md-12 form-control"}
+      %>
+      <%= f.error_list :redirect_to %>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit "Migrate", class: "btn btn-warning" %>
     </div>
   <% end %>
 </div>

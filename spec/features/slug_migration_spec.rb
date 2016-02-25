@@ -19,7 +19,7 @@ RSpec.describe "Slug migration", type: :feature do
         [
           m.completed? ? "Show" : "Manage",
           m.slug,
-          String(m.try(:guide).try(:slug)),
+          m.redirect_to || "",
         ]
       end.reverse
       expect(table_data).to eq(expected)
@@ -47,10 +47,16 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
+  def create_slug_migration_without_redirect_to slug
+    slug_migration = SlugMigration.new(slug: slug, completed: false)
+    slug_migration.save!(validate: false)
+    slug_migration
+  end
+
   context "with incomplete migrations" do
     before do
       @migrations = (1..3).map do |i|
-        SlugMigration.create!(completed: false, slug: "/old/bar#{i}")
+        create_slug_migration_without_redirect_to "/old/bar/#{i}"
       end
     end
 
@@ -61,29 +67,33 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  context "can filter migrations" do
+  context "migration filter" do
     before do
       @incompleted = (1..2).map do |i|
-        SlugMigration.create!(completed: false, slug: "/old/bar#{i}")
+        create_slug_migration_without_redirect_to "/old/bar/#{i}"
       end
 
       edition = Generators.valid_published_edition
       guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
       @complete = (1..2).map do |i|
-        SlugMigration.create!(completed: true, slug: "/old/foo#{i}", guide: guide)
+        SlugMigration.create!(
+          completed: true,
+          slug: "/old/foo#{i}",
+          redirect_to: guide.slug,
+        )
       end
 
       manage_migrations
     end
 
-    it "based on complete" do
+    it "filters on complete" do
       within ".slug-filters" do
         click_link "Completed 2"
       end
       expect_table_to_match_migrations @complete
     end
 
-    it "based on incompleted" do
+    it "filters on incompleted" do
       within ".slug-filters" do
         click_link "Not completed 2"
       end
@@ -91,39 +101,64 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  it "can save a slug migration" do
-    edition = Generators.valid_published_edition
-    Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
-
-    SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
-
-    manage_first_migration
-
-    select "/service-manual/new-path", from: "Guide"
-    click_button "Save"
-
-    expect(page).to have_content "Slug Migration has been saved"
-    selected_text = find(:css, ".slug-migration-select-guide option[selected]").text
-    expect(selected_text).to eq "/service-manual/new-path"
-  end
-
-  it "can not migrate an old slug to a new slug without a guide" do
-    SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
-    manage_first_migration
-    expect(page).to have_button('Needs a published guide to migrate', disabled: true)
-  end
-
-  it "migrates an old url to a new url" do
-    edition = Generators.valid_published_edition
-    Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
-    slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
-
+  it "migrates to the root" do
+    slug_migration = create_slug_migration_without_redirect_to(
+      "/service-manual/some-jekyll-path.html",
+    )
     expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
 
     manage_first_migration
-    select "/service-manual/new-path", from: "Guide"
 
-    click_button "Save"
+    select "/service-manual", from: "Redirect to"
+    click_button "Migrate"
+
+    expect(page).to have_content "Slug Migration has been completed"
+    expect(slug_migration.reload.completed).to eq true
+    expect(page.current_path).to eq slug_migration_path(slug_migration)
+  end
+
+  it "migrates to a guide slug" do
+    edition = Generators.valid_published_edition
+    Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+
+    slug_migration = create_slug_migration_without_redirect_to(
+      "/service-manual/some-jekyll-path.html",
+    )
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+
+    manage_first_migration
+
+    select "/service-manual/new-path", from: "Redirect to"
+    click_button "Migrate"
+
+    expect(page).to have_content "Slug Migration has been completed"
+    expect(slug_migration.reload.completed).to eq true
+    expect(page.current_path).to eq slug_migration_path(slug_migration)
+  end
+
+  it "can't migrate to unpublished guides" do
+    edition = Generators.valid_edition
+    Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+
+    create_slug_migration_without_redirect_to(
+      "/service-manual/some-jekyll-path.html",
+    )
+    manage_first_migration
+
+    expect(page).to_not have_content "/service-manual/new-path"
+  end
+
+  it "migrates to a topic path" do
+    Generators.create_valid_topic!(path: "/service-manual/topic-1")
+
+    slug_migration = create_slug_migration_without_redirect_to(
+      "/service-manual/some-jekyll-path.html",
+    )
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+
+    manage_first_migration
+
+    select "/service-manual/topic-1", from: "Redirect to"
     click_button "Migrate"
 
     expect(page).to have_content "Slug Migration has been completed"
@@ -133,9 +168,11 @@ RSpec.describe "Slug migration", type: :feature do
 
   context "completed slug migrations" do
     it "only shows the migration, and does not allow editing" do
-      edition = Generators.valid_published_edition
-      guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
-      slug_migration = SlugMigration.create!(completed: true, slug: "/old/foo", guide: guide)
+      slug_migration = SlugMigration.create!(
+        completed: true,
+        slug: "/old/foo",
+        redirect_to: "/some-path",
+      )
       show_first_migration
       expect(page.current_path).to eq slug_migration_path(slug_migration)
     end
@@ -145,15 +182,16 @@ RSpec.describe "Slug migration", type: :feature do
     it "is not marked as completed" do
       edition = Generators.valid_published_edition
       Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
-      slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/some-jekyll-path.html")
+      slug_migration = create_slug_migration_without_redirect_to(
+        "/service-manual/some-jekyll-path.html",
+      )
 
       api_error = GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
       expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
 
       manage_first_migration
-      select "/service-manual/new-path", from: "Guide"
+      select "/service-manual/new-path", from: "Redirect to"
 
-      click_button "Save"
       click_button "Migrate"
 
       expect(page).to have_content "Error message stub"
@@ -166,7 +204,11 @@ RSpec.describe "Slug migration", type: :feature do
     before do
       edition = Generators.valid_published_edition
       guide = Guide.create!(slug: "/service-manual/path", latest_edition: edition)
-      @slug_migration = SlugMigration.create!(completed: false, slug: "/service-manual/path.html", guide: guide)
+      @slug_migration = SlugMigration.create!(
+        completed: false,
+        slug: "/service-manual/path.html",
+        redirect_to: guide.slug,
+      )
     end
 
     context "that has a search index" do

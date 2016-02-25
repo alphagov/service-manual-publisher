@@ -269,8 +269,8 @@ CREATE TABLE slug_migrations (
     completed boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    guide_id integer,
-    content_id character varying NOT NULL
+    content_id character varying NOT NULL,
+    redirect_to character varying
 );
 
 
@@ -651,4 +651,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160223095349');
 INSERT INTO schema_migrations (version) VALUES ('20160223101735');
 
 INSERT INTO schema_migrations (version) VALUES ('20160223160404');
+
+INSERT INTO schema_migrations (version) VALUES ('20160224111338');
+
+INSERT INTO schema_migrations (version) VALUES ('20160224143937');
 

@@ -44,6 +44,12 @@ class Generators
     User.new(attrs)
   end
 
+  def self.create_valid_topic!(attributes = {})
+    topic = valid_topic(attributes)
+    topic.save!
+    topic
+  end
+
   def self.valid_topic(attributes = {})
     attrs = { title: "Agile Delivery", path: "/service-manual/agile-delivery", description: "Agile description" }
     attrs.merge!(attributes)
