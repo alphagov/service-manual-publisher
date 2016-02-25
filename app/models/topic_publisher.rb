@@ -6,7 +6,7 @@ class TopicPublisher
   end
 
   def put_draft
-    data = TopicPresenter.new(topic).exportable_attributes
+    data = TopicPresenter.new(topic).content_payload
     publishing_api.put_content(topic.content_id, data)
   end
 

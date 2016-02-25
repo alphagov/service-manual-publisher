@@ -26,13 +26,13 @@ RSpec.describe TopicPresenter do
 
   let(:presented_topic) { described_class.new(topic) }
 
-  describe "#exportable_attributes" do
+  describe "#content_payload" do
     it "conforms to the schema" do
-      expect(presented_topic.exportable_attributes).to be_valid_against_schema('service_manual_topic')
+      expect(presented_topic.content_payload).to be_valid_against_schema('service_manual_topic')
     end
 
     it "exports all necessary metadata" do
-      expect(presented_topic.exportable_attributes).to include(
+      expect(presented_topic.content_payload).to include(
         description: "Topic description",
         update_type: "minor",
         phase: "beta",
@@ -45,7 +45,7 @@ RSpec.describe TopicPresenter do
     end
 
     it "transforms nested guides into the groups format" do
-      groups = presented_topic.exportable_attributes[:details][:groups]
+      groups = presented_topic.content_payload[:details][:groups]
       expect(groups.size).to eq 2
       expect(groups.first).to include(name: "Group 1", description: "Fruits")
       expect(groups.first[:contents]).to eq [edition_1.guide.slug, edition_2.guide.slug]

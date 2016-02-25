@@ -3,7 +3,7 @@ class TopicPresenter
     @topic = topic
   end
 
-  def exportable_attributes
+  def content_payload
     {
       content_id: topic.content_id,
       publishing_app: "service-manual-publisher",

@@ -6,7 +6,7 @@ class GuidePresenter
     @edition = edition
   end
 
-  def exportable_attributes
+  def content_payload
     {
       content_id: guide.content_id,
       publishing_app: "service-manual-publisher",

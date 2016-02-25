@@ -9,7 +9,7 @@ RSpec.describe TopicPublisher do
       it "sends draft payload to publishing API" do
         publisher = described_class.new(Topic.new(content_id: "content-id-hello"))
 
-        expect_any_instance_of(TopicPresenter).to receive(:exportable_attributes).and_return(nice: 'payload')
+        expect_any_instance_of(TopicPresenter).to receive(:content_payload).and_return(nice: 'payload')
 
         expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_content).with("content-id-hello", { nice: 'payload' }).and_return(true)
 
