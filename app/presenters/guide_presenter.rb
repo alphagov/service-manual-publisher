@@ -26,6 +26,10 @@ class GuidePresenter
     }
   end
 
+  def links_payload
+    {}
+  end
+
 private
 
   attr_reader :guide, :edition
