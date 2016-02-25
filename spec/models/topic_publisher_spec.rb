@@ -42,7 +42,7 @@ RSpec.describe TopicPublisher do
     it "puts links for the topic" do
       publisher = described_class.new(Topic.new(content_id: "content-id-hello"))
 
-      expect_any_instance_of(TopicPresenter).to receive(:links).and_return(links: { linked_items: [] })
+      expect_any_instance_of(TopicPresenter).to receive(:links_payload).and_return(links: { linked_items: [] })
 
       expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_links).with("content-id-hello", links: { linked_items: [] }).and_return(true)
 
@@ -53,7 +53,7 @@ RSpec.describe TopicPublisher do
       allow_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_links)
 
       publisher = described_class.new(Topic.new(content_id: "topic-content-id"))
-      expect_any_instance_of(TopicPresenter).to receive(:links).and_return(links: { linked_items: ['guide-1-content-id', 'guide-1-content-id'] })
+      expect_any_instance_of(TopicPresenter).to receive(:links_payload).and_return(links: { linked_items: ['guide-1-content-id', 'guide-1-content-id'] })
       expect(GuideTaggerJob).to receive(:perform_later).twice
 
       publisher.put_links

@@ -54,9 +54,9 @@ RSpec.describe TopicPresenter do
     end
   end
 
-  describe "#links" do
+  describe "#links_payload" do
     it "references all content_ids that appear in groups" do
-      linked_items = presented_topic.links[:links][:linked_items]
+      linked_items = presented_topic.links_payload[:links][:linked_items]
       [edition_1, edition_2, edition_3].each do |edition|
         expect(edition.guide.content_id).to be_in(linked_items)
       end

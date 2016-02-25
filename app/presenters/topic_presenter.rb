@@ -25,7 +25,7 @@ class TopicPresenter
     }
   end
 
-  def links
+  def links_payload
     {
       links: {
         linked_items: eagerloaded_guides.map(&:content_id),
