@@ -9,14 +9,22 @@ RSpec.describe TopicPresenter do
       title: "Test topic",
       path: "/service-manual/test-topic",
       description: "Topic description",
-      tree: [{ title: "Group 1",
-               guides: [edition_1.guide.id.to_s, edition_2.guide.id.to_s],
-               description: "Fruits"
-             }, {
-               title: "Group 2",
-               guides: [edition_3.guide.id.to_s],
-               description: "Berries"
-             }].to_json
+      tree: [
+        {
+          title: "Group 1",
+          guides: [edition_1.guide.to_param, edition_2.guide.to_param],
+          description: "Fruits",
+        },
+        {
+          title: "Group 2",
+          guides: [edition_3.guide.to_param],
+          description: "Berries",
+        }
+      ].to_json,
+      content_owners: [
+        ContentOwner.new(title: "Content Owner 1", href: "/service-manual/content-owner-1"),
+        ContentOwner.new(title: "Content Owner 2", href: "/service-manual/content-owner-2"),
+      ]
     )
   end
 
@@ -56,6 +64,17 @@ RSpec.describe TopicPresenter do
       [edition_1, edition_2, edition_3].each do |edition|
         expect(edition.guide.content_id).to be_in(linked_items)
       end
+    end
+
+    it "references all content owners" do
+      expected = 1.upto(2).map do |i|
+       {
+         "title"     => "Content Owner #{i}",
+         "base_path" => "/service-manual/content-owner-#{i}"
+       }
+      end
+      content_owners = presented_topic.links[:links][:content_owners]
+      expect(content_owners).to eq expected
     end
   end
 end
