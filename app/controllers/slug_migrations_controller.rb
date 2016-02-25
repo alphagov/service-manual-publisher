@@ -45,8 +45,11 @@ class SlugMigrationsController < ApplicationController
         render action: :edit
       end
     end
-  rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details["error"]["message"]
+  rescue GdsApi::HTTPServerError => e
+    flash[:error] = "An error was encountered while trying to publish the slug redirect"
+    render action: :edit
+  rescue GdsApi::HTTPNotFound => e
+    flash[:error] = "Couldn't migrate slug because the previous slug does not exist"
     render action: :edit
   end
 
