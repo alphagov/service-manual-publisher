@@ -46,8 +46,7 @@ RSpec.describe "creating guides", type: :feature do
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
-    expect(edition.content_owner.title).to eq "Design Community"
-    expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
+    expect(edition.content_owner.title).to eq "Technology Community"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
     expect(edition.update_type).to eq "minor"
