@@ -13,9 +13,7 @@ class SlugMigration < ActiveRecord::Base
     @search_client ||= GdsApi::Rummager.new(Plek.current.find('rummager'), disable_cache: true)
     begin
       @search_client.get_content!(slug)
-    rescue GdsApi::HTTPNotFound => e
-      false
-    rescue GdsApi::HTTPServerError => e
+    rescue GdsApi::HTTPErrorResponse => e
       false
     end
   end
