@@ -149,7 +149,7 @@ RSpec.describe "Slug migration", type: :feature do
   end
 
   it "migrates to a topic path" do
-    Generators.valid_topic!(path: "/service-manual/topic-1")
+    Generators.create_valid_topic!(path: "/service-manual/topic-1")
 
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",

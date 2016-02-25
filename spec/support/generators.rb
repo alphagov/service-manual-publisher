@@ -44,7 +44,7 @@ class Generators
     User.new(attrs)
   end
 
-  def self.valid_topic!(attributes = {})
+  def self.create_valid_topic!(attributes = {})
     topic = valid_topic(attributes)
     topic.save!
     topic
