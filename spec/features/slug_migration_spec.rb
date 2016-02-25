@@ -179,24 +179,48 @@ RSpec.describe "Slug migration", type: :feature do
   end
 
   context "with a failing publisher-api" do
-    it "is not marked as completed" do
-      edition = Generators.valid_published_edition
-      Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
-      slug_migration = create_slug_migration_without_redirect_to(
-        "/service-manual/some-jekyll-path.html",
-      )
+    context "that raises GdsApi::HTTPServerError" do
+      it "does not migrate" do
+        edition = Generators.valid_published_edition
+        Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+        slug_migration = create_slug_migration_without_redirect_to(
+          "/service-manual/some-jekyll-path.html",
+        )
 
-      api_error = GdsApi::HTTPClientError.new(422, "Error message stub", "error" => { "message" => "Error message stub" })
-      expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
+        api_error = GdsApi::HTTPServerError.new(500, "Error Message!")
+        expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
 
-      manage_first_migration
-      select "/service-manual/new-path", from: "Redirect to"
+        manage_first_migration
+        select "/service-manual/new-path", from: "Redirect to"
 
-      click_button "Migrate"
+        click_button "Migrate"
 
-      expect(page).to have_content "Error message stub"
-      expect(slug_migration.reload.completed).to eq false
-      expect(page.current_path).to eq slug_migration_path(slug_migration)
+        expect(page).to have_content "An error was encountered while trying to publish the slug redirect"
+        expect(slug_migration.reload).to_not be_completed
+        expect(page.current_path).to eq slug_migration_path(slug_migration)
+      end
+    end
+
+    context "that raises GdsApi::HTTPNotFound" do
+      it "does not migrate" do
+        edition = Generators.valid_published_edition
+        Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
+        slug_migration = create_slug_migration_without_redirect_to(
+          "/service-manual/some-jekyll-path.html",
+        )
+
+        api_error = GdsApi::HTTPNotFound.new(404, "Error Message!")
+        expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
+
+        manage_first_migration
+        select "/service-manual/new-path", from: "Redirect to"
+
+        click_button "Migrate"
+
+        expect(page).to have_content "Couldn't migrate slug because the previous slug does not exist"
+        expect(slug_migration.reload).to_not be_completed
+        expect(page.current_path).to eq slug_migration_path(slug_migration)
+      end
     end
   end
 
