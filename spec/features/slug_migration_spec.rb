@@ -101,6 +101,22 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
+  it "migrates to the root" do
+    slug_migration = create_slug_migration_without_redirect_to(
+      "/service-manual/some-jekyll-path.html",
+    )
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+
+    manage_first_migration
+
+    select "/service-manual", from: "Redirect to"
+    click_button "Migrate"
+
+    expect(page).to have_content "Slug Migration has been completed"
+    expect(slug_migration.reload.completed).to eq true
+    expect(page.current_path).to eq slug_migration_path(slug_migration)
+  end
+
   it "migrates to a guide slug" do
     edition = Generators.valid_published_edition
     Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)

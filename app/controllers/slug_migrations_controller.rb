@@ -23,6 +23,7 @@ class SlugMigrationsController < ApplicationController
       .order(:path).pluck(:path)
       .map{|g| [g, g]}
     {
+      "Other" => ["/service-manual"],
       "Topics" => topic_select_options,
       "Guides" => guide_select_options,
     }
