@@ -81,4 +81,22 @@ RSpec.describe GuidePresenter do
       expect(presenter.exportable_attributes[:title]).to eq("Agile Process")
     end
   end
+
+  describe '#links_payload' do
+    it 'returns an empty hash without a content owner' do
+      expect(presenter.links_payload).to eq({links: {}})
+    end
+
+    it 'returns the content owner if present' do
+      edition.content_owner = Generators.valid_guide_community(
+        latest_edition: Generators.valid_edition(content_owner: nil, title: 'Technology Community')
+        ).tap(&:save!)
+
+      expect(presenter.links_payload).to eq({
+        links: {
+          content_owners: [edition.content_owner.content_id]
+        }
+      })
+    end
+  end
 end
