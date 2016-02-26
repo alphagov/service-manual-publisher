@@ -6,7 +6,7 @@ class GuidePresenter
     @edition = edition
   end
 
-  def exportable_attributes
+  def content_payload
     {
       content_id: guide.content_id,
       publishing_app: "service-manual-publisher",
@@ -26,6 +26,16 @@ class GuidePresenter
     }
   end
 
+  def links_payload
+    links = {}.tap do |payload|
+      if edition.content_owner
+        payload[:content_owners] = [edition.content_owner.content_id]
+      end
+    end
+
+    { links: links }
+  end
+
 private
 
   attr_reader :guide, :edition
@@ -34,10 +44,6 @@ private
     details = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
-      content_owner: {
-        title: edition.content_owner.title,
-        href: edition.content_owner.href
-      }
     }
 
     if edition.related_discussion_title.present? && edition.related_discussion_href.present?

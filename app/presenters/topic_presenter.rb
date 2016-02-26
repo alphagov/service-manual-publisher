@@ -3,7 +3,7 @@ class TopicPresenter
     @topic = topic
   end
 
-  def exportable_attributes
+  def content_payload
     {
       content_id: topic.content_id,
       publishing_app: "service-manual-publisher",
@@ -25,14 +25,10 @@ class TopicPresenter
     }
   end
 
-  def links
-    content_owners = @topic.content_owners.map do |c|
-      { "title" => c.title, "base_path" => c.href }
-    end
+  def links_payload
     {
       links: {
         linked_items: eagerloaded_guides.map(&:content_id),
-        content_owners: content_owners,
       }
     }
   end

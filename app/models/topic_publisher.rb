@@ -6,7 +6,7 @@ class TopicPublisher
   end
 
   def put_draft
-    data = TopicPresenter.new(topic).exportable_attributes
+    data = TopicPresenter.new(topic).content_payload
     publishing_api.put_content(topic.content_id, data)
   end
 
@@ -15,7 +15,7 @@ class TopicPublisher
   end
 
   def put_links
-    link_data = TopicPresenter.new(topic).links
+    link_data = TopicPresenter.new(topic).links_payload
     publishing_api.put_links(topic.content_id, link_data)
 
     GuideTaggerJob.batch_perform_later(

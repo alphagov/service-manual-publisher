@@ -4,7 +4,9 @@ RSpec.describe Publisher, '#save_draft' do
 
   it 'persists the content model and returns a successful response' do
     guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
-    publishing_api = FakePublishingApi.new
+    publishing_api = double(:publishing_api)
+    allow(publishing_api).to receive(:put_content)
+    allow(publishing_api).to receive(:put_links)
 
     publication_response =
       Publisher.new(content_model: guide, publishing_api: publishing_api)
@@ -14,18 +16,15 @@ RSpec.describe Publisher, '#save_draft' do
     expect(publication_response).to be_success
   end
 
-  class FakePublishingApi
-    def put_content(content_id, data)
-    end
-  end
-
-  it 'sends the draft to the publishing api' do
+  it 'sends the draft and the links to the publishing api' do
     guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
     guide.save!
     publishing_api = double(:publishing_api)
 
     expect(publishing_api).to receive(:put_content).
                               with(guide.content_id, a_hash_including(content_id: guide.content_id))
+    expect(publishing_api).to receive(:put_links).
+                              with(guide.content_id, a_kind_of(Hash))
 
     Publisher.new(content_model: guide, publishing_api: publishing_api).
               save_draft(GuidePresenter.new(guide, guide.latest_edition))
@@ -63,7 +62,7 @@ RSpec.describe Publisher, '#save_draft' do
         Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails).
                   save_draft(GuidePresenter.new(guide, guide.latest_edition))
 
-      expect(guide).to be_new_record
+      expect(Guide.find_by_id(guide.id)).to eq(nil)
       expect(publication_response).to_not be_success
     end
 

@@ -2,14 +2,17 @@ class Guide < ActiveRecord::Base
   include ContentIdentifiable
   validate :slug_format
   validate :slug_cant_be_changed_if_an_edition_has_been_published
+  validate :latest_edition_has_content_owner, if: :requires_content_owner?
 
   has_many :editions
-  has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition"
+  has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
   accepts_nested_attributes_for :latest_edition
   scope :by_user, ->(user_id) { where(editions: { user_id: user_id }) if user_id.present? }
   scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
+
+  delegate :title, to: :latest_edition
 
   def self.with_published_editions
     joins(:editions)
@@ -68,6 +71,10 @@ class Guide < ActiveRecord::Base
     end
   end
 
+  def requires_content_owner?
+    true
+  end
+
 private
 
   def slug_format
@@ -83,6 +90,12 @@ private
   def slug_cant_be_changed_if_an_edition_has_been_published
     if slug_changed? && has_published_edition?
       errors.add(:slug, "can't be changed if guide has a published edition")
+    end
+  end
+
+  def latest_edition_has_content_owner
+    if latest_edition && latest_edition.content_owner.nil?
+      errors.add(:latest_edition, 'must have a content owner')
     end
   end
 end

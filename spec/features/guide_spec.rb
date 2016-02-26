@@ -6,10 +6,10 @@ RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
-    ContentOwner.first_or_initialize(
-      title: "Design Community",
-      href:  "http://sm-11.herokuapp.com/designing-services/design-community/"
-    ).save!
+    Generators.valid_guide_community(
+      latest_edition: Generators.valid_edition(content_owner: nil, title: 'Technology Community')
+      ).tap(&:save!)
+
     visit root_path
     click_link "Create a Guide"
 
@@ -35,6 +35,9 @@ RSpec.describe "creating guides", type: :feature do
     expect(api_double).to receive(:put_content)
                             .twice
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+    expect(api_double).to receive(:put_links)
+                            .twice
+                            .with(an_instance_of(String), an_instance_of(Hash))
 
     click_first_button "Save"
 
@@ -46,8 +49,7 @@ RSpec.describe "creating guides", type: :feature do
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
-    expect(edition.content_owner.title).to eq "Design Community"
-    expect(edition.content_owner.href).to eq "http://sm-11.herokuapp.com/designing-services/design-community/"
+    expect(edition.content_owner.title).to eq "Technology Community"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
     expect(edition.update_type).to eq "minor"
@@ -55,7 +57,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq false
 
     visit edit_guide_path(guide)
-    fill_in "Guide title", with: "Second Edition Title"
+    fill_in "Title", with: "Second Edition Title"
     click_first_button "Save"
 
     within ".alert" do
@@ -77,16 +79,19 @@ RSpec.describe "creating guides", type: :feature do
     expect(api_double).to receive(:put_content)
                             .once
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+    expect(api_double).to receive(:put_links)
+                            .once
+                            .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:publish)
                             .once
                             .with(an_instance_of(String), 'minor')
 
     click_first_button "Save"
-    guide = Guide.first
+    guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    Edition.first.tap do |edition|
+    guide.editions.first.tap do |edition|
       # set editor to another user so we can approve this edition
       edition.user = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
@@ -179,7 +184,7 @@ RSpec.describe "creating guides", type: :feature do
     it "shows the summary of validation errors" do
       guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
       visit edit_guide_path(guide)
-      fill_in "Guide title", with: ""
+      fill_in "Title", with: ""
       click_first_button "Save"
 
       within(".full-error-list") do
@@ -271,7 +276,7 @@ RSpec.describe "creating guides", type: :feature do
       }.each do |title, expected_slug|
         expected_slug = "/service-manual/#{expected_slug}"
 
-        fill_in "Guide title", with: title
+        fill_in "Title", with: title
         expect(find_field('Slug').value).to eq expected_slug
       end
     end
@@ -279,7 +284,7 @@ RSpec.describe "creating guides", type: :feature do
     context "user edits slug manually" do
       it "does not generate slug", js: true do
         fill_in "Slug", with: "/service-manual/something"
-        fill_in "Guide title", with: "My Guide Title"
+        fill_in "Title", with: "My Guide Title"
         expect(find_field('Slug').value).to eq '/service-manual/something'
       end
     end
@@ -289,10 +294,10 @@ private
 
   def fill_in_guide_form
     fill_in "Slug", with: "/service-manual/the/path"
-    select "Design Community", from: "Published by"
-    fill_in "Guide description", with: "This guide acts as a test case"
+    select "Technology Community", from: "Published by"
+    fill_in "Description", with: "This guide acts as a test case"
 
-    fill_in "Guide title", with: "First Edition Title"
+    fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
   end
 end

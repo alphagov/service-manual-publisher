@@ -2,9 +2,9 @@ class GuidesController < ApplicationController
   def index
     @user_options = User.pluck(:name, :id)
     @state_options = %w(draft published review_requested approved).map { |s| [s.titleize, s] }
-    @content_owner_options = ContentOwner.pluck(:title, :id)
 
-    @guides = Guide.includes(latest_edition: [:user, :content_owner])
+    # TODO: :content_owner not being included is resulting in an N+1 query
+    @guides = Guide.includes(latest_edition: [:user])
                    .by_user(params[:user])
                    .in_state(params[:state])
                    .owned_by(params[:content_owner])
@@ -18,7 +18,9 @@ class GuidesController < ApplicationController
   end
 
   def new
-    @guide = Guide.new(slug: "/service-manual/")
+    type = params[:community].present? ? 'GuideCommunity' : nil
+
+    @guide = Guide.new(slug: "/service-manual/", type: type)
     @guide.build_latest_edition(update_type: 'major')
   end
 
@@ -126,7 +128,7 @@ private
 
     params
       .require(:guide)
-      .permit(:slug, latest_edition_attributes: [
+      .permit(:slug, :type, latest_edition_attributes: [
         :title,
         :body,
         :description,

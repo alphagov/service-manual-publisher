@@ -34,7 +34,7 @@ class SearchHeaderPresenter
 
   def published_by
     if params[:content_owner].present?
-      "published by #{ContentOwner.find(params[:content_owner]).title}"
+      "published by #{GuideCommunity.find(params[:content_owner]).title}"
     end
   end
 end

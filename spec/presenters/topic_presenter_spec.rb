@@ -20,23 +20,19 @@ RSpec.describe TopicPresenter do
           guides: [edition_3.guide.to_param],
           description: "Berries",
         }
-      ].to_json,
-      content_owners: [
-        ContentOwner.new(title: "Content Owner 1", href: "/service-manual/content-owner-1"),
-        ContentOwner.new(title: "Content Owner 2", href: "/service-manual/content-owner-2"),
-      ]
+      ].to_json
     )
   end
 
   let(:presented_topic) { described_class.new(topic) }
 
-  describe "#exportable_attributes" do
+  describe "#content_payload" do
     it "conforms to the schema" do
-      expect(presented_topic.exportable_attributes).to be_valid_against_schema('service_manual_topic')
+      expect(presented_topic.content_payload).to be_valid_against_schema('service_manual_topic')
     end
 
     it "exports all necessary metadata" do
-      expect(presented_topic.exportable_attributes).to include(
+      expect(presented_topic.content_payload).to include(
         description: "Topic description",
         update_type: "minor",
         phase: "beta",
@@ -49,7 +45,7 @@ RSpec.describe TopicPresenter do
     end
 
     it "transforms nested guides into the groups format" do
-      groups = presented_topic.exportable_attributes[:details][:groups]
+      groups = presented_topic.content_payload[:details][:groups]
       expect(groups.size).to eq 2
       expect(groups.first).to include(name: "Group 1", description: "Fruits")
       expect(groups.first[:contents]).to eq [edition_1.guide.slug, edition_2.guide.slug]
@@ -58,23 +54,12 @@ RSpec.describe TopicPresenter do
     end
   end
 
-  describe "#links" do
+  describe "#links_payload" do
     it "references all content_ids that appear in groups" do
-      linked_items = presented_topic.links[:links][:linked_items]
+      linked_items = presented_topic.links_payload[:links][:linked_items]
       [edition_1, edition_2, edition_3].each do |edition|
         expect(edition.guide.content_id).to be_in(linked_items)
       end
-    end
-
-    it "references all content owners" do
-      expected = 1.upto(2).map do |i|
-       {
-         "title"     => "Content Owner #{i}",
-         "base_path" => "/service-manual/content-owner-#{i}"
-       }
-      end
-      content_owners = presented_topic.links[:links][:content_owners]
-      expect(content_owners).to eq expected
     end
   end
 end
