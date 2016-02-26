@@ -22,7 +22,7 @@ RSpec.describe Publisher, '#save_draft' do
     publishing_api = double(:publishing_api)
 
     expect(publishing_api).to receive(:put_content).
-                              with(guide.content_id, a_hash_including(content_id: guide.content_id))
+                              with(guide.content_id, a_hash_including(base_path: guide.slug))
     expect(publishing_api).to receive(:put_links).
                               with(guide.content_id, a_kind_of(Hash))
 

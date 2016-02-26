@@ -11,7 +11,6 @@ RSpec.describe SlugMigrationPublisher, type: :model do
     )
 
     expected_redirect = {
-      content_id: slug_migration.content_id,
       format: "redirect",
       publishing_app: "service-manual-publisher",
       base_path: slug_migration.slug,
@@ -27,7 +26,7 @@ RSpec.describe SlugMigrationPublisher, type: :model do
     api_double = double(:publishing_api)
     expect(GdsApi::PublishingApiV2).to receive(:new).and_return(api_double)
     expect(api_double).to receive(:put_content)
-      .with(an_instance_of(String), expected_redirect)
+      .with(slug_migration.content_id, expected_redirect)
     expect(api_double).to receive(:publish)
       .once.with(slug_migration.content_id, 'minor')
 
