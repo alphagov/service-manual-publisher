@@ -3,10 +3,9 @@ require "gds_api/publishing_api_v2"
 class SlugMigrationPublisher
   def process(slug_migration)
     data = {
-      content_id: slug_migration.content_id,
       format: "redirect",
-      publishing_app: "service-manual-publisher",
       base_path: slug_migration.slug,
+      publishing_app: "service-manual-publisher",
       redirects: [
         {
           path: slug_migration.slug,

@@ -5,7 +5,6 @@ class TopicPresenter
 
   def content_payload
     {
-      content_id: topic.content_id,
       publishing_app: "service-manual-publisher",
       rendering_app: "government-frontend",
       format: "service_manual_topic",

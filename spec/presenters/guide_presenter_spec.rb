@@ -30,7 +30,6 @@ RSpec.describe GuidePresenter do
 
     it "exports all necessary metadata" do
       expect(presenter.content_payload).to include(
-        content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
         description: "Description",
         update_type: "major",
         phase: "beta",
