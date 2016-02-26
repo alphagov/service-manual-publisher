@@ -57,7 +57,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq false
 
     visit edit_guide_path(guide)
-    fill_in "Guide title", with: "Second Edition Title"
+    fill_in "Title", with: "Second Edition Title"
     click_first_button "Save"
 
     within ".alert" do
@@ -184,7 +184,7 @@ RSpec.describe "creating guides", type: :feature do
     it "shows the summary of validation errors" do
       guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
       visit edit_guide_path(guide)
-      fill_in "Guide title", with: ""
+      fill_in "Title", with: ""
       click_first_button "Save"
 
       within(".full-error-list") do
@@ -276,7 +276,7 @@ RSpec.describe "creating guides", type: :feature do
       }.each do |title, expected_slug|
         expected_slug = "/service-manual/#{expected_slug}"
 
-        fill_in "Guide title", with: title
+        fill_in "Title", with: title
         expect(find_field('Slug').value).to eq expected_slug
       end
     end
@@ -284,7 +284,7 @@ RSpec.describe "creating guides", type: :feature do
     context "user edits slug manually" do
       it "does not generate slug", js: true do
         fill_in "Slug", with: "/service-manual/something"
-        fill_in "Guide title", with: "My Guide Title"
+        fill_in "Title", with: "My Guide Title"
         expect(find_field('Slug').value).to eq '/service-manual/something'
       end
     end
@@ -295,9 +295,9 @@ private
   def fill_in_guide_form
     fill_in "Slug", with: "/service-manual/the/path"
     select "Technology Community", from: "Published by"
-    fill_in "Guide description", with: "This guide acts as a test case"
+    fill_in "Description", with: "This guide acts as a test case"
 
-    fill_in "Guide title", with: "First Edition Title"
+    fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
   end
 end

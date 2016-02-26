@@ -21,7 +21,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         click_link "Edit"
       end
       the_form_should_be_prepopulated_with_title "Standups"
-      fill_in "Guide title", with: "Standup meetings"
+      fill_in "Title", with: "Standup meetings"
       fill_in "Why the change is being made", with: "Be more specific in the title"
       click_first_button 'Save'
 
@@ -67,7 +67,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
 
-    fill_in "Guide title", with: "Agile"
+    fill_in "Title", with: "Agile"
 
     click_first_button 'Save'
 
@@ -86,7 +86,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
       visit edit_guide_path(guide)
-      fill_in "Guide title", with: "Updated Title"
+      fill_in "Title", with: "Updated Title"
       fill_in "Why the change is being made", with: "Update Title"
       click_first_button 'Save'
 
@@ -137,7 +137,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     within_guide_index_row('Agile methodologies') do
       click_link "Edit"
     end
-    fill_in "Guide title", with: "Agile"
+    fill_in "Title", with: "Agile"
     click_first_button 'Save'
     expect(current_path).to eq edit_guide_path guide
 
@@ -149,7 +149,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     stub_user.update_attribute :name, "John Smith"
     guide = given_a_guide_exists title: 'Agile methodologies', state: 'draft'
     visit edit_guide_path(guide)
-    fill_in "Guide title", with: "An amended title"
+    fill_in "Title", with: "An amended title"
     click_first_button 'Save'
     visit guides_path
     within_guide_index_row('An amended title') do
@@ -162,7 +162,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should save a draft locally, sent it to Publishing API, then redirect to the front end when previewing" do
     guide = given_a_guide_exists state: 'draft', title: 'Test guide', slug: '/service-manual/preview-test'
     visit edit_guide_path(guide)
-    fill_in "Guide title", with: "Changed Title"
+    fill_in "Title", with: "Changed Title"
 
     expect(fake_publishing_api).to receive(:put_content)
 
@@ -244,7 +244,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     it "shows exact changes in any fields" do
       guide = given_a_published_guide_exists(title: "First Edition", body: "### Hello")
       visit edit_guide_path(guide)
-      fill_in "Guide title", with: "Second Edition"
+      fill_in "Title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
       fill_in "Why the change is being made", with: "Better greeting"
       click_first_button 'Save'
@@ -296,7 +296,7 @@ private
   end
 
   def the_form_should_be_prepopulated_with_title(title)
-    expect(find_field('Guide title').value).to eq title
+    expect(find_field('Title').value).to eq title
   end
 
   def expect_external_redirect_to(external_url)

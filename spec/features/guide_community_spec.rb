@@ -11,8 +11,8 @@ RSpec.describe 'Create a guide community', type: :feature do
     expect(publishing_api).to receive(:put_links)
 
     fill_in 'Slug', with: '/service-manual/design-community'
-    fill_in "Guide description", with: "This acts as a test case"
-    fill_in "Guide title", with: "First Edition Title"
+    fill_in "Description", with: "This acts as a test case"
+    fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
     click_first_button "Save"
 
@@ -25,8 +25,8 @@ RSpec.describe 'Create a guide community', type: :feature do
     visit current_path
 
     expect(page).to have_field('Slug', with: '/service-manual/design-community')
-    expect(page).to have_field('Guide description', with: 'This acts as a test case')
-    expect(page).to have_field('Guide title', with: 'First Edition Title')
+    expect(page).to have_field('Description', with: 'This acts as a test case')
+    expect(page).to have_field('Title', with: 'First Edition Title')
     expect(page).to have_field('Body', with: '## First Edition Title')
   end
 
