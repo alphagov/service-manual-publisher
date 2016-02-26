@@ -19,6 +19,6 @@ class SlugMigrationPublisher
       bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example'
     )
     publishing_api.put_content(slug_migration.content_id, data)
-    publishing_api.publish(slug_migration.content_id, "minor")
+    publishing_api.publish(slug_migration.content_id, "major")
   end
 end

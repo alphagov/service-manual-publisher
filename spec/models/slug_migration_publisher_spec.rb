@@ -28,7 +28,7 @@ RSpec.describe SlugMigrationPublisher, type: :model do
     expect(api_double).to receive(:put_content)
       .with(slug_migration.content_id, expected_redirect)
     expect(api_double).to receive(:publish)
-      .once.with(slug_migration.content_id, 'minor')
+      .once.with(slug_migration.content_id, 'major')
 
     SlugMigrationPublisher.new.process(slug_migration)
   end
@@ -47,7 +47,7 @@ RSpec.describe SlugMigrationPublisher, type: :model do
     expect(api_double).to receive(:put_content)
       .with(an_instance_of(String), be_valid_against_schema('redirect'))
     expect(api_double).to receive(:publish)
-      .once.with(slug_migration.content_id, 'minor')
+      .once.with(slug_migration.content_id, 'major')
 
     SlugMigrationPublisher.new.process(slug_migration)
   end
