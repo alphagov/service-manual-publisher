@@ -1,4 +1,6 @@
 class NotificationMailer < ApplicationMailer
+  helper GuideRouteHelper
+
   def comment_added(comment)
     @comment = comment
     @edition = comment.commentable
@@ -18,8 +20,9 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def published(edition, user)
-    @edition = edition
+  def published(guide, user)
+    @guide = guide
+    @edition = @guide.latest_edition
     @user = user
     mail(
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },

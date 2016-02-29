@@ -52,7 +52,7 @@ RSpec.describe NotificationMailer, type: :mailer do
 
   describe "#published" do
     it "contains the edition title, publisher's name and a link" do
-      email = NotificationMailer.published(edition, luke).deliver_now
+      email = NotificationMailer.published(guide, luke).deliver_now
 
       expect(ActionMailer::Base.deliveries.size).to eq 1
       expect(email.to).to eq ["gary@example.com"]
@@ -61,7 +61,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"
         expect(part.body.to_s).to include "\"Agile\""
-        expect(part.body.to_s).to include "/editions/#{edition.id}"
+        expect(part.body.to_s).to include "#{Plek.find('www')}/service-manual/agile-delivery"
       end
     end
   end
