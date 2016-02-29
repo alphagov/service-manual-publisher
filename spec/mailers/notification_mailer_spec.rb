@@ -3,11 +3,12 @@ require "rails_helper"
 RSpec.describe NotificationMailer, type: :mailer do
   let(:gary) { Generators.valid_user(name: "Gary", email: "gary@example.com") }
   let(:luke) { Generators.valid_user(name: "Luke") }
+  let(:guide) { Generators.valid_guide(slug: '/service-manual/agile-delivery', latest_edition: edition) }
   let(:edition) { Generators.valid_edition(title: "Agile", user: gary) }
 
   before do
     ActionMailer::Base.deliveries.clear
-    edition.save!
+    guide.save!
     allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([gary])
   end
 
@@ -35,7 +36,7 @@ RSpec.describe NotificationMailer, type: :mailer do
     end
 
     it "contains the edition title, approver's name and a link" do
-      email = NotificationMailer.approved_for_publishing(edition).deliver_now
+      email = NotificationMailer.approved_for_publishing(guide).deliver_now
 
       expect(ActionMailer::Base.deliveries.size).to eq 1
       expect(email.to).to eq ["gary@example.com"]
@@ -44,7 +45,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"
         expect(part.body.to_s).to include "\"Agile\""
-        expect(part.body.to_s).to include "/editions/#{edition.id}"
+        expect(part.body.to_s).to include guide_path(guide)
       end
     end
   end
