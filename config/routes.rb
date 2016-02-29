@@ -4,16 +4,10 @@ Rails.application.routes.draw do
 
   root 'guides#index'
 
-  resources :guides do
-    resources :drafts
-    resources :publications, only: :create
-  end
+  resources :guides
 
-  resources :editions, only: [:show] do
-    resources :review_requests
-  end
+  resources :editions, only: [:show]
 
-  resources :approvals
   resources :comments
   resources :uploads, only: [:create]
   resources :topics
