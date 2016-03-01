@@ -78,6 +78,38 @@ ALTER SEQUENCE approvals_id_seq OWNED BY approvals.id;
 
 
 --
+-- Name: checked_urls; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE checked_urls (
+    id integer NOT NULL,
+    url character varying NOT NULL,
+    code integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: checked_urls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE checked_urls_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: checked_urls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE checked_urls_id_seq OWNED BY checked_urls.id;
+
+
+--
 -- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -316,6 +348,13 @@ ALTER TABLE ONLY approvals ALTER COLUMN id SET DEFAULT nextval('approvals_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY checked_urls ALTER COLUMN id SET DEFAULT nextval('checked_urls_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
 
 
@@ -360,6 +399,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY approvals
     ADD CONSTRAINT approvals_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: checked_urls_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY checked_urls
+    ADD CONSTRAINT checked_urls_pkey PRIMARY KEY (id);
 
 
 --
@@ -558,4 +605,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160225101236');
 INSERT INTO schema_migrations (version) VALUES ('20160225113207');
 
 INSERT INTO schema_migrations (version) VALUES ('20160225130400');
+
+INSERT INTO schema_migrations (version) VALUES ('20160301111323');
 

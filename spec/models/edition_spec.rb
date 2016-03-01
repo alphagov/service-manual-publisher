@@ -100,6 +100,42 @@ RSpec.describe Edition, type: :model do
         expect(edition.errors.full_messages_for(:change_note).size).to eq 0
       end
     end
+
+    context "an edition with broken links" do
+      let :edition do
+        edition = Generators.valid_edition({
+          body: "[broken link](http://not-a-real-domain-name.nope)",
+        })
+        edition
+      end
+
+      before do
+        url_checker_double = double(:url_checker)
+        allow(GovspeakUrlChecker).to receive(:new)
+          .and_return(url_checker_double)
+        allow(url_checker_double).to receive(:find_broken_links)
+          .and_return(["http://not-a-real-domain-name.nope"])
+      end
+
+      context "that is being published" do
+        before do
+          edition.state = "published"
+        end
+
+        it "validates links" do
+          edition.valid?
+          expect(edition.errors.full_messages_for(:body).size).to eq 1
+        end
+      end
+
+      context "that is not being published" do
+        it "does not validate links" do
+          edition.valid?
+          expect(edition.errors.full_messages_for(:body).size).to eq 0
+        end
+      end
+
+    end
   end
 
   context "review and approval" do

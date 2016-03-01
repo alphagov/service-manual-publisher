@@ -17,6 +17,9 @@ class Edition < ActiveRecord::Base
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
   validate :published_cant_change
+  validate :links_must_be_valid
+
+  attr_accessor :skip_broken_link_validation
 
   %w{minor major}.each do |s|
     define_method "#{s}?" do
@@ -98,6 +101,17 @@ private
   def published_cant_change
     if state_was == 'published' && changes.except('updated_at').present?
       errors.add(:base, "can not be changed after it's been published. Perhaps someone has published it whilst you were editing it.")
+    end
+  end
+
+  def links_must_be_valid
+    return if skip_broken_link_validation
+
+    if state_was != 'published' && published?
+      broken_links = GovspeakUrlChecker.new(body).find_broken_links
+      broken_links.each do |broken_link|
+        errors.add(:body, "link '#{broken_link}' is broken")
+      end
     end
   end
 
