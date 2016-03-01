@@ -45,7 +45,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"
         expect(part.body.to_s).to include "\"Agile\""
-        expect(part.body.to_s).to include guide_path(guide)
+        expect(part.body.to_s).to include edit_guide_path(guide)
       end
     end
   end
