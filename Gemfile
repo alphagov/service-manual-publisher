@@ -23,6 +23,7 @@ gem 'diffy', '~> 3.0', '>= 3.0.7'
 gem 'redcarpet', '~> 3.3.3'
 gem 'rummageable', '1.2.0'
 gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
+gem 'httparty', '~> 0.13.7'
 
 group :development do
   gem 'better_errors'
@@ -48,4 +49,5 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'webmock'
 end
