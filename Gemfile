@@ -22,6 +22,7 @@ gem 'select2-rails', '~> 4.0.0'
 gem 'diffy', '~> 3.0', '>= 3.0.7'
 gem 'redcarpet', '~> 3.3.3'
 gem 'rummageable', '1.2.0'
+gem 'httparty', '~> 0.13.7'
 
 group :development do
   gem 'better_errors'

@@ -48,6 +48,8 @@ class GuidesController < ApplicationController
       send_for_review
     elsif params[:approve_for_publication].present?
       approve_for_publication
+    elsif params[:publish_with_broken_links]
+      publish(true)
     elsif params[:publish].present?
       publish
     else
@@ -69,7 +71,7 @@ private
     redirect_to back_or_default, notice: "Thanks for approving this guide"
   end
 
-  def publish
+  def publish(skip_broken_link_validation=false)
     unless @guide.included_in_a_topic?
       @edition = @guide.latest_edition
       flash[:error] = "This guide could not be published because it is not included in a topic page."
@@ -78,6 +80,10 @@ private
     end
 
     @guide.latest_edition.assign_attributes(state: 'published')
+
+    if skip_broken_link_validation
+      @guide.latest_edition.skip_broken_link_validation = true
+    end
 
     publication = Publisher.new(content_model: @guide).publish
     if publication.success?
