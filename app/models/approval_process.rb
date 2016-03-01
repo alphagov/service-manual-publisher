@@ -16,6 +16,6 @@ class ApprovalProcess
     edition.state = "approved"
     edition.save!
 
-    NotificationMailer.approved_for_publishing(edition).deliver_later
+    NotificationMailer.approved_for_publishing(content_model).deliver_later
   end
 end

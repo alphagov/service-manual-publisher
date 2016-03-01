@@ -86,7 +86,7 @@ private
       TopicPublisher.new(@guide.topic).publish_immediately
 
       unless @guide.latest_edition.notification_subscribers == [current_user]
-        NotificationMailer.published(@guide.latest_edition, current_user).deliver_later
+        NotificationMailer.published(@guide, current_user).deliver_later
       end
 
       redirect_to back_or_default, notice: "Guide has been published"
