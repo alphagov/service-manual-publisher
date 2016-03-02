@@ -1,5 +1,5 @@
 module GuideRouteHelper
   def guide_frontend_published_url(guide)
-    "#{Plek.find('www')}#{guide.slug}"
+    "#{Plek.new.website_root}#{guide.slug}"
   end
 end
