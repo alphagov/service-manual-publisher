@@ -32,4 +32,19 @@ RSpec.describe Topic do
       expect(topic.content_id).to be_present
     end
   end
+
+  describe "#ready_to_publish?" do
+    it "is not ready to publish if the topic isn't persisted" do
+      topic = build(:topic)
+      topic.save!
+
+      expect(topic).to be_ready_to_publish
+    end
+
+    it "is ready to publish if the topic is persisted" do
+      topic = build(:topic)
+
+      expect(topic).to_not be_ready_to_publish
+    end
+  end
 end

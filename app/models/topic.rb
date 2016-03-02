@@ -3,6 +3,10 @@ class Topic < ActiveRecord::Base
   validate :path_can_be_set_once
   validate :path_format
 
+  def ready_to_publish?
+    persisted?
+  end
+
   private
 
   def path_can_be_set_once

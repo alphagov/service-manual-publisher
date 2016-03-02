@@ -13,7 +13,7 @@ class TopicsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @topic.save
-        redirect_to topics_path, notice: "Topic has been created"
+        redirect_to edit_topic_path(@topic), notice: "Topic has been created"
       else
         render :new
       end
