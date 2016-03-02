@@ -33,12 +33,23 @@ class TopicsController < ApplicationController
     @topic.attributes = params.require(:topic).permit(:title, :description, content_owner_ids: [])
     @topic.tree = JSON.parse(params[:topic][:tree])
 
-    ActiveRecord::Base.transaction do
-      if @topic.save
-        TopicPublisher.new(@topic).publish_immediately
-        redirect_to topics_path, notice: "Topic has been updated"
-      else
-        render :new
+    if params[:publish]
+      ActiveRecord::Base.transaction do
+        if @topic.save
+          TopicPublisher.new(@topic).publish
+          redirect_to topics_path, notice: "Topic has been published"
+        else
+          render :new
+        end
+      end
+    else
+      ActiveRecord::Base.transaction do
+        if @topic.save
+          TopicPublisher.new(@topic).publish_immediately
+          redirect_to topics_path, notice: "Topic has been updated"
+        else
+          render :new
+        end
       end
     end
   rescue GdsApi::HTTPErrorResponse => e
