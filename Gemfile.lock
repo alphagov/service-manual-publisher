@@ -45,6 +45,8 @@ GEM
       builder
       multi_json
     arel (6.0.3)
+    auto_strip_attributes (2.0.6)
+      activerecord (>= 3.0)
     autoprefixer-rails (6.1.2)
       execjs
       json
@@ -309,6 +311,7 @@ DEPENDENCIES
   active_link_to (~> 1.0.3)
   acts_as_commentable (~> 4.0.2)
   airbrake (~> 4.2.1)
+  auto_strip_attributes (~> 2.0, >= 2.0.6)
   better_errors
   binding_of_caller
   bullet
