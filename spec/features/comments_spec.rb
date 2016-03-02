@@ -2,17 +2,31 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "Commenting", type: :feature do
-  let!(:guide) do
-    edition = Generators.valid_edition(title: 'Lean Startup')
-    Guide.create!(
-      latest_edition: edition,
-      slug: "/service-manual/test/comment"
-    )
+  describe 'for a normal guide' do
+    it 'write a comment successfully' do
+      edition = Generators.valid_edition(title: 'Lean Startup')
+      guide = Guide.create!(
+                latest_edition: edition,
+                slug: "/service-manual/test/comment"
+              )
+
+      write_a_comment_successfully(guide: guide)
+    end
   end
 
-  it "allows discourse" do
+  describe 'for a guide community' do
+    it 'write a comment successfully' do
+      edition = Generators.valid_edition(title: 'Agile Community', content_owner: nil)
+      guide = Generators.valid_guide_community(latest_edition: edition)
+      guide.save!
+
+      write_a_comment_successfully(guide: guide)
+    end
+  end
+
+  def write_a_comment_successfully(guide:)
     visit root_path
-    within_guide_index_row('Lean Startup') do
+    within_guide_index_row(guide.latest_edition.title) do
       click_link "Edit"
     end
     click_link "Comments and history"

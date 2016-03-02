@@ -1,4 +1,4 @@
-<%= form_for guide, as: :guide, url: url_for(guide.becomes(Guide)), html: { class: "js-protect-data" } do |f| %>
+<%= guide_form_for guide, html: { class: "js-protect-data" } do |f| %>
 
   <%= f.hidden_field :type %>
 

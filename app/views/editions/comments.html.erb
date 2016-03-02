@@ -1,7 +1,7 @@
 <%= render 'editions/header_with_navigation', edition: @edition, guide: @guide %>
 <%= render 'editions/old_edition_alert', edition: @edition, guide: @guide %>
 
-<%= form_for @guide do |f| %>
+<%= guide_form_for @guide do |f| %>
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>
 
@@ -23,6 +23,6 @@
   </div>
 <% end %>
 
-<%= form_for @guide do |f| %>
+<%= guide_form_for @guide do |f| %>
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>

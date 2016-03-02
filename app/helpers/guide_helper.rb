@@ -31,4 +31,11 @@ module GuideHelper
           sort_by{ |guide| guide.title }.
           map{ |g| [g.title, g.id] }
   end
+
+  def guide_form_for(guide, *args, &block)
+    options = args.extract_options!
+    url = url_for(guide.becomes(Guide))
+
+    form_for(guide, *args << options.merge(as: :guide, url: url), &block)
+  end
 end
