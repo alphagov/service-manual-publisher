@@ -18,6 +18,12 @@ class Edition < ActiveRecord::Base
   validates :change_summary, presence: true, if: :major?
   validate :published_cant_change
 
+  auto_strip_attributes(
+    :title,
+    :description,
+    :body,
+  )
+
   %w{minor major}.each do |s|
     define_method "#{s}?" do
       update_type == s
