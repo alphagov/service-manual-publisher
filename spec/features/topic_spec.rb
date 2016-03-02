@@ -3,17 +3,16 @@ require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
 RSpec.describe "topic editor", type: :feature do
-  before do
-    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
-  end
-
-  it "can create a new topic", js: true do
+  it "save a draft topic", js: true do
     guide1 = create(:guide)
     guide2 = create(:guide)
 
     visit root_path
     click_link "Manage Topics"
     click_link "Create a Topic"
+
+    expect(page).to_not have_button('Publish')
+
     fill_in "Path", with: "/service-manual/something"
     fill_in "Title", with: "The title"
     fill_in "Description", with: "The description"
@@ -43,6 +42,8 @@ RSpec.describe "topic editor", type: :feature do
         }
       ].to_json
     )
+
+    expect(page).to have_button('Publish')
   end
 
   it "can view topics" do

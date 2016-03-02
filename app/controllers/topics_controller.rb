@@ -13,7 +13,6 @@ class TopicsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @topic.save
-        TopicPublisher.new(@topic).publish_immediately
         redirect_to topics_path, notice: "Topic has been created"
       else
         render :new
