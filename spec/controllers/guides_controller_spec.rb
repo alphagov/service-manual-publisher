@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GuidesController, type: :controller do
-  let(:content_designer) { Generators.valid_user(name: "Content Designer", email: "content.designer@example.com") }
+  let(:content_designer) { build(:user, name: "Content Designer", email: "content.designer@example.com") }
 
   before do
     content_designer.save!
@@ -10,15 +10,15 @@ RSpec.describe GuidesController, type: :controller do
     allow(publishing_api).to receive(:publish)
     stub_const('PUBLISHING_API', publishing_api)
     ActionMailer::Base.deliveries.clear
-    allow_any_instance_of(Guide).to receive(:topic).and_return Generators.valid_topic
+    allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
     allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   describe "#update" do
     describe "#approve_for_publication" do
       it "sends an email notification" do
-        edition = Generators.valid_edition(state: 'review_requested')
-        Guide.create!(slug: "/service-manual/test", editions: [edition])
+        edition = build(:edition, state: 'review_requested')
+        create(:guide, slug: "/service-manual/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
         put :update, id: edition.guide_id, approve_for_publication: true
@@ -32,7 +32,7 @@ RSpec.describe GuidesController, type: :controller do
     describe "#publish" do
       it 'notifies about search indexing errors but does not fail the transaction' do
         expect_any_instance_of(Rummageable::Index).to receive(:add_batch).and_raise("Something went wrong")
-        edition = Generators.valid_edition(state: 'approved')
+        edition = build(:edition, state: 'approved')
         Guide.create!(slug: "/service-manual/test", editions: [edition])
         expect(controller).to receive(:notify_airbrake)
 
@@ -44,9 +44,9 @@ RSpec.describe GuidesController, type: :controller do
 
       it "sends an email notification when published by another user" do
         allow_any_instance_of(Rummageable::Index).to receive(:add_batch)
-        edition = Generators.valid_edition(state: 'published')
+        edition = build(:edition, state: 'published')
         Guide.create!(slug: "/service-manual/test", editions: [edition])
-        publisher = Generators.valid_user(email: "ms.publisher@example.com")
+        publisher = build(:user, email: "ms.publisher@example.com")
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([publisher])
 
         put :update, id: edition.guide_id, publish: true
@@ -58,7 +58,7 @@ RSpec.describe GuidesController, type: :controller do
 
       it "avoids email notification when published by the author" do
         allow_any_instance_of(Rummageable::Index).to receive(:add_batch)
-        edition = Generators.valid_edition(state: 'published')
+        edition = build(:edition, state: 'published')
         Guide.create!(slug: "/service-manual/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 

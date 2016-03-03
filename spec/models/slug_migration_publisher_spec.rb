@@ -2,12 +2,10 @@ require 'rails_helper'
 
 RSpec.describe SlugMigrationPublisher, type: :model do
   it "publishes slug migrations" do
-    edition = Generators.valid_published_edition
-    guide = Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
     slug_migration = SlugMigration.create!(
       completed: true,
       slug: "/service-manual/some-jekyll-path.html",
-      redirect_to: guide.slug,
+      redirect_to: "/service-manual/something",
     )
 
     expected_redirect = {
@@ -34,12 +32,10 @@ RSpec.describe SlugMigrationPublisher, type: :model do
   end
 
   it "publishes slug migrations that are valid" do
-    edition = Generators.valid_published_edition
-    guide = Guide.create!(slug: "/service-manual/new-path", latest_edition: edition)
     slug_migration = SlugMigration.create!(
       completed: true,
       slug: "/service-manual/some-jekyll-path.html",
-      redirect_to: guide.slug,
+      redirect_to: "/service-manual/something",
     )
 
     api_double = double(:publishing_api)

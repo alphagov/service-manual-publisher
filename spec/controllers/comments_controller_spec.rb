@@ -4,9 +4,8 @@ RSpec.describe CommentsController, type: :controller do
 
   let(:commenter) { User.create(name: "Commenter", permissions: ['signin'], email: "commenter@example.com") }
   let(:edition) do
-    edition = Generators.valid_edition(guide: Guide.new(slug: "/service-manual/commentable"))
-    edition.save!
-    edition
+    guide = create(:guide, slug: "/service-manual/commentable")
+    guide.latest_edition
   end
 
   before do

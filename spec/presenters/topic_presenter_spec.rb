@@ -1,23 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe TopicPresenter do
-  let(:edition_1) { Generators.valid_edition(title: "Edition 1", guide: Generators.valid_guide).tap(&:save!) }
-  let(:edition_2) { Generators.valid_edition(title: "Edition 2", guide: Generators.valid_guide).tap(&:save!) }
-  let(:edition_3) { Generators.valid_edition(title: "Edition 3", guide: Generators.valid_guide).tap(&:save!) }
+  let(:guide_1) { create(:guide) }
+  let(:guide_2) { create(:guide) }
+  let(:guide_3) { create(:guide) }
+
   let(:topic) do
-    Topic.create!(
+    create(:topic,
       title: "Test topic",
       path: "/service-manual/test-topic",
       description: "Topic description",
       tree: [
         {
           title: "Group 1",
-          guides: [edition_1.guide.to_param, edition_2.guide.to_param],
+          guides: [guide_1.to_param, guide_2.to_param],
           description: "Fruits",
         },
         {
           title: "Group 2",
-          guides: [edition_3.guide.to_param],
+          guides: [guide_3.to_param],
           description: "Berries",
         }
       ].to_json
@@ -48,8 +49,8 @@ RSpec.describe TopicPresenter do
       groups = presented_topic.content_payload[:details][:groups]
       expect(groups.size).to eq 2
       expect(groups.first).to include(name: "Group 1", description: "Fruits")
-      expect(groups.first[:contents]).to eq [edition_1.guide.slug, edition_2.guide.slug]
-      expect(groups.first[:content_ids]).to eq [edition_1.guide.content_id, edition_2.guide.content_id]
+      expect(groups.first[:contents]).to eq [guide_1.slug, guide_2.slug]
+      expect(groups.first[:content_ids]).to eq [guide_1.content_id, guide_2.content_id]
       expect(groups.last).to include(name: "Group 2", description: "Berries")
     end
   end
@@ -57,8 +58,8 @@ RSpec.describe TopicPresenter do
   describe "#links_payload" do
     it "references all content_ids that appear in groups" do
       linked_items = presented_topic.links_payload[:links][:linked_items]
-      [edition_1, edition_2, edition_3].each do |edition|
-        expect(edition.guide.content_id).to be_in(linked_items)
+      [guide_1, guide_2, guide_3].each do |guide|
+        expect(guide.content_id).to be_in(linked_items)
       end
     end
   end

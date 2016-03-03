@@ -9,8 +9,7 @@ RSpec.describe "Preventing users from losing unsaved changes in the form", type:
   end
 
   it "asks the user for confirmation when navigating away via 'Request review'", js: true do
-    edition = Generators.valid_edition(title: "Standups", state: 'draft')
-    guide = Guide.create!(latest_edition: edition, slug: "/service-manual/test")
+    guide = create(:guide, slug: "/service-manual/test")
     visit edit_guide_path(guide)
     fill_in "Body", with: "This has changed"
     click_first_button "Send for review"
@@ -18,8 +17,7 @@ RSpec.describe "Preventing users from losing unsaved changes in the form", type:
   end
 
   it "does not notify the user when navigating away via 'Save'", js: true do
-    edition = Generators.valid_edition(title: "Standups", state: 'draft')
-    guide = Guide.create!(latest_edition: edition, slug: "/service-manual/test")
+    guide = create(:guide, slug: "/service-manual/test")
     visit edit_guide_path(guide)
     fill_in "Body", with: "This has changed"
     click_first_button "Save"
