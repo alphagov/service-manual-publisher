@@ -9,7 +9,7 @@ class Publisher
   def save_draft(content_for_publication)
     save_catching_gds_api_errors do
       publishing_api.put_content(content_model.content_id, content_for_publication.content_payload)
-      publishing_api.put_links(content_model.content_id, content_for_publication.links_payload)
+      publishing_api.patch_links(content_model.content_id, content_for_publication.links_payload)
     end
   end
 

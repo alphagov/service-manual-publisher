@@ -311,7 +311,7 @@ private
     def put_content(*args)
     end
 
-    def put_links(*args)
+    def patch_links(*args)
     end
 
     def publish(*args)

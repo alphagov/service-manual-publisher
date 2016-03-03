@@ -8,7 +8,7 @@ class GuideTaggerJob < ActiveJob::Base
   end
 
   def perform(guide_id:, topic_id:)
-    publishing_api.put_links(guide_id, links: { topics: [topic_id] })
+    publishing_api.patch_links(guide_id, links: { topics: [topic_id] })
   end
 
 private

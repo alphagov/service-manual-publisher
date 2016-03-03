@@ -14,9 +14,9 @@ class TopicPublisher
     publishing_api.publish(topic.content_id, 'minor')
   end
 
-  def put_links
+  def patch_links
     link_data = TopicPresenter.new(topic).links_payload
-    publishing_api.put_links(topic.content_id, link_data)
+    publishing_api.patch_links(topic.content_id, link_data)
 
     GuideTaggerJob.batch_perform_later(
       guide_ids: link_data[:links][:linked_items],
@@ -30,7 +30,7 @@ class TopicPublisher
 
   def publish_immediately
     put_draft
-    put_links
+    patch_links
     publish
     index_for_search
   end
