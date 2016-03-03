@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe NotificationMailer, type: :mailer do
-  let(:gary) { create(:user, name: "Gary", email: "gary@example.com") }
-  let(:luke) { create(:user, name: "Luke") }
+  let(:gary) { build(:user, name: "Gary", email: "gary@example.com") }
+  let(:luke) { build(:user, name: "Luke") }
   let(:guide) { create(:guide, slug: '/service-manual/agile-delivery', latest_edition: edition) }
-  let(:edition) { create(:edition, title: "Agile", user: gary) }
+  let(:edition) { build(:edition, title: "Agile", user: gary) }
 
   before do
     ActionMailer::Base.deliveries.clear
