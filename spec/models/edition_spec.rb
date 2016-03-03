@@ -2,27 +2,28 @@ require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
   describe "#notification_subscribers" do
-    let(:joe) { Generators.valid_user(name: "Joe") }
-    let(:liz) { Generators.valid_user(name: "Liz") }
+    let(:joe) { create(:user, name: "Joe") }
+    let(:liz) { create(:user, name: "Liz") }
 
     it "is the edition author and the current edition author" do
-      edition = Generators.valid_edition(user: joe)
-      current_edition = Generators.valid_edition(user: liz)
-      guide = Guide.create(slug: "/service-manual", editions: [edition])
+      edition = build(:edition, user: joe)
+      current_edition = build(:edition, user: liz)
+      guide = build(:guide, editions: [edition])
       guide.latest_edition = current_edition
-      guide.save
 
       expect(edition.notification_subscribers).to match_array [joe, liz]
     end
 
     it "avoids duplicates" do
-      edition = Generators.valid_edition(user: joe)
-      current_edition = Generators.valid_edition(user: joe)
-      guide = Guide.create(slug: "/service-manual", editions: [edition])
-      guide.latest_edition = current_edition
-      guide.save
+      first = build(:edition, user: joe)
+      second = build(:edition, user: joe)
+      guide = build(
+        :guide,
+        editions: [first],
+        latest_edition: second,
+      )
 
-      expect(edition.notification_subscribers).to match_array [joe]
+      expect(guide.latest_edition.notification_subscribers).to match_array [joe]
     end
   end
 
@@ -33,42 +34,45 @@ RSpec.describe Edition, type: :model do
   end
 
   describe "#previously_published_edition" do
-    let(:e1) { Generators.valid_published_edition }
-    let(:e2) { Generators.valid_published_edition }
-    let(:e3) { Generators.valid_published_edition }
-    let(:e4) { Generators.valid_published_edition }
-
-    before { Guide.create!(slug: '/service-manual/test', editions: [e1, e2, e3, e4]) }
-
+    before do
+      @guide = create(:published_guide)
+      @edition1 = create(:published_edition, guide: @guide)
+      @edition2 = create(:published_edition, guide: @guide)
+      @edition3 = create(:published_edition, guide: @guide)
+      @edition4 = create(:published_edition, guide: @guide)
+      @guide.editions = [
+        @edition1,
+        @edition2,
+        @edition3,
+        @edition4,
+      ]
+    end
     it "returns an edition that was the latest edition published before the current one" do
-      expect(e3.previously_published_edition).to eq e2
-      expect(e4.previously_published_edition).to eq e3
+      expect(@edition3.previously_published_edition).to eq @edition2
+      expect(@edition4.previously_published_edition).to eq @edition3
     end
 
     it "returns nil if it has no prviously published editions" do
-      expect(e1.previously_published_edition).to eq nil
+      expect(@edition1.previously_published_edition).to eq nil
     end
   end
 
   describe "validations" do
     it "requires user to be present" do
-      edition = Generators.valid_edition(user: nil)
+      edition = build(:edition, user: nil)
       expect(edition).to be_invalid
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
     it "does not allow updating already published editions" do
-      edition = Generators.valid_published_edition
-      edition.save!
-
+      edition = create(:published_edition)
       edition.update_attributes(title: "Republishing")
-
       expect(edition.errors.full_messages_for(:base).size).to eq 1
     end
 
     describe "state" do
       it "allows 'published' state" do
-        edition = Generators.valid_published_edition
+        edition = build(:published_edition)
         edition.valid?
         expect(edition.errors.full_messages_for(:state).size).to eq 0
       end
@@ -76,26 +80,26 @@ RSpec.describe Edition, type: :model do
       valid_states = %w(draft review_requested approved)
       valid_states.each do |valid_state|
         it "allows '#{valid_state}' state" do
-          edition = Generators.valid_edition(state: valid_state)
+          edition = build(:edition, state: valid_state)
           edition.valid?
           expect(edition.errors.full_messages_for(:state).size).to eq 0
         end
       end
 
       it "does not allow arbitrary values" do
-        edition = Generators.valid_edition(state: 'invalid state')
+        edition = build(:edition, state: "invalid state")
         edition.valid?
         expect(edition.errors.full_messages_for(:state).size).to eq 1
       end
 
       it "does not allow empty change_note when the update_type is 'major'" do
-        edition = Generators.valid_edition(update_type: "major", change_note: "")
+        edition = build(:edition, update_type: "major", change_note: "")
         edition.valid?
         expect(edition.errors.full_messages_for(:change_note)).to eq ["Change note can't be blank"]
       end
 
       it "allows empty change_note when the update_type is 'minor'" do
-        edition = Generators.valid_edition(update_type: "minor", change_note: "")
+        edition = build(:edition, update_type: "minor", change_note: "")
         edition.valid?
         expect(edition.errors.full_messages_for(:change_note).size).to eq 0
       end
@@ -104,18 +108,18 @@ RSpec.describe Edition, type: :model do
 
   context "review and approval" do
     let :edition do
-      edition = Generators.valid_edition
+      edition = build(:edition)
       allow(edition).to receive(:persisted?) { true }
       edition
     end
 
     let :guide do
-      Guide.new(slug: "/service-manual/something", latest_edition: edition)
+      build(:guide, slug: "/service-manual/something", latest_edition: edition)
     end
 
     describe "#can_be_approved?" do
       let :user do
-        User.new
+        build(:user)
       end
 
       it "returns true when a review has been requested" do
@@ -126,14 +130,13 @@ RSpec.describe Edition, type: :model do
 
       it "returns false when the user is also the editor" do
         edition.state = "review_requested"
-        edition.user = User.create!(name: "anotehr", email: "email@address.org")
-        edition.save!
+        edition.user = build(:user, name: "anotehr", email: "email@address.org")
         expect(edition.can_be_approved?(edition.user)).to eq false
       end
 
       it "returns true when the user is also the editor but the ALLOW_SELF_APPROVAL flag is set" do
         edition.state = "review_requested"
-        edition.user = User.create!(name: "anotehr", email: "email@address.org")
+        edition.user = build(:user, name: "anotehr", email: "email@address.org")
         edition.save!
         ENV['ALLOW_SELF_APPROVAL'] = '1'
         expect(edition.can_be_approved?(edition.user)).to eq true
@@ -204,19 +207,19 @@ RSpec.describe Edition, type: :model do
 
   describe "#change_note_html" do
     it "renders markdown" do
-      edition = Edition.new(change_note: "# heading")
+      edition = build(:edition, change_note: "# heading")
       expect(edition.change_note_html).to eq "<h1>heading</h1>\n"
     end
 
     it "auto links" do
-      edition = Edition.new(change_note: "http://example.org")
+      edition = build(:edition, change_note: "http://example.org")
       expect(edition.change_note_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
     end
   end
 
   describe "#draft_copy" do
     it "builds a new draft object with all fields but change notes" do
-      edition = Generators.valid_published_edition(title: "Original Title", change_note: "Changes")
+      edition = build(:published_edition, title: "Original Title", change_note: "Changes")
       draft = edition.draft_copy
 
       expect(draft.title).to eq "Original Title"

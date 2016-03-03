@@ -87,10 +87,7 @@ RSpec.describe GuidePresenter do
     end
 
     it 'returns the content owner if present' do
-      edition.content_owner = Generators.valid_guide_community(
-        latest_edition: Generators.valid_edition(content_owner: nil, title: 'Technology Community')
-        ).tap(&:save!)
-
+      edition.content_owner = build(:guide_community)
       expect(presenter.links_payload).to eq({
         links: {
           content_owners: [edition.content_owner.content_id]

@@ -8,19 +8,19 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   before do
     stub_const('PUBLISHING_API', fake_publishing_api)
     allow_any_instance_of(SearchIndexer).to receive(:index)
-    allow_any_instance_of(Guide).to receive(:topic).and_return Generators.valid_topic
+    allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
     allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   context "latest edition is published" do
     it "should create a new draft edition when saving changes" do
-      guide = given_a_published_guide_exists title: "Standups"
+      guide = create(:published_guide)
 
       visit guides_path
-      within_guide_index_row('Standups') do
+      within_guide_index_row(guide.title) do
         click_link "Edit"
       end
-      the_form_should_be_prepopulated_with_title "Standups"
+      the_form_should_be_prepopulated_with_title guide.title
       fill_in "Title", with: "Standup meetings"
       fill_in "Why the change is being made", with: "Be more specific in the title"
       click_first_button 'Save'
@@ -32,10 +32,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "defaults to a major update and the new change note is empty" do
-      given_a_published_guide_exists title: "Standups"
+      guide = create(:published_guide)
       visit guides_path
 
-      within_guide_index_row('Standups') do
+      within_guide_index_row(guide.title) do
         click_link "Edit"
       end
       expect(find_field("Why the change is being made").value).to be_blank
@@ -44,12 +44,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "indexes documents for search" do
-      given_a_guide_exists(title: 'My Article')
+      guide = create(:guide)
+
       indexer = double(:indexer)
-      expect(SearchIndexer).to receive(:new).with(Guide.first).and_return(indexer)
+      expect(SearchIndexer).to receive(:new).with(guide).and_return(indexer)
       expect(indexer).to receive(:index)
       visit guides_path
-      within_guide_index_row('My Article') do
+      within_guide_index_row(guide.title) do
         click_link "Edit"
       end
       click_first_button "Send for review"
@@ -59,19 +60,20 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "creates a new draft version if the original has been published in the meantime" do
-    guide = given_a_guide_exists title: "Agile development"
+    guide = create(:guide)
     visit guides_path
-    within_guide_index_row('Agile development') do
+    within_guide_index_row(guide.title) do
       click_link "Edit"
     end
 
-    guide.latest_edition.update_attributes(state: 'published') # someone else publishes it
+    # someone else publishes it
+    guide.latest_edition.update_attributes(state: 'published')
 
     fill_in "Title", with: "Agile"
 
     click_first_button 'Save'
 
-    expect(guide.editions.published.map(&:title)).to match_array ["Agile development"]
+    expect(guide.editions.published.map(&:title)).to match_array [guide.title]
     expect(guide.editions.draft.map(&:title)).to match_array ["Agile"]
   end
 
@@ -81,7 +83,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "keeps the changes made in form fields" do
-      guide = given_a_published_guide_exists title: 'My Guide'
+      guide = create(:published_guide)
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -97,12 +99,12 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows api errors in the UI" do
-      given_a_published_guide_exists(title: 'My Article')
+      guide = create(:published_guide)
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
       visit guides_path
-      within_guide_index_row('My Article') do
+      within_guide_index_row(guide.title) do
         click_link "Edit"
       end
       fill_in "Why the change is being made", with: "Fix a typo"
@@ -114,7 +116,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows the correct state of the guide if publishing fails" do
-      guide = given_a_guide_exists(state: 'approved')
+      guide = create(:approved_guide)
 
       visit edit_guide_path(guide)
       expect(fake_publishing_api).to receive(:publish).and_raise api_error
@@ -132,9 +134,10 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should not create a new edition if the latest edition isn't published" do
-    guide = given_a_guide_exists state: 'draft', title: "Agile methodologies"
+    guide = create(:guide)
+
     visit guides_path
-    within_guide_index_row('Agile methodologies') do
+    within_guide_index_row(guide.title) do
       click_link "Edit"
     end
     fill_in "Title", with: "Agile"
@@ -147,7 +150,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   it "should record who's the last editor" do
     stub_user.update_attribute :name, "John Smith"
-    guide = given_a_guide_exists title: 'Agile methodologies', state: 'draft'
+    guide = create(:guide)
     visit edit_guide_path(guide)
     fill_in "Title", with: "An amended title"
     click_first_button 'Save'
@@ -160,7 +163,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should save a draft locally, sent it to Publishing API, then redirect to the front end when previewing" do
-    guide = given_a_guide_exists state: 'draft', title: 'Test guide', slug: '/service-manual/preview-test'
+    guide = create(:guide, slug: '/service-manual/preview-test')
     visit edit_guide_path(guide)
     fill_in "Title", with: "Changed Title"
 
@@ -175,8 +178,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "with a review requested" do
     it "lists editions that need a review" do
-      edition = Generators.valid_edition
-      guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+      guide = create(:guide, slug: "/service-manual/something")
 
       visit edit_guide_path(guide)
       click_first_button "Send for review"
@@ -185,13 +187,12 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "approved by another user" do
       it "lists editions that are approved" do
-        edition = Generators.valid_edition(state: "review_requested", title: "Standups")
-        guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+        guide = create(:review_requested_guide, slug: "/service-manual/something")
 
-        reviewer = User.new(name: "Keanu Reviews")
+        reviewer = create(:user, name: "Keanu Reviews")
         login_as reviewer
         visit guides_path
-        click_link "Standups"
+        click_link guide.title
         click_first_button "Approve for publication"
 
         expect(current_path).to eq edit_guide_path(guide)
@@ -199,7 +200,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         expect(page).to have_content "Changes approved by Keanu Reviews"
 
         visit root_path
-        within_guide_index_row('Standups') do
+        within_guide_index_row(guide.title) do
           within ".label" do
             expect(page).to have_content "Approved"
           end
@@ -209,8 +210,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "without approval" do
       it "does not allow guides to be published" do
-        edition = Generators.valid_edition(state: "review_requested")
-        guide = Guide.create!(latest_edition: edition, slug: "/service-manual/something")
+        guide = create(:review_requested_guide, slug: "/service-manual/something")
         visit edit_guide_path(guide)
         expect(page).to_not have_button "Publish"
       end
@@ -219,7 +219,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "guide edition history" do
     it "allows seeing previous edition changes" do
-      guide = given_a_published_guide_exists(title: "First Edition")
+      guide = create(:published_guide)
+      first_edition = guide.latest_edition
       guide.latest_edition.dup.update_attributes(title: "Current Draft Edition", state: 'draft')
 
       expect(guide.editions.size).to eq 2
@@ -231,7 +232,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(view_edition_links.size).to eq 2
       view_edition_links.last.click
 
-      expect(page).to have_content "First Edition"
+      expect(page).to have_content first_edition.title
       within ".alert-info" do
         expect(page).to have_content "You're looking at a past edition of this guide"
       end
@@ -242,7 +243,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "guide edition changes" do
     it "shows exact changes in any fields" do
-      guide = given_a_published_guide_exists(title: "First Edition", body: "### Hello")
+      first_edition = create(:published_edition, title: "First Edition", body: "### Hello")
+      guide = create(:published_guide, latest_edition: first_edition)
+
       visit edit_guide_path(guide)
       fill_in "Title", with: "Second Edition"
       fill_in "Body", with: "## Hi"
@@ -251,7 +254,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       click_link "Compare changes"
 
       within ".title del" do
-        expect(page).to have_content("First Edition")
+        expect(page).to have_content(first_edition.title)
       end
 
       within ".title ins" do
@@ -259,7 +262,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
 
       within ".body del" do
-        expect(page).to have_content("### Hello")
+        expect(page).to have_content(first_edition.body)
       end
 
       within ".body ins" do
@@ -268,32 +271,20 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows all fields as additions if there are no previous editions" do
-      guide = given_a_guide_exists(title: "First Edition", body: "Hello")
+      guide = create(:guide)
       visit edition_changes_path(new_edition_id: guide.latest_edition.id)
 
       within ".title ins" do
-        expect(page).to have_content("First Edition")
+        expect(page).to have_content(guide.latest_edition.title)
       end
 
       within ".body ins" do
-        expect(page).to have_content("Hello")
+        expect(page).to have_content(guide.latest_edition.body)
       end
     end
   end
 
 private
-
-  def given_a_guide_exists(attributes = {})
-    slug = attributes.delete(:slug) || '/service-manual/test-guide'
-    edition = Generators.valid_edition(attributes)
-    Guide.create!(latest_edition: edition, slug: slug)
-  end
-
-  def given_a_published_guide_exists(attributes = {})
-    edition = Generators.valid_published_edition(attributes)
-    slug = attributes.delete(:slug) || '/service-manual/published-test-guide'
-    Guide.create!(latest_edition: edition, slug: slug)
-  end
 
   def the_form_should_be_prepopulated_with_title(title)
     expect(find_field('Title').value).to eq title

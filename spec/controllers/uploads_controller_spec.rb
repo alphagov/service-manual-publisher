@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UploadsController, type: :controller do
-  before { login_as Generators.valid_user }
+  before { login_as build(:user) }
 
   describe "#create" do
     it "rejects non-image files" do

@@ -8,10 +8,8 @@ RSpec.describe "topic editor", type: :feature do
   end
 
   it "can create a new topic", js: true do
-    edition1 = Generators.valid_edition(title: "Title 1")
-    edition2 = Generators.valid_edition(title: "Title 2")
-    guide1 = Guide.create!(slug: "/service-manual/edition1", latest_edition: edition1)
-    guide2 = Guide.create!(slug: "/service-manual/edition2", latest_edition: edition2)
+    guide1 = create(:guide)
+    guide2 = create(:guide)
 
     visit root_path
     click_link "Manage Topics"

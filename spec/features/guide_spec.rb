@@ -6,9 +6,12 @@ RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
-    Generators.valid_guide_community(
-      latest_edition: Generators.valid_edition(content_owner: nil, title: 'Technology Community')
-      ).tap(&:save!)
+    edition = build(
+      :edition,
+      content_owner: nil,
+      title: "Technology Community"
+    )
+    create(:guide_community, latest_edition: edition)
 
     visit root_path
     click_link "Create a Guide"
@@ -19,9 +22,7 @@ RSpec.describe "creating guides", type: :feature do
   end
 
   let(:topic) do
-    topic = Generators.valid_topic
-    topic.save!
-    topic
+    create(:topic)
   end
 
   it "has a prepopulated slug field" do
@@ -120,10 +121,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     let :guide do
-      Guide.create!(
-        slug: "/service-manual/something",
-        latest_edition: Generators.valid_approved_edition
-      )
+      create(:approved_guide, slug: "/service-manual/something")
     end
 
     it "does not publish the guide" do
@@ -135,10 +133,7 @@ RSpec.describe "creating guides", type: :feature do
 
   context "guide is included in a topic" do
     let :guide do
-      Guide.create!(
-        slug: "/service-manual/something",
-        latest_edition: Generators.valid_approved_edition
-      )
+      create(:approved_guide, slug: "/service-manual/something")
     end
 
     it "republishes the topic" do
@@ -172,7 +167,7 @@ RSpec.describe "creating guides", type: :feature do
   context "when updating a guide" do
     context "the guide has previously been published" do
       before do
-        @guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_published_edition)
+        @guide = create(:published_guide, slug: "/service-manual/something")
       end
 
       it "prevents users from editing the url slug" do
@@ -182,7 +177,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "shows the summary of validation errors" do
-      guide = Guide.create!(slug: "/service-manual/something", latest_edition: Generators.valid_edition)
+      guide = Guide.create!(slug: "/service-manual/something", latest_edition: build(:edition))
       visit edit_guide_path(guide)
       fill_in "Title", with: ""
       click_first_button "Save"
@@ -196,8 +191,7 @@ RSpec.describe "creating guides", type: :feature do
       publication = Publisher::PublicationResponse.new(success: false, errors: ['trouble'])
       allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
 
-      edition = Generators.valid_edition(title: "something")
-      guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+      guide = create(:guide, slug: "/service-manual/something")
 
       visit edit_guide_path(guide)
       click_first_button "Save"
@@ -225,8 +219,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when a review can be requested" do
       before do
-        edition = Generators.valid_edition
-        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        guide = create(:guide, slug: "/service-manual/something")
         visit edit_guide_path(guide)
       end
 
@@ -239,8 +232,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when it can be marked as approved" do
       before do
-        edition = Generators.valid_edition(state: "review_requested")
-        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        guide = create(:review_requested_guide, slug: "/service-manual/something")
         visit edit_guide_path(guide)
       end
 
@@ -253,8 +245,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when it can be published" do
       before do
-        edition = Generators.valid_edition(state: "approved")
-        guide = Guide.create!(slug: "/service-manual/something", latest_edition: edition)
+        guide = create(:approved_guide, slug: "/service-manual/something")
         visit edit_guide_path(guide)
       end
 

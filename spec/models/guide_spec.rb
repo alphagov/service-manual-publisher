@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Guide do
-  let(:edition) { Generators.valid_published_edition }
+  let(:edition) { build(:published_edition) }
 
   describe "#ensure_draft_exists" do
     let(:guide) do
@@ -30,11 +30,12 @@ RSpec.describe Guide do
 
   context "with a topic" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+      create(:guide, slug: "/service-manual/slug", latest_edition: edition)
     end
 
     let!(:topic) do
-      topic = Generators.valid_topic(
+      create(
+        :topic,
         tree: [
           {
             "title"       => "Title",
@@ -43,8 +44,6 @@ RSpec.describe Guide do
           },
         ],
       )
-      topic.save!
-      topic
     end
 
     describe "#included_in_a_topic?" do
@@ -107,16 +106,16 @@ RSpec.describe Guide do
 
     describe "content owner" do
       it "requires the latest edition to have a content owner" do
-        edition_without_content_owner = Generators.valid_edition(content_owner: nil)
-        guide = Guide.new(slug: "/service-manual/tech", latest_edition: edition_without_content_owner)
+        edition_without_content_owner = build(:edition, content_owner: nil)
+        guide = build(:guide, latest_edition: edition_without_content_owner)
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a content owner')
       end
 
       it "requires the latest edition to have a content owner unless it is a GuideCommunity" do
-        edition_without_content_owner = Generators.valid_edition(content_owner: nil)
-        guide = GuideCommunity.new(slug: "/service-manual/tech", latest_edition: edition_without_content_owner)
+        edition = build(:edition, content_owner: nil)
+        guide = build(:guide_community, latest_edition: edition)
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
@@ -125,10 +124,7 @@ RSpec.describe Guide do
 
     context "has a published edition" do
       it "does not allow changing the slug" do
-        guide = Guide.create!(
-          slug: "/service-manual/agile",
-          latest_edition: Generators.valid_published_edition,
-        )
+        guide = create(:published_guide)
         guide.slug = "/service-manual/something-else"
         guide.valid?
         expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can't be changed if guide has a published edition"]
@@ -138,66 +134,68 @@ RSpec.describe Guide do
 
   describe "#latest_editable_edition" do
     it "returns the latest edition if it's not published" do
-      guide = Guide.create(slug: "/service-manual/editable", editions: [Generators.valid_edition])
-
+      guide = create(:guide)
       expect(guide.reload.latest_editable_edition).to eq guide.reload.latest_edition
     end
 
     it "returns an unsaved copy of the latest edition if the latter is published" do
-      guide = Guide.create(
-                slug: "/service-manual/editable",
-                editions: [Generators.valid_published_edition(title: "Agile Methodologies")]
-              )
-
+      guide = create(:published_guide)
       expect(guide.latest_editable_edition).to be_a_new_record
-      expect(guide.reload.latest_editable_edition.title).to eq "Agile Methodologies"
+      expect(guide.reload.latest_editable_edition.title).to eq guide.latest_edition.title
     end
 
     it "defaults to a 'major' update for a new drafts" do
-      guide = Guide.create(
-                slug: "/service-manual/editable",
-                editions: [Generators.valid_published_edition(update_type: "minor")]
-              )
-
+      edition = build(:published_edition, update_type: "minor")
+      guide = create(:published_guide, latest_edition: edition)
       expect(guide.reload.latest_editable_edition.update_type).to eq "major"
     end
 
     it "returns a new edition for a guide with no latest edition" do
-      expect(Guide.new.latest_editable_edition).to be_a_new_record
+      guide = build(:guide, latest_edition: nil)
+      expect(guide.latest_editable_edition).to be_a_new_record
     end
   end
 
   describe "#with_published_editions" do
     it "only returns published editions" do
-      Guide.create!(
-        slug: "/service-manual/1",
-        latest_edition: Generators.valid_edition(state: "draft"),
-      )
-      guide2 = Guide.create!(
-        slug: "/service-manual/2",
-        latest_edition: Generators.valid_published_edition,
-      )
-      expect(Guide.with_published_editions.to_a).to eq [guide2]
+      create(:guide, slug: "/service-manual/1")
+      guide_with_published_editions = create(:published_guide, slug: "/service-manual/2")
+      expect(Guide.with_published_editions.to_a).to eq [guide_with_published_editions]
     end
 
     it "does not return duplicates" do
-      guide2 = Guide.create!(
+      guide = create(:guide,
         slug: "/service-manual/2",
         editions: [
-          Generators.valid_published_edition,
-          Generators.valid_published_edition,
+          build(:published_edition),
+          build(:published_edition),
         ],
       )
-      expect(Guide.with_published_editions.to_a).to eq [guide2]
+      expect(Guide.with_published_editions.to_a).to eq [guide]
     end
   end
 
   describe "#search" do
+    let :default_attributes do
+      {
+        title:          "The Title",
+        state:          "draft",
+        phase:          "beta",
+        description:    "Description",
+        update_type:    "major",
+        change_note:    "change note",
+        change_summary: "change summary",
+        body:           "# Heading",
+        content_owner:  build(:guide_community),
+        user:           build(:user),
+      }
+    end
+
     it "searches title" do
       titles = ["Standups", "Unit Testing"]
       titles.each_with_index do |title, index|
-        edition = Generators.valid_edition(state: "review_requested", title: title)
-        Guide.create!(latest_edition: edition, slug: "/service-manual/#{index}")
+        edition = build(:review_requested_edition, title: title)
+        create(:guide, slug: "/service-manual/#{index}", latest_edition: edition)
       end
 
       results = Guide.search("testing").map {|e| e.latest_edition.title}
@@ -205,8 +203,17 @@ RSpec.describe Guide do
     end
 
     it "does not return duplicates" do
-      edition1 = Generators.valid_edition(state: "draft", title: "dictionary")
-      edition2 = Generators.valid_edition(state: "published", title: "thesaurus")
+      edition1 = Edition.new(
+        default_attributes.merge(
+          state: "draft", title: "dictionary"
+        ),
+      )
+      edition2 = Edition.new(
+        default_attributes.merge(
+          state: "published", title: "thesaurus"
+        ),
+      )
+
       Guide.create!(editions: [edition1, edition2], slug: "/service-manual/guide")
 
       expect(Guide.search("dictionary").count).to eq 0
@@ -214,10 +221,10 @@ RSpec.describe Guide do
     end
 
     it "searches for slug" do
-      edition = Generators.valid_edition(title: "1")
+      edition = Edition.new(default_attributes.merge(title: "1"))
       Guide.create!(latest_edition: edition, slug: "/service-manual/1")
 
-      edition = Generators.valid_edition(title: "2")
+      edition = Edition.new(default_attributes.merge(title: "2"))
       Guide.create!(latest_edition: edition, slug: "/service-manual/2")
 
       results = Guide.search("/service-manual/2").map {|e| e.latest_edition.title}

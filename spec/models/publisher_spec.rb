@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Publisher, '#save_draft' do
 
   it 'persists the content model and returns a successful response' do
-    guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
+    guide = build(:guide)
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
     allow(publishing_api).to receive(:patch_links)
@@ -17,8 +17,7 @@ RSpec.describe Publisher, '#save_draft' do
   end
 
   it 'sends the draft and the links to the publishing api' do
-    guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
-    guide.save!
+    guide = create(:guide)
     publishing_api = double(:publishing_api)
 
     expect(publishing_api).to receive(:put_content).
@@ -32,7 +31,7 @@ RSpec.describe Publisher, '#save_draft' do
 
   it 'does not send the draft to the publishing api if the content model is not valid'\
     ' and returns an unsuccessful response' do
-    guide = Generators.valid_guide(latest_edition: Generators.valid_edition, slug: '/invalid-slug')
+    guide = build(:guide, slug: '/invalid-slug')
     expect(guide).to_not be_valid
 
     publishing_api = double(:publishing_api)
@@ -47,7 +46,7 @@ RSpec.describe Publisher, '#save_draft' do
   end
 
   context 'when the publishing api call fails' do
-    let(:guide) { Generators.valid_guide(latest_edition: Generators.valid_edition) }
+    let(:guide) { build(:guide) }
     let(:publishing_api_which_always_fails) do
       api = double(:publishing_api)
       gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
@@ -78,8 +77,7 @@ end
 
 RSpec.describe Publisher, '#publish' do
   it 'sends the draft to the publishing api' do
-    guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
-    guide.save!
+    guide = create(:guide)
     publishing_api = double(:publishing_api)
 
     expect(publishing_api).to receive(:publish).

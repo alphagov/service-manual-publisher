@@ -3,13 +3,13 @@ require 'capybara/rails'
 
 RSpec.describe "filtering guides", type: :feature do
   it "filters by state" do
-    Guide.create!(
-      slug: "/service-manual/a",
-      latest_edition: Generators.valid_edition(state: "review_requested", title: "Edition 1"),
-    )
-    Guide.create!(
-      slug: "/service-manual/b",
-      latest_edition: Generators.valid_edition(state: "draft", title: "Edition 2"),
+    create(:guide,
+          slug: "/service-manual/a",
+          latest_edition: build(:edition, state:"review_requested", title: "Edition 1"),
+         )
+    create(:guide,
+          slug: "/service-manual/b",
+          latest_edition: build(:edition, state: "draft", title: "Edition 2"),
     )
 
     filter_by_state "Draft"
@@ -22,15 +22,16 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
   it "filters by user" do
-    dave = Generators.valid_user(name: "Dave")
-    linda = Generators.valid_user(name: "Linda")
-    Guide.create!(
-      slug: "/service-manual/a",
-      latest_edition: Generators.valid_edition(user: dave),
+    dave = build(:user, name: "Dave")
+    linda = build(:user, name: "Linda")
+
+    create(:guide,
+           slug: "/service-manual/a",
+           latest_edition: build(:edition, user: dave),
     )
-    Guide.create!(
-      slug: "/service-manual/b",
-      latest_edition: Generators.valid_edition(user: linda),
+    create(:guide,
+           slug: "/service-manual/b",
+           latest_edition: build(:edition, user: linda),
     )
 
     filter_by_user "Dave"
@@ -44,15 +45,15 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "filters by published by" do
     [1, 2].each do |i|
-      guide_community = Generators.valid_guide_community(
-        latest_edition: Generators.valid_edition(content_owner: nil, title: "Content Owner #{i}")
-        ).tap(&:save!)
-      edition = Generators.valid_edition(
-        state: "review_requested",
-        title: "Edition #{i}",
-        content_owner_id: guide_community.id,
+      edition = build(:edition, content_owner: nil, title: "Content Owner #{i}")
+      guide_community = create(:guide_community, latest_edition: edition)
+
+      edition = build(:edition,
+                      state: "review_requested",
+                      title: "Edition #{i}",
+                      content_owner_id: guide_community.id,
       )
-      Guide.create!(latest_edition: edition, slug: "/service-manual/#{i}")
+      create(:guide, slug: "/service-manual/#{i}", latest_edition: edition)
     end
 
     filter_by_published_by "Content Owner 1"
@@ -65,11 +66,11 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
   it "searches for keywords" do
-    edition1 = Generators.valid_edition(state: "review_requested", title: "Standups")
-    Guide.create!(latest_edition: edition1, slug: "/service-manual/something")
+    edition1 = build(:edition, state: "review_requested", title: "Standups")
+    create(:guide, slug: "/service-manual/something", latest_edition: edition1)
 
-    edition2 = Generators.valid_edition(state: "review_requested", title: "Unit Testing")
-    Guide.create!(latest_edition: edition2, slug: "/service-manual/something")
+    edition2 = build(:edition, state: "review_requested", title: "Unit Testing")
+    create(:guide, slug: "/service-manual/something", latest_edition: edition2)
 
     search_for "testing"
 
@@ -78,38 +79,38 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
   it "combines keywords with state filters" do
-    edition1 = Generators.valid_edition(state: "draft", title: "Draft Standups")
-    Guide.create!(latest_edition: edition1, slug: "/service-manual/something")
-
-    edition2 = Generators.valid_edition(state: "review_requested", title: "Reviewed Standups")
-    Guide.create!(latest_edition: edition2, slug: "/service-manual/something")
+    draft_guide = create(:draft_guide)
+    review_requested_guide = create(:review_requested_guide)
 
     visit root_path
+
+    expect(page).to have_text draft_guide.title
+    expect(page).to have_text review_requested_guide.title
+
     within ".filters" do
-      fill_in "Title or slug", with: "standups"
+      fill_in "Title or slug", with: "draft"
       select "Draft", from: "State"
       click_button "Filter guides"
     end
 
-    expect(page).to have_text "Draft Standups"
-    expect(page).to_not have_text "Reviewed Standups"
+    expect(page).to have_text draft_guide.title
+    expect(page).to_not have_text review_requested_guide.title
   end
 
   it "displays a page header that's based on the query" do
-    Generators.valid_guide_community(
-        latest_edition: Generators.valid_edition(content_owner: nil, title: "Design Community")
-        ).tap(&:save!)
-    User.create!(name: "Ronan", email: "ronan@example.com")
+    guide_community = create(:guide_community)
+
+    create(:user, name: "Ronan")
     visit root_path
     within ".filters" do
       fill_in "Title or slug", with: "Form Design"
       select "Ronan", from: "User"
-      select "Design Community", from: "Published by"
+      select guide_community.title, from: "Published by"
       select "Draft", from: "State"
       click_button "Filter guides"
     end
 
-    expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by Design Community"
+    expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by #{guide_community.title}"
   end
 
   [:user, :state, :published_by].each do |n|
