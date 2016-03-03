@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
+  let(:commenter) do
+    create(:user, name: "Commenter", email: "commenter@example.com")
+  end
 
-  let(:commenter) { User.create(name: "Commenter", permissions: ['signin'], email: "commenter@example.com") }
   let(:edition) do
     guide = create(:guide, slug: "/service-manual/commentable")
     guide.latest_edition

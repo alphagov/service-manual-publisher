@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
   describe "#notification_subscribers" do
-    let(:joe) { create(:user, name: "Joe") }
-    let(:liz) { create(:user, name: "Liz") }
+    let(:joe) { build_stubbed(:user, name: "Joe") }
+    let(:liz) { build_stubbed(:user, name: "Liz") }
 
     it "is the edition author and the current edition author" do
       edition = build(:edition, user: joe)
@@ -34,26 +34,21 @@ RSpec.describe Edition, type: :model do
   end
 
   describe "#previously_published_edition" do
-    before do
-      @guide = create(:published_guide)
-      @edition1 = create(:published_edition, guide: @guide)
-      @edition2 = create(:published_edition, guide: @guide)
-      @edition3 = create(:published_edition, guide: @guide)
-      @edition4 = create(:published_edition, guide: @guide)
-      @guide.editions = [
-        @edition1,
-        @edition2,
-        @edition3,
-        @edition4,
-      ]
+    let :editions do
+      1.upto(4).map { build(:published_edition) }
     end
+
+    before do
+      create(:published_guide, editions: editions)
+    end
+
     it "returns an edition that was the latest edition published before the current one" do
-      expect(@edition3.previously_published_edition).to eq @edition2
-      expect(@edition4.previously_published_edition).to eq @edition3
+      expect(editions[2].previously_published_edition).to eq editions[1]
+      expect(editions[3].previously_published_edition).to eq editions[2]
     end
 
     it "returns nil if it has no prviously published editions" do
-      expect(@edition1.previously_published_edition).to eq nil
+      expect(editions[0].previously_published_edition).to eq nil
     end
   end
 

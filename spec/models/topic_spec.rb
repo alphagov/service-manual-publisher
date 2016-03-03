@@ -8,7 +8,7 @@ RSpec.describe Topic do
   end
 
   it "doesn't allow changing the path again" do
-    topic = create(:topic, path: "/service-manual/hello")
+    topic = build_stubbed(:topic, path: "/service-manual/hello")
     topic.path = "/service-manual/wemklfenlkwecw"
     topic.valid?
     expect(topic.errors[:path].size).to eq 1
@@ -28,7 +28,8 @@ RSpec.describe Topic do
 
   describe "on create callbacks" do
     it "generates and sets content_id" do
-      topic = create(:topic, content_id: nil)
+      topic = build(:topic, content_id: nil)
+      topic.valid?
       expect(topic.content_id).to be_present
     end
   end
