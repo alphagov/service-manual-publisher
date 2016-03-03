@@ -35,7 +35,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(api_double).to receive(:put_content)
                             .twice
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
-    expect(api_double).to receive(:put_links)
+    expect(api_double).to receive(:patch_links)
                             .twice
                             .with(an_instance_of(String), an_instance_of(Hash))
 
@@ -79,7 +79,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(api_double).to receive(:put_content)
                             .once
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
-    expect(api_double).to receive(:put_links)
+    expect(api_double).to receive(:patch_links)
                             .once
                             .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:publish)

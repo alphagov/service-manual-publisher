@@ -38,25 +38,25 @@ RSpec.describe TopicPublisher do
     end
   end
 
-  describe "#put_links" do
+  describe "#patch_links" do
     it "puts links for the topic" do
       publisher = described_class.new(Topic.new(content_id: "content-id-hello"))
 
       expect_any_instance_of(TopicPresenter).to receive(:links_payload).and_return(links: { linked_items: [] })
 
-      expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_links).with("content-id-hello", links: { linked_items: [] }).and_return(true)
+      expect_any_instance_of(GdsApi::PublishingApiV2).to receive(:patch_links).with("content-id-hello", links: { linked_items: [] }).and_return(true)
 
-      publisher.put_links
+      publisher.patch_links
     end
 
     it "asynchronously tags linked items to the topic" do
-      allow_any_instance_of(GdsApi::PublishingApiV2).to receive(:put_links)
+      allow_any_instance_of(GdsApi::PublishingApiV2).to receive(:patch_links)
 
       publisher = described_class.new(Topic.new(content_id: "topic-content-id"))
       expect_any_instance_of(TopicPresenter).to receive(:links_payload).and_return(links: { linked_items: ['guide-1-content-id', 'guide-1-content-id'] })
       expect(GuideTaggerJob).to receive(:perform_later).twice
 
-      publisher.put_links
+      publisher.patch_links
     end
   end
 end

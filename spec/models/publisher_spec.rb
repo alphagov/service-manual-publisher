@@ -6,7 +6,7 @@ RSpec.describe Publisher, '#save_draft' do
     guide = Generators.valid_guide(latest_edition: Generators.valid_edition)
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
-    allow(publishing_api).to receive(:put_links)
+    allow(publishing_api).to receive(:patch_links)
 
     publication_response =
       Publisher.new(content_model: guide, publishing_api: publishing_api)
@@ -23,7 +23,7 @@ RSpec.describe Publisher, '#save_draft' do
 
     expect(publishing_api).to receive(:put_content).
                               with(guide.content_id, a_hash_including(base_path: guide.slug))
-    expect(publishing_api).to receive(:put_links).
+    expect(publishing_api).to receive(:patch_links).
                               with(guide.content_id, a_kind_of(Hash))
 
     Publisher.new(content_model: guide, publishing_api: publishing_api).

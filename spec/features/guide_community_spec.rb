@@ -8,7 +8,7 @@ RSpec.describe 'Create a guide community', type: :feature do
     publishing_api = double(:publishing_api)
     stub_const("PUBLISHING_API", publishing_api)
     expect(publishing_api).to receive(:put_content)
-    expect(publishing_api).to receive(:put_links)
+    expect(publishing_api).to receive(:patch_links)
 
     fill_in 'Slug', with: '/service-manual/design-community'
     fill_in "Description", with: "This acts as a test case"
