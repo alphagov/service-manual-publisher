@@ -3,6 +3,8 @@ require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
 RSpec.describe "Creating topics", type: :feature do
+  let(:api_double) { double(:publishing_api) }
+
   it "save a draft topic", js: true do
     guide1 = create(:guide)
     guide2 = create(:guide)
@@ -26,6 +28,14 @@ RSpec.describe "Creating topics", type: :feature do
 
     click_button "Add Guide"
     all(".js-topic-guide")[1].find("option[value='#{guide2.id}']").select_option
+
+    stub_const("PUBLISHING_API", api_double)
+    expect(api_double).to receive(:put_content)
+                            .once
+                            .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
+    expect(api_double).to receive(:patch_links)
+                            .once
+                            .with(an_instance_of(String), an_instance_of(Hash))
 
     click_button "Save"
 

@@ -11,16 +11,14 @@ class TopicsController < ApplicationController
     @topic = Topic.new(params.require(:topic).permit(:path, :title, :description, content_owner_ids: []))
     @topic.tree = JSON.parse(params[:topic][:tree])
 
-    ActiveRecord::Base.transaction do
-      if @topic.save
-        redirect_to edit_topic_path(@topic), notice: "Topic has been created"
-      else
-        render :new
-      end
+    publication = Publisher.new(content_model: @topic).
+                            save_draft(TopicPresenter.new(@topic))
+    if publication.success?
+      redirect_to edit_topic_path(@topic), notice: "Topic has been created"
+    else
+      flash.now[:error] = publication.errors
+      render 'new'
     end
-  rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details.fetch("error", {})["message"]
-    render :new
   end
 
   def edit
