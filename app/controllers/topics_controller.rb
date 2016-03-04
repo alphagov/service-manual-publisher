@@ -12,12 +12,8 @@ class TopicsController < ApplicationController
 
     publication = Publisher.new(content_model: @topic).
                             save_draft(TopicPresenter.new(@topic))
-    if publication.success?
-      redirect_to edit_topic_path(@topic), notice: "Topic has been created"
-    else
-      flash.now[:error] = publication.errors
-      render 'new'
-    end
+
+    respond_for_topic_publication publication, notice: "Topic has been created"
   end
 
   def edit
@@ -33,21 +29,11 @@ class TopicsController < ApplicationController
     if params[:publish]
       publication = publisher.publish
 
-      if publication.success?
-        redirect_to edit_topic_path(@topic), notice: "Topic has been published"
-      else
-        flash.now[:error] = publication.errors
-        render 'edit'
-      end
+      respond_for_topic_publication publication, notice: "Topic has been published"
     else
       publication = publisher.save_draft(TopicPresenter.new(@topic))
 
-      if publication.success?
-        redirect_to edit_topic_path(@topic), notice: "Topic has been updated"
-      else
-        flash.now[:error] = publication.errors
-        render 'edit'
-      end
+      respond_for_topic_publication publication, notice: "Topic has been updated"
     end
   end
 
@@ -57,6 +43,17 @@ private
     @latest_editions ||= Guide.all.includes(:latest_edition).map(&:latest_edition).sort_by(&:title)
   end
   helper_method :latest_editions
+
+  def respond_for_topic_publication(publication, opts = {})
+    success_notice = opts.fetch(:notice)
+
+    if publication.success?
+      redirect_to edit_topic_path(@topic), notice: success_notice
+    else
+      flash.now[:error] = publication.errors
+      render @topic.persisted? ? 'edit' : 'new'
+    end
+  end
 
   def create_topic_params
     params.require(:topic).permit(:path, *updatable_topic_attributes)
