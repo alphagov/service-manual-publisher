@@ -22,7 +22,6 @@ class TopicsController < ApplicationController
 
   def edit
     @topic = Topic.find(params[:id])
-    render :new
   end
 
   def update
@@ -38,7 +37,7 @@ class TopicsController < ApplicationController
         redirect_to edit_topic_path(@topic), notice: "Topic has been published"
       else
         flash.now[:error] = publication.errors
-        render 'new'
+        render 'edit'
       end
     else
       publication = publisher.save_draft(TopicPresenter.new(@topic))
@@ -47,7 +46,7 @@ class TopicsController < ApplicationController
         redirect_to edit_topic_path(@topic), notice: "Topic has been updated"
       else
         flash.now[:error] = publication.errors
-        render 'new'
+        render 'edit'
       end
     end
   end

@@ -1,0 +1,72 @@
+<div class="topics">
+  <%= form_for topic do |f| %>
+    <div class="col-md-8">
+
+      <% if topic.new_record? %>
+        <h2>New topic</h2>
+      <% else %>
+        <h2><%= topic.title %></h2>
+      <% end %>
+
+      <div class="well">
+        <div class="form-group">
+          <%= f.label :path %>
+          <%= f.text_field :path, class: "form-control", disabled: topic.persisted? %>
+        </div>
+        <div class="form-group">
+          <%= f.label :title %>
+          <%= f.text_field :title, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :description %>
+          <%= f.text_field :description, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="well">
+        <h3>Grouping</h3>
+        <ul class="list-group js-sortable-topic-list">
+        </ul>
+
+        <div class="form-group">
+          <%= button_tag "Add Heading", type: "button", class: "js-add-heading btn btn-success" %>
+          <%= button_tag "Add Guide", type: "button", class: "js-add-guide btn btn-success", disabled: true %>
+        </div>
+      </div>
+
+
+      <%= f.hidden_field :tree, value: topic.tree.to_json, class: "js-topic-tree" %>
+      <%= f.submit "Save", class: "btn btn-success btn-save" %>
+      <% if topic.ready_to_publish? %>
+        <%= f.submit "Publish", name: :publish, class: "btn btn-success btn-save" %>
+      <% end %>
+      <% if topic.persisted? %>
+        <%= link_to "View", view_topic_url(topic), class: "btn btn-default", target: "_blank" %>
+      <% end %>
+    <% end %>
+
+    <div class="topics-templates">
+      <li class="list-group-item js-heading-template hidden">
+        <div class="left">
+          <span class="glyphicon glyphicon-move"></span>
+          <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+        </div>
+        <div class="right">
+          <div class="form-group">
+            <input type="text" placeholder="Heading Title" class="js-topic-input js-topic-title form-control">
+          </div>
+          <input type="text" placeholder="Heading Description" class="js-topic-input js-topic-description form-control">
+        </div>
+      </li>
+      <li class="list-group-item js-guide-template hidden">
+        <div class="left">
+          <span class="glyphicon glyphicon-move"></span>
+          <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+        </div>
+        <div class="right">
+          <%= select_tag nil, options_for_select(latest_editions.map { |e| [e.title, e.guide.id] }), {class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
+        </div>
+      </li>
+    </div>
+  </div>
+</div>
