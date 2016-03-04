@@ -56,14 +56,20 @@ RSpec.describe "Creating topics", type: :feature do
   end
 
   it "publish a topic" do
-    guide = create(:guide, latest_edition: build(:edition, title: 'Standup'))
+    stub_const("PUBLISHING_API", api_double)
+    expect(api_double).to receive(:publish).
+                          once
     topic = create(:topic, title: 'Agile Delivery')
 
     visit root_path
     click_link "Manage Topics"
     click_link "Agile Delivery"
 
-    expect(page).to have_button('Publish')
+    click_on 'Publish'
+
+    within('.alert') do
+      expect(page).to have_content('Topic has been published')
+    end
   end
 
   def within_the_only_grouping(&block)
@@ -75,22 +81,6 @@ RSpec.describe "Creating topics", type: :feature do
 
     all_guide_fields = all(".js-topic-guide")
     all_guide_fields[all_guide_fields.length - 1].find(:xpath, ".//option[.='#{name}']").select_option
-  end
-
-  it "publishes an existing draft" do
-    topic = build(:topic)
-    topic.save!
-
-    publishing_api = double(:publishing_api)
-    stub_const("PUBLISHING_API", publishing_api)
-    expect(publishing_api).to receive(:publish)
-
-    visit edit_topic_path(topic)
-    click_button 'Publish'
-
-    within('.alert') do
-      expect(page).to have_content('Topic has been published')
-    end
   end
 end
 
