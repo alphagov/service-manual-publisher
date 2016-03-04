@@ -15,6 +15,14 @@ class Topic < ActiveRecord::Base
     'major'
   end
 
+  def guide_ids
+    tree.map do |grouping|
+      grouping['guides'].map do |guide_id|
+        Integer(guide_id)
+      end
+    end.flatten.uniq
+  end
+
   private
 
   def path_can_be_set_once

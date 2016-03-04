@@ -47,4 +47,12 @@ RSpec.describe Topic do
       expect(topic).to_not be_ready_to_publish
     end
   end
+
+  describe "#guide_ids" do
+    it "returns the associated guide ids" do
+      topic = create(:topic, tree: [{'guides' => ['2', '5']}, {'guides' => ['3']}])
+
+      expect(topic.guide_ids).to match_array([2, 3, 5])
+    end
+  end
 end

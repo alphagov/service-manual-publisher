@@ -39,7 +39,7 @@ private
 
     if publication.success?
       GuideTaggerJob.batch_perform_later(
-        guide_ids: @topic.guides.map(&:id),
+        guide_ids: @topic.guide_ids,
         topic_id: @topic.content_id
       )
       TopicSearchIndexer.new(@topic).index
