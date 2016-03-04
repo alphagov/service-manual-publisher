@@ -24,20 +24,39 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.assign_attributes(update_topic_params)
 
-    publisher = Publisher.new(content_model: @topic)
-
     if params[:publish]
-      publication = publisher.publish
-
-      respond_for_topic_publication publication, notice: "Topic has been published"
+      publish
     else
-      publication = publisher.save_draft(TopicPresenter.new(@topic))
-
-      respond_for_topic_publication publication, notice: "Topic has been updated"
+      save_draft
     end
   end
 
 private
+
+  def publish
+    publication = Publisher.new(content_model: @topic).
+                            publish
+
+    if publication.success?
+      GuideTaggerJob.batch_perform_later(
+        guide_ids: @topic.guides.map(&:id),
+        topic_id: @topic.content_id
+      )
+      TopicSearchIndexer.new(@topic).index
+
+      redirect_to edit_topic_path(@topic), notice: "Topic has been published"
+    else
+      flash.now[:error] = publication.errors
+      render 'edit'
+    end
+  end
+
+  def save_draft
+    publication = Publisher.new(content_model: @topic).
+                            save_draft(TopicPresenter.new(@topic))
+
+    respond_for_topic_publication publication, notice: "Topic has been updated"
+  end
 
   def respond_for_topic_publication(publication, opts = {})
     success_notice = opts.fetch(:notice)
