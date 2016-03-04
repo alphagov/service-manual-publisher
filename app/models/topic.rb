@@ -7,6 +7,14 @@ class Topic < ActiveRecord::Base
     persisted?
   end
 
+  def latest_edition
+    self
+  end
+
+  def update_type
+    'major'
+  end
+
   private
 
   def path_can_be_set_once

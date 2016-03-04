@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'capybara/rails'
 require 'gds_api/publishing_api_v2'
 
-RSpec.describe "Creating topics", type: :feature do
+RSpec.describe "Topics", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   it "before creating a new topic it cannot be published" do

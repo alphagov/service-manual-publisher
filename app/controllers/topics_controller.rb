@@ -31,18 +31,19 @@ class TopicsController < ApplicationController
     @topic.attributes = params.require(:topic).permit(:title, :description, content_owner_ids: [])
     @topic.tree = JSON.parse(params[:topic][:tree])
 
+    publisher = Publisher.new(content_model: @topic)
+
     if params[:publish]
-      ActiveRecord::Base.transaction do
-        if @topic.save
-          TopicPublisher.new(@topic).publish
-          redirect_to topics_path, notice: "Topic has been published"
-        else
-          render :new
-        end
+      publication = publisher.publish
+
+      if publication.success?
+        redirect_to edit_topic_path(@topic), notice: "Topic has been published"
+      else
+        flash.now[:error] = publication.errors
+        render 'new'
       end
     else
-      publication = Publisher.new(content_model: @topic).
-                              save_draft(TopicPresenter.new(@topic))
+      publication = publisher.save_draft(TopicPresenter.new(@topic))
       if publication.success?
         redirect_to edit_topic_path(@topic), notice: "Topic has been updated"
       else
@@ -50,9 +51,6 @@ class TopicsController < ApplicationController
         render 'new'
       end
     end
-  rescue GdsApi::HTTPErrorResponse => e
-    flash[:error] = e.error_details.fetch("error", {})["message"]
-    render :new
   end
 
 private
