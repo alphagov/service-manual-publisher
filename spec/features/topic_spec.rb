@@ -5,6 +5,14 @@ require 'gds_api/publishing_api_v2'
 RSpec.describe "Creating topics", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
+  it "before creating a new topic it cannot be published" do
+    visit root_path
+    click_link "Manage Topics"
+    click_link "Create a Topic"
+
+    expect(page).to_not have_button('Publish')
+  end
+
   it "save a draft topic", js: true do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
@@ -19,8 +27,6 @@ RSpec.describe "Creating topics", type: :feature do
     visit root_path
     click_link "Manage Topics"
     click_link "Create a Topic"
-
-    expect(page).to_not have_button('Publish')
 
     fill_in "Path", with: "/service-manual/something"
     fill_in "Title", with: "The title"
@@ -47,6 +53,15 @@ RSpec.describe "Creating topics", type: :feature do
       expect(guide_fields[0].all('option').detect(&:selected?).text).to eq('Guide 1')
       expect(guide_fields[1].all('option').detect(&:selected?).text).to eq('Guide 2')
     end
+  end
+
+  it "publish a topic" do
+    guide = create(:guide, latest_edition: build(:edition, title: 'Standup'))
+    topic = create(:topic, title: 'Agile Delivery')
+
+    visit root_path
+    click_link "Manage Topics"
+    click_link "Agile Delivery"
 
     expect(page).to have_button('Publish')
   end
