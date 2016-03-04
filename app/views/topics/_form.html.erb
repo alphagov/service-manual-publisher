@@ -64,7 +64,7 @@
           <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
         </div>
         <div class="right">
-          <%= select_tag nil, options_for_select(latest_editions.map { |e| [e.title, e.guide.id] }), {class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
+          <%= select_tag nil, options_for_select(all_guides_container_for_select), {class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
         </div>
       </li>
     </div>

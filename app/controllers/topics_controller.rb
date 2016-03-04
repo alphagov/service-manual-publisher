@@ -39,11 +39,6 @@ class TopicsController < ApplicationController
 
 private
 
-  def latest_editions
-    @latest_editions ||= Guide.all.includes(:latest_edition).map(&:latest_edition).sort_by(&:title)
-  end
-  helper_method :latest_editions
-
   def respond_for_topic_publication(publication, opts = {})
     success_notice = opts.fetch(:notice)
 
