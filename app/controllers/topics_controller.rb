@@ -8,8 +8,7 @@ class TopicsController < ApplicationController
   end
 
   def create
-    @topic = Topic.new(params.require(:topic).permit(:path, :title, :description, content_owner_ids: []))
-    @topic.tree = JSON.parse(params[:topic][:tree])
+    @topic = Topic.new(create_topic_params)
 
     publication = Publisher.new(content_model: @topic).
                             save_draft(TopicPresenter.new(@topic))
@@ -28,8 +27,7 @@ class TopicsController < ApplicationController
 
   def update
     @topic = Topic.find(params[:id])
-    @topic.attributes = params.require(:topic).permit(:title, :description, content_owner_ids: [])
-    @topic.tree = JSON.parse(params[:topic][:tree])
+    @topic.assign_attributes(update_topic_params)
 
     publisher = Publisher.new(content_model: @topic)
 
@@ -44,6 +42,7 @@ class TopicsController < ApplicationController
       end
     else
       publication = publisher.save_draft(TopicPresenter.new(@topic))
+
       if publication.success?
         redirect_to edit_topic_path(@topic), notice: "Topic has been updated"
       else
@@ -59,4 +58,16 @@ private
     @latest_editions ||= Guide.all.includes(:latest_edition).map(&:latest_edition).sort_by(&:title)
   end
   helper_method :latest_editions
+
+  def create_topic_params
+    params.require(:topic).permit(:path, *updatable_topic_attributes)
+  end
+
+  def update_topic_params
+    params.require(:topic).permit(*updatable_topic_attributes)
+  end
+
+  def updatable_topic_attributes
+    [:title, :description, :tree, content_owner_ids: []]
+  end
 end
