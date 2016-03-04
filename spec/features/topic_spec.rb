@@ -55,6 +55,35 @@ RSpec.describe "Creating topics", type: :feature do
     end
   end
 
+  it "update a topic to save another draft" do
+    stub_const("PUBLISHING_API", api_double)
+    expect(api_double).to receive(:put_content)
+                            .once
+                            .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
+    expect(api_double).to receive(:patch_links)
+                            .once
+                            .with(an_instance_of(String), an_instance_of(Hash))
+    topic = create(:topic, title: 'Agile Delivery')
+
+    visit root_path
+    click_link "Manage Topics"
+    click_link "Agile Delivery"
+
+    fill_in 'Description', with: 'Updated description'
+
+    click_button 'Save'
+
+    within('.alert') do
+      expect(page).to have_content('Topic has been updated')
+    end
+
+    # Reload the page to be sure the fields don't contain params from the
+    # previous request
+    visit current_path
+
+    expect(page).to have_field('Description', with: 'Updated description')
+  end
+
   it "publish a topic" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:publish).

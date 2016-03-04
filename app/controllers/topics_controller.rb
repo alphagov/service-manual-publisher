@@ -41,13 +41,13 @@ class TopicsController < ApplicationController
         end
       end
     else
-      ActiveRecord::Base.transaction do
-        if @topic.save
-          TopicPublisher.new(@topic).publish_immediately
-          redirect_to topics_path, notice: "Topic has been updated"
-        else
-          render :new
-        end
+      publication = Publisher.new(content_model: @topic).
+                              save_draft(TopicPresenter.new(@topic))
+      if publication.success?
+        redirect_to edit_topic_path(@topic), notice: "Topic has been updated"
+      else
+        flash.now[:error] = publication.errors
+        render 'new'
       end
     end
   rescue GdsApi::HTTPErrorResponse => e
