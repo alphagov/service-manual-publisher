@@ -83,8 +83,6 @@ private
     if publication.success?
       index_for_search(@guide)
 
-      TopicPublisher.new(@guide.topic).publish_immediately
-
       unless @guide.latest_edition.notification_subscribers == [current_user]
         NotificationMailer.published(@guide, current_user).deliver_later
       end

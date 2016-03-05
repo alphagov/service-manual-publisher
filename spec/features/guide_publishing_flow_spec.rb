@@ -9,7 +9,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     stub_const('PUBLISHING_API', fake_publishing_api)
     allow_any_instance_of(SearchIndexer).to receive(:index)
     allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
-    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   context "latest edition is published" do

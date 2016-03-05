@@ -11,7 +11,6 @@ RSpec.describe GuidesController, type: :controller do
     stub_const('PUBLISHING_API', publishing_api)
     ActionMailer::Base.deliveries.clear
     allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
-    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   describe "#update" do

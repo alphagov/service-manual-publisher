@@ -18,7 +18,6 @@ RSpec.describe "creating guides", type: :feature do
 
     allow_any_instance_of(SearchIndexer).to receive(:index)
     allow_any_instance_of(Guide).to receive(:topic).and_return topic
-    allow_any_instance_of(TopicPublisher).to receive(:publish_immediately)
   end
 
   let(:topic) do
@@ -128,25 +127,6 @@ RSpec.describe "creating guides", type: :feature do
       visit edit_guide_path(guide)
       click_first_button "Publish"
       expect(page).to have_content "This guide could not be published because it is not included in a topic page."
-    end
-  end
-
-  context "guide is included in a topic" do
-    let :guide do
-      create(:approved_guide, slug: "/service-manual/something")
-    end
-
-    it "republishes the topic" do
-      stub_const("PUBLISHING_API", api_double)
-      allow(api_double).to receive(:put_content)
-      allow(api_double).to receive(:publish)
-
-      publisher_double = double(:topic_publisher)
-      expect(TopicPublisher).to receive(:new).with(topic).and_return publisher_double
-      expect(publisher_double).to receive(:publish_immediately)
-
-      visit edit_guide_path(guide)
-      click_first_button "Publish"
     end
   end
 
