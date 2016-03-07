@@ -36,7 +36,7 @@
 
 
       <%= f.hidden_field :tree, value: topic.tree.to_json, class: "js-topic-tree" %>
-      <%= f.submit "Save", class: "btn btn-success btn-save" %>
+      <%= f.submit "Save", class: "btn btn-default btn-save" %>
       <% if topic.ready_to_publish? %>
         <%= f.submit "Publish", name: :publish, class: "btn btn-success btn-save" %>
       <% end %>
