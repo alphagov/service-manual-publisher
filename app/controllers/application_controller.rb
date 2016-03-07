@@ -6,10 +6,10 @@ class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
   before_filter :require_signin_permission!
 
-  def guide_preview_url(guide)
-    [Plek.find('draft-origin'), guide.slug].join('')
+  def preview_content_model_url(content_model)
+    [Plek.find('draft-origin'), content_model.slug].join('')
   end
-  helper_method :guide_preview_url
+  helper_method :preview_content_model_url
 
   def back_or_default(fallback_uri = root_url, anchor: nil)
     uri = if request.referrer.present? && request.referrer != request.url

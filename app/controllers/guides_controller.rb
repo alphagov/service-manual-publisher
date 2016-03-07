@@ -83,8 +83,6 @@ private
     if publication.success?
       index_for_search(@guide)
 
-      TopicPublisher.new(@guide.topic).publish_immediately
-
       unless @guide.latest_edition.notification_subscribers == [current_user]
         NotificationMailer.published(@guide, current_user).deliver_later
       end
@@ -114,7 +112,7 @@ private
 
   def success_url(guide)
     if params[:save_and_preview]
-      guide_preview_url(guide)
+      preview_content_model_url(guide)
     else
       back_or_default
     end
