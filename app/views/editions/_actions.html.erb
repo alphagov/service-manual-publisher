@@ -3,7 +3,7 @@
     <div class="btn-toolbar" role="toolbar">
 
       <% if edition.persisted? %>
-        <%= link_to "Preview", guide_preview_url(guide), class: 'btn btn-default add-right-margin' %>
+        <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
       <% end %>
       <% if !publish_controls_only %>
         <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, data: disable_if_new_record(guide) %>

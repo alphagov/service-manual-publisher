@@ -55,6 +55,16 @@ RSpec.describe "Topics", type: :feature do
     end
   end
 
+  it "links to a preview from a saved draft" do
+    create(:topic, title: 'Agile Delivery', path: '/service-manual/agile-delivery-topic')
+
+    visit root_path
+    click_link "Manage Topics"
+    click_link "Agile Delivery"
+
+    expect(page).to have_link('Preview', href: %r{/service-manual/agile-delivery-topic})
+  end
+
   it "update a topic to save another draft" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)

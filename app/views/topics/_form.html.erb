@@ -41,6 +41,7 @@
         <%= f.submit "Publish", name: :publish, class: "btn btn-success btn-save" %>
       <% end %>
       <% if topic.persisted? %>
+        <%= link_to "Preview", preview_content_model_url(topic), class: 'btn btn-default', target: "_blank" %>
         <%= link_to "View", view_topic_url(topic), class: "btn btn-default", target: "_blank" %>
       <% end %>
     <% end %>

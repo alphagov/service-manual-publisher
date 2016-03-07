@@ -15,6 +15,12 @@ class Topic < ActiveRecord::Base
     'major'
   end
 
+  # TODO: We have topics.path and guides.slug. We should standardise with
+  # the most commonly used term in other apps.
+  def slug
+    path
+  end
+
   def guide_ids
     tree.map do |grouping|
       grouping['guides'].map do |guide_id|
