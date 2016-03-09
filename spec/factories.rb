@@ -63,5 +63,8 @@ FactoryGirl.define do
   factory :review_requested_edition, parent: :edition do
     state "review_requested"
   end
+
+  factory :slug_migration do
+  end
 end
 

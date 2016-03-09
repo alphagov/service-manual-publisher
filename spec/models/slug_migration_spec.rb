@@ -35,4 +35,14 @@ RSpec.describe SlugMigration, type: :model do
     expect(migration.valid?).to eq false
     expect(migration.errors.full_messages_for(:base).size).to eq 1
   end
+
+  it "does not allow redirecting to the same path" do
+    migration = build(
+      :slug_migration,
+      slug: "/service-manual/old-path",
+      redirect_to: "/service-manual/old-path",
+    )
+    expect(migration).to_not be_valid
+    expect(migration.errors.full_messages_for(:redirect_to).size).to eq 1
+  end
 end
