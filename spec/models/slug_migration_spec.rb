@@ -3,29 +3,38 @@ require 'rails_helper'
 RSpec.describe SlugMigration, type: :model do
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      slug_migration = SlugMigration.create!(
-        completed: false,
-        slug: "/service-manual/some-jekyll-path.html",
-        redirect_to: "/some-path",
+      uuid = "1234-5678"
+      expect(SecureRandom).to receive(:uuid).and_return uuid
+
+      migration = create(
+        :slug_migration,
+        :with_redirect_to,
       )
-      expect(slug_migration.content_id).to be_present
+      expect(migration.content_id).to eq uuid
     end
   end
 
   it "is not completed by default" do
-    migration = SlugMigration.create(slug: "/some/slug", redirect_to: "/some-path")
+    migration = create(
+      :slug_migration,
+      :with_redirect_to,
+    )
     expect(migration.completed).to eq false
   end
 
   it "has uniqueness validation on slug" do
-    SlugMigration.create!(slug: "/something", redirect_to: "/some-path")
-    migration = SlugMigration.new(slug: "/something", redirect_to: "/some-other-path")
+    create(:slug_migration, :with_redirect_to)
+    migration = build(:slug_migration)
     expect(migration.valid?).to eq false
     expect(migration.errors.full_messages_for(:slug).size).to eq 1
   end
 
   it "validates redirect_to is present" do
-    migration = SlugMigration.new(slug: "/something", redirect_to: nil, completed: true)
+    migration = build(
+      :slug_migration,
+      :completed,
+      redirect_to: nil,
+    )
     expect(migration.valid?).to eq false
     expect(migration.errors.full_messages_for(:redirect_to).size).to eq 1
   end
