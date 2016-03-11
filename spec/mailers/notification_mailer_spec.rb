@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe NotificationMailer, type: :mailer do
   let(:gary) { build(:user, name: "Gary", email: "gary@example.com") }
   let(:luke) { build(:user, name: "Luke") }
-  let(:guide) { create(:guide, slug: '/service-manual/agile-delivery', latest_edition: edition) }
+  let(:guide) { create(:guide, slug: '/service-manual/topic-name/agile-delivery', latest_edition: edition) }
   let(:edition) { build(:edition, title: "Agile", user: gary) }
 
   before do
@@ -61,7 +61,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"
         expect(part.body.to_s).to include "\"Agile\""
-        expect(part.body.to_s).to include "#{Plek.find('www')}/service-manual/agile-delivery"
+        expect(part.body.to_s).to include "#{Plek.find('www')}/service-manual/topic-name/agile-delivery"
       end
     end
   end

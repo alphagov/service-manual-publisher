@@ -162,13 +162,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should save a draft locally, sent it to Publishing API, then redirect to the front end when previewing" do
-    guide = create(:guide, slug: '/service-manual/preview-test')
+    guide = create(:guide, slug: '/service-manual/topic-name/preview-test')
     visit edit_guide_path(guide)
     fill_in "Title", with: "Changed Title"
 
     expect(fake_publishing_api).to receive(:put_content)
 
-    expect_external_redirect_to "http://draft-origin.dev.gov.uk/service-manual/preview-test" do
+    expect_external_redirect_to "http://draft-origin.dev.gov.uk/service-manual/topic-name/preview-test" do
       click_first_button "Save and preview"
     end
 
@@ -177,7 +177,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "with a review requested" do
     it "lists editions that need a review" do
-      guide = create(:guide, slug: "/service-manual/something")
+      guide = create(:guide, slug: "/service-manual/topic-name/something")
 
       visit edit_guide_path(guide)
       click_first_button "Send for review"
@@ -186,7 +186,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "approved by another user" do
       it "lists editions that are approved" do
-        guide = create(:review_requested_guide, slug: "/service-manual/something")
+        guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
 
         reviewer = create(:user, name: "Keanu Reviews")
         login_as reviewer
@@ -209,7 +209,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "without approval" do
       it "does not allow guides to be published" do
-        guide = create(:review_requested_guide, slug: "/service-manual/something")
+        guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
         expect(page).to_not have_button "Publish"
       end

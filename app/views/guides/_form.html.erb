@@ -66,7 +66,17 @@
         <div class='form-group'>
           <%= f.label :slug  %>
           <%= f.error_list :slug  %>
-          <span class="help-block">Must start with '/service-manual/' and contain only letters and dashes e.g. '/service-manual/stand-up-meetings'. See <a href="https://insidegovuk.blog.gov.uk/url-standards-for-gov-uk/">URL standards for GOV.UK</a>.</span>
+          <div class="help-block">
+            <p>
+              Always use the format: <code>/service-manual/[topic]/[guide]</code>.
+            </p>
+            <p>
+              You must include a topic - it's not automatically generated.
+            </p>
+            <p>
+              Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>/service-manual/agile-delivery/writing-user-stories</code>.
+            </p>
+          </div>
           <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug js-guide-slug', disabled: guide.has_published_edition? %>
         </div>
 

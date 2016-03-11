@@ -5,7 +5,7 @@ RSpec.describe Guide do
 
   describe "#ensure_draft_exists" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+      Guide.create!(slug: "/service-manual/topic-name/slug", latest_edition: edition)
     end
 
     it "does nothing if the latest edition is in a draft state" do
@@ -30,7 +30,7 @@ RSpec.describe Guide do
 
   context "with a topic" do
     let(:guide) do
-      create(:guide, slug: "/service-manual/slug", latest_edition: edition)
+      create(:guide, slug: "/service-manual/topic-name/slug", latest_edition: edition)
     end
 
     let!(:topic) do
@@ -62,7 +62,7 @@ RSpec.describe Guide do
 
   context "without a topic" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/slug", latest_edition: edition)
+      Guide.create!(slug: "/service-manual/topic-name/slug", latest_edition: edition)
     end
 
     describe "#included_in_a_topic?" do
@@ -80,7 +80,7 @@ RSpec.describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      guide = Guide.create!(slug: "/service-manual/slug", content_id: nil, latest_edition: edition)
+      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil, latest_edition: edition)
       expect(guide.content_id).to be_present
     end
   end
@@ -96,6 +96,12 @@ RSpec.describe Guide do
       guide = Guide.new(slug: "/service-manual/", latest_edition: edition)
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be filled in"]
+    end
+
+    it "ensures that slugs aren't saved without the topic name in the path" do
+      guide = Guide.new(slug: "/service-manual/guide-path")
+      guide.valid?
+      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/[topic]'"]
     end
 
     it "does not allow unsupported characters in slugs" do
@@ -125,7 +131,7 @@ RSpec.describe Guide do
     context "has a published edition" do
       it "does not allow changing the slug" do
         guide = create(:published_guide)
-        guide.slug = "/service-manual/something-else"
+        guide.slug = "/service-manual/topic-name/something-else"
         guide.valid?
         expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can't be changed if guide has a published edition"]
       end
@@ -158,14 +164,14 @@ RSpec.describe Guide do
 
   describe "#with_published_editions" do
     it "only returns published editions" do
-      create(:guide, slug: "/service-manual/1")
-      guide_with_published_editions = create(:published_guide, slug: "/service-manual/2")
+      create(:guide, slug: "/service-manual/topic-name/1")
+      guide_with_published_editions = create(:published_guide, slug: "/service-manual/topic-name/2")
       expect(Guide.with_published_editions.to_a).to eq [guide_with_published_editions]
     end
 
     it "does not return duplicates" do
       guide = create(:guide,
-        slug: "/service-manual/2",
+        slug: "/service-manual/topic-name/2",
         editions: [
           build(:published_edition),
           build(:published_edition),
@@ -195,7 +201,7 @@ RSpec.describe Guide do
       titles = ["Standups", "Unit Testing"]
       titles.each_with_index do |title, index|
         edition = build(:review_requested_edition, title: title)
-        create(:guide, slug: "/service-manual/#{index}", latest_edition: edition)
+        create(:guide, slug: "/service-manual/topic-name/#{index}", latest_edition: edition)
       end
 
       results = Guide.search("testing").map {|e| e.latest_edition.title}
@@ -214,7 +220,7 @@ RSpec.describe Guide do
         ),
       )
 
-      Guide.create!(editions: [edition1, edition2], slug: "/service-manual/guide")
+      Guide.create!(editions: [edition1, edition2], slug: "/service-manual/topic-name/guide")
 
       expect(Guide.search("dictionary").count).to eq 0
       expect(Guide.search("thesaurus").count).to eq 1
@@ -222,10 +228,10 @@ RSpec.describe Guide do
 
     it "searches for slug" do
       edition = Edition.new(default_attributes.merge(title: "1"))
-      Guide.create!(latest_edition: edition, slug: "/service-manual/1")
+      Guide.create!(latest_edition: edition, slug: "/service-manual/topic-name/1")
 
       edition = Edition.new(default_attributes.merge(title: "2"))
-      Guide.create!(latest_edition: edition, slug: "/service-manual/2")
+      Guide.create!(latest_edition: edition, slug: "/service-manual/topic-name/2")
 
       results = Guide.search("/service-manual/2").map {|e| e.latest_edition.title}
       expect(results).to eq ["2"]

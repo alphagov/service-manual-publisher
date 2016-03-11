@@ -135,7 +135,7 @@ RSpec.describe "Slug migration", type: :feature do
   end
 
   it "can't migrate to unpublished guides" do
-    guide = create(:guide, slug: "/service-manual/new-path")
+    guide = create(:guide, slug: "/service-manual/topic-name/new-path")
 
     create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
@@ -178,7 +178,7 @@ RSpec.describe "Slug migration", type: :feature do
   context "with a failing publisher-api" do
     context "that raises GdsApi::HTTPServerError" do
       it "does not migrate" do
-        create(:published_guide, slug: "/service-manual/new-path")
+        create(:published_guide, slug: "/service-manual/topic-name/new-path")
 
         slug_migration = create_slug_migration_without_redirect_to(
           "/service-manual/some-jekyll-path.html",
@@ -188,7 +188,7 @@ RSpec.describe "Slug migration", type: :feature do
         expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
 
         manage_first_migration
-        select "/service-manual/new-path", from: "Redirect to"
+        select "/service-manual/topic-name/new-path", from: "Redirect to"
 
         click_button "Migrate"
 
