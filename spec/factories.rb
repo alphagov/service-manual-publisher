@@ -79,5 +79,17 @@ FactoryGirl.define do
       redirect_to "/path-to-redirect-to"
     end
   end
+
+  factory :checked_url do
+    url "http://url.com"
+  end
+
+  factory :ok_checked_url, parent: :checked_url do
+    ok true
+  end
+
+  factory :broken_checked_url, parent: :checked_url do
+    ok false
+  end
 end
 

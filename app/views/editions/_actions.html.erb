@@ -25,6 +25,9 @@
 
         <% if edition.can_be_published? %>
           <%= form.submit "Publish", class: 'btn btn-success add-right-margin', name: :publish %>
+          <% if form.object.errors["latest_edition.body"].any? %>
+            <%= form.submit "Publish with broken urls", class: 'btn btn-danger add-right-margin', name: :publish_with_broken_urls %>
+          <% end %>
         <% end %>
       <% else %>
         <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
