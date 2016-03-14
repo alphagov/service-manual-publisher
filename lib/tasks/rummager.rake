@@ -5,7 +5,7 @@ namespace :rummager do
     require 'rummageable'
 
     root_document = {
-      format: "manual",
+      format: "service_manual",
       title: "Government Service Design Manual",
       description: "All new digital services from the government must meet the Digital by Default Service Standard",
       link: "/service-manual",
@@ -18,7 +18,8 @@ namespace :rummager do
       if edition.published?
         puts "Indexing #{edition.title}..."
         index_document({
-          "_type": "manual_section",
+          "format": "service_manual",
+          "_type": "service_manual",
           "description": edition.description,
           "indexable_content": edition.body,
           "title": edition.title,
@@ -32,7 +33,7 @@ namespace :rummager do
 
   def index_document document
     @rummageable_index ||= Rummageable::Index.new(
-      Plek.current.find('rummager'), '/service-manual'
+      Plek.current.find('rummager'), '/mainstream'
     )
     @rummageable_index.add_batch([document])
   end
