@@ -9,6 +9,7 @@ class SearchIndexer
       Plek.current.find('rummager'), '/mainstream'
     )
     index.add_batch([{
+      "format":            "service_manual",
       "_type":             "service_manual",
       "description":       @edition.description,
       "indexable_content": @edition.body,

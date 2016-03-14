@@ -18,6 +18,7 @@ namespace :rummager do
       if edition.published?
         puts "Indexing #{edition.title}..."
         index_document({
+          "format": "service_manual",
           "_type": "service_manual",
           "description": edition.description,
           "indexable_content": edition.body,

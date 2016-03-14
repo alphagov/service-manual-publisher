@@ -5,6 +5,7 @@ class TopicSearchIndexer
 
   def index
     rummager_index.add_batch([{
+      "format":            "service_manual",
       "_type":             "service_manual",
       "description":       @topic.description,
       "indexable_content": @topic.title + "\n\n" + @topic.description,
