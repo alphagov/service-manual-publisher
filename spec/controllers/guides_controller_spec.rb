@@ -17,7 +17,7 @@ RSpec.describe GuidesController, type: :controller do
     describe "#approve_for_publication" do
       it "sends an email notification" do
         edition = build(:edition, state: 'review_requested')
-        create(:guide, slug: "/service-manual/test", editions: [edition])
+        create(:guide, slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
         put :update, id: edition.guide_id, approve_for_publication: true
@@ -32,7 +32,7 @@ RSpec.describe GuidesController, type: :controller do
       it 'notifies about search indexing errors but does not fail the transaction' do
         expect_any_instance_of(Rummageable::Index).to receive(:add_batch).and_raise("Something went wrong")
         edition = build(:edition, state: 'approved')
-        Guide.create!(slug: "/service-manual/test", editions: [edition])
+        Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         expect(controller).to receive(:notify_airbrake)
 
         put :update, id: edition.guide_id, publish: true
@@ -44,7 +44,7 @@ RSpec.describe GuidesController, type: :controller do
       it "sends an email notification when published by another user" do
         allow_any_instance_of(Rummageable::Index).to receive(:add_batch)
         edition = build(:edition, state: 'published')
-        Guide.create!(slug: "/service-manual/test", editions: [edition])
+        Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         publisher = build(:user, email: "ms.publisher@example.com")
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([publisher])
 
@@ -58,7 +58,7 @@ RSpec.describe GuidesController, type: :controller do
       it "avoids email notification when published by the author" do
         allow_any_instance_of(Rummageable::Index).to receive(:add_batch)
         edition = build(:edition, state: 'published')
-        Guide.create!(slug: "/service-manual/test", editions: [edition])
+        Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
         put :update, id: edition.guide_id, publish: true

@@ -4,11 +4,11 @@ require 'capybara/rails'
 RSpec.describe "filtering guides", type: :feature do
   it "filters by state" do
     create(:guide,
-          slug: "/service-manual/a",
+          slug: "/service-manual/topic-name/a",
           latest_edition: build(:edition, state:"review_requested", title: "Edition 1"),
          )
     create(:guide,
-          slug: "/service-manual/b",
+          slug: "/service-manual/topic-name/b",
           latest_edition: build(:edition, state: "draft", title: "Edition 2"),
     )
 
@@ -26,21 +26,21 @@ RSpec.describe "filtering guides", type: :feature do
     linda = build(:user, name: "Linda")
 
     create(:guide,
-           slug: "/service-manual/a",
+           slug: "/service-manual/topic-name/a",
            latest_edition: build(:edition, user: dave),
     )
     create(:guide,
-           slug: "/service-manual/b",
+           slug: "/service-manual/topic-name/b",
            latest_edition: build(:edition, user: linda),
     )
 
     filter_by_user "Dave"
-    expect(page).to have_text "/service-manual/a"
-    expect(page).to_not have_text "/service-manual/b"
+    expect(page).to have_text "/service-manual/topic-name/a"
+    expect(page).to_not have_text "/service-manual/topic-name/b"
 
     filter_by_user "Linda"
-    expect(page).to_not have_text "/service-manual/a"
-    expect(page).to have_text "/service-manual/b"
+    expect(page).to_not have_text "/service-manual/topic-name/a"
+    expect(page).to have_text "/service-manual/topic-name/b"
   end
 
   it "filters by published by" do
@@ -53,7 +53,7 @@ RSpec.describe "filtering guides", type: :feature do
                       title: "Edition #{i}",
                       content_owner_id: guide_community.id,
       )
-      create(:guide, slug: "/service-manual/#{i}", latest_edition: edition)
+      create(:guide, slug: "/service-manual/topic-name/#{i}", latest_edition: edition)
     end
 
     filter_by_published_by "Content Owner 1"
@@ -67,10 +67,10 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "searches for keywords" do
     edition1 = build(:edition, state: "review_requested", title: "Standups")
-    create(:guide, slug: "/service-manual/something", latest_edition: edition1)
+    create(:guide, slug: "/service-manual/topic-name/something", latest_edition: edition1)
 
     edition2 = build(:edition, state: "review_requested", title: "Unit Testing")
-    create(:guide, slug: "/service-manual/something", latest_edition: edition2)
+    create(:guide, slug: "/service-manual/topic-name/something", latest_edition: edition2)
 
     search_for "testing"
 

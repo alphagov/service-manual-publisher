@@ -145,7 +145,7 @@ RSpec.describe Edition, type: :model do
     end
 
     let :guide do
-      build(:guide, slug: "/service-manual/something", latest_edition: edition)
+      build(:guide, slug: "/service-manual/topic-name/something", latest_edition: edition)
     end
 
     describe "#can_be_approved?" do

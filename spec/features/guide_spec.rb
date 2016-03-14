@@ -120,7 +120,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     let :guide do
-      create(:approved_guide, slug: "/service-manual/something")
+      create(:approved_guide, slug: "/service-manual/topic-name/something")
     end
 
     it "does not publish the guide" do
@@ -147,7 +147,7 @@ RSpec.describe "creating guides", type: :feature do
   context "when updating a guide" do
     context "the guide has previously been published" do
       before do
-        @guide = create(:published_guide, slug: "/service-manual/something")
+        @guide = create(:published_guide, slug: "/service-manual/topic-name/something")
       end
 
       it "prevents users from editing the url slug" do
@@ -157,7 +157,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "shows the summary of validation errors" do
-      guide = Guide.create!(slug: "/service-manual/something", latest_edition: build(:edition))
+      guide = Guide.create!(slug: "/service-manual/topic-name/something", latest_edition: build(:edition))
       visit edit_guide_path(guide)
       fill_in "Title", with: ""
       click_first_button "Save"
@@ -171,7 +171,7 @@ RSpec.describe "creating guides", type: :feature do
       publication = Publisher::PublicationResponse.new(success: false, errors: ['trouble'])
       allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
 
-      guide = create(:guide, slug: "/service-manual/something")
+      guide = create(:guide, slug: "/service-manual/topic-name/something")
 
       visit edit_guide_path(guide)
       click_first_button "Save"
@@ -199,7 +199,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when a review can be requested" do
       before do
-        guide = create(:guide, slug: "/service-manual/something")
+        guide = create(:guide, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
       end
 
@@ -212,7 +212,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when it can be marked as approved" do
       before do
-        guide = create(:review_requested_guide, slug: "/service-manual/something")
+        guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
       end
 
@@ -225,7 +225,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when it can be published" do
       before do
-        guide = create(:approved_guide, slug: "/service-manual/something")
+        guide = create(:approved_guide, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
       end
 
@@ -254,9 +254,9 @@ RSpec.describe "creating guides", type: :feature do
 
     context "user edits slug manually" do
       it "does not generate slug", js: true do
-        fill_in "Slug", with: "/service-manual/something"
+        fill_in "Slug", with: "/service-manual/topic-name/something"
         fill_in "Title", with: "My Guide Title"
-        expect(find_field('Slug').value).to eq '/service-manual/something'
+        expect(find_field('Slug').value).to eq '/service-manual/topic-name/something'
       end
     end
   end
@@ -274,7 +274,7 @@ RSpec.describe "creating guides", type: :feature do
         create(
           :guide,
           latest_edition: edition,
-          slug: '/service-manual/guide-1',
+          slug: '/service-manual/topic-name/guide-1',
         )
       end
 

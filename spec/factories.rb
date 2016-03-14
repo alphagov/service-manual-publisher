@@ -1,12 +1,12 @@
 FactoryGirl.define do
   factory :guide_community do
     latest_edition { build(:edition, content_owner: nil) }
-    slug "/service-manual/test-guide#{SecureRandom.hex}"
+    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
   end
 
   factory :guide do
     latest_edition { build(:edition) }
-    slug "/service-manual/test-guide#{SecureRandom.hex}"
+    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
   end
 
   factory :edition do
