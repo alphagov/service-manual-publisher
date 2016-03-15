@@ -20,16 +20,3 @@
     </div>
   <% end %>
 </div>
-
-<div class='well'>
-  <h2>Search index</h2>
-  <% if @slug_migration.has_search_document? %>
-    <%= form_tag slug_migration_delete_search_index_path(slug_migration_id: @slug_migration.id) do |f| %>
-      <%= submit_tag "Delete from search index", class: "btn btn-danger" %>
-    <% end %>
-  <% else %>
-    <p>
-      This url has nothing indexed in search
-    </p>
-  <% end %>
-</div>
