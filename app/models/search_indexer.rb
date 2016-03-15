@@ -6,7 +6,7 @@ class SearchIndexer
 
   def index
     index = Rummageable::Index.new(
-      Plek.current.find('rummager'), '/service-manual'
+      Plek.current.find('rummager'), '/mainstream'
     )
     index.add_batch([{
       "_type":             "manual_section",

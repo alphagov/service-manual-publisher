@@ -32,7 +32,7 @@ namespace :rummager do
 
   def index_document document
     @rummageable_index ||= Rummageable::Index.new(
-      Plek.current.find('rummager'), '/service-manual'
+      Plek.current.find('rummager'), '/mainstream'
     )
     @rummageable_index.add_batch([document])
   end

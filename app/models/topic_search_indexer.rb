@@ -18,7 +18,7 @@ class TopicSearchIndexer
 
     def rummager_index
       Rummageable::Index.new(
-        Plek.current.find('rummager'), '/service-manual'
+        Plek.current.find('rummager'), '/mainstream'
       )
     end
 end
