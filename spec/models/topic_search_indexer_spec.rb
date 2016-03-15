@@ -11,11 +11,13 @@ RSpec.describe SearchIndexer do
       description: "The Topic Description",
     )
     expect(index).to receive(:add_batch).with([{
-      _type:             "edition",
+      format:            "service_manual_topic",
+      _type:             "service_manual_topic",
       description:       topic.description,
       indexable_content: topic.title + "\n\n" + topic.description,
       title:             topic.title,
       link:              topic.path,
+      manual:            "service-manual",
       organisations:     ["government-digital-service"]
     }])
     TopicSearchIndexer.new(topic).index
