@@ -220,40 +220,4 @@ RSpec.describe "Slug migration", type: :feature do
       end
     end
   end
-
-  context "with a slug migration" do
-    before do
-      guide = create(:published_guide)
-      @slug_migration = SlugMigration.create!(
-        completed: false,
-        slug: "/service-manual/path.html",
-        redirect_to: guide.slug,
-      )
-    end
-
-    context "that has a search index" do
-      it "allows the search index to be deleted" do
-        expect(@rummager_double).to receive(:get_content!).with(@slug_migration.slug).twice.and_return(true)
-        expect(@rummager_double).to receive(:delete_content!).with(@slug_migration.slug)
-
-        visit root_path
-        click_link "Manage Migrations"
-        click_link "Manage"
-        click_button "Delete from search index"
-        expect(page).to have_content "Document has been removed from search"
-      end
-    end
-
-    context "that does not have a search index" do
-      it "does not allow the search index to be deleted" do
-        not_found_error = GdsApi::HTTPNotFound.new(404, "error", "error")
-        expect(@rummager_double).to receive(:get_content!).with(@slug_migration.slug).and_raise(not_found_error)
-
-        visit root_path
-        click_link "Manage Migrations"
-        click_link "Manage"
-        expect(page).to_not have_button "Delete from search index"
-      end
-    end
-  end
 end

@@ -5,11 +5,13 @@ class TopicSearchIndexer
 
   def index
     rummager_index.add_batch([{
-      "_type":             "edition",
+      "format":            "service_manual_topic",
+      "_type":             "service_manual_topic",
       "description":       @topic.description,
       "indexable_content": @topic.title + "\n\n" + @topic.description,
       "title":             @topic.title,
       "link":              @topic.path,
+      "manual":            "service-manual",
       "organisations":     ["government-digital-service"],
     }])
   end
@@ -18,7 +20,7 @@ class TopicSearchIndexer
 
     def rummager_index
       Rummageable::Index.new(
-        Plek.current.find('rummager'), '/service-manual'
+        Plek.current.find('rummager'), '/mainstream'
       )
     end
 end
