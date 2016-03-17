@@ -50,9 +50,12 @@ RSpec.describe GovspeakUrlChecker do
       end
 
       it "uses basic auth for relative urls" do
-        expected_url = "http://username:password@www.dev.gov.uk/service-manual/agile"
+        expected_url = "http://www.dev.gov.uk/service-manual/agile"
         stub_request(:get, expected_url).to_return(status: 200)
         govspeak = "[link](/service-manual/agile)"
+        expect(EventMachine::HttpRequest).to receive(:new)
+          .with(anything, a_hash_including(head: {"authorization" => ["username", "password"]}))
+          .and_call_original
         expect(GovspeakUrlChecker.new(govspeak).find_broken_urls).to eq []
       end
     end
@@ -95,28 +98,6 @@ RSpec.describe GovspeakUrlChecker do
 [link 1](http://old-url.com)
 [link 2](http://new-url.com)
       GOVSPEAK
-      GovspeakUrlChecker.new(govspeak).find_broken_urls
-    end
-
-    it "lists links that httparty raises on" do
-      govspeak = "[link](something://url.com)"
-      result = GovspeakUrlChecker.new(govspeak).find_broken_urls
-      expect(result).to include "something://url.com"
-    end
-
-    it "sets a timeout" do
-      expect(HTTParty).to receive(:get).with(
-        anything, hash_including(timeout: 5)
-      )
-      govspeak = "[link](http://example.org)"
-      GovspeakUrlChecker.new(govspeak).find_broken_urls
-    end
-
-    it "follows redirects" do
-      expect(HTTParty).to receive(:get).with(
-        anything, hash_including(follow_redirects: true)
-      )
-      govspeak = "[link](http://example.org)"
       GovspeakUrlChecker.new(govspeak).find_broken_urls
     end
   end

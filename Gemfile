@@ -24,6 +24,7 @@ gem 'redcarpet', '~> 3.3.3'
 gem 'rummageable', '1.2.0'
 gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
 gem 'httparty', '~> 0.13.7'
+gem 'em-http-request', '~> 1.1', '>= 1.1.3'
 
 group :development do
   gem 'better_errors'

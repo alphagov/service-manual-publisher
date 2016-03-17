@@ -4,44 +4,63 @@ class GovspeakUrlChecker
   end
 
   def find_broken_urls
-    extract_all_urls_from_govspeak.select do |url|
-      checked_url = CheckedUrl.find_or_initialize_by(url: url)
-      if checked_url.new_record? || checked_url.expired?
-        checked_url.ok = check_url(url)
-        checked_url.save!
-      end
+    urls_to_check = extract_all_urls_from_govspeak.select do |url|
+      url = CheckedUrl.find_or_initialize_by(url: url)
+      url.new_record? || url.expired?
+    end
 
-      !checked_url.ok?
+    if urls_to_check.any?
+      broken_urls = check_urls(urls_to_check)
+      urls_to_check.each do |url|
+        CheckedUrl.find_or_initialize_by(url: url) do |checked_url|
+          checked_url.ok = !broken_urls.include?(checked_url.url)
+        end.save!
+      end
+      broken_urls
+    else
+      []
     end
   end
 
   private
 
-    def check_url url
-      options = {
-        follow_redirects: true,
-        timeout: 5,
-      }
+  def check_urls urls
+    EventMachine.run {
+      multi = EventMachine::MultiRequest.new
 
-      if url.starts_with? "/"
-        url = "#{Plek.new.website_root}#{url}"
-        if ENV["HTTP_USERNAME"] && ENV["HTTP_PASSWORD"]
-          options[:basic_auth] = {
-            username: ENV["HTTP_USERNAME"],
-            password: ENV["HTTP_PASSWORD"],
-          }
+      urls.each_with_index do |url, index|
+        options = {
+          connect_timeout: 1,
+          inactivity_timeout: 5,
+          redirects: 3,
+        }
+        if url.starts_with? "/"
+          url = "#{Plek.new.website_root}#{url}"
+          if ENV["HTTP_USERNAME"] && ENV["HTTP_PASSWORD"]
+            options[:head] = {
+              "authorization" => [
+                ENV["HTTP_USERNAME"],
+                ENV["HTTP_PASSWORD"],
+              ]
+            }
+          end
         end
-      end
 
-      begin
-        HTTParty.get(
-          url,
-          options,
-        ).ok?
-      rescue
-        false
+        http = EventMachine::HttpRequest.new(url, options)
+        request = http.get
+        multi.add index, request
       end
-    end
+      multi.callback do
+        broken_urls = []
+        urls.each_with_index do |url, index|
+          ok = multi.responses[:callback][index].response_header.successful?
+          broken_urls << url if !ok
+        end
+        EventMachine.stop
+        return broken_urls
+      end
+    }
+  end
 
     def extract_all_urls_from_govspeak
       govspeak_document = Govspeak::Document.new(@govspeak)
