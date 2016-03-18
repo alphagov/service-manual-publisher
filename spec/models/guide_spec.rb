@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Guide do
+  before do
+    allow_any_instance_of(GovspeakUrlChecker).to receive(:find_broken_urls).and_return []
+  end
+
   let(:edition) { build(:published_edition) }
 
   describe "#ensure_draft_exists" do

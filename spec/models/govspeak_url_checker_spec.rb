@@ -97,27 +97,5 @@ RSpec.describe GovspeakUrlChecker do
       GOVSPEAK
       GovspeakUrlChecker.new(govspeak).find_broken_urls
     end
-
-    it "lists links that httparty raises on" do
-      govspeak = "[link](something://url.com)"
-      result = GovspeakUrlChecker.new(govspeak).find_broken_urls
-      expect(result).to include "something://url.com"
-    end
-
-    it "sets a timeout" do
-      expect(HTTParty).to receive(:get).with(
-        anything, hash_including(timeout: 5)
-      )
-      govspeak = "[link](http://example.org)"
-      GovspeakUrlChecker.new(govspeak).find_broken_urls
-    end
-
-    it "follows redirects" do
-      expect(HTTParty).to receive(:get).with(
-        anything, hash_including(follow_redirects: true)
-      )
-      govspeak = "[link](http://example.org)"
-      GovspeakUrlChecker.new(govspeak).find_broken_urls
-    end
   end
 end

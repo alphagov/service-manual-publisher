@@ -4,44 +4,59 @@ class GovspeakUrlChecker
   end
 
   def find_broken_urls
-    extract_all_urls_from_govspeak.select do |url|
-      checked_url = CheckedUrl.find_or_initialize_by(url: url)
-      if checked_url.new_record? || checked_url.expired?
-        checked_url.ok = check_url(url)
-        checked_url.save!
-      end
-
-      !checked_url.ok?
+    urls_to_check = extract_all_urls_from_govspeak.select do |url|
+      url = CheckedUrl.find_or_initialize_by(url: url)
+      url.new_record? || url.expired?
     end
+
+    broken_urls = check_urls(urls_to_check)
+    urls_to_check.each do |url|
+      CheckedUrl.find_or_create_by(url: url) do |checked_url|
+        checked_url.ok = broken_urls.exclude?(checked_url.url)
+      end
+    end
+    broken_urls
   end
 
   private
 
-    def check_url url
+  def check_urls urls
+    broken_urls = []
+    hydra = Typhoeus::Hydra.new
+
+    urls.each do |url|
       options = {
-        follow_redirects: true,
-        timeout: 5,
+        followlocation: true,
+        forbid_reuse: true,
+        timeout: 10,
+        connecttimeout: 10,
       }
 
       if url.starts_with? "/"
         url = "#{Plek.new.website_root}#{url}"
         if ENV["HTTP_USERNAME"] && ENV["HTTP_PASSWORD"]
-          options[:basic_auth] = {
-            username: ENV["HTTP_USERNAME"],
-            password: ENV["HTTP_PASSWORD"],
-          }
+          options[:userpwd] = "#{ENV["HTTP_USERNAME"]}:#{ENV["HTTP_PASSWORD"]}"
         end
       end
 
       begin
-        HTTParty.get(
-          url,
-          options,
-        ).ok?
-      rescue
-        false
+        Addressable::URI.parse(url)
+      rescue URI::InvalidURIError, Addressable::URI::InvalidURIError
+        broken_urls << url
+        next
       end
+
+      request = Typhoeus::Request.new(url, options)
+      request.on_failure do |response|
+        broken_urls << url
+      end
+
+      hydra.queue request
     end
+    hydra.run
+
+    broken_urls
+  end
 
     def extract_all_urls_from_govspeak
       govspeak_document = Govspeak::Document.new(@govspeak)

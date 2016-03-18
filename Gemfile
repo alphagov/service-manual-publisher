@@ -24,6 +24,8 @@ gem 'redcarpet', '~> 3.3.3'
 gem 'rummageable', '1.2.0'
 gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
 gem 'httparty', '~> 0.13.7'
+gem 'addressable', '~> 2.3.7'
+gem 'typhoeus', '~> 1.0', '>= 1.0.1'
 
 group :development do
   gem 'better_errors'

@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
+  before do
+    allow_any_instance_of(GovspeakUrlChecker).to receive(:find_broken_urls).and_return []
+  end
+
   describe "#notification_subscribers" do
     let(:joe) { build_stubbed(:user, name: "Joe") }
     let(:liz) { build_stubbed(:user, name: "Liz") }
