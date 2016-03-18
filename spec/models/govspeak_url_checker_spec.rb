@@ -50,12 +50,9 @@ RSpec.describe GovspeakUrlChecker do
       end
 
       it "uses basic auth for relative urls" do
-        expected_url = "http://www.dev.gov.uk/service-manual/agile"
+        expected_url = "http://username:password@www.dev.gov.uk/service-manual/agile"
         stub_request(:get, expected_url).to_return(status: 200)
         govspeak = "[link](/service-manual/agile)"
-        expect(EventMachine::HttpRequest).to receive(:new)
-          .with(anything, a_hash_including(head: {"authorization" => ["username", "password"]}))
-          .and_call_original
         expect(GovspeakUrlChecker.new(govspeak).find_broken_urls).to eq []
       end
     end

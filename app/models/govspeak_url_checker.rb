@@ -9,57 +9,53 @@ class GovspeakUrlChecker
       url.new_record? || url.expired?
     end
 
-    if urls_to_check.any?
-      broken_urls = check_urls(urls_to_check)
-      urls_to_check.each do |url|
-        CheckedUrl.find_or_initialize_by(url: url) do |checked_url|
-          checked_url.ok = !broken_urls.include?(checked_url.url)
-        end.save!
+    broken_urls = check_urls(urls_to_check)
+    urls_to_check.each do |url|
+      CheckedUrl.find_or_create_by(url: url) do |checked_url|
+        checked_url.ok = broken_urls.exclude?(checked_url.url)
       end
-      broken_urls
-    else
-      []
     end
+    broken_urls
   end
 
   private
 
   def check_urls urls
-    EventMachine.run {
-      multi = EventMachine::MultiRequest.new
+    broken_urls = []
+    hydra = Typhoeus::Hydra.new
 
-      urls.each_with_index do |url, index|
-        options = {
-          connect_timeout: 1,
-          inactivity_timeout: 5,
-          redirects: 3,
-        }
-        if url.starts_with? "/"
-          url = "#{Plek.new.website_root}#{url}"
-          if ENV["HTTP_USERNAME"] && ENV["HTTP_PASSWORD"]
-            options[:head] = {
-              "authorization" => [
-                ENV["HTTP_USERNAME"],
-                ENV["HTTP_PASSWORD"],
-              ]
-            }
-          end
-        end
+    urls.each do |url|
+      options = {
+        followlocation: true,
+        forbid_reuse: true,
+        timeout: 10,
+        connecttimeout: 10,
+      }
 
-        http = EventMachine::HttpRequest.new(url, options)
-        request = http.get
-        multi.add index, request
-      end
-      multi.callback do
-        broken_urls = []
-        urls.each_with_index do |url, index|
-          ok = multi.responses[:callback][index].response_header.successful?
-          broken_urls << url if !ok
+      if url.starts_with? "/"
+        url = "#{Plek.new.website_root}#{url}"
+        if ENV["HTTP_USERNAME"] && ENV["HTTP_PASSWORD"]
+          options[:userpwd] = "#{ENV["HTTP_USERNAME"]}:#{ENV["HTTP_PASSWORD"]}"
         end
-        EventMachine.stop
-        return broken_urls
       end
-    }
+
+      begin
+        Addressable::URI.parse(url)
+      rescue URI::InvalidURIError, Addressable::URI::InvalidURIError
+        broken_urls << url
+        next
+      end
+
+      request = Typhoeus::Request.new(url, options)
+      request.on_failure do |response|
+        broken_urls << url
+      end
+
+      hydra.queue request
+    end
+    hydra.run
+
+    broken_urls
   end
 
     def extract_all_urls_from_govspeak
