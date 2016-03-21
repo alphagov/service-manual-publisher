@@ -41,7 +41,6 @@ group :development, :test do
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
-  gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
   gem 'jasmine'
 end
 
@@ -52,4 +51,5 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'webmock'
+  gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
 end
