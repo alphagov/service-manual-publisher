@@ -57,7 +57,7 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       )
     GuideCommunity.create!(
       latest_edition: community_guide_edition,
-      slug: "/service-manual/design-community"
+      slug: "/service-manual/communities/design-community"
     )
   end
 
