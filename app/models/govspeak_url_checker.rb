@@ -1,3 +1,5 @@
+require "addressable/uri"
+
 class GovspeakUrlChecker
   def initialize govspeak
     @govspeak = govspeak
