@@ -85,7 +85,11 @@ if Rails.env.development? || ENV["GOVUK_APP_DOMAIN"] == "preview.alphagov.co.uk"
       content_owner:   GuideCommunity.first,
       user:            author,
     )
-    guide = Guide.create!(slug: object[:url], content_id: nil, latest_edition: edition)
+    guide = Guide.create(slug: object[:url], content_id: nil, latest_edition: edition)
+    if guide.errors.any?
+      puts "Couldn't save guide: #{guide.errors.to_json}"
+      next
+    end
 
     Publisher.new(content_model: guide).
               save_draft(GuidePresenter.new(guide, guide.latest_edition))
