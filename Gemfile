@@ -26,6 +26,7 @@ gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
 gem 'httparty', '~> 0.13.7'
 gem 'addressable', '~> 2.3.7'
 gem 'typhoeus', '~> 1.0', '>= 1.0.1'
+gem 'rinku', '~> 1.7', '>= 1.7.3', require: "rails_rinku"
 
 group :development do
   gem 'better_errors'
