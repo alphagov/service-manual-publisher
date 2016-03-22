@@ -69,14 +69,17 @@ bowl service-manual-publisher
 
 The application has a style guide that can be accessed on `/style-guide`.
 
-### Seeding data
+### Seeding old service manual data
 
-Running `bundle exec rake db:seed` will load sample data into the database.
 The sample data is taken from the existing (to be deprecated)
 [government-service-design-manual](https://github.com/alphagov/government-service-design-manual/) repository.
 If you don't have a local clone of the
 [government-service-design-manual](https://github.com/alphagov/government-service-design-manual/),
 it will be cloned for you.
+
+```
+bundle exec rake import_old_service_manual_content
+```
 
 ### Testing
 
