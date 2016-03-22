@@ -261,54 +261,6 @@ RSpec.describe "creating guides", type: :feature do
     end
   end
 
-  describe "url validation" do
-    context "with invalid urls in document" do
-      let :edition do
-        build(
-          :approved_edition,
-          body: "[broken](http://nothing.com)",
-        )
-      end
-
-      let :guide do
-        create(
-          :guide,
-          latest_edition: edition,
-          slug: '/service-manual/topic-name/guide-1',
-        )
-      end
-
-      before do
-        expect_any_instance_of(GovspeakUrlChecker).to receive(:find_broken_urls)
-          .and_return(["http://nothing.com"])
-      end
-
-      it "does not allow documents to be published" do
-        visit edit_guide_path(guide)
-        click_first_button "Publish"
-
-        within(".full-error-list") do
-          error = "Latest edition body url 'http://nothing.com' is broken"
-          expect(page).to have_content error
-        end
-      end
-
-      it "allows publishing to be forced" do
-        stub_const("PUBLISHING_API", api_double)
-        expect(api_double).to receive(:publish).once
-
-        visit edit_guide_path(guide)
-        click_first_button "Publish"
-        click_first_button "Publish with broken urls"
-
-        expect(page).to have_text "Guide has been published"
-
-        guide.reload
-        expect(guide.latest_edition).to be_published
-      end
-    end
-  end
-
 private
 
   def fill_in_guide_form

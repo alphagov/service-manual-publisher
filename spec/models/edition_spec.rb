@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
-  before do
-    allow_any_instance_of(GovspeakUrlChecker).to receive(:find_broken_urls).and_return []
-  end
-
   describe "#notification_subscribers" do
     let(:joe) { build_stubbed(:user, name: "Joe") }
     let(:liz) { build_stubbed(:user, name: "Liz") }
@@ -104,41 +100,6 @@ RSpec.describe Edition, type: :model do
       end
     end
 
-    context "an edition with broken links" do
-      let :edition do
-        build(
-          :edition,
-          body: "[broken link](http://not-a-real-domain-name.nope)",
-        )
-      end
-
-      before do
-        url_checker_double = double(:url_checker)
-        allow(GovspeakUrlChecker).to receive(:new)
-          .and_return(url_checker_double)
-        allow(url_checker_double).to receive(:find_broken_urls)
-          .and_return(["http://not-a-real-domain-name.nope"])
-      end
-
-      context "that is being published" do
-        before do
-          edition.state = "published"
-        end
-
-        it "validates links" do
-          edition.valid?
-          expect(edition.errors.full_messages_for(:body).size).to eq 1
-        end
-      end
-
-      context "that is not being published" do
-        it "does not validate links" do
-          edition.valid?
-          expect(edition.errors.full_messages_for(:body).size).to eq 0
-        end
-      end
-
-    end
   end
 
   context "review and approval" do
