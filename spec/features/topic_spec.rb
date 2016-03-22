@@ -98,14 +98,14 @@ RSpec.describe "Topics", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:publish).
                           once
-    topic = create(:topic, title: 'Agile Delivery')
+    topic = create(:topic, :with_some_guides)
 
     # When publishing a topic we also need to update the links for all the relevant
     # guides so that they can display which topic they're in.
     #
     # Expect that the batch operation to patch the links is called
-    expect(GuideTaggerJob).to receive(:batch_perform_later).
-                              with(guide_ids: [], topic_id: topic.content_id)
+    expect(GuideTaggerJob).to receive(:batch_perform_later)
+      .with(topic)
 
     # Expect that the topic is attempted to be indexed for search
     topic_search_indexer = double(:topic_search_indexer)
@@ -114,7 +114,7 @@ RSpec.describe "Topics", type: :feature do
 
     visit root_path
     click_link "Manage Topics"
-    click_link "Agile Delivery"
+    click_link topic.title
 
     click_on 'Publish'
 

@@ -21,12 +21,15 @@ class Topic < ActiveRecord::Base
     path
   end
 
-  def guide_ids
-    tree.map do |grouping|
+  def guide_content_ids
+    ids = tree.map do |grouping|
       grouping['guides'].map do |guide_id|
         Integer(guide_id)
       end
     end.flatten.uniq
+    Guide
+      .where(id: ids)
+      .pluck(:content_id)
   end
 
   private
