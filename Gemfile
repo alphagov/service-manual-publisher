@@ -23,9 +23,6 @@ gem 'diffy', '~> 3.0', '>= 3.0.7'
 gem 'redcarpet', '~> 3.3.3'
 gem 'rummageable', '1.2.0'
 gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
-gem 'httparty', '~> 0.13.7'
-gem 'addressable', '~> 2.3.7'
-gem 'typhoeus', '~> 1.0', '>= 1.0.1'
 gem 'rinku', '~> 1.7', '>= 1.7.3', require: "rails_rinku"
 
 group :development do
@@ -51,6 +48,5 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'webmock'
   gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
 end

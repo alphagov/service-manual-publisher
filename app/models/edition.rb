@@ -17,9 +17,6 @@ class Edition < ActiveRecord::Base
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
   validate :published_cant_change
-  validate :urls_must_be_valid
-
-  attr_accessor :skip_broken_url_validation
 
   auto_strip_attributes(
     :title,
@@ -107,17 +104,6 @@ private
   def published_cant_change
     if state_was == 'published' && changes.except('updated_at').present?
       errors.add(:base, "can not be changed after it's been published. Perhaps someone has published it whilst you were editing it.")
-    end
-  end
-
-  def urls_must_be_valid
-    return if skip_broken_url_validation
-
-    if state_was != 'published' && published?
-      broken_urls = GovspeakUrlChecker.new(body).find_broken_urls
-      broken_urls.each do |broken_url|
-        errors.add(:body, "url '#{broken_url}' is broken")
-      end
     end
   end
 
