@@ -23,7 +23,7 @@
         </h3>
       </div>
       <div class="panel-body">
-        <%= comment.comment %>
+        <%= auto_link(comment.comment, :all, target: "_blank") %>
       </div>
     </div>
   <% end %>

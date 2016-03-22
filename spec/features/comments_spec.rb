@@ -12,18 +12,40 @@ RSpec.describe "Commenting", type: :feature do
 
   describe 'for a normal guide' do
     it 'write a comment successfully' do
-      write_a_comment_successfully(guide: guide)
+      comment = "This is a guide comment"
+      write_a_comment(guide: guide, comment: comment)
+
+      within ".comments .comment" do
+        expect(page).to have_content "Stub User"
+        expect(page).to have_content comment
+      end
+    end
+
+    it "auto links urls in comments" do
+      guide = create(:guide)
+      comment = "This is a link: http://google.com"
+      write_a_comment(guide: guide, comment: comment)
+
+      within ".comments .comment" do
+        expect(page).to have_link "http://google.com", href: "http://google.com"
+      end
     end
   end
 
   describe 'for a guide community' do
     it 'write a comment successfully' do
       guide = create(:guide_community)
-      write_a_comment_successfully(guide: guide)
+      comment = "This is a guide community comment"
+      write_a_comment(guide: guide, comment: comment)
+
+      within ".comments .comment" do
+        expect(page).to have_content "Stub User"
+        expect(page).to have_content comment
+      end
     end
   end
 
-  def write_a_comment_successfully(guide:)
+  def write_a_comment(guide:, comment:)
     visit root_path
     within_guide_index_row(guide.latest_edition.title) do
       click_link "Edit"
@@ -31,15 +53,9 @@ RSpec.describe "Commenting", type: :feature do
     click_link "Comments and history"
 
     within ".comments" do
-      fill_in "Add new comment", with: "This is my comment"
+      fill_in "Add new comment", with: comment
       click_button "Save comment"
     end
-
     expect(page.current_path).to eq edition_comments_path(guide.latest_edition)
-
-    within ".comments .comment" do
-      expect(page).to have_content "Stub User"
-      expect(page).to have_content "This is my comment"
-    end
   end
 end
