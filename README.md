@@ -32,7 +32,7 @@ PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no
 **To persist and render guides**
 
 - [content-store](https://github.com/alphagov/content-store)
-- [government-frontend](https://github.com/alphagov/government-frontend)
+- [service-manual-frontend](https://github.com/alphagov/service-manual-frontend)
 
 **To index and search published guides**
 
@@ -57,12 +57,10 @@ To launch the application, run `./startup.sh` in the `service-manual-publisher` 
 
 The application runs on port `3111` by default. If you're using the GDS VM it's exposed on http://service-manual-publisher.dev.gov.uk.
 
-Currently [government-frontend](alphagov/government-frontend) has a feature flag to enable rendering service manual content.
-
 ```
 bowl service-manual-publisher
 # to run everything you might need:
-# bowl service-manual-publisher government-frontend www rummager designprinciples draft-content-store router asset_manager
+# bowl service-manual-publisher service-manual-frontend www rummager designprinciples draft-content-store router asset_manager
 ```
 
 The application has a style guide that can be accessed on `/style-guide`.
