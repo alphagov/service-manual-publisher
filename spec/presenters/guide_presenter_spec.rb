@@ -34,7 +34,7 @@ RSpec.describe GuidePresenter do
         update_type: "major",
         phase: "beta",
         publishing_app: "service-manual-publisher",
-        rendering_app: "government-frontend",
+        rendering_app: "service-manual-frontend",
         format: "service_manual_guide",
         locale: "en",
         base_path: "/service/manual/test"

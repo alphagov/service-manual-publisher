@@ -41,7 +41,7 @@ RSpec.describe TopicPresenter do
         update_type: "minor",
         phase: "beta",
         publishing_app: "service-manual-publisher",
-        rendering_app: "government-frontend",
+        rendering_app: "service-manual-frontend",
         format: "service_manual_topic",
         locale: "en",
         base_path: "/service-manual/test-topic"
