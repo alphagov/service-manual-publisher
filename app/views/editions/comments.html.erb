@@ -5,12 +5,13 @@
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>
 
+<% edition_number = @editions.count %>
 <% @editions.each do |edition| %>
   <div class="panel panel-default">
     <div class="panel-heading">
       <a data-toggle="collapse" class="panel-title bold" href="#edition<%=edition.id%>">
         <i class="glyphicon glyphicon-smaller-than-text glyphicon-chevron-down add-right-margin"></i>
-        Edition <%= edition.id %>
+        Edition #<%= edition_number %>
       </a>
       <%= link_to(
             "View changes",
@@ -21,6 +22,7 @@
       <%= render 'editions/comments', edition: edition, comments: edition.comments.for_rendering %>
     </div>
   </div>
+  <% edition_number -= 1 %>
 <% end %>
 
 <%= guide_form_for @guide do |f| %>
