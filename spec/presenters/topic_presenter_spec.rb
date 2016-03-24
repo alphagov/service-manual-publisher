@@ -62,5 +62,15 @@ RSpec.describe TopicPresenter do
         expect(guide.content_id).to be_in(linked_items)
       end
     end
+
+    it "contains content_owners content ids" do
+      guide_community_content_ids = [guide_1, guide_2, guide_3].map do |guide|
+        guide.latest_edition.content_owner.content_id
+      end
+
+      content_owner_content_ids = presented_topic.links_payload[:links][:content_owners]
+
+      expect(content_owner_content_ids).to match_array(guide_community_content_ids)
+    end
   end
 end
