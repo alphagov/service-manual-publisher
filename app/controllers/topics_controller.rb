@@ -38,10 +38,7 @@ private
                             publish
 
     if publication.success?
-      GuideTaggerJob.batch_perform_later(
-        guide_ids: @topic.guide_ids,
-        topic_id: @topic.content_id
-      )
+      GuideTaggerJob.batch_perform_later(@topic)
       TopicSearchIndexer.new(@topic).index
 
       redirect_to edit_topic_path(@topic), notice: "Topic has been published"

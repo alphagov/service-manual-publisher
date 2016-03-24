@@ -49,11 +49,14 @@ RSpec.describe Topic do
     end
   end
 
-  describe "#guide_ids" do
-    it "returns the associated guide ids" do
-      topic = create(:topic, tree: [{'guides' => ['2', '5']}, {'guides' => ['3']}])
+  describe "#guide_content_ids" do
+    it "returns the associated guide content ids" do
+      topic = create(:topic, :with_some_guides)
+      guide_ids = topic.tree.map {|t| t["guides"]}.flatten
+      guide_content_ids = Guide.where(id: guide_ids).pluck(:content_id)
 
-      expect(topic.guide_ids).to match_array([2, 3, 5])
+      expect(topic.guide_content_ids).to match_array(guide_content_ids)
+      expect(topic.guide_content_ids).to_not be_empty
     end
   end
 end

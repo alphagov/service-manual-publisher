@@ -50,6 +50,25 @@ FactoryGirl.define do
     title "Agile Delivery"
     path "/service-manual/agile-delivery"
     description "Agile description"
+
+    trait :with_some_guides do
+      tree do
+        guide1 = create(:published_guide)
+        guide2 = create(:published_guide)
+        [
+          {
+            title: "Group 1 title",
+            guides: [guide1.to_param],
+            description: "Group 1 description",
+          },
+          {
+            title: "Group 2",
+            guides: [guide2.to_param],
+            description: "Group 2 description",
+          }
+        ]
+      end
+    end
   end
 
   factory :published_edition, parent: :edition do
