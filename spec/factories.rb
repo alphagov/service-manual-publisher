@@ -28,7 +28,7 @@ FactoryGirl.define do
     description "Description"
     update_type "major"
     change_note "change note"
-    change_summary "change summary"
+    reason_for_change "change reason"
     body "Heading"
     version 1
     content_owner { build(:guide_community) }
@@ -107,6 +107,17 @@ FactoryGirl.define do
 
   factory :review_requested_edition, parent: :edition do
     state "review_requested"
+  end
+
+  factory :published_major_edition, parent: :edition do
+    state "published"
+    update_type "major"
+    sequence :change_note do |n|
+      "Change Note ##{n}"
+    end
+    sequence :reason_for_change do |n|
+      "Change Reason ##{n}"
+    end
   end
 
   factory :slug_migration do

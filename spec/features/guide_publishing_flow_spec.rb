@@ -24,6 +24,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
 
       fill_in "Title", with: "Agile"
+      fill_in "Summary of change", with: "Change note"
       fill_in "Why the change is being made", with: "Update Title"
 
       click_first_button 'Save'
@@ -32,13 +33,14 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(guide.editions.order(:created_at).last.version).to eq(2)
     end
 
-    it "defaults to a major update and the new change note is empty" do
-      guide = create(:published_guide, title: "A guide to agile")
+    it "defaults to a major update and the new change note and reason is empty" do
+      create(:published_guide, title: "A guide to agile")
       visit guides_path
 
       within_guide_index_row("A guide to agile") do
         click_link "A guide to agile"
       end
+      expect(find_field("Summary of change").value).to be_blank
       expect(find_field("Why the change is being made").value).to be_blank
 
       expect(find_field("Major update")).to be_checked
@@ -72,6 +74,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Updated Title"
+      fill_in "Summary of change", with: "Change note"
       fill_in "Why the change is being made", with: "Update Title"
       click_first_button 'Save'
 
@@ -90,6 +93,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       within_guide_index_row("Scrum") do
         click_link "Scrum"
       end
+      fill_in "Summary of change", with: "Change note"
       fill_in "Why the change is being made", with: "Fix a typo"
       click_first_button 'Save'
 
@@ -207,6 +211,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Current Draft Edition"
+      fill_in "Summary of change", with: "Change note"
       fill_in "Why the change is being made", with: "Update Title"
 
       expect(fake_publishing_api).to receive(:put_content)
