@@ -34,11 +34,11 @@ RSpec.describe "filtering guides", type: :feature do
            latest_edition: build(:edition, user: linda),
     )
 
-    filter_by_user "Dave"
+    filter_by_author "Dave"
     expect(page).to have_text "/service-manual/topic-name/a"
     expect(page).to_not have_text "/service-manual/topic-name/b"
 
-    filter_by_user "Linda"
+    filter_by_author "Linda"
     expect(page).to_not have_text "/service-manual/topic-name/a"
     expect(page).to have_text "/service-manual/topic-name/b"
   end
@@ -56,11 +56,11 @@ RSpec.describe "filtering guides", type: :feature do
       create(:guide, slug: "/service-manual/topic-name/#{i}", latest_edition: edition)
     end
 
-    filter_by_published_by "Content Owner 1"
+    filter_by_community "Content Owner 1"
     expect(page).to have_text "Edition 1"
     expect(page).to_not have_text "Edition 2"
 
-    filter_by_published_by "Content Owner 2"
+    filter_by_community "Content Owner 2"
     expect(page).to_not have_text "Edition 1"
     expect(page).to have_text "Edition 2"
   end
@@ -104,8 +104,8 @@ RSpec.describe "filtering guides", type: :feature do
     visit root_path
     within ".filters" do
       fill_in "Title or slug", with: "Form Design"
-      select "Ronan", from: "User"
-      select guide_community.title, from: "Published by"
+      select "Ronan", from: "Author"
+      select guide_community.title, from: "Community"
       select "Draft", from: "State"
       click_button "Filter guides"
     end
@@ -113,7 +113,7 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by #{guide_community.title}"
   end
 
-  [:user, :state, :published_by].each do |n|
+  [:author, :state, :community].each do |n|
     define_method("filter_by_#{n}") do |value|
       visit root_path
       within ".filters" do
