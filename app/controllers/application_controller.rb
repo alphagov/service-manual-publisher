@@ -10,16 +10,4 @@ class ApplicationController < ActionController::Base
     [Plek.find('draft-origin'), content_model.slug].join('')
   end
   helper_method :preview_content_model_url
-
-  def back_or_default(fallback_uri = root_url, anchor: nil)
-    uri = if request.referrer.present? && request.referrer != request.url
-      request.referrer
-    else
-      fallback_uri
-    end
-    if anchor && uri.exclude?("#")
-      uri += "##{anchor}"
-    end
-    uri
-  end
 end

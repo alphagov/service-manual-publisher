@@ -60,13 +60,13 @@ private
   def send_for_review
     ApprovalProcess.new(content_model: @guide).request_review
 
-    redirect_to back_or_default, notice: "A review has been requested"
+    redirect_to edit_guide_path(@guide), notice: "A review has been requested"
   end
 
   def approve_for_publication
     ApprovalProcess.new(content_model: @guide).give_approval(approver: current_user)
 
-    redirect_to back_or_default, notice: "Thanks for approving this guide"
+    redirect_to edit_guide_path(@guide), notice: "Thanks for approving this guide"
   end
 
   def publish
@@ -87,7 +87,7 @@ private
         NotificationMailer.published(@guide, current_user).deliver_later
       end
 
-      redirect_to back_or_default, notice: "Guide has been published"
+      redirect_to edit_guide_path(@guide), notice: "Guide has been published"
     else
       @guide = @guide.reload
 
@@ -103,7 +103,7 @@ private
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
     if publication.success?
-      redirect_to back_or_default, notice: "Guide has been updated"
+      redirect_to edit_guide_path(@guide), notice: "Guide has been updated"
     else
       flash.now[:error] = publication.errors
       render 'edit'
