@@ -103,18 +103,10 @@ private
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
     if publication.success?
-      redirect_to success_url(@guide), notice: "Guide has been updated"
+      redirect_to back_or_default, notice: "Guide has been updated"
     else
       flash.now[:error] = publication.errors
       render 'edit'
-    end
-  end
-
-  def success_url(guide)
-    if params[:save_and_preview]
-      preview_content_model_url(guide)
-    else
-      back_or_default
     end
   end
 

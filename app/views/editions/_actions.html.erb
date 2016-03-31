@@ -7,7 +7,6 @@
       <% end %>
       <% if !publish_controls_only %>
         <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, data: disable_if_new_record(guide) %>
-        <%= form.submit "Save and preview", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save_and_preview, data: disable_if_new_record(guide) %>
         <% if !edition.persisted? %>
           <%= link_to "Discard new guide", guides_path, class: "btn btn-danger add-right-margin" %>
         <% end %>
