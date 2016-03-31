@@ -54,23 +54,64 @@ RSpec.describe TopicPresenter do
       expect(groups.last).to include(name: "Group 2", description: "Berries")
     end
   end
+end
 
-  describe "#links_payload" do
-    it "references all content_ids that appear in groups" do
-      linked_items = presented_topic.links_payload[:links][:linked_items]
-      [guide_1, guide_2, guide_3].each do |guide|
-        expect(guide.content_id).to be_in(linked_items)
-      end
+RSpec.describe TopicPresenter, "#links_payload" do
+  it "references all content_ids that appear in groups" do
+    guide1 = create(:guide)
+    guide2 = create(:guide)
+    guide3 = create(:guide)
+    topic = create_topic_in_groups([[guide1], [guide2, guide3]])
+    presented_topic = TopicPresenter.new(topic)
+
+    linked_items = presented_topic.links_payload[:links][:linked_items]
+
+    [guide1, guide2, guide3].each do |guide|
+      expect(guide.content_id).to be_in(linked_items)
+    end
+  end
+
+  it "contains content_owners content ids" do
+    guide1 = create(:guide)
+    guide2 = create(:guide)
+    guide3 = create(:guide)
+    topic = create_topic_in_groups([[guide1], [guide2, guide3]])
+    presented_topic = TopicPresenter.new(topic)
+
+    guide_community_content_ids = [guide1, guide2, guide3].map do |guide|
+      guide.latest_edition.content_owner.content_id
     end
 
-    it "contains content_owners content ids" do
-      guide_community_content_ids = [guide_1, guide_2, guide_3].map do |guide|
-        guide.latest_edition.content_owner.content_id
-      end
+    content_owner_content_ids = presented_topic.links_payload[:links][:content_owners]
 
-      content_owner_content_ids = presented_topic.links_payload[:links][:content_owners]
+    expect(content_owner_content_ids).to match_array(guide_community_content_ids)
+  end
 
-      expect(content_owner_content_ids).to match_array(guide_community_content_ids)
+  it "contains unique content_owners content ids" do
+    guide_community = create(:guide_community)
+    guide1 = create(:guide, latest_edition: build(:edition, content_owner: guide_community))
+    guide2 = create(:guide, latest_edition: build(:edition, content_owner: guide_community))
+    topic = create_topic_in_groups([[guide1], [guide2]])
+    presented_topic = TopicPresenter.new(topic)
+
+    content_owner_content_ids = presented_topic.links_payload[:links][:content_owners]
+
+    expect(content_owner_content_ids).to eq([guide_community.content_id])
+  end
+
+  def create_topic_in_groups(groups)
+    tree = groups.map.with_index do |group_guides, index|
+      {
+        title: "Group #{index} title",
+        guides: group_guides.map(&:to_param),
+        description: "Group #{index} description",
+      }
     end
+
+    Topic.create!(
+      title: "Agile Delivery",
+      description: "It's a good thing",
+      path: "/service-manual/agile-delivery",
+      tree: tree)
   end
 end
