@@ -21,7 +21,10 @@
     <div class="panel-body collapse <%= edition.latest_edition? ? "in" : nil %>" id="edition<%=edition.id%>">
       <%= render 'editions/comments', edition: edition, comments: edition.comments.for_rendering %>
     </div>
-    <div>
+    <div class="event">
+      Assigned to <%= name_for_user(edition.author) %>
+    </div>
+    <div class="event">
       New draft created by <%= name_for_user(edition.author) %>
     </div>
   </div>

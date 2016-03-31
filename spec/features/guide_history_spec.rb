@@ -1,32 +1,57 @@
 require 'rails_helper'
 
 RSpec.describe "Guide history", type: :feature do
-  it "shows who created the new draft" do
+  def stub_publisher
     publishing_api = double(:publishing_api)
     stub_const("PUBLISHING_API", publishing_api)
-    expect(publishing_api).to receive(:put_content)
-                            .once
+    allow(publishing_api).to receive(:put_content)
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
-    expect(publishing_api).to receive(:patch_links)
-                            .once
+    allow(publishing_api).to receive(:patch_links)
                             .with(an_instance_of(String), an_instance_of(Hash))
+  end
 
-    community = create(:guide_community)
+  def create_guide_community
+    @community = create(:guide_community)
+  end
 
-    visit root_path
-    click_on "Create a Guide"
-
+  def fill_out_new_guide_fields
     fill_in "Slug", with: "/service-manual/the/path"
-    select community.title, from: "Published by"
+    select @community.title, from: "Published by"
     fill_in "Description", with: "This guide acts as a test case"
 
     fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
+  end
 
+  it "shows who created the new draft" do
+    stub_publisher
+    create_guide_community
+    visit root_path
+    click_on "Create a Guide"
+    fill_out_new_guide_fields
     click_first_button "Save"
 
     click_on "Comments and history"
 
-    expect(page).to have_content("New draft created by Stub User")
+    expect(events.first).to eq "New draft created by Stub User"
+  end
+
+  it "shows who the guide is assigned to" do
+    stub_publisher
+    create_guide_community
+    visit root_path
+    click_on "Create a Guide"
+    fill_out_new_guide_fields
+    click_first_button "Save"
+
+    click_on "Comments and history"
+
+    expect(events.second).to eq "Assigned to Stub User"
+  end
+
+  def events
+    all(".event")
+      .map(&:text)
+      .reverse
   end
 end
