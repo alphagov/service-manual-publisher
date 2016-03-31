@@ -20,4 +20,8 @@ module ApplicationHelper
       class_name
     end
   end
+
+  def name_for_user(user)
+    user.name
+  end
 end

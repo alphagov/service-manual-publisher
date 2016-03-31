@@ -97,6 +97,10 @@ class Edition < ActiveRecord::Base
     [user, guide.latest_edition.user].uniq
   end
 
+  def author
+    user
+  end
+
 private
 
   def published_cant_change

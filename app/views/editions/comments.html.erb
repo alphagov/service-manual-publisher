@@ -21,6 +21,9 @@
     <div class="panel-body collapse <%= edition.latest_edition? ? "in" : nil %>" id="edition<%=edition.id%>">
       <%= render 'editions/comments', edition: edition, comments: edition.comments.for_rendering %>
     </div>
+    <div>
+      New draft created by <%= name_for_user(edition.author) %>
+    </div>
   </div>
   <% edition_number -= 1 %>
 <% end %>
