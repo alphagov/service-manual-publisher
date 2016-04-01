@@ -31,7 +31,7 @@ RSpec.describe GuidesController, type: :controller do
     describe "#publish" do
       it 'notifies about search indexing errors but does not fail the transaction' do
         expect_any_instance_of(Rummageable::Index).to receive(:add_batch).and_raise("Something went wrong")
-        edition = build(:edition, state: 'approved')
+        edition = build(:edition, state: 'ready')
         guide = Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         expect(controller).to receive(:notify_airbrake)
 

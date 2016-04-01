@@ -1,5 +1,5 @@
 class Edition < ActiveRecord::Base
-  STATES = %w(draft published review_requested approved).freeze
+  STATES = %w(draft published review_requested ready).freeze
 
   acts_as_commentable
 
@@ -45,7 +45,7 @@ class Edition < ActiveRecord::Base
   end
 
   def approved?
-    state == 'approved'
+    state == 'ready'
   end
 
   def can_request_review?

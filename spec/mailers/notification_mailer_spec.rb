@@ -32,7 +32,7 @@ RSpec.describe NotificationMailer, type: :mailer do
   describe "#approved_for_publishing" do
     before do
       edition.create_approval(user: luke)
-      edition.update_attribute(:state, 'approved')
+      edition.update_attribute(:state, 'ready')
     end
 
     it "contains the edition title, approver's name and a link" do

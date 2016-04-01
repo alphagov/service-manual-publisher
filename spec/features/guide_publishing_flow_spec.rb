@@ -127,7 +127,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
 
       within ".label" do
-        expect(page).to have_content('Approved')
+        expect(page).to have_content('Ready')
       end
     end
   end
@@ -200,7 +200,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         visit root_path
         within_guide_index_row(guide.title) do
           within ".label" do
-            expect(page).to have_content "Approved"
+            expect(page).to have_content "Ready"
           end
         end
       end

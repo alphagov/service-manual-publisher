@@ -72,7 +72,7 @@ RSpec.describe Edition, type: :model do
         expect(edition.errors.full_messages_for(:state).size).to eq 0
       end
 
-      valid_states = %w(draft review_requested approved)
+      valid_states = %w(draft review_requested ready)
       valid_states.each do |valid_state|
         it "allows '#{valid_state}' state" do
           edition = build(:edition, state: valid_state)
@@ -165,8 +165,8 @@ RSpec.describe Edition, type: :model do
         expect(edition.can_request_review?).to be false
       end
 
-      it "returns false when a review has been approved" do
-        edition.state = "approved"
+      it "returns false when a review has been ready" do
+        edition.state = "ready"
         expect(edition.can_request_review?).to be false
       end
     end
@@ -181,21 +181,21 @@ RSpec.describe Edition, type: :model do
         expect(edition.can_be_published?).to be false
       end
 
-      it "returns false if it's not approved" do
+      it "returns false if it's not ready" do
         edition.state = "review_requested"
         expect(edition.can_be_published?).to be false
       end
 
       it "returns false if it's not the latest edition of a guide" do
-        edition.state = "approved"
+        edition.state = "ready"
         guide.editions << edition.dup
 
         edition.guide.reload
         expect(edition.can_be_published?).to be false
       end
 
-      it "returns true if it's the latest edition and is approved" do
-        edition.state = "approved"
+      it "returns true if it's the latest edition and is ready" do
+        edition.state = "ready"
         expect(edition.can_be_published?).to be true
       end
     end

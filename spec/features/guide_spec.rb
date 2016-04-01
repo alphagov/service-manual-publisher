@@ -210,13 +210,13 @@ RSpec.describe "creating guides", type: :feature do
       end
     end
 
-    context "when it can be marked as approved" do
+    context "when it can be marked as ready" do
       before do
         guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
       end
 
-      it "only allows being marked at approved" do
+      it "only allows being marked at ready" do
         expect_send_for_review_to_be :hidden
         expect_approve_for_publication_to_be :visible
         expect_publish_to_be :hidden

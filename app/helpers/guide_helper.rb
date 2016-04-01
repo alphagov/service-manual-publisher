@@ -3,7 +3,7 @@ module GuideHelper
     "new"              => "default",
     "draft"            => "danger",
     "review_requested" => "warning",
-    "approved"         => "success",
+    "ready"            => "success",
     "published"        => "info",
   }
 
@@ -17,7 +17,7 @@ module GuideHelper
   def guide_action_button(guide)
     title = {
       "review_requested" => "Review guide",
-      "approved" => "Publish",
+      "ready" => "Publish",
     }[guide.latest_edition.state] || "Edit"
     link_to title, edit_guide_path(guide), class: "btn btn-block btn-default btn-xs"
   end
