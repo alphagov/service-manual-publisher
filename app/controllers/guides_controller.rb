@@ -1,7 +1,7 @@
 class GuidesController < ApplicationController
   def index
     @user_options = User.pluck(:name, :id)
-    @state_options = %w(draft published review_requested approved).map { |s| [s.titleize, s] }
+    @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
     # TODO: :content_owner not being included is resulting in an N+1 query
     @guides = Guide.includes(latest_edition: [:user])
