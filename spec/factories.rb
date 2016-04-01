@@ -36,7 +36,7 @@ FactoryGirl.define do
     latest_edition { build(:edition, state: "published") }
   end
 
-  factory :approved_guide, parent: :guide do
+  factory :ready_guide, parent: :guide do
     latest_edition { build(:edition, state: "ready") }
   end
 

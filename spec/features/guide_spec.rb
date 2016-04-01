@@ -120,7 +120,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     let :guide do
-      create(:approved_guide, slug: "/service-manual/topic-name/something")
+      create(:ready_guide, slug: "/service-manual/topic-name/something")
     end
 
     it "does not publish the guide" do
@@ -225,7 +225,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "when it can be published" do
       before do
-        guide = create(:approved_guide, slug: "/service-manual/topic-name/something")
+        guide = create(:ready_guide, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
       end
 
