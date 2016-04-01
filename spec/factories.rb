@@ -75,10 +75,6 @@ FactoryGirl.define do
     state "published"
   end
 
-  factory :approved_edition, parent: :edition do
-    state "ready"
-  end
-
   factory :review_requested_edition, parent: :edition do
     state "review_requested"
   end
