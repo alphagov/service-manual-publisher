@@ -29,18 +29,18 @@ RSpec.describe NotificationMailer, type: :mailer do
     end
   end
 
-  describe "#approved_for_publishing" do
+  describe "#ready_for_publishing" do
     before do
       edition.create_approval(user: luke)
       edition.update_attribute(:state, 'ready')
     end
 
     it "contains the edition title, approver's name and a link" do
-      email = NotificationMailer.approved_for_publishing(guide).deliver_now
+      email = NotificationMailer.ready_for_publishing(guide).deliver_now
 
       expect(ActionMailer::Base.deliveries.size).to eq 1
       expect(email.to).to eq ["gary@example.com"]
-      expect(email.subject).to eq "\"Agile\" approved for publishing"
+      expect(email.subject).to eq "\"Agile\" ready for publishing"
 
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"

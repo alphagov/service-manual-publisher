@@ -10,13 +10,13 @@ class NotificationMailer < ApplicationMailer
     )
   end
 
-  def approved_for_publishing(guide)
+  def ready_for_publishing(guide)
     @guide = guide
     @edition = @guide.latest_edition
     @approval = @edition.approval
     mail(
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
-      subject: "\"#{@edition.title}\" approved for publishing"
+      subject: "\"#{@edition.title}\" ready for publishing"
     )
   end
 

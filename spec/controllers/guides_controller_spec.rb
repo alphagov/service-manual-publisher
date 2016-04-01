@@ -24,7 +24,7 @@ RSpec.describe GuidesController, type: :controller do
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
         expect(ActionMailer::Base.deliveries.last.to).to eq ["content.designer@example.com"]
-        expect(ActionMailer::Base.deliveries.last.subject).to include("approved for publishing")
+        expect(ActionMailer::Base.deliveries.last.subject).to include("ready for publishing")
       end
     end
 
