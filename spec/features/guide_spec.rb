@@ -265,7 +265,7 @@ private
 
   def fill_in_guide_form
     fill_in "Slug", with: "/service-manual/the/path"
-    select "Technology Community", from: "Published by"
+    select "Technology Community", from: "Community"
     fill_in "Description", with: "This guide acts as a test case"
 
     fill_in "Title", with: "First Edition Title"
