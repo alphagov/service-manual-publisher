@@ -28,6 +28,7 @@ class TopicPresenter
     {
       links: {
         linked_items: eagerloaded_guides.map(&:content_id),
+        content_owners: content_owner_content_ids,
       }
     }
   end
@@ -49,6 +50,13 @@ private
         content_ids: guides.map {|g| g.content_id},
       }
     end
+  end
+
+  def content_owner_content_ids
+    content_ids = eagerloaded_guides.map do |guide|
+      guide.latest_edition.content_owner.content_id
+    end
+    content_ids.uniq
   end
 
   def eagerloaded_guides
