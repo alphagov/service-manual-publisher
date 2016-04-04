@@ -58,4 +58,24 @@ RSpec.describe EditionThread, "#events" do
       expect(event.comment).to eq(comment)
     end
   end
+
+  describe "state change event" do
+    it "is a 'state change' event" do
+      first_edition = create(:edition, version: 1, created_at: 1.day.ago)
+      most_recent_edition = create(:edition, version: 1, state: 'review_requested')
+
+      event = described_class.new(most_recent_edition).events.third
+
+      expect(event).to be_a(EditionThread::StateChangeEvent)
+    end
+
+    it "has a reference to the edition in which the state changed" do
+      first_edition = create(:edition, version: 1, created_at: 1.day.ago)
+      most_recent_edition = create(:edition, version: 1, state: 'review_requested')
+
+      event = described_class.new(most_recent_edition).events.third
+
+      expect(event.edition).to eq(most_recent_edition)
+    end
+  end
 end

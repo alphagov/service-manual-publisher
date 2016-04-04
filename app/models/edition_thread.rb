@@ -7,7 +7,14 @@ class EditionThread
     @events = []
     @events << NewDraftEvent.new(all_editions_in_thread.first)
     @events << AssignedToEvent.new(all_editions_in_thread.first)
+
+    current_state = all_editions_in_thread.first.state
+
     all_editions_in_thread.each do |edition|
+      if edition.state != current_state
+        @events << StateChangeEvent.new(edition)
+      end
+
       edition.comments.each do |comment|
         @events << CommentEvent.new(comment)
       end
@@ -26,4 +33,5 @@ private
   NewDraftEvent = Struct.new(:edition)
   AssignedToEvent = Struct.new(:edition)
   CommentEvent = Struct.new(:comment)
+  StateChangeEvent = Struct.new(:edition)
 end
