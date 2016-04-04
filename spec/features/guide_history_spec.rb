@@ -75,12 +75,10 @@ RSpec.describe "Guide history", type: :feature do
     fill_out_new_guide_fields
     click_first_button "Save"
     click_first_button "Send for review"
-    click_first_button "Save"
 
     click_on "Comments and history"
 
     expect(events.third).to eq "Review requested by Stub User"
-    expect(events.fourth).to eq "Draft updated by Stub User"
   end
 
   def events

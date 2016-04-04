@@ -79,3 +79,15 @@ RSpec.describe EditionThread, "#events" do
     end
   end
 end
+
+RSpec.describe EditionThread::StateChangeEvent, "#action" do
+  context "when requesting a review" do
+    it "describes the action" do
+      edition = build(:edition, state: 'review_requested')
+
+      event = described_class.new(edition)
+
+      expect(event.action).to eq("Review requested")
+    end
+  end
+end

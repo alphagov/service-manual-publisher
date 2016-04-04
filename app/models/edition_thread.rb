@@ -33,5 +33,14 @@ private
   NewDraftEvent = Struct.new(:edition)
   AssignedToEvent = Struct.new(:edition)
   CommentEvent = Struct.new(:comment)
-  StateChangeEvent = Struct.new(:edition)
+  StateChangeEvent = Struct.new(:edition) do
+    def action
+      case edition.state
+      when "review_requested"
+        "Review requested"
+      else
+        raise NotImplementedError
+      end
+    end
+  end
 end
