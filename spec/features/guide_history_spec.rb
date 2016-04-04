@@ -59,7 +59,7 @@ RSpec.describe "Guide history", type: :feature do
 
     click_on "Comments and history"
 
-    within ".comments" do
+    within ".open-edition" do
       fill_in "Add new comment", with: "What a great piece of writing"
       click_button "Save comment"
     end

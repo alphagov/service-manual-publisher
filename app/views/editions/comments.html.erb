@@ -5,31 +5,26 @@
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>
 
-<% edition_number = @editions.count %>
-<% @editions.each do |edition| %>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <a data-toggle="collapse" class="panel-title bold" href="#edition<%=edition.id%>">
-        <i class="glyphicon glyphicon-smaller-than-text glyphicon-chevron-down add-right-margin"></i>
-        Edition #<%= edition_number %>
-      </a>
-      <%= link_to(
-            "View changes",
-            edition_changes_path(edition),
-            class: "pull-right") %>
+<% lastest_edition_for_open_edition_group = @latest_edition_per_edition_group.first %>
+
+<div class="open-edition">
+  <%= form_for @comment do |f| %>
+    <%= f.hidden_field :edition_id, value: lastest_edition_for_open_edition_group.id %>
+
+    <%= render 'shared/form_error_summary', object: @comment %>
+
+    <div class='form-group'>
+      <%= f.text_area :comment, class: "form-control", rows: 3, placeholder: "Add new comment" %>
     </div>
-    <div class="panel-body collapse <%= edition.latest_edition? ? "in" : nil %>" id="edition<%=edition.id%>">
-      <%= render 'editions/comments', edition: edition, comments: edition.comments.for_rendering %>
+    <div class='form-group'>
+      <%= f.submit "Save comment", class: "btn btn-success" %>
     </div>
-    <div class="event">
-      Assigned to <%= name_for_user(edition.author) %>
-    </div>
-    <div class="event">
-      New draft created by <%= name_for_user(edition.author) %>
-    </div>
-  </div>
-  <% edition_number -= 1 %>
-<% end %>
+  <% end %>
+
+  <% EditionThread.new(lastest_edition_for_open_edition_group).events.reverse.each do |event| %>
+    <%= render "editions/#{event.class.to_s.underscore}", event: event %>
+  <% end %>
+</div>
 
 <%= guide_form_for @guide do |f| %>
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
