@@ -59,21 +59,23 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "creates a new draft version if the original has been published in the meantime" do
-    guide = create(:guide)
+    guide = create(:published_guide, title: "Scrum")
+
+    expect(guide.editions.count).to eq(4)
+    expect(guide.editions.order(:created_at).last.version).to eq(1)
+
     visit guides_path
-    within_guide_index_row(guide.title) do
-      click_link guide.title
+    within_guide_index_row("Scrum") do
+      click_link "Scrum"
     end
 
-    # someone else publishes it
-    guide.latest_edition.update_attributes(state: 'published')
-
     fill_in "Title", with: "Agile"
+    fill_in "Why the change is being made", with: "Update Title"
 
     click_first_button 'Save'
 
-    expect(guide.editions.published.map(&:title)).to match_array [guide.title]
-    expect(guide.editions.draft.map(&:title)).to match_array ["Agile"]
+    expect(guide.editions.count).to eq(5)
+    expect(guide.editions.order(:created_at).last.version).to eq(2)
   end
 
   context "when publishing-api raises an exception" do

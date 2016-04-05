@@ -62,6 +62,10 @@ class GuidesController < ApplicationController
     @guide.build_latest_edition(@guide.latest_edition.dup.attributes)
     previous_latest_edition.update_attribute(:guide_id, @guide.id)
 
+    if previous_latest_edition.published?
+      @guide.latest_edition.version += 1
+    end
+
     if params[:send_for_review].present?
       send_for_review
     elsif params[:approve_for_publication].present?

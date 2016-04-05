@@ -59,12 +59,6 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
-    it "does not allow updating already published editions" do
-      edition = create(:published_edition)
-      edition.update_attributes(title: "Republishing")
-      expect(edition.errors.full_messages_for(:base).size).to eq 1
-    end
-
     describe "state" do
       it "allows 'published' state" do
         edition = build(:published_edition)
