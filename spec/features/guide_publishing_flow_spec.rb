@@ -203,11 +203,15 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "guide edition history" do
     it "allows seeing previous edition changes" do
-      guide = create(:published_guide)
-      first_edition = guide.latest_edition
-      guide.latest_edition.dup.update_attributes(title: "Current Draft Edition", state: 'draft')
+      guide = create(:published_guide, title: "Original Title")
 
-      expect(guide.editions.size).to eq 2
+      visit edit_guide_path(guide)
+      fill_in "Title", with: "Current Draft Edition"
+      fill_in "Why the change is being made", with: "Update Title"
+
+      expect(fake_publishing_api).to receive(:put_content)
+
+      click_first_button "Save"
 
       visit guides_path
       click_link "Current Draft Edition"
@@ -216,7 +220,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(view_edition_links.size).to eq 2
       view_edition_links.last.click
 
-      expect(page).to have_content first_edition.title
+      expect(page).to have_content "Original Title"
       within ".alert-info" do
         expect(page).to have_content "You're looking at a past edition of this guide"
       end

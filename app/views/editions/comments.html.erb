@@ -7,24 +7,34 @@
 
 <% lastest_edition_for_open_edition_group = @latest_edition_per_edition_group.first %>
 
-<div class="open-edition">
-  <%= form_for @comment do |f| %>
-    <%= f.hidden_field :edition_id, value: lastest_edition_for_open_edition_group.id %>
+<% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
+  <% if latest_edition_of_group == lastest_edition_for_open_edition_group %>
+    <div class="open-edition">
+      <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
 
-    <%= render 'shared/form_error_summary', object: @comment %>
+      <%= form_for @comment do |f| %>
+        <%= f.hidden_field :edition_id, value: latest_edition_of_group.id %>
 
-    <div class='form-group'>
-      <%= f.text_area :comment, class: "form-control", rows: 3, placeholder: "Add new comment" %>
+        <%= render 'shared/form_error_summary', object: @comment %>
+
+        <div class='form-group'>
+          <%= f.text_area :comment, class: "form-control", rows: 3, placeholder: "Add new comment" %>
+        </div>
+        <div class='form-group'>
+          <%= f.submit "Save comment", class: "btn btn-success" %>
+        </div>
+      <% end %>
+
+      <% EditionThread.new(latest_edition_of_group).events.reverse.each do |event| %>
+        <%= render "editions/#{event.class.to_s.underscore}", event: event %>
+      <% end %>
     </div>
-    <div class='form-group'>
-      <%= f.submit "Save comment", class: "btn btn-success" %>
+  <% else %>
+    <div>
+      <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
     </div>
   <% end %>
-
-  <% EditionThread.new(lastest_edition_for_open_edition_group).events.reverse.each do |event| %>
-    <%= render "editions/#{event.class.to_s.underscore}", event: event %>
-  <% end %>
-</div>
+<% end %>
 
 <%= guide_form_for @guide do |f| %>
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
