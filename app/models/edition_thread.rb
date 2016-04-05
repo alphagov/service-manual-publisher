@@ -1,10 +1,10 @@
 class EditionThread
   def initialize(most_recent_edition)
     @most_recent_edition = most_recent_edition
+    @events = []
   end
 
   def events
-    @events = []
     @events << NewDraftEvent.new(all_editions_in_thread.first)
     @events << AssignedToEvent.new(all_editions_in_thread.first)
 
@@ -21,6 +21,7 @@ class EditionThread
         @events << CommentEvent.new(comment)
       end
     end
+
     @events
   end
 
@@ -35,14 +36,5 @@ private
   NewDraftEvent = Struct.new(:edition)
   AssignedToEvent = Struct.new(:edition)
   CommentEvent = Struct.new(:comment)
-  StateChangeEvent = Struct.new(:edition) do
-    def action
-      case edition.state
-      when "ready"
-        "Approved"
-      else
-        edition.state.humanize
-      end
-    end
-  end
+  StateChangeEvent = Struct.new(:edition)
 end

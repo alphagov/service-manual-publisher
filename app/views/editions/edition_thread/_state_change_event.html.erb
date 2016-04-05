@@ -1,1 +1,1 @@
-<div class="event"><%= event.action %> by <%= event.edition.user.name %></div>
+<div class="event"><%= event_action_for_changed_state(event.edition.state) %> by <%= event.edition.user.name %></div>
