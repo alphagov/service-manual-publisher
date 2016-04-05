@@ -15,7 +15,7 @@ RSpec.describe "Commenting", type: :feature do
       comment = "This is a guide comment"
       write_a_comment(guide: guide, comment: comment)
 
-      within ".comments .comment" do
+      within ".comment" do
         expect(page).to have_content "Stub User"
         expect(page).to have_content comment
       end
@@ -26,7 +26,7 @@ RSpec.describe "Commenting", type: :feature do
       comment = "This is a link: http://google.com"
       write_a_comment(guide: guide, comment: comment)
 
-      within ".comments .comment" do
+      within ".comment" do
         expect(page).to have_link "http://google.com", href: "http://google.com"
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe "Commenting", type: :feature do
       comment = "This is a guide community comment"
       write_a_comment(guide: guide, comment: comment)
 
-      within ".comments .comment" do
+      within ".comment" do
         expect(page).to have_content "Stub User"
         expect(page).to have_content comment
       end
@@ -52,7 +52,7 @@ RSpec.describe "Commenting", type: :feature do
     end
     click_link "Comments and history"
 
-    within ".comments" do
+    within ".open-edition" do
       fill_in "Add new comment", with: comment
       click_button "Save comment"
     end

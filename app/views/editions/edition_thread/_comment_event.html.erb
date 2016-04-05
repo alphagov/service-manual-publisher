@@ -1,1 +1,4 @@
-<div class="event"><%= event.comment.comment %></div>
+<div class="event comment">
+  <div><%= event.comment.user.name %></div>
+  <div><%= auto_link(event.comment.comment, :all, target: "_blank") %></div>
+</div>
