@@ -17,7 +17,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       within_guide_index_row(guide.title) do
-        click_link "Edit"
+        click_link guide.title
       end
       the_form_should_be_prepopulated_with_title guide.title
       fill_in "Title", with: "Standup meetings"
@@ -35,7 +35,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
 
       within_guide_index_row(guide.title) do
-        click_link "Edit"
+        click_link guide.title
       end
       expect(find_field("Why the change is being made").value).to be_blank
 
@@ -50,7 +50,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       expect(indexer).to receive(:index)
       visit guides_path
       within_guide_index_row(guide.title) do
-        click_link "Edit"
+        click_link guide.title
       end
       click_first_button "Send for review"
       click_first_button "Approve for publication"
@@ -62,7 +62,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     guide = create(:guide)
     visit guides_path
     within_guide_index_row(guide.title) do
-      click_link "Edit"
+      click_link guide.title
     end
 
     # someone else publishes it
@@ -104,7 +104,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit guides_path
       within_guide_index_row(guide.title) do
-        click_link "Edit"
+        click_link guide.title
       end
       fill_in "Why the change is being made", with: "Fix a typo"
       click_first_button 'Save'
@@ -137,7 +137,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     visit guides_path
     within_guide_index_row(guide.title) do
-      click_link "Edit"
+      click_link guide.title
     end
     fill_in "Title", with: "Agile"
     click_first_button 'Save'

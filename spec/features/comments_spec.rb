@@ -48,7 +48,7 @@ RSpec.describe "Commenting", type: :feature do
   def write_a_comment(guide:, comment:)
     visit root_path
     within_guide_index_row(guide.latest_edition.title) do
-      click_link "Edit"
+      click_link guide.title
     end
     click_link "Comments and history"
 
