@@ -13,6 +13,8 @@ class EditionThread
     all_editions_in_thread.each do |edition|
       if edition.state != current_state
         @events << StateChangeEvent.new(edition)
+
+        current_state = edition.state
       end
 
       edition.comments.each do |comment|

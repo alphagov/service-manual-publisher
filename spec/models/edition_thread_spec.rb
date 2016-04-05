@@ -77,6 +77,17 @@ RSpec.describe EditionThread, "#events" do
 
       expect(event.edition).to eq(most_recent_edition)
     end
+
+    it "adds a state change event if the state changes back" do
+      draft_edition = create(:edition, version: 1, created_at: 1.day.ago)
+      review_requested_edition = create(:edition, version: 1, state: 'review_requested')
+      next_draft_edition = create(:edition, version: 1, state: 'draft')
+
+      events = described_class.new(next_draft_edition).events
+
+      expect(events.third.edition).to eq(review_requested_edition)
+      expect(events.fourth.edition).to eq(next_draft_edition)
+    end
   end
 end
 
