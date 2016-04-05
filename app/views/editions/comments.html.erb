@@ -11,6 +11,7 @@
   <% if latest_edition_of_group == latest_edition_for_open_edition_group %>
     <div class="open-edition panel panel-default">
       <div class="panel-heading">
+        Version #<%= latest_edition_of_group.version %>
         <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
       </div>
       <div class="panel-body">
@@ -24,6 +25,7 @@
   <% else %>
     <div class="panel panel-default">
       <div class="panel-heading">
+        Version #<%= latest_edition_of_group.version %>
         <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
       </div>
     </div>
