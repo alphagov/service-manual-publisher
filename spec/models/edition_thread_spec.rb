@@ -92,6 +92,16 @@ RSpec.describe EditionThread, "#events" do
 end
 
 RSpec.describe EditionThread::StateChangeEvent, "#action" do
+  context "when draft" do
+    it "describes the action" do
+      edition = build(:edition, state: 'draft')
+
+      event = described_class.new(edition)
+
+      expect(event.action).to eq("Draft")
+    end
+  end
+
   context "when requesting a review" do
     it "describes the action" do
       edition = build(:edition, state: 'review_requested')
@@ -99,6 +109,26 @@ RSpec.describe EditionThread::StateChangeEvent, "#action" do
       event = described_class.new(edition)
 
       expect(event.action).to eq("Review requested")
+    end
+  end
+
+  context "when ready" do
+    it "describes the action" do
+      edition = build(:edition, state: 'ready')
+
+      event = described_class.new(edition)
+
+      expect(event.action).to eq("Approved")
+    end
+  end
+
+  context "when published" do
+    it "describes the action" do
+      edition = build(:edition, state: 'published')
+
+      event = described_class.new(edition)
+
+      expect(event.action).to eq("Published")
     end
   end
 end

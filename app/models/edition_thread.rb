@@ -38,10 +38,10 @@ private
   StateChangeEvent = Struct.new(:edition) do
     def action
       case edition.state
-      when "review_requested"
-        "Review requested"
+      when "ready"
+        "Approved"
       else
-        raise NotImplementedError
+        edition.state.humanize
       end
     end
   end
