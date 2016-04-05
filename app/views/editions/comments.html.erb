@@ -9,18 +9,23 @@
 
 <% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
   <% if latest_edition_of_group == lastest_edition_for_open_edition_group %>
-    <div class="open-edition">
-      <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+    <div class="open-edition panel panel-default">
+      <div class="panel-heading">
+        <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+      </div>
+      <div class="panel-body">
+        <%= render 'comment_form', comment: @comment, edition: latest_edition_of_group %>
 
-      <%= render 'comment_form', comment: @comment, edition: latest_edition_of_group %>
-
-      <% EditionThread.new(latest_edition_of_group).events.reverse.each do |event| %>
-        <%= render "editions/#{event.class.to_s.underscore}", event: event %>
-      <% end %>
+        <% EditionThread.new(latest_edition_of_group).events.reverse.each do |event| %>
+          <%= render "editions/#{event.class.to_s.underscore}", event: event %>
+        <% end %>
+      </div>
     </div>
   <% else %>
-    <div>
-      <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+      </div>
     </div>
   <% end %>
 <% end %>
