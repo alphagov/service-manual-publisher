@@ -6,9 +6,8 @@ class ApprovalProcess
   end
 
   def request_review
-    next_edition = content_model.latest_edition.dup
-    next_edition.state = 'review_requested'
-    next_edition.save!
+    content_model.latest_edition.state = 'review_requested'
+    content_model.latest_edition.save!
   end
 
   def give_approval(approver:)

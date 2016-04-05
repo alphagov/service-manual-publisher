@@ -132,8 +132,11 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
-  it "should not create a new edition if the latest edition isn't published" do
+  it "creates a new edition with the same version number if the latest edition isn't published" do
     guide = create(:guide)
+
+    expect(guide.editions.count).to eq(1)
+    expect(guide.editions.order(:created_at).last.version).to eq(1)
 
     visit guides_path
     within_guide_index_row(guide.title) do
@@ -141,10 +144,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
     fill_in "Title", with: "Agile"
     click_first_button 'Save'
-    expect(current_path).to eq edit_guide_path guide
 
-    expect(guide.editions.draft.size).to eq 1
-    expect(guide.editions.map(&:title)).to match_array ["Agile"]
+    expect(guide.editions.count).to eq(2)
+    expect(guide.editions.order(:created_at).last.version).to eq(1)
   end
 
   it "should record who's the last editor" do

@@ -20,6 +20,7 @@ FactoryGirl.define do
     change_note "change note"
     change_summary "change summary"
     body "Heading"
+    version 1
     content_owner { build(:guide_community) }
     user { build(:user) }
   end
