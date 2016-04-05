@@ -92,7 +92,7 @@ RSpec.describe "creating guides", type: :feature do
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    guide.editions.first.tap do |edition|
+    guide.latest_persisted_edition.tap do |edition|
       # set editor to another user so we can approve this edition
       edition.user = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
