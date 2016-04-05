@@ -26,6 +26,7 @@ class GuidesController < ApplicationController
 
   def create
     @guide = Guide.new(guide_params)
+    @guide.latest_edition.version = 1
 
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))

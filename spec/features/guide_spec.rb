@@ -49,6 +49,7 @@ RSpec.describe "creating guides", type: :feature do
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
+    expect(edition.version).to eq 1
     expect(edition.content_owner.title).to eq "Technology Community"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
