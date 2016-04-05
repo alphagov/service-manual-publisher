@@ -1,4 +1,6 @@
 class Edition < ActiveRecord::Base
+  STATES = %w(draft published review_requested ready).freeze
+
   acts_as_commentable
 
   belongs_to :guide, touch: true
@@ -13,7 +15,7 @@ class Edition < ActiveRecord::Base
   scope :review_requested, -> { where(state: 'review_requested') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :user]
-  validates_inclusion_of :state, in: %w(draft published review_requested approved)
+  validates_inclusion_of :state, in: STATES
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
   validate :published_cant_change
@@ -42,15 +44,11 @@ class Edition < ActiveRecord::Base
     state == 'review_requested'
   end
 
-  def approved?
-    state == 'approved'
-  end
-
   def can_request_review?
     return false if !persisted?
     return false if review_requested?
     return false if published?
-    return false if approved?
+    return false if ready?
     true
   end
 
@@ -63,7 +61,7 @@ class Edition < ActiveRecord::Base
   def can_be_published?
     return false if published?
     return false if !latest_edition?
-    approved?
+    ready?
   end
 
   def latest_edition?
@@ -109,5 +107,9 @@ private
 
   def assign_publisher_href
     self.publisher_href = PUBLISHERS[publisher_title] if publisher_title.present?
+  end
+
+  def ready?
+    state == 'ready'
   end
 end

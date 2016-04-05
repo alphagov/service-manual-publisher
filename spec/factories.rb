@@ -36,8 +36,8 @@ FactoryGirl.define do
     latest_edition { build(:edition, state: "published") }
   end
 
-  factory :approved_guide, parent: :guide do
-    latest_edition { build(:edition, state: "approved") }
+  factory :ready_guide, parent: :guide do
+    latest_edition { build(:edition, state: "ready") }
   end
 
   factory :user do
@@ -73,10 +73,6 @@ FactoryGirl.define do
 
   factory :published_edition, parent: :edition do
     state "published"
-  end
-
-  factory :approved_edition, parent: :edition do
-    state "approved"
   end
 
   factory :review_requested_edition, parent: :edition do

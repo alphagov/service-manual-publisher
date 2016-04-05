@@ -115,7 +115,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows the correct state of the guide if publishing fails" do
-      guide = create(:approved_guide)
+      guide = create(:ready_guide)
 
       visit edit_guide_path(guide)
       expect(fake_publishing_api).to receive(:publish).and_raise api_error
@@ -127,7 +127,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
 
       within ".label" do
-        expect(page).to have_content('Approved')
+        expect(page).to have_content('Ready')
       end
     end
   end
@@ -200,7 +200,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         visit root_path
         within_guide_index_row(guide.title) do
           within ".label" do
-            expect(page).to have_content "Approved"
+            expect(page).to have_content "Ready"
           end
         end
       end

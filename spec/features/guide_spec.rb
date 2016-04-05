@@ -120,7 +120,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     let :guide do
-      create(:approved_guide, slug: "/service-manual/topic-name/something")
+      create(:ready_guide, slug: "/service-manual/topic-name/something")
     end
 
     it "does not publish the guide" do
@@ -183,57 +183,31 @@ RSpec.describe "creating guides", type: :feature do
   end
 
   describe "action buttons" do
-    {
-      send_for_review: "Send for review",
-      approve_for_publication: "Approve for publication",
-      publish:          "Publish",
-    }.each do |name, title|
-      define_method :"expect_#{name}_to_be" do |state|
-        if state == :visible
-          expect(page).to have_button title
-        else
-          expect(page).to_not have_button title
-        end
-      end
+    it "a new guide can only be sent for review" do
+      guide = create(:guide)
+      visit edit_guide_path(guide)
+
+      expect(page).to     have_button("Send for review")
+      expect(page).to_not have_button("Approve for publication")
+      expect(page).to_not have_button("Publish")
     end
 
-    context "when a review can be requested" do
-      before do
-        guide = create(:guide, slug: "/service-manual/topic-name/something")
-        visit edit_guide_path(guide)
-      end
+    it "a review requested guide can only be approved" do
+      guide = create(:review_requested_guide)
+      visit edit_guide_path(guide)
 
-      it "only allows requesting of reviews" do
-        expect_send_for_review_to_be :visible
-        expect_approve_for_publication_to_be :hidden
-        expect_publish_to_be :hidden
-      end
+      expect(page).to_not have_button("Send for review")
+      expect(page).to     have_button("Approve for publication")
+      expect(page).to_not have_button("Publish")
     end
 
-    context "when it can be marked as approved" do
-      before do
-        guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
-        visit edit_guide_path(guide)
-      end
+    it "a ready guide can only be published" do
+      guide = create(:ready_guide)
+      visit edit_guide_path(guide)
 
-      it "only allows being marked at approved" do
-        expect_send_for_review_to_be :hidden
-        expect_approve_for_publication_to_be :visible
-        expect_publish_to_be :hidden
-      end
-    end
-
-    context "when it can be published" do
-      before do
-        guide = create(:approved_guide, slug: "/service-manual/topic-name/something")
-        visit edit_guide_path(guide)
-      end
-
-      it "only allows publishing" do
-        expect_send_for_review_to_be :hidden
-        expect_approve_for_publication_to_be :hidden
-        expect_publish_to_be :visible
-      end
+      expect(page).to_not have_button("Send for review")
+      expect(page).to_not have_button("Approve for publication")
+      expect(page).to     have_button("Publish")
     end
   end
 

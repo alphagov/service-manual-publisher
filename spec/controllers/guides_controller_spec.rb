@@ -24,14 +24,14 @@ RSpec.describe GuidesController, type: :controller do
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
         expect(ActionMailer::Base.deliveries.last.to).to eq ["content.designer@example.com"]
-        expect(ActionMailer::Base.deliveries.last.subject).to include("approved for publishing")
+        expect(ActionMailer::Base.deliveries.last.subject).to include("ready for publishing")
       end
     end
 
     describe "#publish" do
       it 'notifies about search indexing errors but does not fail the transaction' do
         expect_any_instance_of(Rummageable::Index).to receive(:add_batch).and_raise("Something went wrong")
-        edition = build(:edition, state: 'approved')
+        edition = build(:edition, state: 'ready')
         guide = Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         expect(controller).to receive(:notify_airbrake)
 
