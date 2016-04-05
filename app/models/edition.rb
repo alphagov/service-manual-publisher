@@ -13,6 +13,7 @@ class Edition < ActiveRecord::Base
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
   scope :review_requested, -> { where(state: 'review_requested') }
+  scope :most_recent_first, -> { order('created_at DESC, id DESC') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :user]
   validates_inclusion_of :state, in: STATES

@@ -32,6 +32,10 @@ class Guide < ActiveRecord::Base
       .order("version DESC, created_at DESC")
   end
 
+  def latest_persisted_edition
+    editions.most_recent_first.first
+  end
+
   def topic
     @topic ||= Topic.select do |topic|
                  topic.tree.select do |element|
