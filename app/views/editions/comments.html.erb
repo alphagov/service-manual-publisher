@@ -5,10 +5,10 @@
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>
 
-<% lastest_edition_for_open_edition_group = @latest_edition_per_edition_group.first %>
+<% latest_edition_for_open_edition_group = @latest_edition_per_edition_group.first %>
 
 <% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
-  <% if latest_edition_of_group == lastest_edition_for_open_edition_group %>
+  <% if latest_edition_of_group == latest_edition_for_open_edition_group %>
     <div class="open-edition panel panel-default">
       <div class="panel-heading">
         <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
