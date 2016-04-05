@@ -17,7 +17,7 @@ class EditionThread
         current_state = edition.state
       end
 
-      edition.comments.each do |comment|
+      edition.comments.includes(:user).oldest_first.each do |comment|
         @events << CommentEvent.new(comment)
       end
     end

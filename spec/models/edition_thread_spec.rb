@@ -57,6 +57,17 @@ RSpec.describe EditionThread, "#events" do
 
       expect(event.comment).to eq(comment)
     end
+
+    it "returns them chronologically" do
+      most_recent_edition = create(:edition, version: 1)
+      most_recent_edition.comments.create!(comment: "My words are gold", created_at: 1.day.ago)
+      most_recent_edition.comments.create!(comment: "Are you sure?", created_at: 2.day.ago)
+
+      events = described_class.new(most_recent_edition).events
+
+      expect(events.third.comment.comment).to eq("Are you sure?")
+      expect(events.fourth.comment.comment).to eq("My words are gold")
+    end
   end
 
   describe "state change event" do
