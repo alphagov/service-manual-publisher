@@ -10,9 +10,13 @@ FactoryGirl.define do
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
   end
 
-  factory :guide do
-    latest_edition { build(:edition) }
-    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
+  factory :guide, parent: :base_guide do
+    with_slug
+    transient do
+      title "Example Guide"
+    end
+
+    latest_edition { build(:edition, title: title) }
   end
 
   factory :edition do

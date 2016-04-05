@@ -166,7 +166,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should save a draft locally and send it to Publishing API" do
-    guide = create(:guide, slug: '/service-manual/topic-name/preview-test')
+    guide = create(:guide, title: "Original Title", slug: "/service-manual/topic-name/preview-test")
     visit edit_guide_path(guide)
     fill_in "Title", with: "Changed Title"
 
@@ -174,7 +174,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     click_first_button "Save"
 
-    expect(guide.editions.map(&:title)).to match_array ["Changed Title"]
+    expect(guide.editions.map(&:title)).to match_array ["Changed Title", "Original Title"]
     expect(page).to have_link "Preview", href: "http://draft-origin.dev.gov.uk/service-manual/topic-name/preview-test"
   end
 
