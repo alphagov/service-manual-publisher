@@ -12,18 +12,7 @@
     <div class="open-edition">
       <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
 
-      <%= form_for @comment do |f| %>
-        <%= f.hidden_field :edition_id, value: latest_edition_of_group.id %>
-
-        <%= render 'shared/form_error_summary', object: @comment %>
-
-        <div class='form-group'>
-          <%= f.text_area :comment, class: "form-control", rows: 3, placeholder: "Add new comment" %>
-        </div>
-        <div class='form-group'>
-          <%= f.submit "Save comment", class: "btn btn-success" %>
-        </div>
-      <% end %>
+      <%= render 'comment_form', comment: @comment, edition: latest_edition_of_group %>
 
       <% EditionThread.new(latest_edition_of_group).events.reverse.each do |event| %>
         <%= render "editions/#{event.class.to_s.underscore}", event: event %>
