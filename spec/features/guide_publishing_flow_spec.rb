@@ -231,26 +231,25 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "guide edition changes" do
     it "shows exact changes in any fields" do
-      first_edition = create(:published_edition, title: "First Edition", body: "### Hello")
-      guide = create(:published_guide, latest_edition: first_edition)
+      guide = create(:published_guide, title: "First version", body: "### Hello")
 
       visit edit_guide_path(guide)
-      fill_in "Title", with: "Second Edition"
+      fill_in "Title", with: "Second version"
       fill_in "Body", with: "## Hi"
       fill_in "Why the change is being made", with: "Better greeting"
       click_first_button 'Save'
       click_link "Compare changes"
 
       within ".title del" do
-        expect(page).to have_content(first_edition.title)
+        expect(page).to have_content("First version")
       end
 
       within ".title ins" do
-        expect(page).to have_content("Second Edition")
+        expect(page).to have_content("Second version")
       end
 
       within ".body del" do
-        expect(page).to have_content(first_edition.body)
+        expect(page).to have_content("### Hello")
       end
 
       within ".body ins" do

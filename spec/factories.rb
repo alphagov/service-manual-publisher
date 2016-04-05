@@ -53,13 +53,14 @@ FactoryGirl.define do
     with_slug
     transient do
       title "Example Guide"
+      body "The quick brown fox jumped over the lazy dog."
     end
 
     editions { [
-      build(:edition, state: "draft", title: title),
-      build(:edition, state: "review_requested", title: title),
-      build(:edition, state: "ready", title: title),
-      build(:edition, state: "published", title: title),
+      build(:edition, state: "draft", title: title, body: body),
+      build(:edition, state: "review_requested", title: title, body: body),
+      build(:edition, state: "ready", title: title, body: body),
+      build(:edition, state: "published", title: title, body: body),
       ] }
   end
 
