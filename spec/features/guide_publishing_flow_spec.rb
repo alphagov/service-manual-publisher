@@ -13,13 +13,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "latest edition is published" do
     it "should create a new draft edition when saving changes" do
-      guide = create(:published_guide)
+      guide = create(:published_guide, title: "A guide to agile")
 
       visit guides_path
-      within_guide_index_row(guide.title) do
-        click_link guide.title
+      within_guide_index_row("A guide to agile") do
+        click_link "A guide to agile"
       end
-      the_form_should_be_prepopulated_with_title guide.title
+      the_form_should_be_prepopulated_with_title "A guide to agile"
       fill_in "Title", with: "Standup meetings"
       fill_in "Why the change is being made", with: "Be more specific in the title"
       click_first_button 'Save'
@@ -31,11 +31,11 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "defaults to a major update and the new change note is empty" do
-      guide = create(:published_guide)
+      guide = create(:published_guide, title: "A guide to agile")
       visit guides_path
 
-      within_guide_index_row(guide.title) do
-        click_link guide.title
+      within_guide_index_row("A guide to agile") do
+        click_link "A guide to agile"
       end
       expect(find_field("Why the change is being made").value).to be_blank
 
@@ -100,13 +100,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows api errors in the UI" do
-      guide = create(:published_guide)
+      guide = create(:published_guide, title: "Scrum")
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
       visit guides_path
-      within_guide_index_row(guide.title) do
-        click_link guide.title
+      within_guide_index_row("Scrum") do
+        click_link "Scrum"
       end
       fill_in "Why the change is being made", with: "Fix a typo"
       click_first_button 'Save'
