@@ -12,22 +12,24 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   context "latest edition is published" do
-    it "should create a new draft edition when saving changes" do
-      guide = create(:published_guide, title: "A guide to agile")
+    it "creates a new draft version" do
+      guide = create(:published_guide, title: "Scrum")
+
+      expect(guide.editions.count).to eq(4)
+      expect(guide.editions.order(:created_at).last.version).to eq(1)
 
       visit guides_path
-      within_guide_index_row("A guide to agile") do
-        click_link "A guide to agile"
+      within_guide_index_row("Scrum") do
+        click_link "Scrum"
       end
-      the_form_should_be_prepopulated_with_title "A guide to agile"
-      fill_in "Title", with: "Standup meetings"
-      fill_in "Why the change is being made", with: "Be more specific in the title"
+
+      fill_in "Title", with: "Agile"
+      fill_in "Why the change is being made", with: "Update Title"
+
       click_first_button 'Save'
 
-      guide.reload
-      expect(guide.editions.published.size).to eq 1
-      expect(guide.editions.draft.size).to eq 1
-      expect(guide.latest_edition.title).to eq "Standup meetings"
+      expect(guide.editions.count).to eq(5)
+      expect(guide.editions.order(:created_at).last.version).to eq(2)
     end
 
     it "defaults to a major update and the new change note is empty" do
@@ -56,26 +58,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       click_first_button "Approve for publication"
       click_first_button "Publish"
     end
-  end
-
-  it "creates a new draft version if the original has been published in the meantime" do
-    guide = create(:published_guide, title: "Scrum")
-
-    expect(guide.editions.count).to eq(4)
-    expect(guide.editions.order(:created_at).last.version).to eq(1)
-
-    visit guides_path
-    within_guide_index_row("Scrum") do
-      click_link "Scrum"
-    end
-
-    fill_in "Title", with: "Agile"
-    fill_in "Why the change is being made", with: "Update Title"
-
-    click_first_button 'Save'
-
-    expect(guide.editions.count).to eq(5)
-    expect(guide.editions.order(:created_at).last.version).to eq(2)
   end
 
   context "when publishing-api raises an exception" do
