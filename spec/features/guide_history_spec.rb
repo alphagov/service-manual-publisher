@@ -16,7 +16,7 @@ RSpec.describe "Guide history", type: :feature do
 
   def fill_out_new_guide_fields
     fill_in "Slug", with: "/service-manual/the/path"
-    select @community.title, from: "Published by"
+    select @community.title, from: "Community"
     fill_in "Description", with: "This guide acts as a test case"
 
     fill_in "Title", with: "First Edition Title"
