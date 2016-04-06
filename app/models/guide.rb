@@ -26,6 +26,16 @@ class Guide < ActiveRecord::Base
       .order("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC")
   end
 
+  def latest_edition_per_edition_group
+    editions
+      .select("DISTINCT ON (version) *")
+      .order("version DESC, created_at DESC")
+  end
+
+  def latest_persisted_edition
+    editions.most_recent_first.first
+  end
+
   def topic
     @topic ||= Topic.select do |topic|
                  topic.tree.select do |element|

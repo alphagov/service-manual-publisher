@@ -132,7 +132,8 @@ CREATE TABLE editions (
     state text,
     change_note text,
     change_summary text,
-    content_owner_id integer
+    content_owner_id integer,
+    version integer
 );
 
 
@@ -564,4 +565,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160301111323');
 INSERT INTO schema_migrations (version) VALUES ('20160322102813');
 
 INSERT INTO schema_migrations (version) VALUES ('20160404123940');
+
+INSERT INTO schema_migrations (version) VALUES ('20160405103708');
+
+INSERT INTO schema_migrations (version) VALUES ('20160405145315');
 

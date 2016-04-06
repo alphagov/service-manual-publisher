@@ -239,3 +239,20 @@ RSpec.describe Guide do
   end
 
 end
+
+RSpec.describe Guide, "#latest_edition_per_edition_group" do
+  it "returns only the latest edition from editions that share the same edition number" do
+    guide = Guide.new(slug: "/service-manual/topic-name/slug")
+    guide.editions << build(:edition, version: 1, created_at: 2.days.ago)
+    first_version_second_edition = build(:edition, version: 1, created_at: 1.days.ago)
+    guide.editions << first_version_second_edition
+    guide.editions << build(:edition, version: 2, created_at: 2.days.ago)
+    second_version_second_edition = build(:edition, version: 2, created_at: 1.days.ago)
+    guide.editions << second_version_second_edition
+    guide.save!
+
+    expect(
+      guide.latest_edition_per_edition_group
+      ).to eq([second_version_second_edition, first_version_second_edition])
+  end
+end

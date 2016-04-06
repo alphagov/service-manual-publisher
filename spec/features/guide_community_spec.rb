@@ -34,6 +34,6 @@ RSpec.describe 'Create a guide community', type: :feature do
     visit root_path
     click_link "Create a Guide Community"
 
-    expect(page).to_not have_field('Published by')
+    expect(page).to_not have_field('Community')
   end
 end

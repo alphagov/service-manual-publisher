@@ -13,12 +13,12 @@ class Edition < ActiveRecord::Base
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
   scope :review_requested, -> { where(state: 'review_requested') }
+  scope :most_recent_first, -> { order('created_at DESC, id DESC') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :user]
   validates_inclusion_of :state, in: STATES
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
-  validate :published_cant_change
 
   auto_strip_attributes(
     :title,
@@ -97,13 +97,11 @@ class Edition < ActiveRecord::Base
     [user, guide.latest_edition.user].uniq
   end
 
-private
-
-  def published_cant_change
-    if state_was == 'published' && changes.except('updated_at').present?
-      errors.add(:base, "can not be changed after it's been published. Perhaps someone has published it whilst you were editing it.")
-    end
+  def author
+    user
   end
+
+private
 
   def assign_publisher_href
     self.publisher_href = PUBLISHERS[publisher_title] if publisher_title.present?

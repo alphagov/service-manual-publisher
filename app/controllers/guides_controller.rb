@@ -26,6 +26,7 @@ class GuidesController < ApplicationController
 
   def create
     @guide = Guide.new(guide_params)
+    @guide.latest_edition.version = 1
 
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
@@ -43,6 +44,27 @@ class GuidesController < ApplicationController
 
   def update
     @guide = Guide.find(params[:id])
+
+    # Build a new latest_edition without automatically saving it and without
+    # nullifying the foreign key on the previous one
+    #
+    # Because latest_edition is a has_one association it has some perculiar
+    # behaviour. #latest_edition=() will autosave the newly built record which we
+    # do not want. #build_latest_edition() will nullify the foreign key on the
+    # record being replaced because, fairly, Rails expects there to be only one
+    # latest edition.
+    #
+    # We hack around the problem by reassigning the foreign key (guide_id) after
+    # building the new latest edition. The latest_edition association is causing
+    # confusion across the app so this hack can be removed if/when it is
+    # replaced.
+    previous_latest_edition = @guide.latest_edition
+    @guide.build_latest_edition(@guide.latest_edition.dup.attributes)
+    previous_latest_edition.update_attribute(:guide_id, @guide.id)
+
+    if previous_latest_edition.published?
+      @guide.latest_edition.version += 1
+    end
 
     if params[:send_for_review].present?
       send_for_review
@@ -97,8 +119,7 @@ private
   end
 
   def save_draft
-    @guide.ensure_draft_exists
-    @guide.assign_attributes(guide_params(latest_edition_attributes: { id: @guide.latest_edition.id }))
+    @guide.assign_attributes(guide_params)
 
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
