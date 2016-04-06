@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :guide_community do
-    latest_edition { build(:edition, content_owner: nil) }
+    latest_edition { build(:community_edition, content_owner: nil) }
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
   end
 
@@ -22,6 +22,12 @@ FactoryGirl.define do
     body "Heading"
     content_owner { build(:guide_community) }
     user { build(:user) }
+  end
+
+  factory :community_edition, parent: :edition do
+    sequence :title do |n|
+      "#{n} Community"
+    end
   end
 
   factory :draft_guide, parent: :guide do

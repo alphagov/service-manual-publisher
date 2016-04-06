@@ -32,7 +32,7 @@
         <h2><%= search_header.to_s %></h2>
       <% end %>
     <% end %>
-    <table class='table table-bordered'>
+    <table class='guide-table table table-bordered'>
       <thead>
         <tr class='table-header'>
           <th>Guide</th>
@@ -51,7 +51,7 @@
             </td>
             <td>
               <% if guide.latest_edition.content_owner %>
-                <%= guide.latest_edition.content_owner.title %>
+                <%= guide_community_title(guide.latest_edition.content_owner) %>
               <% end %>
             </td>
             <td class='last-edited-by'>
