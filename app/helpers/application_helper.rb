@@ -24,4 +24,8 @@ module ApplicationHelper
   def name_for_user(user)
     user.name
   end
+
+  def format_time(time)
+    time.strftime("%d %B %Y")
+  end
 end

@@ -1,5 +1,8 @@
 <div class="event panel panel-default">
   <div class="panel-heading">
+    <div class="pull-right">
+      <%= format_time(event.try(:updated_at) || event.try(:at)) %>
+    </div>
     <%= event_action_for_changed_state(event.edition.state) %> by <%= event.edition.user.name %>
   </div>
 </div>

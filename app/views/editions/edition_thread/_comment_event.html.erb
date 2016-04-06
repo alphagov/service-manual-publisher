@@ -1,5 +1,8 @@
 <div class="event comment panel panel-default">
   <div class="panel-heading">
+    <div class="pull-right">
+      <%= format_time(event.try(:updated_at) || event.try(:at)) %>
+    </div>
     <%= event.comment.user.name %>
   </div>
   <div class="panel-body">

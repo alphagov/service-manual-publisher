@@ -20,10 +20,10 @@ RSpec.describe "Guide history", type: :feature do
 
     click_on "Comments and history"
 
-    expect(events.first).to eq "New draft created by Stub User"
-    expect(events.second).to eq "Assigned to Stub User"
-    expect(events.third).to include "What a great piece of writing"
-    expect(events.fourth).to eq "Review requested by Stub User"
+    expect(events.first).to eq "06 April 2016 New draft created by Stub User"
+    expect(events.second).to eq "06 April 2016 Assigned to Stub User"
+    expect(events.third).to include "06 April 2016 Stub User What a great piece of writing"
+    expect(events.fourth).to eq "06 April 2016 Review requested by Stub User"
   end
 
   def stub_publisher
