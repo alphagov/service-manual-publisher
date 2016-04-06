@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_for @edition.guide do |f| %>
+    <%= guide_form_for @edition.guide do |f| %>
       <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @edition.guide, edition: @edition %>
     <% end %>
   </div>
@@ -34,7 +34,7 @@
   </div>
 
   <div class="col-md-12">
-    <%= form_for @edition.guide do |f| %>
+    <%= guide_form_for @edition.guide do |f| %>
       <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @edition.guide, edition: @edition %>
     <% end %>
   </div>
