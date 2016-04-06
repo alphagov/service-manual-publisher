@@ -30,4 +30,8 @@ module GuideHelper
 
     form_for(guide, *args << options.merge(as: :guide, url: url), &block)
   end
+
+  def guide_community_title(guide_community)
+    guide_community.title.gsub(/ [cC]ommunity$/, "")
+  end
 end

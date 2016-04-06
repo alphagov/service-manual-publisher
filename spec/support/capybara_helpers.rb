@@ -3,8 +3,8 @@ module CapybaraHelpers
     click_button value, match: :first
   end
 
-  def within_guide_index_row(name, &block)
-    within(:xpath, %{//a[.="#{name}"]/ancestor::tr}, &block)
+  def within_guide_index_row(title, &block)
+    within(:xpath, %{//a[.="#{title}"]/ancestor::tr}, &block)
   end
 end
 
