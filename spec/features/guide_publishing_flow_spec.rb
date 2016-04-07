@@ -229,48 +229,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
   end
 
-  describe "guide edition changes" do
-    it "shows exact changes in any fields" do
-      guide = create(:published_guide, title: "First version", body: "### Hello")
-
-      visit edit_guide_path(guide)
-      fill_in "Title", with: "Second version"
-      fill_in "Body", with: "## Hi"
-      fill_in "Why the change is being made", with: "Better greeting"
-      click_first_button 'Save'
-      click_link "Compare changes"
-
-      within ".title del" do
-        expect(page).to have_content("First version")
-      end
-
-      within ".title ins" do
-        expect(page).to have_content("Second version")
-      end
-
-      within ".body del" do
-        expect(page).to have_content("### Hello")
-      end
-
-      within ".body ins" do
-        expect(page).to have_content("## Hi")
-      end
-    end
-
-    it "shows all fields as additions if there are no previous editions" do
-      guide = create(:guide)
-      visit edition_changes_path(new_edition_id: guide.latest_edition.id)
-
-      within ".title ins" do
-        expect(page).to have_content(guide.latest_edition.title)
-      end
-
-      within ".body ins" do
-        expect(page).to have_content(guide.latest_edition.body)
-      end
-    end
-  end
-
 private
 
   def the_form_should_be_prepopulated_with_title(title)
