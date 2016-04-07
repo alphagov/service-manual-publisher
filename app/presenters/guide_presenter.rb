@@ -21,7 +21,7 @@ class GuidePresenter
       routes: [
         { type: "exact", path: guide.slug }
       ],
-      details: details
+      details: details,
     }
   end
 
@@ -49,6 +49,15 @@ private
       details[:related_discussion] = {
         title: edition.related_discussion_title,
         href: edition.related_discussion_href
+      }
+    end
+
+    major_published_editions = guide.editions.major_published_editions
+    details[:change_history] = major_published_editions.map do |edition|
+      {
+        public_timestamp: edition.updated_at.iso8601,
+        note: edition.change_note,
+        reason_for_change: edition.reason_for_change,
       }
     end
 

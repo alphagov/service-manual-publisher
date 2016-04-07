@@ -79,6 +79,35 @@ RSpec.describe GuidePresenter do
       edition.title = "Agile Process"
       expect(presenter.content_payload[:title]).to eq("Agile Process")
     end
+
+    it "has all change history for the edition" do
+      edition1 = build(:published_major_edition)
+      edition2 = build(:published_major_edition)
+      guide = create(
+        :guide,
+        editions: [
+          edition1,
+          edition2,
+          build(:edition),
+          build(:edition),
+        ],
+      )
+
+      presenter = described_class.new(guide, guide.latest_edition)
+      change_history = presenter.content_payload[:details][:change_history]
+      expect(change_history).to eq [
+        {
+          public_timestamp: edition1.updated_at.iso8601,
+          note: edition1.change_note,
+          reason_for_change: edition1.reason_for_change,
+        },
+        {
+          public_timestamp: edition2.updated_at.iso8601,
+          note: edition2.change_note,
+          reason_for_change: edition2.reason_for_change,
+        },
+      ]
+    end
   end
 
   describe '#links_payload' do

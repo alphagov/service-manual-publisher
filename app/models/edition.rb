@@ -12,13 +12,14 @@ class Edition < ActiveRecord::Base
 
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
+  scope :major_published_editions, -> { published.where(update_type: 'major')}
   scope :review_requested, -> { where(state: 'review_requested') }
   scope :most_recent_first, -> { order('created_at DESC, id DESC') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :user]
   validates_inclusion_of :state, in: STATES
+  validates :reason_for_change, presence: true, if: :major?
   validates :change_note, presence: true, if: :major?
-  validates :change_summary, presence: true, if: :major?
 
   auto_strip_attributes(
     :title,
@@ -88,6 +89,7 @@ class Edition < ActiveRecord::Base
   def draft_copy
     dup.tap do |e|
       e.change_note = nil
+      e.reason_for_change = nil
       e.update_type = "minor"
       e.state = "draft"
     end

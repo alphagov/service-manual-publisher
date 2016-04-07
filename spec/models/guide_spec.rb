@@ -190,7 +190,7 @@ RSpec.describe Guide do
         description:    "Description",
         update_type:    "major",
         change_note:    "change note",
-        change_summary: "change summary",
+        reason_for_change: "change reason",
         body:           "# Heading",
         content_owner:  build(:guide_community),
         user:           build(:user),
