@@ -64,6 +64,8 @@ FactoryGirl.define do
       ] }
   end
 
+  factory :published_guide_community, parent: :published_guide, class: 'GuideCommunity'
+
   factory :ready_guide, parent: :guide do
     latest_edition { build(:edition, state: "ready") }
   end
