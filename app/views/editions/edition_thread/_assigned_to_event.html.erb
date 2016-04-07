@@ -1,7 +1,7 @@
 <div class="event panel panel-default">
   <div class="panel-heading">
     <div class="pull-right">
-      <%= format_time(event.try(:updated_at) || event.try(:at)) %>
+      <%= format_time(event.edition.updated_at) %>
     </div>
     Assigned to <%= event.edition.author.name %>
   </div>
