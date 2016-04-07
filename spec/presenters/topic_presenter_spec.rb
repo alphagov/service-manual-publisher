@@ -99,6 +99,17 @@ RSpec.describe TopicPresenter, "#links_payload" do
     expect(content_owner_content_ids).to eq([guide_community.content_id])
   end
 
+  it "doesn't contain community content_owners because communities don't have them" do
+    guide_community = create(:guide_community)
+    topic = create_topic_in_groups([[guide_community]])
+
+    presented_topic = TopicPresenter.new(topic)
+
+    expect(
+      presented_topic.links_payload[:links][:content_owners]
+      ).to eq([])
+  end
+
   def create_topic_in_groups(groups)
     tree = groups.map.with_index do |group_guides, index|
       {

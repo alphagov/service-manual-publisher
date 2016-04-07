@@ -54,9 +54,13 @@ private
 
   def content_owner_content_ids
     content_ids = eagerloaded_guides.map do |guide|
-      guide.latest_edition.content_owner.content_id
+      edition = guide.latest_edition
+
+      if edition.content_owner
+        edition.content_owner.content_id
+      end
     end
-    content_ids.uniq
+    content_ids.compact.uniq
   end
 
   def eagerloaded_guides
