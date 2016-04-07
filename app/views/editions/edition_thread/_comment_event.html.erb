@@ -1,7 +1,7 @@
 <div class="event comment panel panel-default">
   <div class="panel-heading">
     <div class="pull-right">
-      <%= format_time(event.comment.created_at) %>
+      <%= l event.comment.created_at, format: :date_without_time %>
     </div>
     <%= event.comment.user.name %>
   </div>

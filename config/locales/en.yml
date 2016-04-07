@@ -33,3 +33,6 @@ en:
       about_x_years:
         one:   "1 year"
         other: "%{count} years"
+  time:
+    formats:
+      date_without_time: "%d %B %Y"
