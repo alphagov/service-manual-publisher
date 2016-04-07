@@ -61,14 +61,6 @@ class Guide < ActiveRecord::Base
     latest_edition.comments.for_rendering
   end
 
-  def ensure_draft_exists
-    if latest_edition.published?
-      editions << latest_edition.draft_copy
-      reload
-    end
-    self
-  end
-
   def latest_editable_edition
     return Edition.new unless latest_edition
 

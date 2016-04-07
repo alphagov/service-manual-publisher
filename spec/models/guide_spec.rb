@@ -3,31 +3,6 @@ require 'rails_helper'
 RSpec.describe Guide do
   let(:edition) { build(:published_edition) }
 
-  describe "#ensure_draft_exists" do
-    let(:guide) do
-      Guide.create!(slug: "/service-manual/topic-name/slug", latest_edition: edition)
-    end
-
-    it "does nothing if the latest edition is in a draft state" do
-      edition.update_attribute(:state, "draft")
-
-      guide.ensure_draft_exists
-
-      expect(guide.latest_edition).to eq edition
-      expect(guide.editions.count).to eq 1
-    end
-
-    it "builds an saves a draft copy of the latest edition if it's published" do
-      edition.update_attribute(:state, "published")
-
-      guide.ensure_draft_exists
-
-      expect(guide.latest_edition).to_not eq edition
-      expect(guide.editions.published.count).to eq 1
-      expect(guide.editions.draft.count).to eq 1
-    end
-  end
-
   context "with a topic" do
     let(:guide) do
       create(:guide, slug: "/service-manual/topic-name/slug", latest_edition: edition)
