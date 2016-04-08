@@ -88,15 +88,15 @@
           </div>
 
           <div class="form-group change-note-form-group">
-            <%= editions_form.label :change_note, "Summary of change" %>
+            <%= editions_form.label :change_summary, "Summary of change" %>
             <div class="help-block">What is being changed in this update</div>
-            <%= editions_form.text_field :change_note, class: 'input-md-12 form-control', rows: 5 %>
+            <%= editions_form.text_field :change_summary, class: 'input-md-12 form-control', rows: 5 %>
           </div>
 
           <div class="form-group change-note-form-group">
-            <%= editions_form.label :reason_for_change, "Why the change is being made" %>
+            <%= editions_form.label :change_note, "Why the change is being made" %>
             <div class="help-block">Include any evidence from research and links to any related discussions</div>
-            <%= editions_form.text_area :reason_for_change, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
+            <%= editions_form.text_area :change_note, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
           </div>
 
           <p class="text-strong change-note-form-group">
