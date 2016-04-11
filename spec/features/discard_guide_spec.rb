@@ -2,6 +2,11 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "discarding guides", type: :feature do
+  before do
+    allow_any_instance_of(Publisher).to receive(:discard_draft)
+      .and_return(Publisher::DiscardDraftResponse.new(success: true))
+  end
+
   it "makes the user confirm discarding the draft", js: true do
     guide = create(:guide)
     visit edit_guide_path(guide)
