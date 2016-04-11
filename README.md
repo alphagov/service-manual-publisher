@@ -10,7 +10,9 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 ## Nomenclature
 
-- **Guide**: a service manual guide is the main document format used for manuals.
+- **Guide**: A service manual guide is the main document format used for manuals.
+- **Guide Community**: A profile page that represents the community who curate a collection of guides.
+- **Topic**: A collection guides.
 
 ## Technical documentation
 
