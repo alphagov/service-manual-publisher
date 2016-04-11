@@ -8,10 +8,6 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 ![Edit interface screenshot](http://i.imgur.com/sFP1IUD.png)
 
-## Live examples
-
-None at the moment.
-
 ## Nomenclature
 
 - **Guide**: a service manual guide is the main document format used for manuals.
