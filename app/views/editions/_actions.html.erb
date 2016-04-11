@@ -13,7 +13,7 @@
         <% if !guide.latest_edition.published? %>
           <%=
             form.submit "Discard draft",
-              class: 'btn btn-default add-right-margin js-ok-to-navigate-away',
+              class: 'btn btn-danger add-right-margin js-ok-to-navigate-away',
               name: :discard,
               :"data-confirm"=> "Are you sure you want to discard this draft?"
             %>
