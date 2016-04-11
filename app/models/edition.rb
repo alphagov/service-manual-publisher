@@ -19,6 +19,7 @@ class Edition < ActiveRecord::Base
   validates_inclusion_of :state, in: STATES
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
+  validates :version, presence: true
 
   auto_strip_attributes(
     :title,

@@ -48,6 +48,7 @@ task import_old_service_manual_content: :environment do
   author = User.first || User.create!(name: "Unknown", email: "unknown@example.com")
   if !GuideCommunity.any?
     community_guide_edition = Edition.new(
+      version:         1,
       title:          'Design Community',
       state:          "draft",
       phase:          "beta",
@@ -77,6 +78,7 @@ task import_old_service_manual_content: :environment do
     end
 
     edition = Edition.new(
+      version:         1,
       title:           object[:title],
       state:           object[:state],
       phase:           "beta",

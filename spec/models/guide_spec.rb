@@ -186,12 +186,12 @@ RSpec.describe Guide do
     it "does not return duplicates" do
       edition1 = Edition.new(
         default_attributes.merge(
-          state: "draft", title: "dictionary"
+          version: 1, state: "draft", title: "dictionary"
         ),
       )
       edition2 = Edition.new(
         default_attributes.merge(
-          state: "published", title: "thesaurus"
+          version: 1, state: "published", title: "thesaurus"
         ),
       )
 
@@ -202,10 +202,10 @@ RSpec.describe Guide do
     end
 
     it "searches for slug" do
-      edition = Edition.new(default_attributes.merge(title: "1"))
+      edition = Edition.new(default_attributes.merge(version: 1, title: "1"))
       Guide.create!(latest_edition: edition, slug: "/service-manual/topic-name/1")
 
-      edition = Edition.new(default_attributes.merge(title: "2"))
+      edition = Edition.new(default_attributes.merge(version: 1, title: "2"))
       Guide.create!(latest_edition: edition, slug: "/service-manual/topic-name/2")
 
       results = Guide.search("/service-manual/2").map {|e| e.latest_edition.title}

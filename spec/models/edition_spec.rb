@@ -59,6 +59,12 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:user).size).to eq 1
     end
 
+    it "requires version to be present" do
+      edition = build(:edition, version: nil)
+      expect(edition).to be_invalid
+      expect(edition.errors.full_messages_for(:version).size).to eq 1
+    end
+
     describe "state" do
       it "allows 'published' state" do
         edition = build(:published_edition)
