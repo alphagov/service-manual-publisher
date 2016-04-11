@@ -10,6 +10,7 @@
         <% if !edition.persisted? %>
           <%= link_to "Discard new guide", guides_path, class: "btn btn-danger add-right-margin" %>
         <% end %>
+        <%= form.submit "Discard draft", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :discard %>
       <% end %>
 
         <% if edition.persisted? %>

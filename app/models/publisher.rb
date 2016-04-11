@@ -19,6 +19,9 @@ class Publisher
     end
   end
 
+  def discard_draft
+  end
+
 private
 
   def save_catching_gds_api_errors(&block)

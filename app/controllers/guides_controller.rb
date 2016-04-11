@@ -72,6 +72,8 @@ class GuidesController < ApplicationController
       approve_for_publication
     elsif params[:publish].present?
       publish
+    elsif params[:discard].present?
+      discard
     else
       save_draft
     end
@@ -115,6 +117,25 @@ private
 
       flash.now[:error] = publication.errors
       render 'edit'
+    end
+  end
+
+  def discard
+    loop do
+      break if @guide.latest_edition.nil?
+      break if @guide.latest_edition.published?
+
+      @guide.latest_edition.destroy
+      @guide.reload
+    end
+
+    publication = Publisher.new(content_model: @guide).discard_draft
+
+    if @guide.latest_edition.present?
+      redirect_to edit_guide_path(@guide), notice: "Draft has been discarded"
+    else
+      @guide.destroy
+      redirect_to root_path, notice: "Guide has been discarded"
     end
   end
 
