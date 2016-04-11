@@ -20,6 +20,24 @@ class Publisher
   end
 
   def discard_draft
+    begin
+      ActiveRecord::Base.transaction do
+        publishing_api.discard_draft(content_model.content_id)
+
+        latest_published_edition = content_model.editions.published.last
+        if latest_published_edition.present?
+          content_model
+            .editions
+            .where("created_at > ?", latest_published_edition.created_at)
+            .destroy_all
+        else
+          content_model.destroy!
+        end
+      end
+      DiscardDraftResponse.new(success: true)
+    rescue GdsApi::HTTPErrorResponse => e
+      DiscardDraftResponse.new(success: false, errors: e.error_details['error']['message'])
+    end
   end
 
 private
@@ -37,6 +55,21 @@ private
       end
     rescue GdsApi::HTTPErrorResponse => e
       PublicationResponse.new(success: false, errors: e.error_details['error']['message'])
+    end
+  end
+
+  class DiscardDraftResponse
+    def initialize(opts = {})
+      @success = opts.fetch(:success)
+      @errors = opts.fetch(:errors, [])
+    end
+
+    def success?
+      @success
+    end
+
+    def errors
+      @errors
     end
   end
 

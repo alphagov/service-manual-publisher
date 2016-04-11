@@ -87,3 +87,104 @@ RSpec.describe Publisher, '#publish' do
               publish
   end
 end
+
+RSpec.describe Publisher, "#discard_draft" do
+  let :publishing_api do
+    double(:publishing_api)
+  end
+
+  let(:publishing_api_which_always_fails) do
+    api = double(:publishing_api)
+    gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
+                                                      'https://some-service.gov.uk',
+                                                      {'error' => {'message' => 'trouble'}})
+    allow(api).to receive(:discard_draft).and_raise(gds_api_exception)
+    api
+  end
+
+  let :subject do
+    Publisher.new(content_model: guide, publishing_api: publishing_api)
+  end
+
+  before do
+    allow(publishing_api).to receive(:discard_draft)
+  end
+
+  context "guide that has published editions" do
+    let :guide do
+      create(
+        :guide,
+        editions: [
+          build(:draft_edition, title: "This is the first draft edition"),
+          build(:published_edition, title: "This is the published edition"),
+          build(:draft_edition, title: "This is a draft edition"),
+          build(:draft_edition, title: "This is another draft edition"),
+        ],
+      )
+    end
+
+    it "is successful" do
+      expect(subject.discard_draft).to be_success
+    end
+
+    it "discards the draft in the publishing api" do
+      expect(publishing_api).to receive(:discard_draft)
+        .with(guide.content_id)
+      subject.discard_draft
+    end
+
+    it "destroys all the latest drafts" do
+      subject.discard_draft
+
+      expect(guide.reload.editions.map(&:title)).to eq [
+        "This is the first draft edition",
+        "This is the published edition",
+      ]
+    end
+
+    context "when the publishing api call fails" do
+      it "does not destroy anything" do
+        subject = Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails)
+        subject.discard_draft
+
+        ids = guide.editions.map(&:id)
+        expect(Guide.where(id: guide.id).count).to eq 1
+        expect(Edition.where(id: ids).count).to eq 4
+      end
+    end
+  end
+
+  context "guide that does not have published editions" do
+    let :guide do
+      create(
+        :guide,
+        editions: [
+          build(:draft_edition, title: "This is the first draft edition"),
+        ],
+      )
+    end
+
+    it "is successful" do
+      expect(subject.discard_draft).to be_success
+    end
+
+    it "destroys the guide and all editions" do
+      subject.discard_draft
+      ids = guide.editions.map(&:id)
+
+      expect(Guide.where(id: guide.id).count).to eq 0
+      expect(Edition.where(id: ids).count).to eq 0
+    end
+
+    context "when the publishing api call fails" do
+      it "does not destroy anything" do
+        subject = Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails)
+        subject.discard_draft
+
+        ids = guide.editions.map(&:id)
+        expect(Guide.where(id: guide.id).count).to eq 1
+        expect(Edition.where(id: ids).count).to eq 1
+      end
+    end
+  end
+end

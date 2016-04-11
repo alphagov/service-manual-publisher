@@ -4,7 +4,7 @@ class Guide < ActiveRecord::Base
   validate :slug_cant_be_changed_if_an_edition_has_been_published
   validate :latest_edition_has_content_owner, if: :requires_content_owner?
 
-  has_many :editions
+  has_many :editions, dependent: :destroy
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
   accepts_nested_attributes_for :latest_edition

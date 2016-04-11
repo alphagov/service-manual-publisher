@@ -121,21 +121,13 @@ private
   end
 
   def discard
-    loop do
-      break if @guide.latest_edition.nil?
-      break if @guide.latest_edition.published?
-
-      @guide.latest_edition.destroy
-      @guide.reload
-    end
-
-    publication = Publisher.new(content_model: @guide).discard_draft
-
-    if @guide.latest_edition.present?
-      redirect_to edit_guide_path(@guide), notice: "Draft has been discarded"
+    discard_draft = Publisher.new(content_model: @guide)
+      .discard_draft
+    if discard_draft.success?
+      redirect_to root_path, notice: "Draft has been discarded"
     else
-      @guide.destroy
-      redirect_to root_path, notice: "Guide has been discarded"
+      flash.now[:error] = discard_draft.errors
+      render 'edit'
     end
   end
 

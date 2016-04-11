@@ -2,66 +2,46 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "discarding guides", type: :feature do
-  let :publisher do
-    double(:publisher)
+  let :guide do
+    create(
+      :guide,
+      editions: [
+        build(:draft_edition, body: "This is the first draft edition"),
+        build(:published_edition, body: "This is the published edition"),
+        build(:draft_edition, body: "This is the latest draft edition"),
+      ],
+    )
   end
 
-  context "guide that has been published" do
-    let :guide do
-      create(
-        :guide,
-        editions: [
-          build(:draft_edition, body: "This is the first draft edition"),
-          build(:published_edition, body: "This is the published edition"),
-          build(:draft_edition, body: "This is the latest draft edition"),
-        ],
-      )
-    end
+  context "with a successful discard_draft" do
+    it "discards the draft in the publishing api" do
+      publisher = double(:publisher)
+      expect(Publisher).to receive(:new).with(content_model: guide).and_return publisher
+      expect(publisher).to receive(:discard_draft)
+        .and_return(Publisher::DiscardDraftResponse.new(success: true))
 
-    it "restores it to the latest published edition" do
       visit edit_guide_path(guide)
       click_first_button "Discard draft"
       within ".alert" do
         expect(page).to have_content "Draft has been discarded"
       end
-      expect(guide.reload.latest_edition.body).to eq "This is the published edition"
-    end
-
-    it "discards the draft in the publishing api" do
-      expect(Publisher).to receive(:new).with(content_model: guide).and_return publisher
-      expect(publisher).to receive(:discard_draft)
-
-      visit edit_guide_path(guide)
-      click_first_button "Discard draft"
     end
   end
 
-  context "guide that has never been published" do
-    let :guide do
-      create(
-        :guide,
-        editions: [
-          build(:draft_edition, body: "This is the first draft edition"),
-        ],
+  context "with an unsuccessful discard_draft" do
+    it "does not discard the draft" do
+      discard_draft_response = Publisher::DiscardDraftResponse.new(
+        success: false,
+        errors: "An error occurred",
       )
-    end
+      expect_any_instance_of(Publisher).to receive(:discard_draft)
+        .and_return(discard_draft_response)
 
-    it "completely destroys it" do
       visit edit_guide_path(guide)
       click_first_button "Discard draft"
       within ".alert" do
-        expect(page).to have_content "Guide has been discarded"
+        expect(page).to have_content "An error occurred"
       end
-
-      expect(Guide.where(id: guide.id).count).to be 0
-    end
-
-    it "discards the draft in the publishing api" do
-      expect(Publisher).to receive(:new).with(content_model: guide).and_return publisher
-      expect(publisher).to receive(:discard_draft)
-
-      visit edit_guide_path(guide)
-      click_first_button "Discard draft"
     end
   end
 end
