@@ -81,7 +81,7 @@ bundle exec rake import_old_service_manual_content
 
 ### Testing
 
-`bundle exec rspec`
+`bundle exec rake`
 
 ## Migration from the original service manual
 
