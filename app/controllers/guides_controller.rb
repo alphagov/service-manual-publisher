@@ -26,6 +26,7 @@ class GuidesController < ApplicationController
 
   def create
     @guide = Guide.new(guide_params)
+    @guide.latest_edition.user = current_user
     @guide.latest_edition.version = 1
 
     publication = Publisher.new(content_model: @guide).
@@ -120,6 +121,9 @@ private
 
   def save_draft
     @guide.assign_attributes(guide_params)
+    if @guide.latest_edition.published?
+      @guide.latest_edition.user = current_user
+    end
 
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
@@ -133,7 +137,7 @@ private
 
   def guide_params(with = {})
     default_params = {
-      latest_edition_attributes: { state: 'draft', user: current_user }
+      latest_edition_attributes: { state: 'draft' }
     }
     with = default_params.deep_merge(with)
 

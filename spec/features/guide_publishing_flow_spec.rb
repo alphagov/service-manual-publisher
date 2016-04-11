@@ -133,16 +133,36 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     expect(guide.editions.order(:created_at).last.version).to eq(1)
   end
 
-  it "should record who's the last editor" do
-    stub_user.update_attribute :name, "John Smith"
-    guide = create(:guide, :with_draft_edition)
-    visit edit_guide_path(guide)
-    fill_in "Title", with: "An amended title"
-    click_first_button 'Save'
-    visit guides_path
-    within_guide_index_row('An amended title') do
-      within ".last-edited-by" do
-        expect(page).to have_content "John Smith"
+  describe "author behaviour" do
+    context "creating a new guide" do
+      it "records the author" do
+        create(:guide_community)
+
+        visit root_path
+        click_link "Create a Guide"
+        fill_in "Title", with: "Guide Title"
+        fill_in "Slug", with: "/service-manual/topic/title"
+        fill_in "Description", with: "Description"
+        fill_in "Body", with: "Body"
+        click_first_button "Save"
+
+        expect(stub_user).to eq User.first
+      end
+    end
+
+    context "creating a new draft" do
+      it "records the author" do
+        guide = create(:published_guide)
+        original_editor = create(:user)
+        guide.editions.update_all(user_id: original_editor)
+        guide.reload
+        # TODO: Find out why reload is needed here. latest_edition doesn't work properly because factories.
+
+        visit root_path
+        click_link guide.title
+        click_first_button "Save"
+
+        expect(Guide.last.latest_edition.user).to_not eq original_editor
       end
     end
   end
