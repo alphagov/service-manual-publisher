@@ -2,6 +2,13 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "discarding guides", type: :feature do
+  it "makes the user confirm discarding the draft", js: true do
+    guide = create(:guide)
+    visit edit_guide_path(guide)
+    click_first_button "Discard draft"
+    expect(page.driver.browser.modal_message).to include "Are you sure you want to discard this draft?"
+  end
+
   context "when the latest edition is published" do
     it "does not allow discarding" do
       guide = create(:published_guide)
