@@ -11,8 +11,8 @@
         <%= label_tag :q, "Title or slug", class: "nav-header" %>
         <%= text_field_tag :q, params[:q], type: :search, class: "form-control" %>
 
-        <%= label_tag :user, "Author", class: "add-top-margin nav-header" %>
-        <%= select_tag :user, options_for_select(@user_options, params[:user]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
+        <%= label_tag :author, nil, class: "add-top-margin nav-header" %>
+        <%= select_tag :author, options_for_select(@author_options, params[:author]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
 
         <%= label_tag :state, nil, class: "add-top-margin nav-header" %>
         <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>

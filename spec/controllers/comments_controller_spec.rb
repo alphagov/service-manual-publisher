@@ -29,7 +29,7 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     it 'does not send a notification email if edition author is the commenter' do
-      edition.update_attribute(:user, commenter)
+      edition.update_attribute(:author, commenter)
 
       post :create, comment: { edition_id: edition.id, comment: "LGMT!" }
 

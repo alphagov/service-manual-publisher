@@ -94,7 +94,7 @@ RSpec.describe "creating guides", type: :feature do
 
     guide.latest_persisted_edition.tap do |edition|
       # set editor to another user so we can approve this edition
-      edition.user = User.create!(name: "Editor", email: "email@example.org")
+      edition.author = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
     end
 

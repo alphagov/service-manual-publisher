@@ -27,11 +27,11 @@ RSpec.describe "filtering guides", type: :feature do
 
     create(:guide,
            slug: "/service-manual/topic-name/a",
-           latest_edition: build(:edition, user: dave),
+           latest_edition: build(:edition, author: dave),
     )
     create(:guide,
            slug: "/service-manual/topic-name/b",
-           latest_edition: build(:edition, user: linda),
+           latest_edition: build(:edition, author: linda),
     )
 
     filter_by_author "Dave"

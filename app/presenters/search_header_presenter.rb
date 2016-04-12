@@ -11,14 +11,14 @@ class SearchHeaderPresenter
   end
 
   def search?
-    [:user, :state, :content_owner, :q].any? { |field| params[field].present? }
+    [:author, :state, :content_owner, :q].any? { |field| params[field].present? }
   end
 
   def ownership
-    if params[:user].to_i == current_user.id
+    if params[:author].to_i == current_user.id
       "My"
-    elsif params[:user].present?
-      "#{User.find(params[:user]).name}'s"
+    elsif params[:author].present?
+      "#{User.find(params[:author]).name}'s"
     else
       "Everyone's"
     end

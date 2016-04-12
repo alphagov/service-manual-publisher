@@ -119,7 +119,7 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 CREATE TABLE editions (
     id integer NOT NULL,
     guide_id integer,
-    user_id integer,
+    author_id integer,
     title text,
     description text,
     body text,
@@ -569,4 +569,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160404123940');
 INSERT INTO schema_migrations (version) VALUES ('20160405103708');
 
 INSERT INTO schema_migrations (version) VALUES ('20160405145315');
+
+INSERT INTO schema_migrations (version) VALUES ('20160412091417');
 

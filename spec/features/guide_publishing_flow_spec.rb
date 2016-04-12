@@ -154,7 +154,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       it "records the author" do
         guide = create(:published_guide)
         original_editor = create(:user)
-        guide.editions.update_all(user_id: original_editor)
+        guide.editions.update_all(author_id: original_editor)
         guide.reload
         # TODO: Find out why reload is needed here. latest_edition doesn't work properly because factories.
 
@@ -162,7 +162,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         click_link guide.title
         click_first_button "Save"
 
-        expect(Guide.last.latest_edition.user).to_not eq original_editor
+        expect(Guide.last.latest_edition.author).to_not eq original_editor
       end
     end
   end

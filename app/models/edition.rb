@@ -4,7 +4,7 @@ class Edition < ActiveRecord::Base
   acts_as_commentable
 
   belongs_to :guide, touch: true
-  belongs_to :user
+  belongs_to :author, class_name: "User"
 
   has_one :approval
 
@@ -15,7 +15,7 @@ class Edition < ActiveRecord::Base
   scope :review_requested, -> { where(state: 'review_requested') }
   scope :most_recent_first, -> { order('created_at DESC, id DESC') }
 
-  validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :user]
+  validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
@@ -56,7 +56,7 @@ class Edition < ActiveRecord::Base
   def can_be_approved?(by_user)
     return false if new_record?
     return false unless review_requested?
-    user != by_user || ENV['ALLOW_SELF_APPROVAL'].present?
+    author != by_user || ENV['ALLOW_SELF_APPROVAL'].present?
   end
 
   def can_be_published?
@@ -95,11 +95,7 @@ class Edition < ActiveRecord::Base
   end
 
   def notification_subscribers
-    [user, guide.latest_edition.user].uniq
-  end
-
-  def author
-    user
+    [author, guide.latest_edition.author].uniq
   end
 
 private

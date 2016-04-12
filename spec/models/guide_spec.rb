@@ -168,7 +168,7 @@ RSpec.describe Guide do
         change_summary: "change summary",
         body:           "# Heading",
         content_owner:  build(:guide_community),
-        user:           build(:user),
+        author:         build(:user),
       }
     end
 

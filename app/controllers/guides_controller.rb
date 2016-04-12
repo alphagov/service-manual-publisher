@@ -1,11 +1,11 @@
 class GuidesController < ApplicationController
   def index
-    @user_options = User.pluck(:name, :id)
+    @author_options = User.pluck(:name, :id)
     @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
     # TODO: :content_owner not being included is resulting in an N+1 query
-    @guides = Guide.includes(latest_edition: [:user])
-                   .by_user(params[:user])
+    @guides = Guide.includes(latest_edition: [:author])
+                   .by_author(params[:author])
                    .in_state(params[:state])
                    .owned_by(params[:content_owner])
                    .page(params[:page])
@@ -26,7 +26,7 @@ class GuidesController < ApplicationController
 
   def create
     @guide = Guide.new(guide_params)
-    @guide.latest_edition.user = current_user
+    @guide.latest_edition.author = current_user
     @guide.latest_edition.version = 1
 
     publication = Publisher.new(content_model: @guide).
@@ -122,7 +122,7 @@ private
   def save_draft
     @guide.assign_attributes(guide_params)
     if @guide.latest_edition.published?
-      @guide.latest_edition.user = current_user
+      @guide.latest_edition.author = current_user
     end
 
     publication = Publisher.new(content_model: @guide).

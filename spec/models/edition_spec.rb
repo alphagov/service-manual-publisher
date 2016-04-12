@@ -6,8 +6,8 @@ RSpec.describe Edition, type: :model do
     let(:liz) { build_stubbed(:user, name: "Liz") }
 
     it "is the edition author and the current edition author" do
-      edition = build(:edition, user: joe)
-      current_edition = build(:edition, user: liz)
+      edition = build(:edition, author: joe)
+      current_edition = build(:edition, author: liz)
       guide = build(:guide, editions: [edition])
       guide.latest_edition = current_edition
 
@@ -15,8 +15,8 @@ RSpec.describe Edition, type: :model do
     end
 
     it "avoids duplicates" do
-      first = build(:edition, user: joe)
-      second = build(:edition, user: joe)
+      first = build(:edition, author: joe)
+      second = build(:edition, author: joe)
       guide = build(
         :guide,
         editions: [first],
@@ -53,10 +53,10 @@ RSpec.describe Edition, type: :model do
   end
 
   describe "validations" do
-    it "requires user to be present" do
-      edition = build(:edition, user: nil)
+    it "requires author to be present" do
+      edition = build(:edition, author: nil)
       expect(edition).to be_invalid
-      expect(edition.errors.full_messages_for(:user).size).to eq 1
+      expect(edition.errors.full_messages_for(:author).size).to eq 1
     end
 
     it "requires version to be present" do
@@ -124,18 +124,18 @@ RSpec.describe Edition, type: :model do
         expect(edition.can_be_approved?(user)).to be true
       end
 
-      it "returns false when the user is also the editor" do
+      it "returns false when the author is also the editor" do
         edition.state = "review_requested"
-        edition.user = build(:user, name: "anotehr", email: "email@address.org")
-        expect(edition.can_be_approved?(edition.user)).to eq false
+        edition.author = build(:user, name: "anotehr", email: "email@address.org")
+        expect(edition.can_be_approved?(edition.author)).to eq false
       end
 
       it "returns true when the user is also the editor but the ALLOW_SELF_APPROVAL flag is set" do
         edition.state = "review_requested"
-        edition.user = build(:user, name: "anotehr", email: "email@address.org")
+        edition.author = build(:user, name: "anotehr", email: "email@address.org")
         edition.save!
         ENV['ALLOW_SELF_APPROVAL'] = '1'
-        expect(edition.can_be_approved?(edition.user)).to eq true
+        expect(edition.can_be_approved?(edition.author)).to eq true
         ENV.delete('ALLOW_SELF_APPROVAL')
       end
 
