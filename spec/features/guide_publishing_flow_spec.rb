@@ -145,8 +145,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         fill_in "Description", with: "Description"
         fill_in "Body", with: "Body"
         click_first_button "Save"
+        guide = Guide.find_by_slug("/service-manual/topic/title")
 
-        expect(stub_user).to eq User.first
+        expect(guide.latest_edition.author).to eq stub_user
       end
     end
 
