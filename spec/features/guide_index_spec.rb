@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Guide index', type: :feature do
   it "removes the Community part from guide community titles" do
-    guide = create(:guide)
+    guide = create(:guide, :with_draft_edition)
 
     visit root_path
 

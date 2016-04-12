@@ -115,7 +115,7 @@ RSpec.describe Guide do
 
   describe "#latest_editable_edition" do
     it "returns the latest edition if it's not published" do
-      guide = create(:guide)
+      guide = create(:guide, :with_draft_edition)
       expect(guide.reload.latest_editable_edition).to eq guide.reload.latest_edition
     end
 

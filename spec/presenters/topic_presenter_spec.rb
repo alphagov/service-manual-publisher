@@ -58,9 +58,9 @@ end
 
 RSpec.describe TopicPresenter, "#links_payload" do
   it "references all content_ids that appear in groups" do
-    guide1 = create(:guide)
-    guide2 = create(:guide)
-    guide3 = create(:guide)
+    guide1 = create(:guide, :with_draft_edition)
+    guide2 = create(:guide, :with_draft_edition)
+    guide3 = create(:guide, :with_draft_edition)
     topic = create_topic_in_groups([[guide1], [guide2, guide3]])
     presented_topic = TopicPresenter.new(topic)
 
@@ -72,9 +72,9 @@ RSpec.describe TopicPresenter, "#links_payload" do
   end
 
   it "contains content_owners content ids" do
-    guide1 = create(:guide)
-    guide2 = create(:guide)
-    guide3 = create(:guide)
+    guide1 = create(:guide, :with_draft_edition)
+    guide2 = create(:guide, :with_draft_edition)
+    guide3 = create(:guide, :with_draft_edition)
     topic = create_topic_in_groups([[guide1], [guide2, guide3]])
     presented_topic = TopicPresenter.new(topic)
 

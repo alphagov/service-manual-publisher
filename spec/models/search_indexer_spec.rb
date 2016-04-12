@@ -5,7 +5,7 @@ RSpec.describe SearchIndexer do
     index = double(:rummageable_index)
     plek = Plek.current.find('rummager')
     expect(Rummageable::Index).to receive(:new).with(plek, "/mainstream").and_return index
-    guide = build_stubbed(:guide, slug: "/service-manual/some-slug")
+    guide = build_stubbed(:guide, :with_draft_edition, slug: "/service-manual/some-slug")
     expect(index).to receive(:add_batch).with([{
       format:            "service_manual_guide",
       _type:             "service_manual_guide",
