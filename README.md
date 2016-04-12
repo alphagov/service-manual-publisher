@@ -8,13 +8,11 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 ![Edit interface screenshot](http://i.imgur.com/sFP1IUD.png)
 
-## Live examples
-
-None at the moment.
-
 ## Nomenclature
 
-- **Guide**: a service manual guide is the main document format used for manuals.
+- **Guide**: A service manual guide is the main document format used for manuals.
+- **Guide Community**: A profile page that represents the community who curate a collection of guides.
+- **Topic**: A collection guides.
 
 ## Technical documentation
 
@@ -83,7 +81,7 @@ bundle exec rake import_old_service_manual_content
 
 ### Testing
 
-`bundle exec rspec`
+`bundle exec rake`
 
 ## Migration from the original service manual
 
