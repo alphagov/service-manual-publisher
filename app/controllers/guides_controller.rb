@@ -1,6 +1,5 @@
 class GuidesController < ApplicationController
   def index
-    @author_options = User.pluck(:name, :id)
     @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
     # TODO: :content_owner not being included is resulting in an N+1 query
@@ -19,7 +18,6 @@ class GuidesController < ApplicationController
 
   def new
     type = params[:community].present? ? 'GuideCommunity' : nil
-
     @guide = Guide.new(slug: "/service-manual/", type: type)
     @guide.build_latest_edition(update_type: 'major')
   end
@@ -41,10 +39,20 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
+    @edition_author = if @guide.latest_edition.published?
+                        current_user
+                      else
+                        @guide.latest_edition.author
+                      end
   end
 
   def update
     @guide = Guide.find(params[:id])
+    @edition_author = if @guide.latest_edition.published?
+                        current_user
+                      else
+                        @guide.latest_edition.author
+                      end
 
     # Build a new latest_edition without automatically saving it and without
     # nullifying the foreign key on the previous one
@@ -96,7 +104,7 @@ private
     unless @guide.included_in_a_topic?
       @edition = @guide.latest_edition
       flash[:error] = "This guide could not be published because it is not included in a topic page."
-      render template: 'guides/edit'
+      render 'edit'
       return
     end
 
@@ -121,9 +129,6 @@ private
 
   def save_draft
     @guide.assign_attributes(guide_params)
-    if @guide.latest_edition.published?
-      @guide.latest_edition.author = current_user
-    end
 
     publication = Publisher.new(content_model: @guide).
                             save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
@@ -153,6 +158,7 @@ private
         :update_type,
         :change_note,
         :change_summary,
+        :author_id,
       ]).deep_merge(with)
   end
 

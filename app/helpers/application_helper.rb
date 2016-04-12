@@ -24,4 +24,8 @@ module ApplicationHelper
   def name_for_user(user)
     user.name
   end
+
+  def author_options
+    User.pluck(:name, :id)
+  end
 end

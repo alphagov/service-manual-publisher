@@ -135,7 +135,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "author behaviour" do
     context "creating a new guide" do
-      it "records the author" do
+      it "sets the author to the current user" do
         create(:guide_community)
 
         visit root_path
@@ -150,8 +150,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
     end
 
-    context "creating a new draft" do
-      it "records the author" do
+    context "latest edition is published" do
+      it "sets the author to the current user" do
         guide = create(:published_guide)
         original_editor = create(:user)
         guide.editions.update_all(author_id: original_editor)
@@ -163,6 +163,19 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         click_first_button "Save"
 
         expect(Guide.last.latest_edition.author).to_not eq original_editor
+      end
+    end
+
+    context "latest edition is not published" do
+      it "updates the author manually" do
+        guide = create(:guide)
+        new_author = create(:user, name: "New Editor")
+
+        visit edit_guide_path(guide)
+        select "New Editor", from: "Author"
+        click_first_button "Save"
+
+        expect(guide.reload.latest_edition.author).to eq new_author
       end
     end
   end
