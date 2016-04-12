@@ -39,20 +39,12 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
-    @edition_author = if @guide.latest_edition.published?
-                        current_user
-                      else
-                        @guide.latest_edition.author
-                      end
+    @edition_author_id = current_user.id if @guide.latest_edition.published?
   end
 
   def update
     @guide = Guide.find(params[:id])
-    @edition_author = if @guide.latest_edition.published?
-                        current_user
-                      else
-                        @guide.latest_edition.author
-                      end
+    @edition_author_id = current_user.id if @guide.latest_edition.published?
 
     # Build a new latest_edition without automatically saving it and without
     # nullifying the foreign key on the previous one
