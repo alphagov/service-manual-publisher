@@ -70,7 +70,7 @@ RSpec.describe Publisher, '#save_draft' do
         Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails).
                   save_draft(GuidePresenter.new(guide, guide.latest_edition))
 
-      expect(publication_response.errors).to include('trouble')
+      expect(publication_response.error).to include('trouble')
     end
   end
 end

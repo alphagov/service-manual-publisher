@@ -4,7 +4,7 @@ require 'capybara/rails'
 RSpec.describe "discarding guides", type: :feature do
   before do
     allow_any_instance_of(Publisher).to receive(:discard_draft)
-      .and_return(Publisher::DiscardDraftResponse.new(success: true))
+      .and_return(Publisher::Response.new(success: true))
   end
 
   it "makes the user confirm discarding the draft", js: true do
@@ -28,7 +28,7 @@ RSpec.describe "discarding guides", type: :feature do
       publisher = double(:publisher)
       expect(Publisher).to receive(:new).with(content_model: guide).and_return publisher
       expect(publisher).to receive(:discard_draft)
-        .and_return(Publisher::DiscardDraftResponse.new(success: true))
+        .and_return(Publisher::Response.new(success: true))
 
       visit edit_guide_path(guide)
       click_first_button "Discard draft"
@@ -41,9 +41,9 @@ RSpec.describe "discarding guides", type: :feature do
   context "with an unsuccessful discard_draft" do
     it "does not discard the draft" do
       guide = create(:guide)
-      discard_draft_response = Publisher::DiscardDraftResponse.new(
+      discard_draft_response = Publisher::Response.new(
         success: false,
-        errors: "An error occurred",
+        error: "An error occurred",
       )
       expect_any_instance_of(Publisher).to receive(:discard_draft)
         .and_return(discard_draft_response)

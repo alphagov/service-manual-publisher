@@ -33,7 +33,7 @@ class GuidesController < ApplicationController
     if publication.success?
       redirect_to edit_guide_path(@guide), notice: 'Guide has been created'
     else
-      flash.now[:error] = publication.errors
+      flash.now[:error] = publication.error
       render 'new'
     end
   end
@@ -115,7 +115,7 @@ private
     else
       @guide = @guide.reload
 
-      flash.now[:error] = publication.errors
+      flash.now[:error] = publication.error
       render 'edit'
     end
   end
@@ -126,7 +126,7 @@ private
     if discard_draft.success?
       redirect_to root_path, notice: "Draft has been discarded"
     else
-      flash.now[:error] = discard_draft.errors
+      flash.now[:error] = discard_draft.error
       render 'edit'
     end
   end
@@ -139,7 +139,7 @@ private
     if publication.success?
       redirect_to edit_guide_path(@guide), notice: "Guide has been updated"
     else
-      flash.now[:error] = publication.errors
+      flash.now[:error] = publication.error
       render 'edit'
     end
   end

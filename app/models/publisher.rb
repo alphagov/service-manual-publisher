@@ -34,9 +34,9 @@ class Publisher
           content_model.destroy!
         end
       end
-      DiscardDraftResponse.new(success: true)
+      Response.new(success: true)
     rescue GdsApi::HTTPErrorResponse => e
-      DiscardDraftResponse.new(success: false, errors: e.error_details['error']['message'])
+      Response.new(success: false, error: e.error_details['error']['message'])
     end
   end
 
@@ -48,39 +48,28 @@ private
         if content_model.save
           block.call
 
-          PublicationResponse.new(success: true)
+          Response.new(success: true)
         else
-          PublicationResponse.new(success: false)
+          Response.new(success: false)
         end
       end
     rescue GdsApi::HTTPErrorResponse => e
-      PublicationResponse.new(success: false, errors: e.error_details['error']['message'])
+      Response.new(success: false, error: e.error_details['error']['message'])
     end
   end
 
-  class DiscardDraftResponse
+  class Response
     def initialize(opts = {})
       @success = opts.fetch(:success)
-      @errors = opts.fetch(:errors, [])
+      @error = opts.fetch(:error, nil)
     end
 
     def success?
       @success
     end
 
-    def errors
-      @errors
-    end
-  end
-
-  class PublicationResponse
-    attr_reader :success, :errors
-
-    alias_method :success?, :success
-
-    def initialize(opts = {})
-      @success = opts.fetch(:success)
-      @errors = opts.fetch(:errors, [])
+    def error
+      @error
     end
   end
 end
