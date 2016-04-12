@@ -90,7 +90,9 @@ end
 
 RSpec.describe Publisher, "#discard_draft" do
   let :publishing_api do
-    double(:publishing_api)
+    publishing_api = double(:publishing_api)
+    allow(publishing_api).to receive(:discard_draft)
+    publishing_api
   end
 
   let(:publishing_api_which_always_fails) do
@@ -104,10 +106,6 @@ RSpec.describe Publisher, "#discard_draft" do
 
   let :subject do
     Publisher.new(content_model: guide, publishing_api: publishing_api)
-  end
-
-  before do
-    allow(publishing_api).to receive(:discard_draft)
   end
 
   context "guide that has published editions" do
