@@ -24,11 +24,9 @@ class Publisher
       ActiveRecord::Base.transaction do
         publishing_api.discard_draft(content_model.content_id)
 
-        latest_published_edition = content_model.editions.published.last
-        if latest_published_edition.present?
+        if content_model.has_published_edition?
           content_model
-            .editions
-            .where("created_at > ?", latest_published_edition.created_at)
+            .editions_since_last_published
             .destroy_all
         else
           content_model.destroy!

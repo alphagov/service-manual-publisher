@@ -53,6 +53,12 @@ class Guide < ActiveRecord::Base
     editions.where(state: "published").any?
   end
 
+  def editions_since_last_published
+    latest_published_edition = editions.published.last
+    editions
+      .where("created_at > ?", latest_published_edition.created_at)
+  end
+
   def work_in_progress_edition?
     latest_edition.try(:published?) == false
   end
