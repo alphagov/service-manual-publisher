@@ -135,7 +135,7 @@ RSpec.describe "Slug migration", type: :feature do
   end
 
   it "can't migrate to unpublished guides" do
-    guide = create(:guide, slug: "/service-manual/topic-name/new-path")
+    guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic-name/new-path")
 
     create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",

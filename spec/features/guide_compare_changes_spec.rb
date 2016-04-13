@@ -39,7 +39,7 @@ RSpec.describe "Guide compare changes", type: :feature do
 
   [:guide, :guide_community].each do |guide_type|
     it "shows all fields as additions if there are no previous editions" do
-      guide = create(:guide)
+      guide = create(:guide, :with_draft_edition)
       visit edition_changes_path(new_edition_id: guide.latest_edition.id)
 
       within ".title ins" do

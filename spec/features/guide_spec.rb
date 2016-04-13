@@ -172,7 +172,7 @@ RSpec.describe "creating guides", type: :feature do
       publication = Publisher::PublicationResponse.new(success: false, errors: ['trouble'])
       allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
 
-      guide = create(:guide, slug: "/service-manual/topic-name/something")
+      guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic-name/something")
 
       visit edit_guide_path(guide)
       click_first_button "Save"
@@ -185,7 +185,7 @@ RSpec.describe "creating guides", type: :feature do
 
   describe "action buttons" do
     it "a new guide can only be sent for review" do
-      guide = create(:guide)
+      guide = create(:guide, :with_draft_edition)
       visit edit_guide_path(guide)
 
       expect(page).to     have_button("Send for review")

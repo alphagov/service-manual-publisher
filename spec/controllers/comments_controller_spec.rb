@@ -6,7 +6,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   let(:edition) do
-    guide = create(:guide, slug: "/service-manual/topic-name/commentable")
+    guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic-name/commentable")
     guide.latest_edition
   end
 

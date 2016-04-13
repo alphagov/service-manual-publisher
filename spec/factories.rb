@@ -1,22 +1,18 @@
 FactoryGirl.define do
-  factory :base_guide, class: 'Guide' do
-    trait :with_slug do
-      slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
-    end
-  end
-
   factory :guide_community do
     latest_edition { build(:community_edition, content_owner: nil) }
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
   end
 
-  factory :guide, parent: :base_guide do
-    with_slug
+  factory :guide do
     transient do
       title "Example Guide"
     end
+    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
 
-    latest_edition { build(:edition, title: title) }
+    trait :with_draft_edition do
+      latest_edition { build(:edition, title: title) }
+    end
   end
 
   factory :edition do
@@ -49,8 +45,7 @@ FactoryGirl.define do
     latest_edition { build(:edition, state: "review_requested") }
   end
 
-  factory :published_guide, parent: :base_guide do
-    with_slug
+  factory :published_guide, parent: :guide do
     transient do
       title "Example Guide"
       body "The quick brown fox jumped over the lazy dog."

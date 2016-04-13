@@ -22,7 +22,7 @@ RSpec.describe "Commenting", type: :feature do
     end
 
     it "auto links urls in comments" do
-      guide = create(:guide)
+      guide = create(:guide, :with_draft_edition)
       comment = "This is a link: http://google.com"
       write_a_comment(guide: guide, comment: comment)
 

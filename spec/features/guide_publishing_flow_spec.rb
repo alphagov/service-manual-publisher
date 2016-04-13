@@ -45,7 +45,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "indexes documents for search" do
-      guide = create(:guide)
+      guide = create(:guide, :with_draft_edition)
 
       indexer = double(:indexer)
       expect(SearchIndexer).to receive(:new).with(guide).and_return(indexer)
@@ -117,7 +117,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "creates a new edition with the same version number if the latest edition isn't published" do
-    guide = create(:guide)
+    guide = create(:guide, :with_draft_edition)
 
     expect(guide.editions.count).to eq(1)
     expect(guide.editions.order(:created_at).last.version).to eq(1)
@@ -135,7 +135,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   it "should record who's the last editor" do
     stub_user.update_attribute :name, "John Smith"
-    guide = create(:guide)
+    guide = create(:guide, :with_draft_edition)
     visit edit_guide_path(guide)
     fill_in "Title", with: "An amended title"
     click_first_button 'Save'
@@ -148,7 +148,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "should save a draft locally and send it to Publishing API" do
-    guide = create(:guide, title: "Original Title", slug: "/service-manual/topic-name/preview-test")
+    guide = create(:guide, :with_draft_edition, title: "Original Title", slug: "/service-manual/topic-name/preview-test")
     visit edit_guide_path(guide)
     fill_in "Title", with: "Changed Title"
 
@@ -162,7 +162,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "with a review requested" do
     it "lists editions that need a review" do
-      guide = create(:guide, slug: "/service-manual/topic-name/something")
+      guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic-name/something")
 
       visit edit_guide_path(guide)
       click_first_button "Send for review"
