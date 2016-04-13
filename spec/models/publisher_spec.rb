@@ -154,7 +154,7 @@ RSpec.describe Publisher, "#discard_draft" do
 
   context "guide that does not have published editions" do
     let :guide do
-      create(:guide)
+      create(:guide, :with_draft_edition)
     end
 
     it "is successful" do
