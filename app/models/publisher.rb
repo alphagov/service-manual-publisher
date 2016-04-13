@@ -20,22 +20,20 @@ class Publisher
   end
 
   def discard_draft
-    begin
-      ActiveRecord::Base.transaction do
-        publishing_api.discard_draft(content_model.content_id)
+    ActiveRecord::Base.transaction do
+      publishing_api.discard_draft(content_model.content_id)
 
-        if content_model.has_published_edition?
-          content_model
-            .editions_since_last_published
-            .destroy_all
-        else
-          content_model.destroy!
-        end
+      if content_model.has_published_edition?
+        content_model
+          .editions_since_last_published
+          .destroy_all
+      else
+        content_model.destroy!
       end
-      Response.new(success: true)
-    rescue GdsApi::HTTPErrorResponse => e
-      Response.new(success: false, error: e.error_details['error']['message'])
     end
+    Response.new(success: true)
+  rescue GdsApi::HTTPErrorResponse => e
+    Response.new(success: false, error: e.error_details['error']['message'])
   end
 
 private
