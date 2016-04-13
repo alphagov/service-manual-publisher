@@ -143,23 +143,18 @@ RSpec.describe Publisher, "#discard_draft" do
     context "when the publishing api call fails" do
       it "does not destroy anything" do
         subject = Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails)
+        edition_count = guide.editions.count
         subject.discard_draft
 
-        ids = guide.editions.map(&:id)
         expect(Guide.where(id: guide.id).count).to eq 1
-        expect(Edition.where(id: ids).count).to eq 4
+        expect(guide.editions.count).to eq edition_count
       end
     end
   end
 
   context "guide that does not have published editions" do
     let :guide do
-      create(
-        :guide,
-        editions: [
-          build(:draft_edition, title: "This is the first draft edition"),
-        ],
-      )
+      create(:guide)
     end
 
     it "is successful" do
@@ -179,9 +174,8 @@ RSpec.describe Publisher, "#discard_draft" do
         subject = Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails)
         subject.discard_draft
 
-        ids = guide.editions.map(&:id)
         expect(Guide.where(id: guide.id).count).to eq 1
-        expect(Edition.where(id: ids).count).to eq 1
+        expect(guide.editions.count).to eq 1
       end
     end
   end
