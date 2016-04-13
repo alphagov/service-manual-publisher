@@ -55,9 +55,9 @@ private
   end
 
   class Response
-    def initialize(opts = {})
-      @success = opts.fetch(:success)
-      @error = opts.fetch(:error, nil)
+    def initialize(options = {})
+      @success = options.fetch(:success)
+      @error = options[:error]
     end
 
     def success?
