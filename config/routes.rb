@@ -12,9 +12,7 @@ Rails.application.routes.draw do
   resources :uploads, only: [:create]
   resources :topics
 
-  resources :slug_migrations do
-    post '/delete_search_index' => 'slug_migrations#delete_search_index', as: :delete_search_index
-  end
+  resources :slug_migrations
 
   get '/edition_changes(/:old_edition_id)/:new_edition_id' => 'edition_changes#show', as: :edition_changes
   get '/edition_comments/:id' => 'editions#comments', as: :edition_comments
