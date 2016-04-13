@@ -55,6 +55,7 @@ class Guide < ActiveRecord::Base
 
   def editions_since_last_published
     latest_published_edition = editions.published.last
+    return [] unless latest_published_edition.present?
     editions
       .where("created_at > ?", latest_published_edition.created_at)
   end
