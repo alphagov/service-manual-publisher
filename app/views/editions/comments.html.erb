@@ -5,10 +5,8 @@
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
 <% end %>
 
-<% latest_edition_for_open_edition_group = @latest_edition_per_edition_group.first %>
-
 <% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
-  <% if latest_edition_of_group == latest_edition_for_open_edition_group %>
+  <% if latest_edition_of_group == @edition %>
     <div class="open-edition panel panel-default">
       <div class="panel-heading">
         Version #<%= latest_edition_of_group.version %>
@@ -25,7 +23,7 @@
   <% else %>
     <div class="panel panel-default">
       <div class="panel-heading">
-        Version #<%= latest_edition_of_group.version %>
+        <%= link_to "Version ##{latest_edition_of_group.version}", edition_comments_path(latest_edition_of_group) %>
         <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
       </div>
     </div>

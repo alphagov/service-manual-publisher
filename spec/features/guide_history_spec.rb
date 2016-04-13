@@ -59,3 +59,23 @@ RSpec.describe "Guide history", type: :feature do
       .reverse
   end
 end
+
+
+RSpec.describe "Guide history", type: :feature do
+  scenario "viewing previous editions" do
+    guide = create(:published_guide)
+    guide.editions << build(:edition, version: 2)
+
+    visit edition_comments_path(guide.reload.latest_edition)
+
+    expect_edition_to_be_open("Version #2")
+
+    click_link "Version #1"
+
+    expect_edition_to_be_open("Version #1")
+  end
+
+  def expect_edition_to_be_open(title)
+    expect(page).to have_css(".open-edition .panel-heading", text: title)
+  end
+end
