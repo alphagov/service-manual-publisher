@@ -108,7 +108,7 @@
         <div class="well">
           <h2>Assign authorship</h2>
           <%= editions_form.label :author_id, class: "add-top-margin nav-header" %>
-          <%= editions_form.select :author_id, options_for_select(author_options, @edition_author_id || guide.latest_edition.author_id), {include_blank: "Choose a user"}, {class: 'select2 input-md-12 form-control'} %>
+          <%= editions_form.select :author_id, options_for_select(user_options, @edition_author_id || guide.latest_edition.author_id), {include_blank: "Choose a user"}, {class: 'select2 input-md-12 form-control'} %>
         </div>
       <% end %>
 

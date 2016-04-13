@@ -100,7 +100,9 @@ RSpec.describe "filtering guides", type: :feature do
   it "displays a page header that's based on the query" do
     guide_community = create(:guide_community)
 
-    create(:user, name: "Ronan")
+    ronan = create(:user, name: "Ronan")
+    create(:edition, author: ronan)
+
     visit root_path
     within ".filters" do
       fill_in "Title or slug", with: "Form Design"
