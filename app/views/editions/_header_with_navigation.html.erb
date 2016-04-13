@@ -11,7 +11,7 @@
   <ul class="nav nav-tabs">
     <% latest_persisted_edition = guide.latest_persisted_edition %>
     <%= active_link_to "Edit guide", edit_guide_path(guide), wrap_tag: :li %>
-    <%= active_link_to "Comments and history", edition_comments_path(latest_persisted_edition), wrap_tag: :li %>
+    <%= active_link_to "Comments and history", edition_comments_and_history_path(latest_persisted_edition), wrap_tag: :li %>
     <%= active_link_to "Compare changes", edition_changes_path(old_edition_id: latest_persisted_edition.previously_published_edition, new_edition_id: latest_persisted_edition.id), wrap_tag: :li %>
   </ul>
 </p>

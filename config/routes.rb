@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   get '/edition_changes(/:old_edition_id)/:new_edition_id' => 'edition_changes#show', as: :edition_changes
-  get '/edition_comments/:id' => 'editions#comments', as: :edition_comments
+  get '/edition_comments_and_history/:id' => 'editions#comments_and_history', as: :edition_comments_and_history
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
