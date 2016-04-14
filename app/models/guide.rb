@@ -7,7 +7,6 @@ class Guide < ActiveRecord::Base
   has_many :editions, dependent: :destroy
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
-  accepts_nested_attributes_for :latest_edition
   scope :by_author, ->(author_id) { where(editions: { author_id: author_id }) if author_id.present? }
   scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
@@ -66,18 +65,6 @@ class Guide < ActiveRecord::Base
 
   def comments_for_rendering
     latest_edition.comments.for_rendering
-  end
-
-  def latest_editable_edition
-    return Edition.new unless latest_edition
-
-    if latest_edition.published?
-      latest_edition.draft_copy.tap do |e|
-        e.update_type = "major"
-      end
-    else
-      latest_edition
-    end
   end
 
   def requires_content_owner?

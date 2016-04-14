@@ -113,30 +113,6 @@ RSpec.describe Guide do
     end
   end
 
-  describe "#latest_editable_edition" do
-    it "returns the latest edition if it's not published" do
-      guide = create(:guide, :with_draft_edition)
-      expect(guide.reload.latest_editable_edition).to eq guide.reload.latest_edition
-    end
-
-    it "returns an unsaved copy of the latest edition if the latter is published" do
-      guide = create(:published_guide)
-      expect(guide.latest_editable_edition).to be_a_new_record
-      expect(guide.reload.latest_editable_edition.title).to eq guide.latest_edition.title
-    end
-
-    it "defaults to a 'major' update for a new drafts" do
-      edition = build(:published_edition, update_type: "minor")
-      guide = create(:published_guide, latest_edition: edition)
-      expect(guide.reload.latest_editable_edition.update_type).to eq "major"
-    end
-
-    it "returns a new edition for a guide with no latest edition" do
-      guide = build(:guide, latest_edition: nil)
-      expect(guide.latest_editable_edition).to be_a_new_record
-    end
-  end
-
   describe "#with_published_editions" do
     it "only returns published editions" do
       create(:guide, slug: "/service-manual/topic-name/1")

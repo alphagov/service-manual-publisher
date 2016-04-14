@@ -86,14 +86,6 @@ class Edition < ActiveRecord::Base
     ).render(change_note)
   end
 
-  def draft_copy
-    dup.tap do |e|
-      e.change_note = nil
-      e.update_type = "minor"
-      e.state = "draft"
-    end
-  end
-
   def notification_subscribers
     [author, guide.latest_edition.author].uniq
   end

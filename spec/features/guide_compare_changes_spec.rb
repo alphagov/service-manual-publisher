@@ -15,7 +15,8 @@ RSpec.describe "Guide compare changes", type: :feature do
       visit edit_guide_path(guide)
       fill_in "Title", with: "Second version"
       fill_in "Body", with: "## Hi"
-      fill_in "Why the change is being made", with: "Better greeting"
+      fill_in "Summary of change", with: "Better greeting"
+      fill_in "Why the change is being made", with: "It was causing offense"
       click_first_button 'Save'
       click_link "Compare changes"
 

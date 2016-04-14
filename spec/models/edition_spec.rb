@@ -212,16 +212,4 @@ RSpec.describe Edition, type: :model do
       expect(edition.change_note_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
     end
   end
-
-  describe "#draft_copy" do
-    it "builds a new draft object with all fields but change notes" do
-      edition = build(:published_edition, title: "Original Title", change_note: "Changes")
-      draft = edition.draft_copy
-
-      expect(draft.title).to eq "Original Title"
-      expect(draft).to be_new_record
-      expect(draft).to be_a_draft
-      expect(draft.change_note).to be_blank
-    end
-  end
 end

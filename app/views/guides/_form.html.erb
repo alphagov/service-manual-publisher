@@ -3,12 +3,12 @@
   <%= f.hidden_field :type %>
 
   <div class="col-md-12">
-    <%= render 'editions/actions', publish_controls_only: false, form: f, guide: @guide, edition: @guide.latest_edition %>
+    <%= render 'editions/actions', publish_controls_only: false, form: f, guide: guide, edition: edition %>
   </div>
 
   <div class="col-md-8">
-    <%= render 'shared/form_error_summary', object: guide %>
-    <%= f.fields_for :latest_edition, guide.latest_editable_edition do |editions_form| %>
+    <%= render 'shared/form_error_summary', full_messages: guide.errors.full_messages + edition.errors.full_messages %>
+    <%= f.fields_for edition do |editions_form| %>
 
       <div class="well">
         <h2><%= guide.model_name.human %> content</h2>
@@ -120,7 +120,7 @@
   </div>
 
   <div class="col-md-12">
-    <%= render 'editions/actions', publish_controls_only: false, form: f, guide: @guide, edition: @guide.latest_edition %>
+    <%= render 'editions/actions', publish_controls_only: false, form: f, guide: guide, edition: edition %>
   </div>
 
 <% end %>

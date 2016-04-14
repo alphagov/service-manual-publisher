@@ -164,7 +164,7 @@ RSpec.describe "creating guides", type: :feature do
       click_first_button "Save"
 
       within(".full-error-list") do
-        expect(page).to have_content("title can't be blank")
+        expect(page).to have_content("Title can't be blank")
       end
     end
 
