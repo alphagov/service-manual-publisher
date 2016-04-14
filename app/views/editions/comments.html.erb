@@ -11,7 +11,9 @@
       <div class="panel-heading">
         <span class="glyphicon glyphicon-chevron-down"></span>
         Version #<%= latest_edition_of_group.version %>
-        <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+        <div class="pull-right">
+          <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+        </div>
       </div>
       <div class="panel-body">
         <%= render 'comment_form', comment: @comment, edition: latest_edition_of_group %>
@@ -26,7 +28,9 @@
       <div class="panel-heading">
         <span class="glyphicon glyphicon-chevron-right"></span>
         <%= link_to "Version ##{latest_edition_of_group.version}", edition_comments_path(latest_edition_of_group) %>
-        <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+        <div class="pull-right">
+          <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+        </div>
       </div>
     </div>
   <% end %>
