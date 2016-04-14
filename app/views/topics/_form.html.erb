@@ -35,7 +35,7 @@
       </div>
 
 
-      <%= f.hidden_field :tree, value: topic.tree.to_json, class: "js-topic-tree" %>
+      <%= f.hidden_field :tree, value: @topic_tree, class: "js-topic-tree" %>
       <%= f.submit "Save", class: "btn btn-default btn-save" %>
       <% if topic.ready_to_publish? %>
         <%= f.submit "Publish", name: :publish, class: "btn btn-success btn-save" %>
@@ -65,7 +65,7 @@
           <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
         </div>
         <div class="right">
-          <%= select_tag nil, options_for_select(all_guides_container_for_select), {class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
+          <%= select_tag nil, options_for_select(all_guides_container_for_select), {include_blank: "", class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
         </div>
       </li>
     </div>

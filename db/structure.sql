@@ -234,6 +234,73 @@ ALTER SEQUENCE slug_migrations_id_seq OWNED BY slug_migrations.id;
 
 
 --
+-- Name: topic_section_guides; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE topic_section_guides (
+    id integer NOT NULL,
+    topic_section_id integer NOT NULL,
+    guide_id integer NOT NULL,
+    "position" integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: topic_section_guides_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE topic_section_guides_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: topic_section_guides_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE topic_section_guides_id_seq OWNED BY topic_section_guides.id;
+
+
+--
+-- Name: topic_sections; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE topic_sections (
+    id integer NOT NULL,
+    topic_id integer NOT NULL,
+    title character varying NOT NULL,
+    description character varying NOT NULL,
+    "position" integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: topic_sections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE topic_sections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: topic_sections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE topic_sections_id_seq OWNED BY topic_sections.id;
+
+
+--
 -- Name: topics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -244,7 +311,6 @@ CREATE TABLE topics (
     path character varying NOT NULL,
     title character varying NOT NULL,
     description character varying NOT NULL,
-    tree json DEFAULT '{}'::json NOT NULL,
     content_id character varying
 );
 
@@ -345,6 +411,20 @@ ALTER TABLE ONLY slug_migrations ALTER COLUMN id SET DEFAULT nextval('slug_migra
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY topic_section_guides ALTER COLUMN id SET DEFAULT nextval('topic_section_guides_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY topic_sections ALTER COLUMN id SET DEFAULT nextval('topic_sections_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
 
 
@@ -393,6 +473,22 @@ ALTER TABLE ONLY guides
 
 ALTER TABLE ONLY slug_migrations
     ADD CONSTRAINT slug_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topic_section_guides_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY topic_section_guides
+    ADD CONSTRAINT topic_section_guides_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topic_sections_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY topic_sections
+    ADD CONSTRAINT topic_sections_pkey PRIMARY KEY (id);
 
 
 --
@@ -571,4 +667,12 @@ INSERT INTO schema_migrations (version) VALUES ('20160405103708');
 INSERT INTO schema_migrations (version) VALUES ('20160405145315');
 
 INSERT INTO schema_migrations (version) VALUES ('20160412091417');
+
+INSERT INTO schema_migrations (version) VALUES ('20160413135658');
+
+INSERT INTO schema_migrations (version) VALUES ('20160413140153');
+
+INSERT INTO schema_migrations (version) VALUES ('20160413143619');
+
+INSERT INTO schema_migrations (version) VALUES ('20160413150715');
 

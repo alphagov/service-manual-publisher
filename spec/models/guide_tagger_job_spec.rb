@@ -10,8 +10,8 @@ RSpec.describe GuideTaggerJob do
   describe "#batch_perform_later" do
     it "adds the topic to all guides" do
       topic = create(:topic, :with_some_guides)
-      guide_ids = topic.tree.map {|t| t["guides"]}.flatten
-      guide_content_ids = Guide.where(id: guide_ids).pluck(:content_id)
+      guide_content_ids = topic.guide_content_ids
+
       guide_content_ids.each do |guide_content_id|
         expect(api_double).to receive(:patch_links)
           .with(

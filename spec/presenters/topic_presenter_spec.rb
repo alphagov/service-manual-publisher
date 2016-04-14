@@ -6,23 +6,26 @@ RSpec.describe TopicPresenter do
   let(:guide_3) { create(:guide) }
 
   let(:topic) do
-    create(:topic,
+    topic = create(:topic,
       title: "Test topic",
       path: "/service-manual/test-topic",
       description: "Topic description",
-      tree: [
-        {
-          title: "Group 1",
-          guides: [guide_1.to_param, guide_2.to_param],
-          description: "Fruits",
-        },
-        {
-          title: "Group 2",
-          guides: [guide_3.to_param],
-          description: "Berries",
-        }
-      ].to_json
     )
+
+    topic_section = topic.topic_sections.create!(
+      title: "Group 1",
+      description: "Fruits",
+    )
+    topic_section.guides << guide_1
+    topic_section.guides << guide_2
+
+    topic_section = topic.topic_sections.create!(
+      title: "Group 2",
+      description: "Berries",
+    )
+    topic_section.guides << guide_3
+
+    topic
   end
 
   let(:presented_topic) { described_class.new(topic) }
@@ -111,18 +114,20 @@ RSpec.describe TopicPresenter, "#links_payload" do
   end
 
   def create_topic_in_groups(groups)
-    tree = groups.map.with_index do |group_guides, index|
-      {
-        title: "Group #{index} title",
-        guides: group_guides.map(&:to_param),
-        description: "Group #{index} description",
-      }
-    end
-
-    Topic.create!(
+    topic = Topic.create!(
       title: "Agile Delivery",
       description: "It's a good thing",
       path: "/service-manual/agile-delivery",
-      tree: tree)
+    )
+    groups.each_with_index do |group_guides, index|
+      topic_section = topic.topic_sections.create!(
+        title: "Group #{index} title",
+        description: "Group #{index} description",
+      )
+      group_guides.each do |guide|
+        topic_section.guides << guide
+      end
+    end
+    topic
   end
 end

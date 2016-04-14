@@ -3,6 +3,8 @@ class Topic < ActiveRecord::Base
   validate :path_can_be_set_once
   validate :path_format
 
+  has_many :topic_sections, -> { order(position: :asc) }
+
   def ready_to_publish?
     persisted?
   end
@@ -22,14 +24,9 @@ class Topic < ActiveRecord::Base
   end
 
   def guide_content_ids
-    ids = tree.map do |grouping|
-      grouping['guides'].map do |guide_id|
-        Integer(guide_id)
-      end
-    end.flatten.uniq
-    Guide
-      .where(id: ids)
-      .pluck(:content_id)
+    topic_sections.map do |topic_section|
+      topic_section.guides.map(&:content_id)
+    end.flatten
   end
 
   private

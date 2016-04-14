@@ -42,16 +42,12 @@ private
   attr_reader :topic
 
   def groups
-    topic_groups.map do |group|
-      ids = group["guides"]
-      guides = Guide.find(ids)
-      guides = ids.map{|id| guides.detect{|guide| guide.id == Integer(id)}}
-
+    topic.topic_sections.map do |topic_section|
       {
-        name: group['title'],
-        description: group['description'],
-        contents: guides.map {|g| g.slug},
-        content_ids: guides.map {|g| g.content_id},
+        name: topic_section.title,
+        description: topic_section.description,
+        contents: topic_section.guides.map(&:slug),
+        content_ids: topic_section.guides.map(&:content_id),
       }
     end
   end
@@ -68,13 +64,8 @@ private
   end
 
   def eagerloaded_guides
-    @eagerloaded_guides ||= begin
-      ids = topic_groups.flat_map { |group| group['guides'] }.uniq
-      Guide.where(id: ids)
-    end
-  end
-
-  def topic_groups
-    @topic_groups ||= topic.tree.select { |h| h.is_a?(Hash) }
+    topic.topic_sections.map do |topic_section|
+      topic_section.guides.to_a
+    end.flatten.uniq
   end
 end

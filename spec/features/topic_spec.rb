@@ -34,8 +34,8 @@ RSpec.describe "Topics", type: :feature do
     click_button "Add Heading"
     fill_in "Heading Title", with: "The heading title"
     fill_in "Heading Description", with: "The heading description"
-    add_guide 'Guide 1'
-    add_guide 'Guide 2'
+    add_guide "Guide 1"
+    add_guide "Guide 2"
     click_button "Save"
 
     # Reload the page to be sure the fields don't contain params from the
@@ -45,14 +45,14 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to have_field('Title', with: 'The title')
     expect(page).to have_field('Description', with: 'The description')
 
-    within_the_only_grouping do
-      expect(find('.js-topic-title').value).to eq('The heading title')
-      expect(find('.js-topic-description').value).to eq('The heading description')
+    expect(find('.js-topic-title').value).to eq('The heading title')
+    expect(find('.js-topic-description').value).to eq('The heading description')
 
-      guide_fields = find_all('.js-topic-guide')
-      expect(guide_fields[0].all('option').detect(&:selected?).text).to eq('Guide 1')
-      expect(guide_fields[1].all('option').detect(&:selected?).text).to eq('Guide 2')
-    end
+    guide_ids = all('.js-topic-guide').map(&:value)
+    expect(guide_ids).to eq [
+      guide1.id.to_param,
+      guide2.id.to_param,
+    ]
   end
 
   it "links to a preview from a saved draft" do
@@ -123,15 +123,12 @@ RSpec.describe "Topics", type: :feature do
     end
   end
 
-  def within_the_only_grouping(&block)
-    within(:xpath, %{//ul[contains(concat(' ', @class, ' '), ' js-sortable-topic-list ')]}, &block)
-  end
-
   def add_guide(name)
     click_button "Add Guide"
 
-    all_guide_fields = all(".js-topic-guide")
-    all_guide_fields[all_guide_fields.length - 1].find(:xpath, ".//option[.='#{name}']").select_option
+    select = all(".js-topic-guide").select{|j| j.value == ""}.first
+    options = select.all(:option).select {|o| o.text == name}
+    options.first.select_option
   end
 end
 

@@ -35,12 +35,14 @@ class Guide < ActiveRecord::Base
   end
 
   def topic
-    @topic ||= Topic.select do |topic|
-                 topic.tree.select do |element|
-                   element["guides"].map { |e| Integer(e) }
-                     .include? self.id
-                 end.any?
-               end.first
+    @topic ||= (
+      topic_section_guide = TopicSectionGuide.where(guide: self).first
+      if topic_section_guide.present?
+        topic_section_guide.topic_section.topic
+      else
+        nil
+      end
+    )
   end
 
   def included_in_a_topic?
