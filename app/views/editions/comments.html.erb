@@ -9,6 +9,7 @@
   <% if latest_edition_of_group == @edition %>
     <div class="open-edition panel panel-default">
       <div class="panel-heading">
+        <span class="glyphicon glyphicon-chevron-down"></span>
         Version #<%= latest_edition_of_group.version %>
         <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
       </div>
@@ -23,6 +24,7 @@
   <% else %>
     <div class="panel panel-default">
       <div class="panel-heading">
+        <span class="glyphicon glyphicon-chevron-right"></span>
         <%= link_to "Version ##{latest_edition_of_group.version}", edition_comments_path(latest_edition_of_group) %>
         <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
       </div>
