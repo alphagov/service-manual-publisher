@@ -169,7 +169,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "latest edition is not published" do
       it "updates the author manually" do
-        guide = create(:guide)
+        guide = create(:guide, :with_draft_edition)
         new_author = create(:user, name: "New Editor")
 
         visit edit_guide_path(guide)
