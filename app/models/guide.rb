@@ -4,7 +4,7 @@ class Guide < ActiveRecord::Base
   validate :slug_cant_be_changed_if_an_edition_has_been_published
   validate :latest_edition_has_content_owner, if: :requires_content_owner?
 
-  has_many :editions
+  has_many :editions, dependent: :destroy
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
   accepts_nested_attributes_for :latest_edition
@@ -51,6 +51,13 @@ class Guide < ActiveRecord::Base
 
   def has_published_edition?
     editions.where(state: "published").any?
+  end
+
+  def editions_since_last_published
+    latest_published_edition = editions.published.last
+    return [] unless latest_published_edition.present?
+    editions
+      .where("created_at > ?", latest_published_edition.created_at)
   end
 
   def work_in_progress_edition?

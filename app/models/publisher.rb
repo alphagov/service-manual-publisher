@@ -19,6 +19,23 @@ class Publisher
     end
   end
 
+  def discard_draft
+    ActiveRecord::Base.transaction do
+      publishing_api.discard_draft(content_model.content_id)
+
+      if content_model.has_published_edition?
+        content_model
+          .editions_since_last_published
+          .destroy_all
+      else
+        content_model.destroy!
+      end
+    end
+    Response.new(success: true)
+  rescue GdsApi::HTTPErrorResponse => e
+    Response.new(success: false, error: e.error_details['error']['message'])
+  end
+
 private
 
   def save_catching_gds_api_errors(&block)
@@ -27,24 +44,28 @@ private
         if content_model.save
           block.call
 
-          PublicationResponse.new(success: true)
+          Response.new(success: true)
         else
-          PublicationResponse.new(success: false)
+          Response.new(success: false)
         end
       end
     rescue GdsApi::HTTPErrorResponse => e
-      PublicationResponse.new(success: false, errors: e.error_details['error']['message'])
+      Response.new(success: false, error: e.error_details['error']['message'])
     end
   end
 
-  class PublicationResponse
-    attr_reader :success, :errors
+  class Response
+    def initialize(options = {})
+      @success = options.fetch(:success)
+      @error = options[:error]
+    end
 
-    alias_method :success?, :success
+    def success?
+      @success
+    end
 
-    def initialize(opts = {})
-      @success = opts.fetch(:success)
-      @errors = opts.fetch(:errors, [])
+    def error
+      @error
     end
   end
 end

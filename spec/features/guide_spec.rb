@@ -133,7 +133,7 @@ RSpec.describe "creating guides", type: :feature do
 
   context "when creating a new guide" do
     it 'displays an alert if it fails' do
-      publication = Publisher::PublicationResponse.new(success: false, errors: ['trouble'])
+      publication = Publisher::Response.new(success: false, error: 'trouble')
       allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
 
       fill_in_guide_form
@@ -169,7 +169,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it 'displays an alert if it fails' do
-      publication = Publisher::PublicationResponse.new(success: false, errors: ['trouble'])
+      publication = Publisher::Response.new(success: false, error: 'trouble')
       allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
 
       guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic-name/something")

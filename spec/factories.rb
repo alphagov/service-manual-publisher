@@ -96,6 +96,9 @@ FactoryGirl.define do
     end
   end
 
+  factory :draft_edition, parent: :edition do
+  end
+
   factory :published_edition, parent: :edition do
     state "published"
   end

@@ -43,7 +43,7 @@ private
 
       redirect_to edit_topic_path(@topic), notice: "Topic has been published"
     else
-      flash.now[:error] = publication.errors
+      flash.now[:error] = publication.error
       render 'edit'
     end
   end
@@ -61,7 +61,7 @@ private
     if publication.success?
       redirect_to edit_topic_path(@topic), notice: success_notice
     else
-      flash.now[:error] = publication.errors
+      flash.now[:error] = publication.error
       render @topic.persisted? ? 'edit' : 'new'
     end
   end

@@ -231,3 +231,16 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
       ).to eq([second_version_second_edition, first_version_second_edition])
   end
 end
+
+RSpec.describe Guide, "#editions_since_last_published" do
+  it "returns editions since last published" do
+    guide = create(:published_guide)
+    edition1 = build(:edition)
+    edition2 = build(:edition)
+    guide.editions << edition1
+    guide.editions << edition2
+
+    expect(guide.editions_since_last_published.to_a).to eq [edition1, edition2]
+  end
+end
+
