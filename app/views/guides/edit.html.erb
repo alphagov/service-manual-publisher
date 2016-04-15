@@ -1,5 +1,5 @@
-<%= render 'editions/header_with_navigation', edition: @edition, guide: @guide %>
+<%= render 'editions/header_with_navigation', edition: @guide_form.edition, guide: @guide_form.guide %>
 
 <div class="row">
-  <%= render 'form', guide: @guide, edition: @edition%>
+  <%= render 'form', guide_form: @guide_form %>
 </div>

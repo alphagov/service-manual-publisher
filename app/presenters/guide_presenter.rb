@@ -6,6 +6,10 @@ class GuidePresenter
     @edition = edition
   end
 
+  def content_id
+    guide.content_id
+  end
+
   def content_payload
     {
       publishing_app: "service-manual-publisher",

@@ -58,6 +58,13 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq false
 
     visit edit_guide_path(guide)
+
+    expect(page).to have_field("Slug", with: "/service-manual/the/path")
+    expect(page).to have_field("Title", with: "First Edition Title")
+    expect(page).to have_field("Description", with: "This guide acts as a test case")
+    expect(page).to have_field("Body", with: "## First Edition Title")
+    expect(page).to have_select("Community", selected: "Technology Community")
+
     fill_in "Title", with: "Second Edition Title"
     click_first_button "Save"
 
@@ -71,6 +78,12 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.title).to eq "Second Edition Title"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
+
+    expect(page).to have_field("Slug", with: "/service-manual/the/path")
+    expect(page).to have_field("Title", with: "Second Edition Title")
+    expect(page).to have_field("Description", with: "This guide acts as a test case")
+    expect(page).to have_field("Body", with: "## First Edition Title")
+    expect(page).to have_select("Community", selected: "Technology Community")
   end
 
   it "publishes guide editions" do

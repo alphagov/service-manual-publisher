@@ -1,4 +1,6 @@
-<%= guide_form_for guide, html: { class: "js-protect-data" } do |f| %>
+<%= form_for guide_form, html: { class: "js-protect-data" } do |f| %>
+  <% guide = guide_form.guide %>
+  <% edition = guide_form.edition %>
 
   <%= f.hidden_field :type %>
 
@@ -8,110 +10,107 @@
 
   <div class="col-md-8">
     <%= render 'shared/form_error_summary', full_messages: guide.errors.full_messages + edition.errors.full_messages %>
-    <%= f.fields_for edition do |editions_form| %>
 
-      <div class="well">
-        <h2><%= guide.model_name.human %> content</h2>
+    <div class="well">
+      <h2><%= guide.model_name.human %> content</h2>
 
-        <div class="form-group">
-          <%= editions_form.label :title %>
-          <%= editions_form.error_list :title %>
-          <%= editions_form.text_field :title, class: 'input-md-12 form-control js-guide-title' %>
-        </div>
-
-        <div class='form-group'>
-          <%= f.label :slug  %>
-          <%= f.error_list :slug  %>
-          <div class="help-block">
-            <p>
-              Always use the format: <code>/service-manual/[topic]/[guide]</code>.
-            </p>
-            <p>
-              You must include a topic - it's not automatically generated.
-            </p>
-            <p>
-              Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>/service-manual/agile-delivery/writing-user-stories</code>.
-            </p>
-          </div>
-          <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug js-guide-slug', disabled: guide.has_published_edition? %>
-        </div>
-
-        <div class='form-group'>
-          <%= editions_form.label :description %>
-          <%= editions_form.error_list :description %>
-          <span class="help-block">To be used for displaying search results, linking content etc.</span>
-          <%= editions_form.text_area :description, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
-        </div>
-
-        <div class="form-group">
-          <%= editions_form.label :body %>
-          <%= editions_form.error_list :body %>
-          <%= file_field_tag 'attachment', multiple: true, class: "js-markdown-file-input hidden" %>
-          <p class="help-block">
-            To insert images either <a class="js-markdown-file-input-trigger" href="javascript:void(0);">click here</a>, or drag and drop them into the text area below
-          </p>
-          <%= editions_form.text_area :body, class: 'js-markdown-image-upload input-md-12 form-control markdown-textarea text-area-auto-size text-area-auto-size-large js-text-area-auto-size', rows: 14 %>
-        </div>
-
-        <% if guide.requires_content_owner? %>
-          <div class='form-group'>
-            <%= editions_form.label :content_owner_id, "Community" %>
-            <%= editions_form.error_list :content_owner_id %>
-            <%= editions_form.select :content_owner_id, guide_community_options_for_select, {}, {class: 'select2 input-md-12 form-control'} %>
-          </div>
-        <% end %>
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.error_list :title %>
+        <%= f.text_field :title, class: 'input-md-12 form-control js-guide-title' %>
       </div>
 
-      <% if guide.new_record? %>
-        <%= editions_form.hidden_field :update_type, value: "minor" %>
-      <% else %>
-        <div class="well">
-          <h2>About this update</h2>
-
-          <div class='form-group'>
-            <label>Impact of the update</label>
-            <%= editions_form.error_list :update_type %>
-            <div class="radio">
-              <%= label_tag do %>
-                <%= editions_form.radio_button :update_type, "minor", { class: 'update-type-select'} %>
-                Minor update
-                <span class='text-muted'>e.g. spelling or typographic corrections.</span>
-              <% end %>
-            </div>
-            <div class="radio">
-              <%= label_tag do %>
-                <%= editions_form.radio_button :update_type, "major", { class: 'update-type-select'} %>
-                Major update
-                <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="form-group change-note-form-group">
-            <%= editions_form.label :change_summary, "Summary of change" %>
-            <div class="help-block">What is being changed in this update</div>
-            <%= editions_form.text_field :change_summary, class: 'input-md-12 form-control', rows: 5 %>
-          </div>
-
-          <div class="form-group change-note-form-group">
-            <%= editions_form.label :change_note, "Why the change is being made" %>
-            <div class="help-block">Include any evidence from research and links to any related discussions</div>
-            <%= editions_form.text_area :change_note, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
-          </div>
-
-          <p class="text-strong change-note-form-group">
-            <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
-            <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
+      <div class='form-group'>
+        <%= f.label :slug  %>
+        <%= f.error_list :slug  %>
+        <div class="help-block">
+          <p>
+            Always use the format: <code>/service-manual/[topic]/[guide]</code>.
+          </p>
+          <p>
+            You must include a topic - it's not automatically generated.
+          </p>
+          <p>
+            Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>/service-manual/agile-delivery/writing-user-stories</code>.
           </p>
         </div>
+        <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug js-guide-slug', disabled: guide.has_published_edition? %>
+      </div>
 
-        <div class="well">
-          <h2>Assign authorship</h2>
-          <%= editions_form.label :author_id, class: "add-top-margin nav-header" %>
-          <%= editions_form.select :author_id, options_for_select(user_options, @edition_author_id || guide.latest_edition.author_id), {include_blank: "Choose a user"}, {class: 'select2 input-md-12 form-control'} %>
+      <div class='form-group'>
+        <%= f.label :description %>
+        <%= f.error_list :description %>
+        <span class="help-block">To be used for displaying search results, linking content etc.</span>
+        <%= f.text_area :description, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :body %>
+        <%= f.error_list :body %>
+        <%= file_field_tag 'attachment', multiple: true, class: "js-markdown-file-input hidden" %>
+        <p class="help-block">
+          To insert images either <a class="js-markdown-file-input-trigger" href="javascript:void(0);">click here</a>, or drag and drop them into the text area below
+        </p>
+        <%= f.text_area :body, class: 'js-markdown-image-upload input-md-12 form-control markdown-textarea text-area-auto-size text-area-auto-size-large js-text-area-auto-size', rows: 14 %>
+      </div>
+
+      <% if guide.requires_content_owner? %>
+        <div class='form-group'>
+          <%= f.label :content_owner_id, "Community" %>
+          <%= f.error_list :content_owner_id %>
+          <%= f.select :content_owner_id, guide_community_options_for_select, {}, {class: 'select2 input-md-12 form-control'} %>
         </div>
       <% end %>
+    </div>
 
+    <% if guide.new_record? %>
+      <%= f.hidden_field :update_type, value: "minor" %>
+    <% else %>
+      <div class="well">
+        <h2>About this update</h2>
+
+        <div class='form-group'>
+          <label>Impact of the update</label>
+          <%= f.error_list :update_type %>
+          <div class="radio">
+            <%= label_tag do %>
+              <%= f.radio_button :update_type, "minor", { class: 'update-type-select'} %>
+              Minor update
+              <span class='text-muted'>e.g. spelling or typographic corrections.</span>
+            <% end %>
+          </div>
+          <div class="radio">
+            <%= label_tag do %>
+              <%= f.radio_button :update_type, "major", { class: 'update-type-select'} %>
+              Major update
+              <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="form-group change-note-form-group">
+          <%= f.label :change_summary, "Summary of change" %>
+          <div class="help-block">What is being changed in this update</div>
+          <%= f.text_field :change_summary, class: 'input-md-12 form-control', rows: 5 %>
+        </div>
+
+        <div class="form-group change-note-form-group">
+          <%= f.label :change_note, "Why the change is being made" %>
+          <div class="help-block">Include any evidence from research and links to any related discussions</div>
+          <%= f.text_area :change_note, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
+        </div>
+
+        <p class="text-strong change-note-form-group">
+          <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
+          <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
+        </p>
+      </div>
+
+      <div class="well">
+        <h2>Assign authorship</h2>
+        <%= f.label :author_id, class: "add-top-margin nav-header" %>
+        <%= f.select :author_id, options_for_select(user_options, @edition_author_id || guide.latest_edition.author_id), {include_blank: "Choose a user"}, {class: 'select2 input-md-12 form-control' } %>
+      </div>
     <% end %>
   </div>
 

@@ -25,10 +25,6 @@ RSpec.describe "discarding guides", type: :feature do
   context "with a successful discard_draft" do
     it "discards the draft in the publishing api" do
       guide = create(:guide, :with_draft_edition)
-      publisher = double(:publisher)
-      expect(Publisher).to receive(:new).with(content_model: guide).and_return publisher
-      expect(publisher).to receive(:discard_draft)
-        .and_return(Publisher::Response.new(success: true))
 
       visit edit_guide_path(guide)
       click_first_button "Discard draft"
