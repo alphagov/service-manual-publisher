@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Publisher, '#save_draft' do
 
   it 'persists the content model and returns a successful response' do
-    guide = build(:guide, :with_draft_edition)
+    guide = create(:guide, :with_draft_edition)
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
     allow(publishing_api).to receive(:patch_links)
@@ -46,7 +46,8 @@ RSpec.describe Publisher, '#save_draft' do
   end
 
   context 'when the publishing api call fails' do
-    let(:guide) { build(:guide, :with_draft_edition) }
+    let(:edition) { build(:edition) }
+    let(:guide) { build(:guide, editions: [ edition ]) }
     let(:publishing_api_which_always_fails) do
       api = double(:publishing_api)
       gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
@@ -59,7 +60,7 @@ RSpec.describe Publisher, '#save_draft' do
     it 'does not persist the content model and returns an unsuccessful response' do
       publication_response =
         Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails).
-                  save_draft(GuidePresenter.new(guide, guide.latest_edition))
+                  save_draft(GuidePresenter.new(guide, edition))
 
       expect(Guide.find_by_id(guide.id)).to eq(nil)
       expect(publication_response).to_not be_success
@@ -68,7 +69,7 @@ RSpec.describe Publisher, '#save_draft' do
     it 'returns the gds api error messages' do
       publication_response =
         Publisher.new(content_model: guide, publishing_api: publishing_api_which_always_fails).
-                  save_draft(GuidePresenter.new(guide, guide.latest_edition))
+                  save_draft(GuidePresenter.new(guide, edition))
 
       expect(publication_response.error).to include('trouble')
     end

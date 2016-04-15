@@ -2,26 +2,25 @@ require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
   describe "#notification_subscribers" do
-    let(:joe) { build_stubbed(:user, name: "Joe") }
-    let(:liz) { build_stubbed(:user, name: "Liz") }
+    let(:joe) { build(:user, name: "Joe") }
+    let(:liz) { build(:user, name: "Liz") }
 
     it "is the edition author and the current edition author" do
-      edition = build(:edition, author: joe)
-      current_edition = build(:edition, author: liz)
-      guide = build(:guide, editions: [edition])
-      guide.latest_edition = current_edition
+      first_edition = build(:edition, author: joe, created_at: 1.week.ago)
+      last_edition = build(:edition, author: liz, created_at: 1.day.ago)
 
-      expect(edition.notification_subscribers).to match_array [joe, liz]
+      guide = create(:guide, editions: [
+        first_edition,
+        last_edition,
+      ])
+
+      expect(first_edition.reload.notification_subscribers).to match_array [joe, liz]
     end
 
     it "avoids duplicates" do
-      first = build(:edition, author: joe)
-      second = build(:edition, author: joe)
-      guide = build(
-        :guide,
-        editions: [first],
-        latest_edition: second,
-      )
+      first = build(:edition, author: joe, created_at: 1.week.ago)
+      second = build(:edition, author: joe, created_at: 1.day.ago)
+      guide = create(:guide, editions: [ first, second ])
 
       expect(guide.latest_edition.notification_subscribers).to match_array [joe]
     end
@@ -110,7 +109,7 @@ RSpec.describe Edition, type: :model do
     end
 
     let :guide do
-      build(:guide, slug: "/service-manual/topic-name/something", latest_edition: edition)
+      build(:guide, slug: "/service-manual/topic-name/something", editions: [ edition ])
     end
 
     describe "#can_be_approved?" do

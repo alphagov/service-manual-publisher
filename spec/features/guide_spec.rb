@@ -11,7 +11,7 @@ RSpec.describe "creating guides", type: :feature do
       content_owner: nil,
       title: "Technology Community"
     )
-    create(:guide_community, latest_edition: edition)
+    create(:guide_community, editions: [ edition ])
 
     visit root_path
     click_link "Create a Guide"
@@ -92,7 +92,7 @@ RSpec.describe "creating guides", type: :feature do
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    guide.latest_persisted_edition.tap do |edition|
+    guide.latest_edition.tap do |edition|
       # set editor to another user so we can approve this edition
       edition.author = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
@@ -158,7 +158,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "shows the summary of validation errors" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/something", latest_edition: build(:edition))
+      guide = Guide.create!(slug: "/service-manual/topic-name/something", editions: [ build(:edition) ])
       visit edit_guide_path(guide)
       fill_in "Title", with: ""
       click_first_button "Save"

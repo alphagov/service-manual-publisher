@@ -58,7 +58,7 @@ task import_old_service_manual_content: :environment do
       author:           author,
       )
     GuideCommunity.create!(
-      latest_edition: community_guide_edition,
+      editions: [ community_guide_edition ],
       slug: "/service-manual/communities/design-community"
     )
   end
@@ -88,7 +88,7 @@ task import_old_service_manual_content: :environment do
       content_owner:   GuideCommunity.first,
       author:            author,
     )
-    guide = Guide.create(slug: object[:url], content_id: nil, latest_edition: edition)
+    guide = Guide.create(slug: object[:url], content_id: nil, editions: [ edition ])
     if guide.errors.any?
       puts "Couldn't save guide: #{guide.errors.to_json}"
       next

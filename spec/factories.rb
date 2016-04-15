@@ -1,7 +1,10 @@
 FactoryGirl.define do
   factory :guide_community do
-    latest_edition { build(:community_edition, content_owner: nil) }
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
+
+    editions {
+      [ build(:community_edition, content_owner: nil) ]
+    }
   end
 
   factory :guide do
@@ -11,7 +14,9 @@ FactoryGirl.define do
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
 
     trait :with_draft_edition do
-      latest_edition { build(:edition, title: title) }
+      editions {
+        [ build(:edition, title: title) ]
+      }
     end
   end
 
@@ -38,11 +43,21 @@ FactoryGirl.define do
   end
 
   factory :draft_guide, parent: :guide do
-    latest_edition { build(:edition, state: "draft") }
+    editions {
+      [ build(:edition, state: "draft") ]
+    }
   end
 
   factory :review_requested_guide, parent: :guide do
-    latest_edition { build(:edition, state: "review_requested") }
+    editions {
+      [ build(:edition, state: "review_requested") ]
+    }
+  end
+
+  factory :ready_guide, parent: :guide do
+    editions {
+      [ build(:edition, state: "ready") ]
+    }
   end
 
   factory :published_guide, parent: :guide do
@@ -60,10 +75,6 @@ FactoryGirl.define do
   end
 
   factory :published_guide_community, parent: :published_guide, class: 'GuideCommunity'
-
-  factory :ready_guide, parent: :guide do
-    latest_edition { build(:edition, state: "ready") }
-  end
 
   factory :user do
     name "Test User"

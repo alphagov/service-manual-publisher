@@ -5,11 +5,11 @@ RSpec.describe "filtering guides", type: :feature do
   it "filters by state" do
     create(:guide,
           slug: "/service-manual/topic-name/a",
-          latest_edition: build(:edition, state:"review_requested", title: "Edition 1"),
+          editions: [ build(:edition, state:"review_requested", title: "Edition 1") ],
          )
     create(:guide,
           slug: "/service-manual/topic-name/b",
-          latest_edition: build(:edition, state: "draft", title: "Edition 2"),
+          editions: [ build(:edition, state: "draft", title: "Edition 2") ],
     )
 
     filter_by_state "Draft"
@@ -27,11 +27,11 @@ RSpec.describe "filtering guides", type: :feature do
 
     create(:guide,
            slug: "/service-manual/topic-name/a",
-           latest_edition: build(:edition, author: dave),
+           editions: [ build(:edition, author: dave) ],
     )
     create(:guide,
            slug: "/service-manual/topic-name/b",
-           latest_edition: build(:edition, author: linda),
+           editions: [ build(:edition, author: linda) ],
     )
 
     filter_by_author "Dave"
@@ -46,14 +46,14 @@ RSpec.describe "filtering guides", type: :feature do
   it "filters by published by" do
     [1, 2].each do |i|
       edition = build(:edition, content_owner: nil, title: "Content Owner #{i}")
-      guide_community = create(:guide_community, latest_edition: edition)
+      guide_community = create(:guide_community, editions: [ edition ])
 
       edition = build(:edition,
                       state: "review_requested",
                       title: "Edition #{i}",
                       content_owner_id: guide_community.id,
       )
-      create(:guide, slug: "/service-manual/topic-name/#{i}", latest_edition: edition)
+      create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [ edition ])
     end
 
     filter_by_community "Content Owner 1"
@@ -67,10 +67,10 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "searches for keywords" do
     edition1 = build(:edition, state: "review_requested", title: "Standups")
-    create(:guide, slug: "/service-manual/topic-name/something", latest_edition: edition1)
+    create(:guide, slug: "/service-manual/topic-name/something", editions: [ edition1 ])
 
     edition2 = build(:edition, state: "review_requested", title: "Unit Testing")
-    create(:guide, slug: "/service-manual/topic-name/something", latest_edition: edition2)
+    create(:guide, slug: "/service-manual/topic-name/something", editions: [ edition2 ])
 
     search_for "testing"
 

@@ -3,7 +3,7 @@ class GuidesController < ApplicationController
     @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
     # TODO: :content_owner not being included is resulting in an N+1 query
-    @guides = Guide.includes(latest_edition: [:author])
+    @guides = Guide.includes(editions: [:author]).references(:editions)
                    .by_author(params[:author])
                    .in_state(params[:state])
                    .owned_by(params[:content_owner])
@@ -19,7 +19,7 @@ class GuidesController < ApplicationController
   def new
     type = params[:community].present? ? 'GuideCommunity' : nil
     @guide = Guide.new(slug: "/service-manual/", type: type)
-    @edition = @guide.build_latest_edition(update_type: 'major')
+    @edition = @guide.editions.build(update_type: 'major')
   end
 
   def create
