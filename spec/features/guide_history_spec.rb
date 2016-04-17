@@ -72,14 +72,28 @@ RSpec.describe "Guide history", type: :feature do
 
     visit edition_comments_path(guide.reload.latest_edition)
 
-    expect_edition_to_be_open("Version #2")
+    within_edition(1) do
+      expect(events_visible).to be_empty
+    end
+    within_edition(2) do
+      expect(page).to have_css(".event", text: "New draft created")
+    end
 
     click_link "Version #1"
 
-    expect_edition_to_be_open("Version #1")
+    within_edition(1) do
+      expect(page).to have_css(".event", text: "New draft created")
+    end
+    within_edition(2) do
+      expect(events_visible).to be_empty
+    end
   end
 
-  def expect_edition_to_be_open(title)
-    expect(page).to have_css(".open-edition .panel-heading", text: title)
+  def within_edition(number, &block)
+    within(:xpath, "//div[contains(@class, 'panel') and div[contains(@class, 'panel-heading') and contains(., 'Version ##{number}')]]", &block)
+  end
+
+  def events_visible
+    all(".event")
   end
 end
