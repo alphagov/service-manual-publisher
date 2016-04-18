@@ -28,7 +28,6 @@ gem 'rinku', '~> 1.7', '>= 1.7.3', require: "rails_rinku"
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bullet'
 end
 
 group :development, :test do
@@ -40,6 +39,7 @@ group :development, :test do
   gem 'pry-remote'
   gem 'pry-nav'
   gem 'jasmine'
+  gem 'bullet'
 end
 
 group :test do
