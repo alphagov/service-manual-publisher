@@ -273,8 +273,8 @@ ALTER SEQUENCE topic_section_guides_id_seq OWNED BY topic_section_guides.id;
 CREATE TABLE topic_sections (
     id integer NOT NULL,
     topic_id integer NOT NULL,
-    title character varying NOT NULL,
-    description character varying NOT NULL,
+    title character varying,
+    description character varying,
     "position" integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -543,6 +543,20 @@ CREATE UNIQUE INDEX index_slug_migrations_on_slug ON slug_migrations USING btree
 
 
 --
+-- Name: index_topic_section_guides_on_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_topic_section_guides_on_guide_id ON topic_section_guides USING btree (guide_id);
+
+
+--
+-- Name: index_topic_section_guides_on_topic_section_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_topic_section_guides_on_topic_section_id ON topic_section_guides USING btree (topic_section_id);
+
+
+--
 -- Name: index_topics_on_content_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -675,4 +689,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160413140153');
 INSERT INTO schema_migrations (version) VALUES ('20160413143619');
 
 INSERT INTO schema_migrations (version) VALUES ('20160413150715');
+
+INSERT INTO schema_migrations (version) VALUES ('20160418130416');
 
