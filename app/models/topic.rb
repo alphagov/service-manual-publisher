@@ -25,9 +25,7 @@ class Topic < ActiveRecord::Base
   end
 
   def guide_content_ids
-    topic_sections.map do |topic_section|
-      topic_section.guides.map(&:content_id)
-    end.flatten
+    guides.pluck(:content_id).uniq
   end
 
   private
