@@ -22,6 +22,16 @@ RSpec.describe GuideForm, "#initialize" do
   end
 
   context "for an existing guide" do
+    it "loads the author_id" do
+      edition = build(:edition, body: "A great body")
+      guide = create(:guide, editions: [ edition ])
+      author = edition.author
+
+      expect(
+        described_class.new(guide: guide, edition: edition, user: User.new).author_id
+        ).to eq(author.id)
+    end
+
     it "loads the body" do
       edition = build(:edition, body: "A great body")
       guide = create(:guide, editions: [ edition ])
@@ -111,6 +121,22 @@ RSpec.describe GuideForm, "#initialize" do
 
       expect(guide_form.change_summary).to eq(nil)
       expect(guide_form.change_note).to eq(nil)
+    end
+
+    it "defaults the author_id to represent the current user again" do
+      title = "A guide to agile"
+      guide = create(:guide, editions: [
+        build(:edition, state: "draft", title: title, update_type: "major"),
+        build(:edition, state: "review_requested", title: title, update_type: "major"),
+        build(:edition, state: "ready", title: title, update_type: "major"),
+        build(:edition, state: "published", title: title, update_type: "major", change_summary: "summary", change_note: "note"),
+      ])
+      edition = guide.editions.build(guide.latest_edition.dup.attributes)
+      user = User.new(id: 8)
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+
+      expect(guide_form.author_id).to eq(8)
     end
   end
 end

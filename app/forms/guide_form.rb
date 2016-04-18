@@ -15,7 +15,7 @@ class GuideForm
     @edition = edition
     @user = user
 
-    self.author_id = edition.author ? edition.author.id : user.id
+    self.author_id = next_author_id
     self.body = edition.body
     self.change_note = edition.change_note
     self.change_summary = edition.change_summary
@@ -83,6 +83,14 @@ private
       DEFAULT_UPDATE_TYPE
     else
       edition.update_type || DEFAULT_UPDATE_TYPE
+    end
+  end
+
+  def next_author_id
+    if edition.published?
+      user.id
+    else
+      edition.author ? edition.author.id : user.id
     end
   end
 

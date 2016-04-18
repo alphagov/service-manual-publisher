@@ -21,7 +21,7 @@ class GuidesController < ApplicationController
 
     @guide_form = GuideForm.new(
       guide: Guide.new(type: type),
-      edition: Edition.new(author: current_user),
+      edition: Edition.new,
       user: current_user,
       )
   end
@@ -29,7 +29,6 @@ class GuidesController < ApplicationController
   def create
     guide = Guide.new(type: guide_form_params[:type])
     edition = guide.editions.build
-    edition.author = current_user
     @guide_form = GuideForm.new(
       guide: guide,
       edition: edition,
@@ -49,7 +48,6 @@ class GuidesController < ApplicationController
 
   def edit
     guide = Guide.find(params[:id])
-    @edition_author_id = current_user.id if guide.latest_edition.published?
     edition = guide.latest_edition
 
     @guide_form = GuideForm.new(
@@ -61,7 +59,6 @@ class GuidesController < ApplicationController
 
   def update
     guide = Guide.find(params[:id])
-    @edition_author_id = current_user.id if guide.latest_edition.published?
     edition = guide.editions.build(guide.latest_edition.dup.attributes)
 
     @guide_form = GuideForm.new(
