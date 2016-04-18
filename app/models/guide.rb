@@ -8,7 +8,7 @@ class Guide < ActiveRecord::Base
   has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
   accepts_nested_attributes_for :latest_edition
-  scope :by_user, ->(user_id) { where(editions: { user_id: user_id }) if user_id.present? }
+  scope :by_author, ->(author_id) { where(editions: { author_id: author_id }) if author_id.present? }
   scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
 

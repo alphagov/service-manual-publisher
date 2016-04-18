@@ -28,7 +28,7 @@ FactoryGirl.define do
     body "Heading"
     version 1
     content_owner { build(:guide_community) }
-    user { build(:user) }
+    author { build(:user) }
   end
 
   factory :community_edition, parent: :edition do

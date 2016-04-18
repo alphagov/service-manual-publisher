@@ -4,7 +4,7 @@ RSpec.describe NotificationMailer, type: :mailer do
   let(:gary) { build(:user, name: "Gary", email: "gary@example.com") }
   let(:luke) { build(:user, name: "Luke") }
   let(:guide) { create(:guide, slug: '/service-manual/topic-name/agile-delivery', latest_edition: edition) }
-  let(:edition) { build(:edition, title: "Agile", user: gary) }
+  let(:edition) { build(:edition, title: "Agile", author: gary) }
 
   before do
     ActionMailer::Base.deliveries.clear

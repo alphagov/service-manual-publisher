@@ -1,11 +1,10 @@
 class GuidesController < ApplicationController
   def index
-    @user_options = User.pluck(:name, :id)
     @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
     # TODO: :content_owner not being included is resulting in an N+1 query
-    @guides = Guide.includes(latest_edition: [:user])
-                   .by_user(params[:user])
+    @guides = Guide.includes(latest_edition: [:author])
+                   .by_author(params[:author])
                    .in_state(params[:state])
                    .owned_by(params[:content_owner])
                    .page(params[:page])
@@ -19,13 +18,13 @@ class GuidesController < ApplicationController
 
   def new
     type = params[:community].present? ? 'GuideCommunity' : nil
-
     @guide = Guide.new(slug: "/service-manual/", type: type)
     @guide.build_latest_edition(update_type: 'major')
   end
 
   def create
     @guide = Guide.new(guide_params)
+    @guide.latest_edition.author = current_user
     @guide.latest_edition.version = 1
 
     publication = Publisher.new(content_model: @guide).
@@ -40,10 +39,12 @@ class GuidesController < ApplicationController
 
   def edit
     @guide = Guide.find(params[:id])
+    @edition_author_id = current_user.id if @guide.latest_edition.published?
   end
 
   def update
     @guide = Guide.find(params[:id])
+    @edition_author_id = current_user.id if @guide.latest_edition.published?
 
     # Build a new latest_edition without automatically saving it and without
     # nullifying the foreign key on the previous one
@@ -100,7 +101,7 @@ private
     unless @guide.included_in_a_topic?
       @edition = @guide.latest_edition
       flash[:error] = "This guide could not be published because it is not included in a topic page."
-      render template: 'guides/edit'
+      render 'edit'
       return
     end
 
@@ -149,7 +150,7 @@ private
 
   def guide_params(with = {})
     default_params = {
-      latest_edition_attributes: { state: 'draft', user: current_user }
+      latest_edition_attributes: { state: 'draft' }
     }
     with = default_params.deep_merge(with)
 
@@ -165,6 +166,7 @@ private
         :update_type,
         :change_note,
         :change_summary,
+        :author_id,
       ]).deep_merge(with)
   end
 

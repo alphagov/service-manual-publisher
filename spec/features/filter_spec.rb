@@ -27,11 +27,11 @@ RSpec.describe "filtering guides", type: :feature do
 
     create(:guide,
            slug: "/service-manual/topic-name/a",
-           latest_edition: build(:edition, user: dave),
+           latest_edition: build(:edition, author: dave),
     )
     create(:guide,
            slug: "/service-manual/topic-name/b",
-           latest_edition: build(:edition, user: linda),
+           latest_edition: build(:edition, author: linda),
     )
 
     filter_by_author "Dave"
@@ -100,7 +100,9 @@ RSpec.describe "filtering guides", type: :feature do
   it "displays a page header that's based on the query" do
     guide_community = create(:guide_community)
 
-    create(:user, name: "Ronan")
+    ronan = create(:user, name: "Ronan")
+    create(:edition, author: ronan)
+
     visit root_path
     within ".filters" do
       fill_in "Title or slug", with: "Form Design"

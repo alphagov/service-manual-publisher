@@ -11,15 +11,14 @@
         <%= label_tag :q, "Title or slug", class: "nav-header" %>
         <%= text_field_tag :q, params[:q], type: :search, class: "form-control" %>
 
-        <%= label_tag :user, "Author", class: "add-top-margin nav-header" %>
-        <%= select_tag :user, options_for_select(@user_options, params[:user]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
+        <%= label_tag :author, nil, class: "add-top-margin nav-header" %>
+        <%= select_tag :author, options_for_select(author_options, params[:author]), {include_blank: "All", class: 'select2 input-md-12 form-control'} %>
 
         <%= label_tag :state, nil, class: "add-top-margin nav-header" %>
         <%= select_tag :state, options_for_select(@state_options, params[:state]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
 
         <%= label_tag :content_owner, "Community", class: "add-top-margin nav-header" %>
         <%= select_tag :content_owner, options_for_select(guide_community_options_for_select, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
-
 
         <input type="submit" class="add-top-margin btn btn-default" value="Filter guides">
       </form>
@@ -55,7 +54,7 @@
               <% end %>
             </td>
             <td class='last-edited-by'>
-              <%= latest_editor_name(guide) %>
+              <%= latest_author_name(guide) %>
             </td>
             <td>
               <%= time_ago_in_words(guide.latest_edition.updated_at) %> ago

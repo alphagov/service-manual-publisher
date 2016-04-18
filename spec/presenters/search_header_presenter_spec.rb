@@ -7,7 +7,7 @@ RSpec.describe SearchHeaderPresenter do
       expect(subject.search?).to be false
     end
 
-    [:user, :state, :content_owner, :q].each do |search_param|
+    [:author, :state, :content_owner, :q].each do |search_param|
       it "is true if at least :#{search_param} param is present" do
         subject = described_class.new({ search_param.to_sym => :test }, User.new)
         expect(subject.search?).to be true
@@ -18,18 +18,18 @@ RSpec.describe SearchHeaderPresenter do
   describe "#to_s" do
     let(:john) { User.create!(name: "John", email: "john@example.com") }
 
-    it "starts with 'My' if the user is looking for their guides" do
-      header = described_class.new({ user: john.id }, john).to_s
+    it "starts with 'My' if the author is looking for their guides" do
+      header = described_class.new({ author: john.id }, john).to_s
       expect(header).to start_with "My"
     end
 
-    it "starts with 'Everyone's' if the user has not selected an author" do
-      header = described_class.new({ user: "" }, john).to_s
+    it "starts with 'Everyone's' if the author has not selected an author" do
+      header = described_class.new({ author: "" }, john).to_s
       expect(header).to start_with "Everyone's"
     end
 
-    it "starts with 'John's' if the user is looking for John's guides" do
-      header = described_class.new({ user: john.id }, User.new).to_s
+    it "starts with 'John's' if the author is looking for John's guides" do
+      header = described_class.new({ author: john.id }, User.new).to_s
       expect(header).to start_with "John's"
     end
 
