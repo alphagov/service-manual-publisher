@@ -55,7 +55,7 @@ task import_old_service_manual_content: :environment do
       description:    "Description",
       update_type:    "minor",
       body:           "# Heading",
-      user:           author,
+      author:           author,
       )
     GuideCommunity.create!(
       latest_edition: community_guide_edition,
@@ -86,7 +86,7 @@ task import_old_service_manual_content: :environment do
       update_type:     "minor",
       body:            object[:body].gsub(/\n/, "\r\n"),
       content_owner:   GuideCommunity.first,
-      user:            author,
+      author:            author,
     )
     guide = Guide.create(slug: object[:url], content_id: nil, latest_edition: edition)
     if guide.errors.any?
