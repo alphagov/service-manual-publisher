@@ -14,7 +14,7 @@ module GuideHelper
     content_tag :span, title, title: 'State', class: "label label-#{css_class}"
   end
 
-  def latest_editor_name(guide)
+  def latest_author_name(guide)
     guide.latest_edition.author.try(:name).to_s
   end
 
