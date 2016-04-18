@@ -7,19 +7,23 @@ RSpec.describe "Guide history", type: :feature do
     stub_publisher
     create_guide_community
 
-    travel_to "2004-11-24 01:04:44".to_time do
+    travel_to "2004-11-24".to_time do
       visit root_path
       click_on "Create a Guide"
       fill_out_new_guide_fields
       click_first_button "Save"
+    end
 
+    travel_to "2004-11-25".to_time do
       click_on "Comments and history"
 
       within ".open-edition" do
         fill_in "Add new comment", with: "What a great piece of writing"
         click_button "Save comment"
       end
+    end
 
+    travel_to "2004-11-26".to_time do
       click_first_button "Send for review"
     end
 
@@ -27,8 +31,8 @@ RSpec.describe "Guide history", type: :feature do
 
     expect(events.first).to eq "24 November 2004 New draft created by Stub User"
     expect(events.second).to eq "24 November 2004 Assigned to Stub User"
-    expect(events.third).to include "24 November 2004 Stub User What a great piece of writing"
-    expect(events.fourth).to eq "24 November 2004 Review requested by Stub User"
+    expect(events.third).to include "25 November 2004 Stub User What a great piece of writing"
+    expect(events.fourth).to eq "26 November 2004 Review requested by Stub User"
   end
 
   def stub_publisher
@@ -57,5 +61,39 @@ RSpec.describe "Guide history", type: :feature do
     all(".event")
       .map(&:text)
       .reverse
+  end
+end
+
+
+RSpec.describe "Guide history", type: :feature do
+  scenario "viewing previous editions" do
+    guide = create(:published_guide)
+    guide.editions << build(:edition, version: 2)
+
+    visit edition_comments_path(guide.reload.latest_edition)
+
+    within_edition(1) do
+      expect(events_visible).to be_empty
+    end
+    within_edition(2) do
+      expect(page).to have_css(".event", text: "New draft created")
+    end
+
+    click_link "Version #1"
+
+    within_edition(1) do
+      expect(page).to have_css(".event", text: "New draft created")
+    end
+    within_edition(2) do
+      expect(events_visible).to be_empty
+    end
+  end
+
+  def within_edition(number, &block)
+    within(:xpath, "//div[contains(@class, 'panel') and div[contains(@class, 'panel-heading') and contains(., 'Version ##{number}')]]", &block)
+  end
+
+  def events_visible
+    all(".event")
   end
 end

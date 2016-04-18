@@ -1,6 +1,5 @@
 <% if !edition.latest_edition? %>
   <div class="alert alert-info">
     You're looking at a past edition of this guide published at <%= edition.updated_at %>.
-    <%= link_to "See the latest edition", guide.latest_edition %>
   </div>
 <% end %>

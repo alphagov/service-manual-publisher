@@ -6,8 +6,6 @@ Rails.application.routes.draw do
 
   resources :guides
 
-  resources :editions, only: [:show]
-
   resources :comments
   resources :uploads, only: [:create]
   resources :topics

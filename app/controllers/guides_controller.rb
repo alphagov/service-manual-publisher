@@ -57,10 +57,13 @@ class GuidesController < ApplicationController
     # We hack around the problem by reassigning the foreign key (guide_id) after
     # building the new latest edition. The latest_edition association is causing
     # confusion across the app so this hack can be removed if/when it is
-    # replaced.
+    # replaced. We also reset the updated_at column because this isn't a valid
+    # reason to update it.
     previous_latest_edition = @guide.latest_edition
+    guide_id = previous_latest_edition.guide_id
+    updated_at = previous_latest_edition.updated_at
     @guide.build_latest_edition(@guide.latest_edition.dup.attributes)
-    previous_latest_edition.update_attribute(:guide_id, @guide.id)
+    previous_latest_edition.update_columns(guide_id: guide_id, updated_at: updated_at)
 
     if previous_latest_edition.published?
       @guide.latest_edition.version += 1
