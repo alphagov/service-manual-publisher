@@ -4,6 +4,7 @@ class Topic < ActiveRecord::Base
   validate :path_format
 
   has_many :topic_sections, -> { order(position: :asc) }
+  has_many :guides, through: :topic_sections
 
   def ready_to_publish?
     persisted?

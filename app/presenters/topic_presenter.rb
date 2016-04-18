@@ -31,7 +31,7 @@ class TopicPresenter
   def links_payload
     {
       links: {
-        linked_items: eagerloaded_guides.map(&:content_id),
+        linked_items: topic.guides.map(&:content_id),
         content_owners: content_owner_content_ids,
       }
     }
@@ -53,7 +53,7 @@ private
   end
 
   def content_owner_content_ids
-    content_ids = eagerloaded_guides.map do |guide|
+    content_ids = topic.guides.map do |guide|
       edition = guide.latest_edition
 
       if edition.content_owner
@@ -61,11 +61,5 @@ private
       end
     end
     content_ids.compact.uniq
-  end
-
-  def eagerloaded_guides
-    topic.topic_sections.map do |topic_section|
-      topic_section.guides.to_a
-    end.flatten.uniq
   end
 end
