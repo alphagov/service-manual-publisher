@@ -36,7 +36,11 @@ class Guide < ActiveRecord::Base
 
   def topic
     @topic ||= (
-      topic_section_guide = TopicSectionGuide.where(guide: self).first
+      topic_section_guide =
+        TopicSectionGuide
+          .where(guide: self)
+          .includes(topic_section: :topic)
+          .first
       if topic_section_guide.present?
         topic_section_guide.topic_section.topic
       else
