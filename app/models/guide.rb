@@ -34,13 +34,12 @@ class Guide < ActiveRecord::Base
     editions.most_recent_first.first
   end
 
+
   def topic
-    @topic ||= Topic.select do |topic|
-                 topic.tree.select do |element|
-                   element["guides"].map { |e| Integer(e) }
-                     .include? self.id
-                 end.any?
-               end.first
+    Topic.includes(topic_sections: :guides)
+      .references(:guides)
+      .where("guides.id = ?", id)
+      .first
   end
 
   def included_in_a_topic?

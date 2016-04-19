@@ -24,6 +24,7 @@ gem 'redcarpet', '~> 3.3.3'
 gem 'rummageable', '1.2.0'
 gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
 gem 'rinku', '~> 1.7', '>= 1.7.3', require: "rails_rinku"
+gem 'acts_as_list', '~> 0.7.2'
 
 group :development do
   gem 'better_errors'

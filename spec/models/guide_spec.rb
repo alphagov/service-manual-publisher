@@ -9,16 +9,13 @@ RSpec.describe Guide do
     end
 
     let!(:topic) do
-      create(
-        :topic,
-        tree: [
-          {
-            "title"       => "Title",
-            "description" => "Description",
-            "guides"    => [guide.id],
-          },
-        ],
+      topic = create(:topic)
+      topic_section = topic.topic_sections.create!(
+        "title"       => "Title",
+        "description" => "Description",
       )
+      topic_section.guides << guide
+      topic
     end
 
     describe "#included_in_a_topic?" do
