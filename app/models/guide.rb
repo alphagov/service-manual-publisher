@@ -34,19 +34,12 @@ class Guide < ActiveRecord::Base
     editions.most_recent_first.first
   end
 
+
   def topic
-    @topic ||= (
-      topic_section_guide =
-        TopicSectionGuide
-          .where(guide: self)
-          .includes(topic_section: :topic)
-          .first
-      if topic_section_guide.present?
-        topic_section_guide.topic_section.topic
-      else
-        nil
-      end
-    )
+    Topic.includes(topic_sections: :guides)
+      .references(:guides)
+      .where("guides.id = ?", id)
+      .first
   end
 
   def included_in_a_topic?
