@@ -3,7 +3,7 @@ class GuidesController < ApplicationController
     @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
     # TODO: :content_owner not being included is resulting in an N+1 query
-    @guides = Guide.includes(latest_edition: [:author])
+    @guides = Guide.includes(editions: [:author]).references(:editions)
                    .by_author(params[:author])
                    .in_state(params[:state])
                    .owned_by(params[:content_owner])
@@ -18,19 +18,28 @@ class GuidesController < ApplicationController
 
   def new
     type = params[:community].present? ? 'GuideCommunity' : nil
-    @guide = Guide.new(slug: "/service-manual/", type: type)
-    @guide.build_latest_edition(update_type: 'major')
+
+    @guide_form = GuideForm.new(
+      guide: Guide.new(type: type),
+      edition: Edition.new,
+      user: current_user,
+      )
   end
 
   def create
-    @guide = Guide.new(guide_params)
-    @guide.latest_edition.author = current_user
-    @guide.latest_edition.version = 1
+    guide = Guide.new(type: guide_form_params[:type])
+    edition = guide.editions.build
+    @guide_form = GuideForm.new(
+      guide: guide,
+      edition: edition,
+      user: current_user,
+      )
+    @guide_form.assign_attributes(guide_form_params)
 
-    publication = Publisher.new(content_model: @guide).
-                            save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
+    publication = Publisher.new(content_model: @guide_form)
+                    .save_draft(GuideFormPublicationPresenter.new(@guide_form))
     if publication.success?
-      redirect_to edit_guide_path(@guide), notice: 'Guide has been created'
+      redirect_to edit_guide_path(@guide_form), notice: 'Guide has been created'
     else
       flash.now[:error] = publication.error
       render 'new'
@@ -38,37 +47,25 @@ class GuidesController < ApplicationController
   end
 
   def edit
-    @guide = Guide.find(params[:id])
-    @edition_author_id = current_user.id if @guide.latest_edition.published?
+    guide = Guide.find(params[:id])
+    edition = guide.latest_edition
+
+    @guide_form = GuideForm.new(
+      guide: guide,
+      edition: edition,
+      user: current_user
+      )
   end
 
   def update
-    @guide = Guide.find(params[:id])
-    @edition_author_id = current_user.id if @guide.latest_edition.published?
+    guide = Guide.find(params[:id])
+    edition = guide.editions.build(guide.latest_edition.dup.attributes)
 
-    # Build a new latest_edition without automatically saving it and without
-    # nullifying the foreign key on the previous one
-    #
-    # Because latest_edition is a has_one association it has some perculiar
-    # behaviour. #latest_edition=() will autosave the newly built record which we
-    # do not want. #build_latest_edition() will nullify the foreign key on the
-    # record being replaced because, fairly, Rails expects there to be only one
-    # latest edition.
-    #
-    # We hack around the problem by reassigning the foreign key (guide_id) after
-    # building the new latest edition. The latest_edition association is causing
-    # confusion across the app so this hack can be removed if/when it is
-    # replaced. We also reset the updated_at column because this isn't a valid
-    # reason to update it.
-    previous_latest_edition = @guide.latest_edition
-    guide_id = previous_latest_edition.guide_id
-    updated_at = previous_latest_edition.updated_at
-    @guide.build_latest_edition(@guide.latest_edition.dup.attributes)
-    previous_latest_edition.update_columns(guide_id: guide_id, updated_at: updated_at)
-
-    if previous_latest_edition.published?
-      @guide.latest_edition.version += 1
-    end
+    @guide_form = GuideForm.new(
+      guide: guide,
+      edition: edition,
+      user: current_user
+      )
 
     if params[:send_for_review].present?
       send_for_review
@@ -86,46 +83,43 @@ class GuidesController < ApplicationController
 private
 
   def send_for_review
-    ApprovalProcess.new(content_model: @guide).request_review
+    ApprovalProcess.new(content_model: @guide_form.guide).request_review
 
-    redirect_to edit_guide_path(@guide), notice: "A review has been requested"
+    redirect_to edit_guide_path(@guide_form), notice: "A review has been requested"
   end
 
   def approve_for_publication
-    ApprovalProcess.new(content_model: @guide).give_approval(approver: current_user)
+    ApprovalProcess.new(content_model: @guide_form.guide).give_approval(approver: current_user)
 
-    redirect_to edit_guide_path(@guide), notice: "Thanks for approving this guide"
+    redirect_to edit_guide_path(@guide_form), notice: "Thanks for approving this guide"
   end
 
   def publish
-    unless @guide.included_in_a_topic?
-      @edition = @guide.latest_edition
+    unless @guide_form.guide.included_in_a_topic?
       flash[:error] = "This guide could not be published because it is not included in a topic page."
       render 'edit'
       return
     end
 
-    @guide.latest_edition.assign_attributes(state: 'published')
+    @guide_form.edition.assign_attributes(state: 'published')
 
-    publication = Publisher.new(content_model: @guide).publish
+    publication = Publisher.new(content_model: @guide_form.guide).publish
     if publication.success?
-      index_for_search(@guide)
+      index_for_search(@guide_form.guide)
 
-      unless @guide.latest_edition.notification_subscribers == [current_user]
-        NotificationMailer.published(@guide, current_user).deliver_later
+      unless @guide_form.edition.notification_subscribers == [current_user]
+        NotificationMailer.published(@guide_form.guide, current_user).deliver_later
       end
 
-      redirect_to edit_guide_path(@guide), notice: "Guide has been published"
+      redirect_to edit_guide_path(@guide_form), notice: "Guide has been published"
     else
-      @guide = @guide.reload
-
       flash.now[:error] = publication.error
       render 'edit'
     end
   end
 
   def discard
-    discard_draft = Publisher.new(content_model: @guide)
+    discard_draft = Publisher.new(content_model: @guide_form)
       .discard_draft
     if discard_draft.success?
       redirect_to root_path, notice: "Draft has been discarded"
@@ -136,38 +130,20 @@ private
   end
 
   def save_draft
-    @guide.assign_attributes(guide_params)
+    @guide_form.assign_attributes(guide_form_params)
 
-    publication = Publisher.new(content_model: @guide).
-                            save_draft(GuidePresenter.new(@guide, @guide.latest_edition))
+    publication = Publisher.new(content_model: @guide_form)
+                    .save_draft(GuideFormPublicationPresenter.new(@guide_form))
     if publication.success?
-      redirect_to edit_guide_path(@guide), notice: "Guide has been updated"
+      redirect_to edit_guide_path(@guide_form), notice: "Guide has been updated"
     else
       flash.now[:error] = publication.error
       render 'edit'
     end
   end
 
-  def guide_params(with = {})
-    default_params = {
-      latest_edition_attributes: { state: 'draft' }
-    }
-    with = default_params.deep_merge(with)
-
-    params
-      .require(:guide)
-      .permit(:slug, :type, latest_edition_attributes: [
-        :title,
-        :body,
-        :description,
-        :content_owner_id,
-        :related_discussion_href,
-        :related_discussion_title,
-        :update_type,
-        :change_note,
-        :change_summary,
-        :author_id,
-      ]).deep_merge(with)
+  def guide_form_params
+    params.require(:guide)
   end
 
   def index_for_search(guide)

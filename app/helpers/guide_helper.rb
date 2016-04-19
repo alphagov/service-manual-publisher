@@ -19,7 +19,8 @@ module GuideHelper
   end
 
   def guide_community_options_for_select
-    GuideCommunity.includes(:latest_edition).
+    # TODO: N+1 on loading the most recent edition
+    GuideCommunity.all.
           sort_by{ |guide| guide.title }.
           map{ |g| [g.title, g.id] }
   end

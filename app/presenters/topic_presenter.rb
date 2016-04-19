@@ -3,6 +3,10 @@ class TopicPresenter
     @topic = topic
   end
 
+  def content_id
+    topic.content_id
+  end
+
   def content_payload
     {
       publishing_app: "service-manual-publisher",

@@ -16,7 +16,7 @@ RSpec.describe GuidePresenter do
   let(:guide) do
     Guide.new(
       content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
-      latest_edition: edition,
+      editions: [ edition ],
       slug: '/service/manual/test'
     )
   end

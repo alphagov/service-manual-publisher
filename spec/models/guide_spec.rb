@@ -5,7 +5,7 @@ RSpec.describe Guide do
 
   context "with a topic" do
     let(:guide) do
-      create(:guide, slug: "/service-manual/topic-name/slug", latest_edition: edition)
+      create(:guide, slug: "/service-manual/topic-name/slug", editions: [ edition ])
     end
 
     let!(:topic) do
@@ -37,7 +37,7 @@ RSpec.describe Guide do
 
   context "without a topic" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/topic-name/slug", latest_edition: edition)
+      Guide.create!(slug: "/service-manual/topic-name/slug", editions: [ edition ])
     end
 
     describe "#included_in_a_topic?" do
@@ -55,20 +55,20 @@ RSpec.describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil, latest_edition: edition)
+      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil, editions: [ edition ])
       expect(guide.content_id).to be_present
     end
   end
 
   describe "validations" do
     it "doesn't allow slugs without /service-manual/ prefix" do
-      guide = Guide.new(slug: "/something", latest_edition: edition)
+      guide = Guide.new(slug: "/something", editions: [ edition ])
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/'"]
     end
 
     it "reminds users if they've forgotten to change the default pre-filled slug value" do
-      guide = Guide.new(slug: "/service-manual/", latest_edition: edition)
+      guide = Guide.new(slug: "/service-manual/", editions: [ edition ])
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be filled in"]
     end
@@ -80,7 +80,7 @@ RSpec.describe Guide do
     end
 
     it "does not allow unsupported characters in slugs" do
-      guide = Guide.new(slug: "/service-manual/financing$$$.xml}", latest_edition: edition)
+      guide = Guide.new(slug: "/service-manual/financing$$$.xml}", editions: [ edition ])
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can only contain letters, numbers and dashes"]
     end
@@ -88,7 +88,7 @@ RSpec.describe Guide do
     describe "content owner" do
       it "requires the latest edition to have a content owner" do
         edition_without_content_owner = build(:edition, content_owner: nil)
-        guide = build(:guide, latest_edition: edition_without_content_owner)
+        guide = build(:guide, editions: [ edition_without_content_owner ])
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a content owner')
@@ -96,7 +96,7 @@ RSpec.describe Guide do
 
       it "requires the latest edition to have a content owner unless it is a GuideCommunity" do
         edition = build(:edition, content_owner: nil)
-        guide = build(:guide_community, latest_edition: edition)
+        guide = build(:guide_community, editions: [ edition ])
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
@@ -110,30 +110,6 @@ RSpec.describe Guide do
         guide.valid?
         expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can't be changed if guide has a published edition"]
       end
-    end
-  end
-
-  describe "#latest_editable_edition" do
-    it "returns the latest edition if it's not published" do
-      guide = create(:guide, :with_draft_edition)
-      expect(guide.reload.latest_editable_edition).to eq guide.reload.latest_edition
-    end
-
-    it "returns an unsaved copy of the latest edition if the latter is published" do
-      guide = create(:published_guide)
-      expect(guide.latest_editable_edition).to be_a_new_record
-      expect(guide.reload.latest_editable_edition.title).to eq guide.latest_edition.title
-    end
-
-    it "defaults to a 'major' update for a new drafts" do
-      edition = build(:published_edition, update_type: "minor")
-      guide = create(:published_guide, latest_edition: edition)
-      expect(guide.reload.latest_editable_edition.update_type).to eq "major"
-    end
-
-    it "returns a new edition for a guide with no latest edition" do
-      guide = build(:guide, latest_edition: nil)
-      expect(guide.latest_editable_edition).to be_a_new_record
     end
   end
 
@@ -176,7 +152,7 @@ RSpec.describe Guide do
       titles = ["Standups", "Unit Testing"]
       titles.each_with_index do |title, index|
         edition = build(:review_requested_edition, title: title)
-        create(:guide, slug: "/service-manual/topic-name/#{index}", latest_edition: edition)
+        create(:guide, slug: "/service-manual/topic-name/#{index}", editions: [ edition ])
       end
 
       results = Guide.search("testing").map {|e| e.latest_edition.title}
@@ -203,10 +179,10 @@ RSpec.describe Guide do
 
     it "searches for slug" do
       edition = Edition.new(default_attributes.merge(version: 1, title: "1"))
-      Guide.create!(latest_edition: edition, slug: "/service-manual/topic-name/1")
+      Guide.create!(editions: [ edition ], slug: "/service-manual/topic-name/1")
 
       edition = Edition.new(default_attributes.merge(version: 1, title: "2"))
-      Guide.create!(latest_edition: edition, slug: "/service-manual/topic-name/2")
+      Guide.create!(editions: [ edition ], slug: "/service-manual/topic-name/2")
 
       results = Guide.search("/service-manual/2").map {|e| e.latest_edition.title}
       expect(results).to eq ["2"]

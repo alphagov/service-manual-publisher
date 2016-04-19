@@ -6,16 +6,21 @@ class ApprovalProcess
   end
 
   def request_review
-    content_model.latest_edition.state = 'review_requested'
-    content_model.latest_edition.save!
+    next_edition.state = 'review_requested'
+    next_edition.save!
   end
 
   def give_approval(approver:)
-    edition = content_model.latest_edition
-    edition.build_approval(user: approver)
-    edition.state = "ready"
-    edition.save!
+    next_edition.build_approval(user: approver)
+    next_edition.state = "ready"
+    next_edition.save!
 
     NotificationMailer.ready_for_publishing(content_model).deliver_later
+  end
+
+private
+
+  def next_edition
+    @_next_edition ||= @content_model.editions.detect(&:new_record?)
   end
 end

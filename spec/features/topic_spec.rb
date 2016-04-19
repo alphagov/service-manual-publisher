@@ -21,8 +21,8 @@ RSpec.describe "Topics", type: :feature do
     expect(api_double).to receive(:patch_links)
                             .once
                             .with(an_instance_of(String), an_instance_of(Hash))
-    guide1 = create(:guide, latest_edition: build(:edition, title: 'Guide 1'))
-    guide2 = create(:guide, latest_edition: build(:edition, title: 'Guide 2'))
+    guide1 = create(:guide, editions: [ build(:edition, title: 'Guide 1') ])
+    guide2 = create(:guide, editions: [ build(:edition, title: 'Guide 2') ])
 
     visit root_path
     click_link "Manage Topics"

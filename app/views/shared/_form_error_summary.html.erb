@@ -1,4 +1,4 @@
-<% if object.errors.any? %>
+<% if full_messages.any? %>
   <div class="panel panel-danger full-error-list">
     <div class="panel-heading">
       <h3 class="panel-title">
@@ -6,7 +6,7 @@
       </h3>
     </div>
       <ul class="list-group">
-        <% object.errors.full_messages.each do |err_message| %>
+        <% full_messages.each do |err_message| %>
           <li class="list-group-item">
             <%= err_message %>
           </li>

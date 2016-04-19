@@ -6,7 +6,7 @@ RSpec.describe "Commenting", type: :feature do
     create(
       :guide,
       slug: "/service-manual/test/comment",
-      latest_edition: build(:edition, title: "Lean Startup"),
+      editions: [ build(:edition, title: "Lean Startup") ],
     )
   end
 

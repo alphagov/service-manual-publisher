@@ -2,12 +2,10 @@ class Guide < ActiveRecord::Base
   include ContentIdentifiable
   validate :slug_format
   validate :slug_cant_be_changed_if_an_edition_has_been_published
-  validate :latest_edition_has_content_owner, if: :requires_content_owner?
+  validate :new_edition_has_content_owner, if: :requires_content_owner?
 
   has_many :editions, dependent: :destroy
-  has_one :latest_edition, -> { order(created_at: :desc) }, class_name: "Edition", inverse_of: :guide
 
-  accepts_nested_attributes_for :latest_edition
   scope :by_author, ->(author_id) { where(editions: { author_id: author_id }) if author_id.present? }
   scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
@@ -32,7 +30,7 @@ class Guide < ActiveRecord::Base
       .order("version DESC, created_at DESC")
   end
 
-  def latest_persisted_edition
+  def latest_edition
     editions.most_recent_first.first
   end
 
@@ -68,18 +66,6 @@ class Guide < ActiveRecord::Base
     latest_edition.comments.for_rendering
   end
 
-  def latest_editable_edition
-    return Edition.new unless latest_edition
-
-    if latest_edition.published?
-      latest_edition.draft_copy.tap do |e|
-        e.update_type = "major"
-      end
-    else
-      latest_edition
-    end
-  end
-
   def requires_content_owner?
     true
   end
@@ -104,8 +90,10 @@ private
     end
   end
 
-  def latest_edition_has_content_owner
-    if latest_edition && latest_edition.content_owner.nil?
+  def new_edition_has_content_owner
+    new_edition = editions.detect(&:new_record?)
+
+    if new_edition && new_edition.content_owner.nil?
       errors.add(:latest_edition, 'must have a content owner')
     end
   end

@@ -24,7 +24,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
 
       fill_in "Title", with: "Agile"
-      fill_in "Why the change is being made", with: "Update Title"
+      fill_in "Summary of change", with: "Updated the title"
+      fill_in "Why the change is being made", with: "Because the user's demand it"
 
       click_first_button 'Save'
 
@@ -33,7 +34,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "defaults to a major update and the new change note is empty" do
-      guide = create(:published_guide, title: "A guide to agile")
+      title = "A guide to agile"
+      guide = create(:guide, editions: [
+        build(:edition, state: "draft", title: title, update_type: "minor"),
+        build(:edition, state: "review_requested", title: title, update_type: "minor"),
+        build(:edition, state: "ready", title: title, update_type: "minor"),
+        build(:edition, state: "published", title: title, update_type: "minor"),
+      ])
       visit guides_path
 
       within_guide_index_row("A guide to agile") do
@@ -72,7 +79,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Updated Title"
-      fill_in "Why the change is being made", with: "Update Title"
+      fill_in "Summary of change", with: "Update Title"
+      fill_in "Why the change is being made", with: "It was out of date"
       click_first_button 'Save'
 
       the_form_should_be_prepopulated_with_title "Updated Title"
@@ -90,7 +98,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       within_guide_index_row("Scrum") do
         click_link "Scrum"
       end
-      fill_in "Why the change is being made", with: "Fix a typo"
+      fill_in "Summary of change", with: "Fix a typo"
+      fill_in "Why the change is being made", with: "There was a spelling mistake"
       click_first_button 'Save'
 
       within ".alert" do
@@ -190,7 +199,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     click_first_button "Save"
 
-    expect(guide.editions.map(&:title)).to match_array ["Changed Title", "Original Title"]
+    expect(guide.editions.reload.map(&:title)).to match_array ["Changed Title", "Original Title"]
     expect(page).to have_link "Preview", href: "http://draft-origin.dev.gov.uk/service-manual/topic-name/preview-test"
   end
 
@@ -241,7 +250,8 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Current Draft Edition"
-      fill_in "Why the change is being made", with: "Update Title"
+      fill_in "Summary of change", with: "Update Title"
+      fill_in "Why the change is being made", with: "It was out of date"
 
       expect(fake_publishing_api).to receive(:put_content)
 

@@ -11,7 +11,7 @@ RSpec.describe "creating guides", type: :feature do
       content_owner: nil,
       title: "Technology Community"
     )
-    create(:guide_community, latest_edition: edition)
+    create(:guide_community, editions: [ edition ])
 
     visit root_path
     click_link "Create a Guide"
@@ -58,6 +58,13 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq false
 
     visit edit_guide_path(guide)
+
+    expect(page).to have_field("Slug", with: "/service-manual/the/path")
+    expect(page).to have_field("Title", with: "First Edition Title")
+    expect(page).to have_field("Description", with: "This guide acts as a test case")
+    expect(page).to have_field("Body", with: "## First Edition Title")
+    expect(page).to have_select("Community", selected: "Technology Community")
+
     fill_in "Title", with: "Second Edition Title"
     click_first_button "Save"
 
@@ -71,6 +78,12 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.title).to eq "Second Edition Title"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
+
+    expect(page).to have_field("Slug", with: "/service-manual/the/path")
+    expect(page).to have_field("Title", with: "Second Edition Title")
+    expect(page).to have_field("Description", with: "This guide acts as a test case")
+    expect(page).to have_field("Body", with: "## First Edition Title")
+    expect(page).to have_select("Community", selected: "Technology Community")
   end
 
   it "publishes guide editions" do
@@ -92,7 +105,7 @@ RSpec.describe "creating guides", type: :feature do
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
-    guide.latest_persisted_edition.tap do |edition|
+    guide.latest_edition.tap do |edition|
       # set editor to another user so we can approve this edition
       edition.author = User.create!(name: "Editor", email: "email@example.org")
       edition.save!
@@ -158,13 +171,13 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "shows the summary of validation errors" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/something", latest_edition: build(:edition))
+      guide = Guide.create!(slug: "/service-manual/topic-name/something", editions: [ build(:edition) ])
       visit edit_guide_path(guide)
       fill_in "Title", with: ""
       click_first_button "Save"
 
       within(".full-error-list") do
-        expect(page).to have_content("title can't be blank")
+        expect(page).to have_content("Title can't be blank")
       end
     end
 

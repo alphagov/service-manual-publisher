@@ -2,7 +2,7 @@
   <%= form_for @comment do |f| %>
     <%= f.hidden_field :edition_id, value: edition.id %>
 
-    <%= render 'shared/form_error_summary', object: @comment %>
+    <%= render 'shared/form_error_summary', full_messages: @comment.errors.full_messages %>
 
     <div class='form-group'>
       <%= f.text_area :comment, class: "form-control", rows: 3, placeholder: "Add new comment" %>

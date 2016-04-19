@@ -89,8 +89,8 @@ RSpec.describe TopicPresenter, "#links_payload" do
 
   it "contains unique content_owners content ids" do
     guide_community = create(:guide_community)
-    guide1 = create(:guide, latest_edition: build(:edition, content_owner: guide_community))
-    guide2 = create(:guide, latest_edition: build(:edition, content_owner: guide_community))
+    guide1 = create(:guide, editions: [ build(:edition, content_owner: guide_community) ])
+    guide2 = create(:guide, editions: [ build(:edition, content_owner: guide_community) ])
     topic = create_topic_in_groups([[guide1], [guide2]])
     presented_topic = TopicPresenter.new(topic)
 
