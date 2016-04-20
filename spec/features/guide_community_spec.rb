@@ -36,4 +36,11 @@ RSpec.describe 'Create a guide community', type: :feature do
 
     expect(page).to_not have_field('Community')
   end
+
+  it 'does not have a summary field' do
+    visit root_path
+    click_link "Create a Guide Community"
+
+    expect(page).to_not have_field('Summary')
+  end
 end

@@ -82,6 +82,10 @@ class Guide < ActiveRecord::Base
     true
   end
 
+  def requires_summary?
+    false
+  end
+
 private
 
   def has_unpublished_edition?
