@@ -17,7 +17,7 @@ class GuidesController < ApplicationController
   end
 
   def new
-    type = params[:community].present? ? 'GuideCommunity' : nil
+    type = params[:type].presence_in(%w{ GuideCommunity Point })
 
     @guide_form = GuideForm.new(
       guide: Guide.new(type: type),

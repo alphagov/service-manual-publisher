@@ -4,7 +4,10 @@
       <%= link_to "Create a Guide" , new_guide_path, class: 'btn btn-block btn-success' %>
     </p>
     <p>
-      <%= link_to "Create a Guide Community" , new_guide_path(community: true), class: 'btn btn-block btn-success' %>
+      <%= link_to "Create a Guide Community" , new_guide_path(type: 'GuideCommunity'), class: 'btn btn-block btn-success' %>
+    </p>
+    <p>
+      <%= link_to "Create a Point" , new_guide_path(type: 'Point'), class: 'btn btn-block btn-success' %>
     </p>
     <div class="filters well sidebar-nav">
       <form action="<%= guides_path%>" method="get">

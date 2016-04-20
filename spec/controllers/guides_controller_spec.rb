@@ -67,4 +67,12 @@ RSpec.describe GuidesController, type: :controller do
       end
     end
   end
+
+  describe "a malicious user trying to initialise an unwanted Guide STI constant" do
+    it "defaults to a Guide" do
+      get :new, type: 'Module'
+
+      expect(assigns[:guide_form].guide.class).to eq(Guide)
+    end
+  end
 end
