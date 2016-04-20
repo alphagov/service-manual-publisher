@@ -3,6 +3,33 @@ require 'rails_helper'
 RSpec.describe "Guide history", type: :feature do
   include ActiveSupport::Testing::TimeHelpers
 
+  it "shows a header with pertinent edition information" do
+    stub_publisher
+    create_guide_community
+
+    guide = create(:published_guide)
+    guide.editions.where(state: "published").update_all(updated_at: "2004-11-24".to_time)
+    guide.editions << build(:edition, version: 2, update_type: "minor")
+
+
+    visit edit_guide_path(guide)
+
+    click_on "Comments and history"
+
+    headings = all(".panel-edition").map do |heading|
+      heading.all(".panel-heading-part").map(&:text)
+    end
+
+    expect(headings).to eq [
+      [
+        "Edition #2", "Minor update", "Not yet published", ""
+      ],
+      [
+        "Edition #1", "Major update", "Published on 24 November 2004",  '"change summary"'
+      ],
+    ]
+  end
+
   it "shows a history of the latest edition" do
     stub_publisher
     create_guide_community
@@ -79,7 +106,7 @@ RSpec.describe "Guide history", type: :feature do
       expect(page).to have_css(".event", text: "New draft created")
     end
 
-    click_link "Version #1"
+    click_link "Edition #1"
 
     within_edition(1) do
       expect(page).to have_css(".event", text: "New draft created")
@@ -90,7 +117,7 @@ RSpec.describe "Guide history", type: :feature do
   end
 
   def within_edition(number, &block)
-    within(:xpath, "//div[contains(@class, 'panel') and div[contains(@class, 'panel-heading') and contains(., 'Version ##{number}')]]", &block)
+    within(:xpath, "//div[contains(@class, 'panel') and div[contains(@class, 'panel-heading') and contains(., 'Edition ##{number}')]]", &block)
   end
 
   def events_visible

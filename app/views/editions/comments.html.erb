@@ -7,10 +7,27 @@
 
 <% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
   <% if latest_edition_of_group == @edition %>
-    <div class="open-edition panel panel-default">
+    <div class="panel-edition open-edition panel panel-default">
       <div class="panel-heading">
         <span class="glyphicon glyphicon-chevron-down"></span>
-        Version #<%= latest_edition_of_group.version %>
+        <span class="panel-heading-part">
+          Edition #<%= latest_edition_of_group.version %>
+        </span>
+        <span class="panel-heading-part">
+          <%= latest_edition_of_group.update_type.titlecase %> update
+        </span>
+        <span class="panel-heading-part">
+          <% if latest_edition_of_group.published? %>
+            Published on <%= l latest_edition_of_group.updated_at, format: :date_without_time %>
+          <% else %>
+            Not yet published
+          <% end %>
+        </span>
+        <span class="panel-heading-part">
+          <% if latest_edition_of_group.major? %>
+            "<%=latest_edition_of_group.change_summary%>"
+          <% end %>
+        </span>
         <div class="pull-right">
           <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
         </div>
@@ -24,10 +41,27 @@
       </div>
     </div>
   <% else %>
-    <div class="panel panel-default">
+    <div class="panel-edition panel panel-default">
       <div class="panel-heading">
         <span class="glyphicon glyphicon-chevron-right"></span>
-        <%= link_to "Version ##{latest_edition_of_group.version}", edition_comments_path(latest_edition_of_group) %>
+        <span class="panel-heading-part">
+          <%= link_to "Edition ##{latest_edition_of_group.version}", edition_comments_path(latest_edition_of_group) %>
+        </span>
+        <span class="panel-heading-part">
+          <%= latest_edition_of_group.update_type.titlecase %> update
+        </span>
+        <span class="panel-heading-part">
+          <% if latest_edition_of_group.published? %>
+            Published on <%= l latest_edition_of_group.updated_at, format: :date_without_time %>
+          <% else %>
+            Not yet published
+          <% end %>
+        </span>
+        <span class="panel-heading-part">
+          <% if latest_edition_of_group.major? %>
+            "<%=latest_edition_of_group.change_summary%>"
+          <% end %>
+        </span>
         <div class="pull-right">
           <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
         </div>
