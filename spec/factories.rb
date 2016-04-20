@@ -1,4 +1,17 @@
 FactoryGirl.define do
+  factory :guide do
+    transient do
+      title "Example Guide"
+    end
+    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
+
+    trait :with_draft_edition do
+      editions {
+        [ build(:edition, title: title) ]
+      }
+    end
+  end
+
   factory :guide_community do
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
 
@@ -7,7 +20,7 @@ FactoryGirl.define do
     }
   end
 
-  factory :guide do
+  factory :point do
     transient do
       title "Example Guide"
     end
