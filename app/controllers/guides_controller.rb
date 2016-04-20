@@ -119,7 +119,7 @@ private
   end
 
   def discard
-    discard_draft = Publisher.new(content_model: @guide_form)
+    discard_draft = Publisher.new(content_model: @guide_form.guide)
       .discard_draft
     if discard_draft.success?
       redirect_to root_path, notice: "Draft has been discarded"
