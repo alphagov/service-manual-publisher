@@ -39,7 +39,7 @@ class SlugMigrationsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       if @slug_migration.update_attributes(slug_migration_parameters)
-        SlugMigrationPublisher.new.process(
+        RedirectPublisher.new.process(
           content_id: @slug_migration.content_id,
           old_path:   @slug_migration.slug,
           new_path:   @slug_migration.redirect_to,
