@@ -28,7 +28,11 @@ RSpec.describe SlugMigrationPublisher, type: :model do
     expect(api_double).to receive(:publish)
       .once.with(slug_migration.content_id, 'major')
 
-    SlugMigrationPublisher.new.process(slug_migration)
+    SlugMigrationPublisher.new.process(
+      content_id: slug_migration.content_id,
+      old_path:   slug_migration.slug,
+      new_path:   slug_migration.redirect_to,
+    )
   end
 
   it "publishes slug migrations that are valid" do
@@ -45,6 +49,10 @@ RSpec.describe SlugMigrationPublisher, type: :model do
     expect(api_double).to receive(:publish)
       .once.with(slug_migration.content_id, 'major')
 
-    SlugMigrationPublisher.new.process(slug_migration)
+    SlugMigrationPublisher.new.process(
+      content_id: slug_migration.content_id,
+      old_path:   slug_migration.slug,
+      new_path:   slug_migration.redirect_to,
+    )
   end
 end

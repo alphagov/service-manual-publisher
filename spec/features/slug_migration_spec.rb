@@ -104,7 +104,11 @@ RSpec.describe "Slug migration", type: :feature do
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
     )
-    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(
+      content_id: anything,
+      old_path:   slug_migration.slug,
+      new_path:   "/service-manual",
+    )
 
     manage_first_migration
 
@@ -122,7 +126,12 @@ RSpec.describe "Slug migration", type: :feature do
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
     )
-    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(
+      content_id: anything,
+      old_path:   slug_migration.slug,
+      new_path:   guide.slug,
+    )
 
     manage_first_migration
 
@@ -151,7 +160,11 @@ RSpec.describe "Slug migration", type: :feature do
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
     )
-    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(
+      content_id: anything,
+      old_path:   slug_migration.slug,
+      new_path:   "/service-manual/topic-1",
+    )
 
     manage_first_migration
 
