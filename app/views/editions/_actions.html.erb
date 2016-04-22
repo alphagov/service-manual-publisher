@@ -6,17 +6,20 @@
         <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
       <% end %>
       <% if !publish_controls_only %>
-        <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, data: disable_if_new_record(guide) %>
+        <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, disabled: edition.unpublished?, data: disable_if_new_record(guide) %>
         <% if !edition.persisted? %>
           <%= link_to "Discard new guide", guides_path, class: "btn btn-danger add-right-margin" %>
         <% end %>
-        <% if !edition.published? %>
+        <% if edition.can_discard_draft? %>
           <%=
             form.submit "Discard draft",
               class: 'btn btn-danger add-right-margin js-ok-to-navigate-away',
               name: :discard,
               :"data-confirm"=> "Are you sure you want to discard this draft?"
             %>
+        <% end %>
+        <% if guide.can_be_unpublished? %>
+          <%= link_to "Unpublish", new_guide_unpublish_path(guide), class: 'btn btn-danger add-right-margin' %>
         <% end %>
       <% end %>
 

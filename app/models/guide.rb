@@ -50,6 +50,15 @@ class Guide < ActiveRecord::Base
     editions.where(state: "published").any?
   end
 
+  def has_unpublished_edition?
+    editions.where(state: "unpublished").any?
+  end
+
+  def can_be_unpublished?
+    return false if has_unpublished_edition?
+    return true if has_published_edition?
+  end
+
   def editions_since_last_published
     latest_published_edition = editions.published.last
     return [] unless latest_published_edition.present?

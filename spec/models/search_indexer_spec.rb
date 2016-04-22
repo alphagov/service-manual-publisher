@@ -18,4 +18,13 @@ RSpec.describe SearchIndexer do
     }])
     SearchIndexer.new(guide).index
   end
+
+  it "deletes documents from rummager" do
+    index = double(:rummageable_index)
+    plek = Plek.current.find('rummager')
+    expect(Rummageable::Index).to receive(:new).with(plek, "/mainstream").and_return index
+    guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic/some-slug")
+    expect(index).to receive(:delete).with(guide.slug)
+    SearchIndexer.new(guide).delete
+  end
 end

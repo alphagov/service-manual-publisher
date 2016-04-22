@@ -1,5 +1,5 @@
 class Edition < ActiveRecord::Base
-  STATES = %w(draft published review_requested ready).freeze
+  STATES = %w(draft published review_requested ready unpublished).freeze
 
   acts_as_commentable
 
@@ -33,16 +33,10 @@ class Edition < ActiveRecord::Base
     end
   end
 
-  def draft?
-    state == 'draft'
-  end
-
-  def published?
-    state == 'published'
-  end
-
-  def review_requested?
-    state == 'review_requested'
+  STATES.each do |s|
+    define_method "#{s}?" do
+      state == s
+    end
   end
 
   def can_request_review?
@@ -50,6 +44,7 @@ class Edition < ActiveRecord::Base
     return false if review_requested?
     return false if published?
     return false if ready?
+    return false if unpublished?
     true
   end
 
@@ -63,6 +58,13 @@ class Edition < ActiveRecord::Base
     return false if published?
     return false if !latest_edition?
     ready?
+  end
+
+  def can_discard_draft?
+    return false if !persisted?
+    return false if published?
+    return false if unpublished?
+    return true
   end
 
   def latest_edition?

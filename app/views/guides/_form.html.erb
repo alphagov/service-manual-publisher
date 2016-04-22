@@ -1,6 +1,7 @@
 <%= form_for guide_form, html: { class: "js-protect-data" } do |f| %>
   <% guide = guide_form.guide %>
   <% edition = guide_form.edition %>
+  <% disable_inputs = edition.unpublished? %>
 
   <%= f.hidden_field :type %>
 
@@ -17,7 +18,7 @@
       <div class="form-group">
         <%= f.label :title %>
         <%= f.error_list :title %>
-        <%= f.text_field :title, class: 'input-md-12 form-control js-guide-title' %>
+        <%= f.text_field :title, disabled: disable_inputs, class: 'input-md-12 form-control js-guide-title' %>
       </div>
 
       <div class='form-group'>
@@ -41,7 +42,7 @@
         <%= f.label :description %>
         <%= f.error_list :description %>
         <span class="help-block">To be used for displaying search results, linking content etc.</span>
-        <%= f.text_area :description, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
+        <%= f.text_area :description, disabled: disable_inputs, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
       </div>
 
       <div class="form-group">
@@ -51,14 +52,14 @@
         <p class="help-block">
           To insert images either <a class="js-markdown-file-input-trigger" href="javascript:void(0);">click here</a>, or drag and drop them into the text area below
         </p>
-        <%= f.text_area :body, class: 'js-markdown-image-upload input-md-12 form-control markdown-textarea text-area-auto-size text-area-auto-size-large js-text-area-auto-size', rows: 14 %>
+        <%= f.text_area :body, disabled: disable_inputs, class: 'js-markdown-image-upload input-md-12 form-control markdown-textarea text-area-auto-size text-area-auto-size-large js-text-area-auto-size', rows: 14 %>
       </div>
 
       <% if guide.requires_content_owner? %>
         <div class='form-group'>
           <%= f.label :content_owner_id, "Community" %>
           <%= f.error_list :content_owner_id %>
-          <%= f.select :content_owner_id, guide_community_options_for_select, {}, {class: 'select2 input-md-12 form-control'} %>
+          <%= f.select :content_owner_id, guide_community_options_for_select, {}, {disabled: disable_inputs, class: 'select2 input-md-12 form-control'} %>
         </div>
       <% end %>
     </div>
@@ -74,14 +75,14 @@
           <%= f.error_list :update_type %>
           <div class="radio">
             <%= label_tag do %>
-              <%= f.radio_button :update_type, "minor", { class: 'update-type-select'} %>
+              <%= f.radio_button :update_type, "minor", {disabled: disable_inputs, class: 'update-type-select'} %>
               Minor update
               <span class='text-muted'>e.g. spelling or typographic corrections.</span>
             <% end %>
           </div>
           <div class="radio">
             <%= label_tag do %>
-              <%= f.radio_button :update_type, "major", { class: 'update-type-select'} %>
+              <%= f.radio_button :update_type, "major", {disabled: disable_inputs, class: 'update-type-select'} %>
               Major update
               <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
             <% end %>
@@ -91,13 +92,13 @@
         <div class="form-group change-note-form-group">
           <%= f.label :change_summary, "Summary of change" %>
           <div class="help-block">What is being changed in this update</div>
-          <%= f.text_field :change_summary, class: 'input-md-12 form-control', rows: 5 %>
+          <%= f.text_field :change_summary, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
         </div>
 
         <div class="form-group change-note-form-group">
           <%= f.label :change_note, "Why the change is being made" %>
           <div class="help-block">Include any evidence from research and links to any related discussions</div>
-          <%= f.text_area :change_note, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
+          <%= f.text_area :change_note, disabled: disable_inputs, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
         </div>
 
         <p class="text-strong change-note-form-group">
@@ -109,7 +110,7 @@
       <div class="well">
         <h2>Assign authorship</h2>
         <%= f.label :author_id, class: "add-top-margin nav-header" %>
-        <%= f.select :author_id, user_options, { include_blank: "Choose a user" }, { class: 'select2 input-md-12 form-control' } %>
+        <%= f.select :author_id, user_options, {include_blank: "Choose a user"}, {disabled: disable_inputs, class: 'select2 input-md-12 form-control'} %>
       </div>
     <% end %>
   </div>

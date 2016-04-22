@@ -19,4 +19,11 @@ class SearchIndexer
       "organisations":     ["government-digital-service"],
     }])
   end
+
+  def delete
+    index = Rummageable::Index.new(
+      Plek.current.find('rummager'), '/mainstream'
+    )
+    index.delete(@guide.slug)
+  end
 end

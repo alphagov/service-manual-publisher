@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :guides do
     resources :editions, only: [:index]
+    resources :unpublishes, only: [:new, :create]
   end
 
   resources :comments
