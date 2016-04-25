@@ -5,11 +5,15 @@
       <% if edition.persisted? %>
         <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
       <% end %>
+
       <% if !publish_controls_only %>
+
         <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, disabled: edition.unpublished?, data: disable_if_new_record(guide) %>
+
         <% if !edition.persisted? %>
           <%= link_to "Discard new guide", guides_path, class: "btn btn-danger add-right-margin" %>
         <% end %>
+
         <% if edition.can_discard_draft? %>
           <%=
             form.submit "Discard draft",
@@ -18,27 +22,33 @@
               :"data-confirm"=> "Are you sure you want to discard this draft?"
             %>
         <% end %>
+
         <% if guide.can_be_unpublished? %>
           <%= link_to "Unpublish", new_guide_unpublish_path(guide), class: 'btn btn-danger pull-right' %>
         <% end %>
+
       <% end %>
 
-        <% if edition.persisted? %>
-          <% if edition.can_request_review? %>
-            <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success add-right-margin' %>
-          <% end %>
-          <% if edition.can_be_approved? current_user %>
-            <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success add-right-margin' %>
-          <% elsif edition.review_requested? %>
-            <%= form.submit "Approve for publication", disabled: true, title: "You can't approve an edition that you created", class: 'btn btn-success add-right-margin' %>
-          <% end %>
+      <% if edition.persisted? %>
+
+        <% if edition.can_request_review? %>
+          <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success add-right-margin' %>
+        <% end %>
+
+        <% if edition.can_be_approved? current_user %>
+          <%= form.submit "Approve for publication", name: :approve_for_publication, class: 'btn btn-success add-right-margin' %>
+        <% elsif edition.review_requested? %>
+          <%= form.submit "Approve for publication", disabled: true, title: "You can't approve an edition that you created", class: 'btn btn-success add-right-margin' %>
+        <% end %>
 
         <% if edition.can_be_published? %>
           <%= form.submit "Publish", class: 'btn btn-success add-right-margin', name: :publish %>
         <% end %>
+
       <% else %>
         <%= form.submit "Send for review", name: :send_for_review, class: 'btn btn-success', disabled: true %>
       <% end %>
+
       <%= link_to "Back to all guides", guides_path, class: "btn btn-link back-to-all-guides" %>
 
     </div>
