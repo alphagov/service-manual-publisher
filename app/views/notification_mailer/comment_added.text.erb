@@ -6,4 +6,4 @@ Hello,
 <%= @comment.comment %>
 
 
-To see the comment in context or to reply visit comments and history <%= edition_comments_url(@edition, anchor: "comment-#{@comment.id}") %>.
+To see the comment in context or to reply visit comments and history <%= guide_editions_url(@edition.guide, anchor: "comment-#{@comment.id}") %>.

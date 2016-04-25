@@ -24,7 +24,7 @@ RSpec.describe NotificationMailer, type: :mailer do
       email.parts.each do |part|
         expect(part.body.to_s).to include "Luke"
         expect(part.body.to_s).to include "Looking good"
-        expect(part.body.to_s).to include "edition_comments/#{edition.id}"
+        expect(part.body.to_s).to include "guides/#{guide.id}/editions"
       end
     end
   end
