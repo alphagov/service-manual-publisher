@@ -50,4 +50,5 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
+  gem 'webmock'
 end
