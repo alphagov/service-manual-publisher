@@ -1,12 +1,12 @@
-<%= render 'editions/header_with_navigation', edition: @edition, guide: @guide %>
-<%= render 'editions/old_edition_alert', edition: @edition, guide: @guide %>
+<%= render 'editions/header_with_navigation', edition: @current_edition, guide: @guide %>
+<%= render 'editions/old_edition_alert', edition: @current_edition, guide: @guide %>
 
 <%= guide_form_for @guide do |f| %>
-  <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
+  <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @current_edition %>
 <% end %>
 
 <% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
-  <% if latest_edition_of_group == @edition %>
+  <% if latest_edition_of_group == @current_edition %>
     <div class="panel-edition open-edition panel panel-default">
       <div class="panel-heading">
         <span class="glyphicon glyphicon-chevron-down"></span>
@@ -45,7 +45,7 @@
       <div class="panel-heading">
         <span class="glyphicon glyphicon-chevron-right"></span>
         <span class="panel-heading-part">
-          <%= link_to "Edition ##{latest_edition_of_group.version}", edition_comments_path(latest_edition_of_group) %>
+          <%= link_to "Edition ##{latest_edition_of_group.version}", guide_editions_path(@guide, current_edition: latest_edition_of_group) %>
         </span>
         <span class="panel-heading-part">
           <%= latest_edition_of_group.update_type.titlecase %> update
@@ -71,5 +71,5 @@
 <% end %>
 
 <%= guide_form_for @guide do |f| %>
-  <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @edition %>
+  <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @current_edition %>
 <% end %>

@@ -97,7 +97,7 @@ RSpec.describe "Guide history", type: :feature do
     guide = create(:published_guide)
     guide.editions << build(:edition, version: 2)
 
-    visit edition_comments_path(guide.reload.latest_edition)
+    visit guide_editions_path(guide)
 
     within_edition(1) do
       expect(events_visible).to be_empty

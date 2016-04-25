@@ -19,7 +19,7 @@ RSpec.describe CommentsController, type: :controller do
     it 'redirects to a url with a unique anchor tag pointing to a comment' do
       post :create, comment: { edition_id: edition.id, comment: "LGMT!" }
 
-      expect(response).to redirect_to(edition_comments_path(edition, anchor: "comment-#{Comment.last.id}"))
+      expect(response).to redirect_to(guide_editions_path(edition.guide, anchor: "comment-#{Comment.last.id}"))
     end
 
     it 'sends a notification email' do

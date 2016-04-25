@@ -56,6 +56,6 @@ RSpec.describe "Commenting", type: :feature do
       fill_in "Add new comment", with: comment
       click_button "Save comment"
     end
-    expect(page.current_path).to eq edition_comments_path(guide.latest_edition)
+    expect(page.current_path).to eq guide_editions_path(guide)
   end
 end

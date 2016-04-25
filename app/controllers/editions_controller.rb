@@ -1,7 +1,11 @@
 class EditionsController < ApplicationController
-  def comments
-    @edition = Edition.find(params[:id])
-    @guide = @edition.guide
+  def index
+    @guide = Guide.find(params[:guide_id])
+    @current_edition = if params[:current_edition].present?
+                         @guide.editions.find(params[:current_edition])
+                       else
+                         @guide.latest_edition
+                       end
     @latest_edition_per_edition_group = @guide.latest_edition_per_edition_group
     @comment = Comment.new
   end

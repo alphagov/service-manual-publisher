@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   root 'guides#index'
 
-  resources :guides
+  resources :guides do
+    resources :editions, only: [:index]
+  end
 
   resources :comments
   resources :uploads, only: [:create]
@@ -13,7 +15,6 @@ Rails.application.routes.draw do
   resources :slug_migrations
 
   get '/edition_changes(/:old_edition_id)/:new_edition_id' => 'edition_changes#show', as: :edition_changes
-  get '/edition_comments/:id' => 'editions#comments', as: :edition_comments
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
