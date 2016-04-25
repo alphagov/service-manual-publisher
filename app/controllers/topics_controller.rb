@@ -20,7 +20,7 @@ class TopicsController < ApplicationController
 
   def edit
     @topic = Topic.find(params[:id])
-    @topic_tree = @topic.topic_sections.map do |topic_section|
+    @topic_tree = @topic.topic_sections.includes(:guides).map do |topic_section|
       {
         title: topic_section.title,
         description: topic_section.description,
