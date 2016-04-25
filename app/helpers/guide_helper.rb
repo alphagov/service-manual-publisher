@@ -4,7 +4,7 @@ module GuideHelper
     "review_requested" => "warning",
     "ready"            => "success",
     "published"        => "info",
-    "unpublished"      => "primary",
+    "unpublished"      => "default",
   }
 
   def state_label(guide)
