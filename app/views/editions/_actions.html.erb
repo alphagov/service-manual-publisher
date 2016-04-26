@@ -7,7 +7,7 @@
       <% end %>
 
       <% if !publish_controls_only %>
-        <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, disabled: edition.unpublished?, data: disable_if_new_record(guide) %>
+        <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, disabled: edition.unpublished? %>
       <% end %>
 
       <% if edition.persisted? %>
