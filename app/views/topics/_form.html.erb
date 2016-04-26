@@ -8,19 +8,17 @@
         <h2><%= topic.title %></h2>
       <% end %>
 
-      <div class="well">
-        <div class="form-group">
-          <%= f.label :path %>
-          <%= f.text_field :path, class: "form-control", disabled: topic.persisted? %>
-        </div>
-        <div class="form-group">
-          <%= f.label :title %>
-          <%= f.text_field :title, class: "form-control" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :description %>
-          <%= f.text_field :description, class: "form-control" %>
-        </div>
+      <div class="form-group">
+        <%= f.label :path %>
+        <%= f.text_field :path, class: "form-control", disabled: topic.persisted? %>
+      </div>
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_field :description, class: "form-control" %>
       </div>
 
       <div class="topics-templates hidden">
@@ -39,16 +37,19 @@
             Guides:
           </h3>
 
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Drag and drop headings and guides into the required order.
+            </div>
+          </div>
+
           <ul class="well list-group js-guides">
           </ul>
         </li>
       </div>
 
-      <div class="well">
-        <h3>Grouping</h3>
-        <div>
-          Drag and drop headings and guides into the required order.
-        </div>
+      <label>Headings</label>
+      <div>
         <ul class="list-group grouped-list js-grouped-list js-headings">
           <% topic.topic_sections.each do |topic_section| %>
             <li class="list-group-item js-heading">
@@ -66,6 +67,12 @@
               <h3>
                 Guides:
               </h3>
+
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  Drag and drop headings and guides into the required order.
+                </div>
+              </div>
 
               <ul class="well list-group js-guides">
                 <% topic_section.guides.each do |guide| %>
@@ -92,8 +99,8 @@
         </div>
       </div>
 
-      <div class="well">
-        <h3>Ungrouped</h3>
+      <div>
+        <h3>Un-grouped guides</h3>
         <ul class="well list-group ungrouped-list js-ungrouped-list js-guides">
           <% Guide.without_topic.each do |guide| %>
             <li class="list-group-item js-guide" data-guide-id="<%=guide.id%>">
