@@ -38,13 +38,14 @@
           </h3>
 
           <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-heading">
               Drag and drop headings and guides into the required order.
             </div>
+            <div class="panel-body">
+              <ul class="list-group js-guides">
+              </ul>
+            </div>
           </div>
-
-          <ul class="well list-group js-guides">
-          </ul>
         </li>
       </div>
 
@@ -69,26 +70,27 @@
               </h3>
 
               <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-heading">
                   Drag and drop headings and guides into the required order.
                 </div>
+                <div class="panel-body">
+                  <ul class="list-group js-guides">
+                    <% topic_section.guides.each do |guide| %>
+                      <li class="list-group-item js-guide" data-guide-id="<%=guide.id%>">
+                        <div class="left">
+                          <span class="glyphicon glyphicon-move"></span>
+                          <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+                        </div>
+                        <div class="right">
+                          <span>
+                            <%= guide.title %>
+                          </span>
+                        </div>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
               </div>
-
-              <ul class="well list-group js-guides">
-                <% topic_section.guides.each do |guide| %>
-                  <li class="list-group-item js-guide" data-guide-id="<%=guide.id%>">
-                    <div class="left">
-                      <span class="glyphicon glyphicon-move"></span>
-                      <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
-                    </div>
-                    <div class="right">
-                      <span>
-                        <%= guide.title %>
-                      </span>
-                    </div>
-                  </li>
-                <% end %>
-              </ul>
 
             </li>
           <% end %>
@@ -101,7 +103,7 @@
 
       <div>
         <h3>Un-grouped guides</h3>
-        <ul class="well list-group ungrouped-list js-ungrouped-list js-guides">
+        <ul class="list-group ungrouped-list js-ungrouped-list js-guides">
           <% Guide.without_topic.each do |guide| %>
             <li class="list-group-item js-guide" data-guide-id="<%=guide.id%>">
               <div class="left">
