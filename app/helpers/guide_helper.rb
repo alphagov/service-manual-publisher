@@ -1,6 +1,5 @@
 module GuideHelper
   STATE_CSS_CLASSES = {
-    "new"              => "default",
     "draft"            => "danger",
     "review_requested" => "warning",
     "ready"            => "success",
@@ -8,7 +7,7 @@ module GuideHelper
   }
 
   def state_label(guide)
-    state     = guide.latest_edition.try(:state) || "new"
+    state     = guide.latest_edition.try(:state)
     title     = state.titleize
     css_class = STATE_CSS_CLASSES[state]
     content_tag :span, title, title: 'State', class: "label label-#{css_class}"
