@@ -55,8 +55,7 @@ class Guide < ActiveRecord::Base
   end
 
   def can_be_unpublished?
-    return false if has_unpublished_edition?
-    return true if has_published_edition?
+    has_published_edition? && !has_unpublished_edition?
   end
 
   def editions_since_last_published
