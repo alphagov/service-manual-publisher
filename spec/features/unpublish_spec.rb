@@ -23,9 +23,9 @@ RSpec.describe "unpublishing guides", type: :feature do
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
 
-      expect(Unpublish.count).to eq 1
-      expect(Unpublish.first.old_path).to eq guide.slug
-      expect(Unpublish.first.new_path).to eq topic.path
+      expect(Redirect.count).to eq 1
+      expect(Redirect.first.old_path).to eq guide.slug
+      expect(Redirect.first.new_path).to eq topic.path
       expect(guide.reload.latest_edition).to be_unpublished
     end
 
@@ -44,9 +44,9 @@ RSpec.describe "unpublishing guides", type: :feature do
       select new_guide.slug, from: "Redirect to"
       click_button "Unpublish"
 
-      expect(Unpublish.count).to eq 1
-      expect(Unpublish.first.old_path).to eq guide.slug
-      expect(Unpublish.first.new_path).to eq new_guide.slug
+      expect(Redirect.count).to eq 1
+      expect(Redirect.first.old_path).to eq guide.slug
+      expect(Redirect.first.new_path).to eq new_guide.slug
       expect(guide.reload.latest_edition).to be_unpublished
     end
 

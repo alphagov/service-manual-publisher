@@ -1,4 +1,4 @@
-class Unpublish < ActiveRecord::Base
+class Redirect < ActiveRecord::Base
   include ContentIdentifiable
 
   validates :old_path, presence: true

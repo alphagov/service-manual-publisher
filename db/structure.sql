@@ -191,6 +191,39 @@ ALTER SEQUENCE guides_id_seq OWNED BY guides.id;
 
 
 --
+-- Name: redirects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE redirects (
+    id integer NOT NULL,
+    content_id text NOT NULL,
+    old_path text NOT NULL,
+    new_path text NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: redirects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE redirects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: redirects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE redirects_id_seq OWNED BY redirects.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -335,39 +368,6 @@ ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
 
 
 --
--- Name: unpublishes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE unpublishes (
-    id integer NOT NULL,
-    content_id text NOT NULL,
-    old_path text NOT NULL,
-    new_path text NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: unpublishes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE unpublishes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: unpublishes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE unpublishes_id_seq OWNED BY unpublishes.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -437,6 +437,13 @@ ALTER TABLE ONLY guides ALTER COLUMN id SET DEFAULT nextval('guides_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY redirects ALTER COLUMN id SET DEFAULT nextval('redirects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY slug_migrations ALTER COLUMN id SET DEFAULT nextval('slug_migrations_id_seq'::regclass);
 
 
@@ -459,13 +466,6 @@ ALTER TABLE ONLY topic_sections ALTER COLUMN id SET DEFAULT nextval('topic_secti
 --
 
 ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY unpublishes ALTER COLUMN id SET DEFAULT nextval('unpublishes_id_seq'::regclass);
 
 
 --
@@ -508,6 +508,14 @@ ALTER TABLE ONLY guides
 
 
 --
+-- Name: redirects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY redirects
+    ADD CONSTRAINT redirects_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: slug_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -537,14 +545,6 @@ ALTER TABLE ONLY topic_sections
 
 ALTER TABLE ONLY topics
     ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
-
-
---
--- Name: unpublishes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY unpublishes
-    ADD CONSTRAINT unpublishes_pkey PRIMARY KEY (id);
 
 
 --
@@ -741,4 +741,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160413150715');
 INSERT INTO schema_migrations (version) VALUES ('20160418130416');
 
 INSERT INTO schema_migrations (version) VALUES ('20160422105349');
+
+INSERT INTO schema_migrations (version) VALUES ('20160428124015');
 
