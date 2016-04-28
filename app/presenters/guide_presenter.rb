@@ -44,19 +44,10 @@ private
   attr_reader :guide, :edition
 
   def details
-    details = {
+    {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
     }
-
-    if edition.related_discussion_title.present? && edition.related_discussion_href.present?
-      details[:related_discussion] = {
-        title: edition.related_discussion_title,
-        href: edition.related_discussion_href
-      }
-    end
-
-    details
   end
 
   def govspeak_body

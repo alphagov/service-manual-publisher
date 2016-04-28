@@ -125,8 +125,6 @@ CREATE TABLE editions (
     body text,
     update_type character varying,
     phase text DEFAULT 'beta'::text,
-    related_discussion_href text,
-    related_discussion_title text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     state text,
@@ -743,4 +741,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160418130416');
 INSERT INTO schema_migrations (version) VALUES ('20160422105349');
 
 INSERT INTO schema_migrations (version) VALUES ('20160428124015');
+
+INSERT INTO schema_migrations (version) VALUES ('20160428190215');
 
