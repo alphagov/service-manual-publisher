@@ -1,6 +1,10 @@
 require "gds_api/publishing_api_v2"
 
 class RedirectPublisher
+  def initialize(publishing_api=PUBLISHING_API)
+    @publishing_api = publishing_api
+  end
+
   def process(content_id:, old_path:, new_path:)
     data = {
       format: "redirect",
@@ -14,11 +18,7 @@ class RedirectPublisher
         }
       ]
     }
-    publishing_api = GdsApi::PublishingApiV2.new(
-      Plek.new.find('publishing-api'),
-      bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example'
-    )
-    publishing_api.put_content(content_id, data)
-    publishing_api.publish(content_id, "major")
+    @publishing_api.put_content(content_id, data)
+    @publishing_api.publish(content_id, "major")
   end
 end
