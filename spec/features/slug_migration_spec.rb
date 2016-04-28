@@ -104,7 +104,11 @@ RSpec.describe "Slug migration", type: :feature do
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
     )
-    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+    expect_any_instance_of(RedirectPublisher).to receive(:process).with(
+      content_id: anything,
+      old_path:   slug_migration.slug,
+      new_path:   "/service-manual",
+    )
 
     manage_first_migration
 
@@ -122,7 +126,12 @@ RSpec.describe "Slug migration", type: :feature do
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
     )
-    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+
+    expect_any_instance_of(RedirectPublisher).to receive(:process).with(
+      content_id: anything,
+      old_path:   slug_migration.slug,
+      new_path:   guide.slug,
+    )
 
     manage_first_migration
 
@@ -151,7 +160,11 @@ RSpec.describe "Slug migration", type: :feature do
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
     )
-    expect_any_instance_of(SlugMigrationPublisher).to receive(:process).with(slug_migration)
+    expect_any_instance_of(RedirectPublisher).to receive(:process).with(
+      content_id: anything,
+      old_path:   slug_migration.slug,
+      new_path:   "/service-manual/topic-1",
+    )
 
     manage_first_migration
 
@@ -185,7 +198,7 @@ RSpec.describe "Slug migration", type: :feature do
         )
 
         api_error = GdsApi::HTTPServerError.new(500, "Error Message!")
-        expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
+        expect_any_instance_of(RedirectPublisher).to receive(:process).and_raise api_error
 
         manage_first_migration
         select "/service-manual/topic-name/new-path", from: "Redirect to"
@@ -207,7 +220,7 @@ RSpec.describe "Slug migration", type: :feature do
         )
 
         api_error = GdsApi::HTTPNotFound.new(404, "Error Message!")
-        expect_any_instance_of(SlugMigrationPublisher).to receive(:process).and_raise api_error
+        expect_any_instance_of(RedirectPublisher).to receive(:process).and_raise api_error
 
         manage_first_migration
         select guide.slug, from: "Redirect to"

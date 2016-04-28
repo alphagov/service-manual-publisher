@@ -168,6 +168,11 @@ RSpec.describe Edition, type: :model do
         edition.state = "ready"
         expect(edition.can_request_review?).to be false
       end
+
+      it "returns false when the edition is unpublished" do
+        edition.state = "unpublished"
+        expect(edition.can_request_review?).to be false
+      end
     end
 
     describe "#can_be_published?" do
@@ -196,6 +201,27 @@ RSpec.describe Edition, type: :model do
       it "returns true if it's the latest edition and is ready" do
         edition.state = "ready"
         expect(edition.can_be_published?).to be true
+      end
+    end
+
+    describe "#can_discard_draft?" do
+      it "returns true" do
+        expect(edition.can_discard_draft?).to be true
+      end
+
+      it "returns false if not persisted" do
+        expect(edition).to receive(:persisted?).and_return(false)
+        expect(edition.can_discard_draft?).to be false
+      end
+
+      it "returns false if it is published" do
+        edition.state = "published"
+        expect(edition.can_discard_draft?).to be false
+      end
+
+      it "returns false if it is unpublished" do
+        edition.state = "unpublished"
+        expect(edition.can_discard_draft?).to be false
       end
     end
   end

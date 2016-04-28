@@ -50,6 +50,10 @@ class Guide < ActiveRecord::Base
     editions.where(state: "published").any?
   end
 
+  def can_be_unpublished?
+    has_published_edition? && !has_unpublished_edition?
+  end
+
   def editions_since_last_published
     latest_published_edition = editions.published.last
     return [] unless latest_published_edition.present?
@@ -70,6 +74,10 @@ class Guide < ActiveRecord::Base
   end
 
 private
+
+  def has_unpublished_edition?
+    editions.where(state: "unpublished").any?
+  end
 
   def slug_format
     if !slug.to_s.match(/\A\/service-manual\//)
