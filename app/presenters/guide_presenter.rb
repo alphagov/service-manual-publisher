@@ -44,10 +44,16 @@ private
   attr_reader :guide, :edition
 
   def details
-    {
+    details_hash = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
     }
+
+    if edition.summary.present?
+      details_hash[:summary] = edition.summary
+    end
+
+    details_hash
   end
 
   def govspeak_body
