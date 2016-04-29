@@ -1,14 +1,12 @@
 class SearchIndexer
-  def initialize(guide)
+  def initialize(guide, rummager_index: RUMMAGER_INDEX)
     @guide = guide
     @edition = guide.latest_published_edition
+    @rummager_index = rummager_index
   end
 
   def index
-    index = Rummageable::Index.new(
-      Plek.current.find('rummager'), '/mainstream'
-    )
-    index.add_batch([{
+    rummager_index.add_batch([{
       "format":            "service_manual_guide",
       "_type":             "service_manual_guide",
       "description":       @edition.description,
@@ -21,9 +19,11 @@ class SearchIndexer
   end
 
   def delete
-    index = Rummageable::Index.new(
-      Plek.current.find('rummager'), '/mainstream'
-    )
-    index.delete(@guide.slug)
+    rummager_index.delete(@guide.slug)
   end
+
+private
+
+  attr_reader :rummager_index
+
 end
