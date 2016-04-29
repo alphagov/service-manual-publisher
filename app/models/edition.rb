@@ -1,5 +1,6 @@
 class Edition < ActiveRecord::Base
   STATES = %w(draft published review_requested ready unpublished).freeze
+  STATES_THAT_UPDATE_THE_FRONTEND = %w(published unpublished).freeze
 
   acts_as_commentable
 
@@ -14,6 +15,7 @@ class Edition < ActiveRecord::Base
   scope :published, -> { where(state: 'published') }
   scope :review_requested, -> { where(state: 'review_requested') }
   scope :most_recent_first, -> { order('created_at DESC, id DESC') }
+  scope :which_update_the_frontend, -> { where(state: STATES_THAT_UPDATE_THE_FRONTEND) }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES

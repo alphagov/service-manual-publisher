@@ -234,19 +234,37 @@ RSpec.describe Guide, "#can_be_unpublished?" do
   end
 end
 
-RSpec.describe Guide, "#latest_published_edition" do
+RSpec.describe Guide, "#live_edition" do
   it "returns the most recently published edition" do
     guide = create(:guide, created_at: 5.days.ago)
     latest_published_edition = build(:published_edition, created_at: 3.days.ago)
     guide.editions << latest_published_edition
     guide.editions << create(:published_edition, created_at: 4.days.ago)
 
-    expect(guide.latest_published_edition).to eq(latest_published_edition)
+    expect(guide.live_edition).to eq(latest_published_edition)
+  end
+
+  it "returns the most recently published edition since unpublication" do
+    guide = create(:guide, created_at: 5.days.ago)
+    guide.editions << build(:published_edition, created_at: 4.days.ago)
+    guide.editions << build(:unpublished_edition, created_at: 3.days.ago)
+    latest_published_edition = build(:published_edition, created_at: 2.days.ago)
+    guide.editions << latest_published_edition
+
+    expect(guide.live_edition).to eq(latest_published_edition)
+  end
+
+  it "returns nil if it has been unpublished since publication" do
+    guide = create(:guide, created_at: 5.days.ago)
+    guide.editions << create(:published_edition, created_at: 4.days.ago)
+    guide.editions << create(:unpublished_edition, created_at: 3.days.ago)
+
+    expect(guide.live_edition).to eq(nil)
   end
 
   it "is nil if an edition hasn't been published yet" do
     guide = create(:guide)
 
-    expect(guide.latest_published_edition).to eq(nil)
+    expect(guide.live_edition).to eq(nil)
   end
 end

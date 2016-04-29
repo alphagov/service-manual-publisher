@@ -5,7 +5,7 @@ class GuideSearchIndexer
   end
 
   def index
-    edition = guide.latest_published_edition
+    edition = guide.live_edition
 
     rummager_index.add_batch([{
       "format":            "service_manual_guide",

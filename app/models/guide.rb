@@ -34,8 +34,14 @@ class Guide < ActiveRecord::Base
     editions.most_recent_first.first
   end
 
-  def latest_published_edition
-    editions.published.most_recent_first.first
+  def live_edition
+    latest_edition_to_update_the_frontend =
+      editions.which_update_the_frontend.most_recent_first.first
+
+    return nil if latest_edition_to_update_the_frontend.nil?
+    return nil if latest_edition_to_update_the_frontend.unpublished?
+
+    latest_edition_to_update_the_frontend
   end
 
   def topic

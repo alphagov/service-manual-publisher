@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GuideSearchIndexer, "#index" do
-  it "indexes a document in rummager for the most recently published edition" do
+  it "indexes a document in rummager for the live edition" do
     rummager_index = double(:rummageable_index)
     guide = create(:published_guide,
                     title: "My guide",
