@@ -2,15 +2,14 @@ require 'rails_helper'
 
 RSpec.describe TopicSearchIndexer do
   it "indexes topics in rummager" do
-    index = double(:rummageable_index)
-    plek = Plek.current.find('rummager')
-    expect(Rummageable::Index).to receive(:new).with(plek, "/mainstream").and_return index
+    rummager_index = double(:rummager_index)
     topic = Topic.create!(
       path: "/service-manual/topic1",
       title: "The Topic Title",
       description: "The Topic Description",
     )
-    expect(index).to receive(:add_batch).with([{
+
+    expect(rummager_index).to receive(:add_batch).with([{
       format:            "service_manual_topic",
       _type:             "service_manual_topic",
       description:       topic.description,
@@ -20,6 +19,7 @@ RSpec.describe TopicSearchIndexer do
       manual:            "service-manual",
       organisations:     ["government-digital-service"]
     }])
-    described_class.new(topic).index
+
+    described_class.new(topic, rummager_index: rummager_index).index
   end
 end
