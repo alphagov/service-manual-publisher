@@ -3,6 +3,7 @@ class Guide < ActiveRecord::Base
   validate :slug_format
   validate :slug_cant_be_changed_if_an_edition_has_been_published
   validate :new_edition_has_content_owner, if: :requires_content_owner?
+  validate :new_edition_has_summary, if: :requires_summary?
 
   has_many :editions, dependent: :destroy
 
@@ -82,6 +83,10 @@ class Guide < ActiveRecord::Base
     true
   end
 
+  def requires_summary?
+    false
+  end
+
 private
 
   def has_unpublished_edition?
@@ -111,6 +116,14 @@ private
 
     if new_edition && new_edition.content_owner.nil?
       errors.add(:latest_edition, 'must have a content owner')
+    end
+  end
+
+  def new_edition_has_summary
+    new_edition = editions.detect(&:new_record?)
+
+    if new_edition && new_edition.summary.blank?
+      errors.add(:latest_edition, 'must have a summary')
     end
   end
 end

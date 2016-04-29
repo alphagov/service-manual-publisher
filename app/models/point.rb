@@ -1,9 +1,9 @@
-class GuideCommunity < Guide
+class Point < Guide
   def requires_content_owner?
     false
   end
 
   def requires_summary?
-    false
+    true
   end
 end

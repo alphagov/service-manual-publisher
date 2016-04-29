@@ -6,7 +6,7 @@ class GuideForm
 
   attr_reader :guide, :edition, :user
   attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
-    :title, :type, :update_type, :version
+    :summary, :title, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
 
@@ -22,6 +22,7 @@ class GuideForm
     self.content_owner_id = edition.content_owner_id
     self.description = edition.description
     self.slug = guide.slug || DEFAULT_SLUG
+    self.summary = edition.summary
     self.title = edition.title
     self.type = guide.type
     self.update_type = next_update_type
@@ -40,6 +41,7 @@ class GuideForm
     edition.content_owner_id = content_owner_id
     edition.description = description
     edition.state = Edition::STATES.first
+    edition.summary = summary
     edition.title = title
     edition.update_type = update_type
     edition.version = version

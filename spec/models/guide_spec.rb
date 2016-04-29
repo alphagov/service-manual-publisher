@@ -100,6 +100,26 @@ RSpec.describe Guide do
       end
     end
 
+    describe "summary" do
+      [:guide, :guide_community].each do |klass|
+        it "does not require a summary if the guide is an instance of #{klass.to_s.classify}" do
+          edition = build(:edition)
+          guide = build(klass, editions: [ edition ])
+          guide.valid?
+
+          expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
+        end
+      end
+
+      it "requires a summary if the guide is an instance of Point" do
+        edition = build(:edition)
+        guide = build(:point, editions: [ edition ])
+        guide.valid?
+
+        expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a summary')
+      end
+    end
+
     context "has a published edition" do
       it "does not allow changing the slug" do
         guide = create(:published_guide)

@@ -249,6 +249,13 @@ RSpec.describe "creating guides", type: :feature do
     end
   end
 
+  it 'does not have a summary field' do
+    visit root_path
+    click_link "Create a Guide"
+
+    expect(page).to_not have_field('Summary')
+  end
+
 private
 
   def fill_in_guide_form
