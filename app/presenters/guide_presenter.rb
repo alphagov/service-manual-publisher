@@ -30,10 +30,10 @@ class GuidePresenter
   end
 
   def links_payload
-    links = {}.tap do |payload|
-      if edition.content_owner
-        payload[:content_owners] = [edition.content_owner.content_id]
-      end
+    links = {}
+
+    if edition.content_owner
+      links[:content_owners] = [ edition.content_owner.content_id ]
     end
 
     { links: links }
