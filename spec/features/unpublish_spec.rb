@@ -5,7 +5,7 @@ RSpec.describe "unpublishing guides", type: :feature do
   context "with a published guide" do
     before do
       allow_any_instance_of(RedirectPublisher).to receive(:process)
-      allow_any_instance_of(SearchIndexer).to receive(:delete)
+      allow_any_instance_of(GuideSearchIndexer).to receive(:delete)
     end
 
     it "redirects to topics" do
@@ -86,7 +86,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       allow_any_instance_of(RedirectPublisher).to receive(:process)
 
       indexer = double(:indexer)
-      expect(SearchIndexer).to receive(:new).with(guide).and_return(indexer)
+      expect(GuideSearchIndexer).to receive(:new).with(guide).and_return(indexer)
       expect(indexer).to receive(:delete)
 
       visit edit_guide_path(guide)

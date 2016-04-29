@@ -7,7 +7,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   before do
     stub_const('PUBLISHING_API', fake_publishing_api)
-    allow_any_instance_of(SearchIndexer).to receive(:index)
+    allow_any_instance_of(GuideSearchIndexer).to receive(:index)
     allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
   end
 
@@ -55,7 +55,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       guide = create(:guide, :with_draft_edition)
 
       indexer = double(:indexer)
-      expect(SearchIndexer).to receive(:new).with(guide).and_return(indexer)
+      expect(GuideSearchIndexer).to receive(:new).with(guide).and_return(indexer)
       expect(indexer).to receive(:index)
       visit guides_path
       within_guide_index_row(guide.title) do

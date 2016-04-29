@@ -16,7 +16,7 @@ RSpec.describe "creating guides", type: :feature do
     visit root_path
     click_link "Create a Guide"
 
-    allow_any_instance_of(SearchIndexer).to receive(:index)
+    allow_any_instance_of(GuideSearchIndexer).to receive(:index)
     allow_any_instance_of(Guide).to receive(:topic).and_return topic
   end
 
