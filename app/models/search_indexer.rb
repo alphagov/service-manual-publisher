@@ -1,7 +1,7 @@
 class SearchIndexer
   def initialize(guide)
     @guide = guide
-    @edition = guide.latest_edition
+    @edition = guide.latest_published_edition
   end
 
   def index

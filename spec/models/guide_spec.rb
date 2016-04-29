@@ -233,3 +233,20 @@ RSpec.describe Guide, "#can_be_unpublished?" do
     expect(guide.can_be_unpublished?).to be false
   end
 end
+
+RSpec.describe Guide, "#latest_published_edition" do
+  it "returns the most recently published edition" do
+    guide = create(:guide, created_at: 5.days.ago)
+    latest_published_edition = build(:published_edition, created_at: 3.days.ago)
+    guide.editions << latest_published_edition
+    guide.editions << create(:published_edition, created_at: 4.days.ago)
+
+    expect(guide.latest_published_edition).to eq(latest_published_edition)
+  end
+
+  it "is nil if an edition hasn't been published yet" do
+    guide = create(:guide)
+
+    expect(guide.latest_published_edition).to eq(nil)
+  end
+end

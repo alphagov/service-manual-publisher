@@ -34,6 +34,9 @@ class Guide < ActiveRecord::Base
     editions.most_recent_first.first
   end
 
+  def latest_published_edition
+    editions.published.most_recent_first.first
+  end
 
   def topic
     Topic.includes(topic_sections: :guides)
