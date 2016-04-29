@@ -22,7 +22,7 @@ class UnpublishesController < ApplicationController
         old_path:   @redirect.old_path,
         new_path: @redirect.new_path,
       )
-      SearchIndexer.new(@guide).delete
+      GuideSearchIndexer.new(@guide).delete
       redirect_to root_path
     else
       @select_options = select_options

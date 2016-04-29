@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SearchIndexer do
+RSpec.describe TopicSearchIndexer do
   it "indexes topics in rummager" do
     index = double(:rummageable_index)
     plek = Plek.current.find('rummager')
@@ -20,6 +20,6 @@ RSpec.describe SearchIndexer do
       manual:            "service-manual",
       organisations:     ["government-digital-service"]
     }])
-    TopicSearchIndexer.new(topic).index
+    described_class.new(topic).index
   end
 end

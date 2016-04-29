@@ -147,7 +147,7 @@ private
   end
 
   def index_for_search(guide)
-    SearchIndexer.new(guide).index
+    GuideSearchIndexer.new(guide).index
   rescue => e
     notify_airbrake(e)
     Rails.logger.error(e.message)

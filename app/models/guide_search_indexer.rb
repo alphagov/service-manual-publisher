@@ -1,4 +1,4 @@
-class SearchIndexer
+class GuideSearchIndexer
   def initialize(guide, rummager_index: RUMMAGER_INDEX)
     @guide = guide
     @rummager_index = rummager_index

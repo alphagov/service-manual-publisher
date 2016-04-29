@@ -4,7 +4,7 @@ namespace :rummager do
     Guide.all.each do |guide|
       puts "Indexing #{guide.title}..."
 
-      SearchIndexer.new(guide).index
+      GuideSearchIndexer.new(guide).index
     end
   end
 end

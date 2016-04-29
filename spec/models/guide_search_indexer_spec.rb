@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SearchIndexer, "#index" do
+RSpec.describe GuideSearchIndexer, "#index" do
   it "indexes a document in rummager for the most recently published edition" do
     rummager_index = double(:rummageable_index)
     guide = create(:published_guide,
@@ -21,17 +21,17 @@ RSpec.describe SearchIndexer, "#index" do
       organisations:     ["government-digital-service"]
     }])
 
-    SearchIndexer.new(guide, rummager_index: rummager_index).index
+    described_class.new(guide, rummager_index: rummager_index).index
   end
 end
 
-RSpec.describe SearchIndexer, "#delete" do
+RSpec.describe GuideSearchIndexer, "#delete" do
   it "deletes documents from rummager" do
     rummager_index = double(:rummageable_index)
     guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic/some-slug")
 
     expect(rummager_index).to receive(:delete).with("/service-manual/topic/some-slug")
 
-    SearchIndexer.new(guide, rummager_index: rummager_index).delete
+    described_class.new(guide, rummager_index: rummager_index).delete
   end
 end
