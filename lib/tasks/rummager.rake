@@ -1,7 +1,7 @@
 namespace :rummager do
   desc "Index all live guides in rummager"
   task index_guides: :environment do
-    Guide.all.each do |guide|
+    Guide.find_each do |guide|
       puts "Indexing #{guide.title}..."
 
       GuideSearchIndexer.new(guide).index
@@ -14,7 +14,7 @@ namespace :rummager do
   # each topic manually.
   desc "Index published AND unpublished topics in rummager"
   task index_topics: :environment do
-    Topic.all.each do |guide|
+    Topic.find_each do |topic|
       puts "Indexing #{topic.title}..."
 
       TopicSearchIndexer.new(topic).index
