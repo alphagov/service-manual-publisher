@@ -1,4 +1,17 @@
 .topics {
+  .list-group {
+    min-height: 30px;
+  }
+
+  .list-group-item {
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  .list-group-item-placeholder {
+    cursor: default;
+  }
+
   .left {
     display: inline;
   }
@@ -13,9 +26,11 @@
   .glyphicon-trash {
     color: $brand-danger;
   }
-}
 
-.draggable-guide {
-  margin-left: 2em;
-  background-color: #f5f5f5;
+  .ungrouped-list {
+    .glyphicon-trash {
+      display: none;
+    }
+  }
+
 }

@@ -8,32 +8,117 @@
         <h2><%= topic.title %></h2>
       <% end %>
 
-      <div class="well">
-        <div class="form-group">
-          <%= f.label :path %>
-          <%= f.text_field :path, class: "form-control", disabled: topic.persisted? %>
-        </div>
-        <div class="form-group">
-          <%= f.label :title %>
-          <%= f.text_field :title, class: "form-control" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :description %>
-          <%= f.text_field :description, class: "form-control" %>
-        </div>
+      <div class="form-group">
+        <%= f.label :path %>
+        <%= f.text_field :path, class: "form-control", disabled: topic.persisted? %>
+      </div>
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_field :description, class: "form-control" %>
       </div>
 
-      <div class="well">
-        <h3>Grouping</h3>
-        <ul class="list-group js-sortable-topic-list">
+      <div class="topics-templates hidden">
+        <li class="list-group-item js-heading">
+          <div class="left">
+            <span class="glyphicon glyphicon-move"></span>
+            <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+          </div>
+          <div class="right">
+            <div class="form-group">
+              <input type="text" placeholder="Heading Title" class="js-topic-input js-topic-title form-control">
+            </div>
+            <input type="text" placeholder="Heading Description" class="js-topic-input js-topic-description form-control">
+          </div>
+          <h3>
+            Guides:
+          </h3>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Drag and drop headings and guides into the required order.
+            </div>
+            <div class="panel-body">
+              <ul class="list-group js-guides">
+              </ul>
+            </div>
+          </div>
+        </li>
+      </div>
+
+      <label>Headings</label>
+      <div>
+        <ul class="list-group grouped-list js-grouped-list js-headings">
+          <% topic.topic_sections.each do |topic_section| %>
+            <li class="list-group-item js-heading">
+              <div class="left">
+                <span class="glyphicon glyphicon-move"></span>
+                <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+              </div>
+              <div class="right">
+                <div class="form-group">
+                  <input type="text" placeholder="Heading Title" class="js-topic-input js-topic-title form-control" value="<%=topic_section.title%>">
+                </div>
+                <input type="text" placeholder="Heading Description" class="js-topic-input js-topic-description form-control" value="<%=topic_section.description%>">
+              </div>
+
+              <h3>
+                Guides:
+              </h3>
+
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  Drag and drop headings and guides into the required order.
+                </div>
+                <div class="panel-body">
+                  <ul class="list-group js-guides">
+                    <% topic_section.guides.each do |guide| %>
+                      <li class="list-group-item js-guide" data-guide-id="<%=guide.id%>">
+                        <div class="left">
+                          <span class="glyphicon glyphicon-move"></span>
+                          <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+                        </div>
+                        <div class="right">
+                          <span>
+                            <%= guide.title %>
+                          </span>
+                        </div>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+
+            </li>
+          <% end %>
         </ul>
 
         <div class="form-group">
           <%= button_tag "Add Heading", type: "button", class: "js-add-heading btn btn-success" %>
-          <%= button_tag "Add Guide", type: "button", class: "js-add-guide btn btn-success", disabled: true %>
         </div>
       </div>
 
+      <div>
+        <h3>Un-grouped guides</h3>
+        <ul class="list-group ungrouped-list js-ungrouped-list js-guides">
+          <% Guide.without_topic.each do |guide| %>
+            <li class="list-group-item js-guide" data-guide-id="<%=guide.id%>">
+              <div class="left">
+                <span class="glyphicon glyphicon-move"></span>
+                <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+              </div>
+              <div class="right">
+                <span>
+                  <%= guide.title %>
+                </span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
 
       <%= f.hidden_field :tree, value: @topic_tree, class: "js-topic-tree" %>
       <%= f.submit "Save", class: "btn btn-default btn-save" %>
@@ -45,29 +130,5 @@
         <%= link_to "View", view_topic_url(topic), class: "btn btn-default", target: "_blank" %>
       <% end %>
     <% end %>
-
-    <div class="topics-templates">
-      <li class="list-group-item js-heading-template hidden">
-        <div class="left">
-          <span class="glyphicon glyphicon-move"></span>
-          <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
-        </div>
-        <div class="right">
-          <div class="form-group">
-            <input type="text" placeholder="Heading Title" class="js-topic-input js-topic-title form-control">
-          </div>
-          <input type="text" placeholder="Heading Description" class="js-topic-input js-topic-description form-control">
-        </div>
-      </li>
-      <li class="list-group-item js-guide-template hidden">
-        <div class="left">
-          <span class="glyphicon glyphicon-move"></span>
-          <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
-        </div>
-        <div class="right">
-          <%= select_tag nil, options_for_select(all_guides_container_for_select), {include_blank: "", class: 'js-topic-input js-topic-guide input-md-12 form-control'} %>
-        </div>
-      </li>
-    </div>
   </div>
 </div>

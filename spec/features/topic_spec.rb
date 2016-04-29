@@ -34,13 +34,11 @@ RSpec.describe "Topics", type: :feature do
     click_button "Add Heading"
     fill_in "Heading Title", with: "The heading title"
     fill_in "Heading Description", with: "The heading description"
-    add_guide "Guide 1"
-    add_guide "Guide 2"
+    add_guide guide1.id
+    add_guide guide2.id
     click_button "Save"
 
-    # Reload the page to be sure the fields don't contain params from the
-    # previous request
-    visit current_path
+    visit edit_topic_path(Topic.first)
 
     expect(page).to have_field('Title', with: 'The title')
     expect(page).to have_field('Description', with: 'The description')
@@ -48,7 +46,7 @@ RSpec.describe "Topics", type: :feature do
     expect(find('.js-topic-title').value).to eq('The heading title')
     expect(find('.js-topic-description').value).to eq('The heading description')
 
-    guide_ids = all('.js-topic-guide').map(&:value)
+    guide_ids = all('.js-grouped-list .js-guide').map {|e| e["data-guide-id"]}
     expect(guide_ids).to eq [
       guide1.id.to_param,
       guide2.id.to_param,
@@ -123,18 +121,14 @@ RSpec.describe "Topics", type: :feature do
     end
   end
 
-  def add_guide(name)
-    click_button "Add Guide"
-
-    select = all(".js-topic-guide").select{|j| j.value == ""}.first
-    options = select.all(:option).select {|o| o.text == name}
-    options.first.select_option
+  def add_guide(id)
+    page.execute_script("$('.js-guide[data-guide-id=#{id}]').appendTo('.js-guides')")
   end
 end
 
 RSpec.describe "topic editor", type: :feature do
   it "can view topics" do
-    topic = Topic.create!(
+    Topic.create!(
       path: "/service-manual/topic1",
       title: "Topic 1",
       description: "A Description",

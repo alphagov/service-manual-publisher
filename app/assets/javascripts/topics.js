@@ -4,69 +4,60 @@ $(function() {
     return;
   }
 
-  function createNewGuide(value) {
-    var $guide = $topics.find(".topics-templates .js-guide-template").clone();
-    $guide.find(".js-topic-guide").val(value);
-    $guide.removeClass("js-guide-template");
-    $guide.removeClass("hidden");
-    $guide.addClass("draggable-guide");
-    $topics.find(".js-sortable-topic-list").append($guide);
-  }
-
-  function createNewHeading(title, description) {
-    $(".js-add-guide").attr("disabled", false);
-
-    var heading = $topics.find(".topics-templates .js-heading-template").clone();
-    heading.find(".js-topic-title").val(title);
-    heading.find(".js-topic-description").val(description);
-    $topics.find(".js-sortable-topic-list").append(heading);
-    heading.removeClass("js-title-template");
-    heading.removeClass("hidden");
-  }
-
-  $topics.on("click", ".js-add-guide", function(){createNewGuide("")});
-  $topics.on("click", ".js-add-heading", function(){createNewHeading("","")});
-
-  $topics.on("click", ".js-delete-list-group-item", function() {
-    $(this).parents(".list-group-item").remove();
+  var dragger = dragula({
+    accepts: function (el, target, source, sibling) {
+      console.log(target);
+      var $el = $(el);
+      if ($el.hasClass("js-heading")) {
+        return $(target).hasClass("js-headings");
+      } else if ($el.hasClass("js-guide")) {
+        return $(target).hasClass("js-guides");
+      }
+    }
   });
 
-  // Wrap this in a try because Sortable crashes poltergeist.
-  try {
-    Sortable.create(document.getElementsByClassName("js-sortable-topic-list")[0], {
-      animation: 150
-    });
-  } catch (e) {
-  }
+  $(".js-guides, .js-headings").each(function() {
+    dragger.containers.push(this);
+  });
+
+  $topics.on("click", ".js-add-heading", function() {
+    var $heading = $topics.find(".topics-templates .js-heading").clone();
+    $topics.find(".js-grouped-list").append($heading);
+    dragger.containers.push($heading.find(".js-guides")[0]);
+  });
+
+  $topics.on("click", ".js-delete-list-group-item", function() {
+    var $listGroupItem = $(this).closest(".list-group-item");
+    var $parent = $listGroupItem.parent();
+    if ($listGroupItem.hasClass("js-heading")) {
+      $listGroupItem.remove();
+      $listGroupItem.find("ul li.js-guide").each(function() {
+        var $guide = $(this);
+        $guide.appendTo(".js-ungrouped-list");
+      });
+    } else {
+      $listGroupItem.appendTo(".js-ungrouped-list");
+    }
+  });
 
   $(document).on("click", ".btn-save", function(e) {
     var topics = [];
-    var currentTopic = null;
 
-    $(".js-topic-input").each(function() {
-      var topicInput = $(this);
-      if (topicInput.hasClass("js-topic-title")) {
-        if (currentTopic != null) {
-          topics.push(currentTopic);
-        }
-        currentTopic = {title: topicInput.val(), guides: []};
-      } else if (topicInput.hasClass("js-topic-description")) {
-        currentTopic["description"] = topicInput.val();
-      } else if (topicInput.hasClass("js-topic-guide")) {
-        currentTopic["guides"].push(topicInput.children(":selected").val());
+    $(".js-grouped-list .js-heading").each(function() {
+      var $item = $(this);
+      var topic = {
+        title: $item.find(".js-topic-title").val(),
+        description: $item.find(".js-topic-description").val(),
+        guides: []
       }
+      $item.find(".js-guide").each(function() {
+        topic.guides.push($(this).data("guide-id"));
+      });
+
+      topics.push(topic);
     });
 
     $(".js-topic-tree").val(JSON.stringify(topics));
   });
 
-  var json = $topics.find(".js-topic-tree").val();
-  json = JSON.parse(json);
-  for (topicIndex = 0; topicIndex < json.length; topicIndex++) {
-    var topic = json[topicIndex];
-    createNewHeading(topic.title, topic.description);
-    for (guideIndex = 0; guideIndex < topic.guides.length; guideIndex++) {
-      createNewGuide(topic.guides[guideIndex]);
-    }
-  }
 });

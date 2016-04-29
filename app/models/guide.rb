@@ -12,6 +12,11 @@ class Guide < ActiveRecord::Base
 
   delegate :title, to: :latest_edition
 
+  def self.without_topic
+    ids = TopicSectionGuide.pluck(:guide_id)
+    where.not(id: ids)
+  end
+
   def self.with_published_editions
     joins(:editions)
       .where(editions: { state: "published" })

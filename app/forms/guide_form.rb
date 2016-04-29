@@ -1,6 +1,5 @@
 class GuideForm
   DEFAULT_UPDATE_TYPE = "major"
-  DEFAULT_SLUG = "/service-manual/"
 
   include ActiveModel::Model
 
@@ -9,6 +8,8 @@ class GuideForm
     :title, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
+
+  validates :topic_section_id, presence: true
 
   def initialize(guide:, edition:, user:)
     @guide = guide
@@ -21,7 +22,7 @@ class GuideForm
     self.change_summary = edition.change_summary
     self.content_owner_id = edition.content_owner_id
     self.description = edition.description
-    self.slug = guide.slug || DEFAULT_SLUG
+    self.slug = guide.slug
     self.title = edition.title
     self.type = guide.type
     self.update_type = next_update_type
@@ -67,6 +68,10 @@ class GuideForm
       send("#{k}=", v)
     end
   end
+
+  def topic_section_id
+  end
+
 
 private
 

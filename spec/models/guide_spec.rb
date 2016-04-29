@@ -64,6 +64,13 @@ RSpec.describe Guide do
       expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/'"]
     end
 
+    it "requires a topic section" do
+      guide = Guide.new
+      guide.valid?
+      expect(guide).to_not be_valid
+      expect(guide.errors.full_messages_for(:topic_section_id)).to eq ["Topic section must be set"]
+    end
+
     it "reminds users if they've forgotten to change the default pre-filled slug value" do
       guide = Guide.new(slug: "/service-manual/", editions: [ edition ])
       guide.valid?

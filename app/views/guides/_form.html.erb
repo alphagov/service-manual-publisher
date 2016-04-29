@@ -22,6 +22,12 @@
       </div>
 
       <div class='form-group'>
+        <%= f.label :topic_section_id, "Topic section" %>
+        <%= f.error_list :topic_section_id %>
+        <%= f.select :topic_section_id, topic_section_options_for_select, {}, {class: 'select2 input-md-12 form-control'} %>
+      </div>
+
+      <div class='form-group'>
         <%= f.label :slug  %>
         <%= f.error_list :slug  %>
         <div class="help-block">
