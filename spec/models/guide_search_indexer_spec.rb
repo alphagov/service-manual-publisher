@@ -23,6 +23,15 @@ RSpec.describe GuideSearchIndexer, "#index" do
 
     described_class.new(guide, rummager_index: rummager_index).index
   end
+
+  it "does not attempt to index a guide if it has no live editons" do
+    rummager_index = double(:rummageable_index)
+    guide = create(:guide)
+
+    expect(rummager_index).to_not receive(:add_batch)
+
+    described_class.new(guide, rummager_index: rummager_index).index
+  end
 end
 
 RSpec.describe GuideSearchIndexer, "#delete" do
