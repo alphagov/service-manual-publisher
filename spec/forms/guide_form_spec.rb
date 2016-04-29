@@ -230,6 +230,15 @@ RSpec.describe GuideForm, "validations" do
         "Body can't be blank",
         )
   end
+
+  it "validates presence of topic_section_id" do
+    guide = Guide.new
+    edition = guide.editions.build
+
+    guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+    expect(guide_form).to_not be_valid
+    expect(guide.errors.full_messages_for(:topic_section_id)).to eq ["must be present"]
+  end
 end
 
 RSpec.describe GuideForm, "#to_param" do

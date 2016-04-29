@@ -24,10 +24,6 @@ RSpec.describe "creating guides", type: :feature do
     create(:topic)
   end
 
-  it "has a prepopulated slug field" do
-    expect(find_field('Slug').value).to eq "/service-manual/"
-  end
-
   it "saves draft guide editions" do
     fill_in_guide_form
 
