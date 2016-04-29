@@ -41,21 +41,6 @@ RSpec.describe GuidePresenter do
       )
     end
 
-    it "includes related_discusion when it's provided" do
-      edition.related_discussion_title = 'Discussion Forum'
-      edition.related_discussion_href = 'http://someforum.gov.uk'
-      expect(presenter.content_payload[:details][:related_discussion]).to eq(
-        title: "Discussion Forum",
-        href: "http://someforum.gov.uk"
-      )
-    end
-
-    it "omits related_discusion when it's not provided" do
-      edition.related_discussion_title = ''
-      edition.related_discussion_href = ''
-      expect(presenter.content_payload[:details][:related_discussion]).to be_blank
-    end
-
     it "omits the content owner if the edition doesn't have one" do
       edition.content_owner = nil
 
