@@ -6,11 +6,14 @@ class GuideRepublisher
 
   def republish
     live_edition = guide.live_edition
-    guide_for_publication = GuidePresenter.new(guide, live_edition)
 
-    publishing_api.put_content(guide.content_id, guide_for_publication.content_payload)
-    publishing_api.patch_links(guide.content_id, guide_for_publication.links_payload)
-    publishing_api.publish(guide.content_id, live_edition.update_type)
+    if live_edition
+      guide_for_publication = GuidePresenter.new(guide, live_edition)
+
+      publishing_api.put_content(guide.content_id, guide_for_publication.content_payload)
+      publishing_api.patch_links(guide.content_id, guide_for_publication.links_payload)
+      publishing_api.publish(guide.content_id, live_edition.update_type)
+    end
   end
 
   private

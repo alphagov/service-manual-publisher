@@ -13,4 +13,15 @@ RSpec.describe GuideRepublisher, "#republish" do
 
     described_class.new(guide, publishing_api: publishing_api).republish
   end
+
+  it "does not attempt to publish anything if there isn't a live editon" do
+    publishing_api = double(:publishing_api)
+    guide = create(:guide)
+
+    expect(publishing_api).to_not receive(:put_content)
+    expect(publishing_api).to_not receive(:put_links)
+    expect(publishing_api).to_not receive(:publish)
+
+    described_class.new(guide, publishing_api: publishing_api).republish
+  end
 end
