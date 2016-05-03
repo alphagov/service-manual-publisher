@@ -58,18 +58,6 @@ RSpec.describe Guide do
   end
 
   describe "validations" do
-    it "doesn't allow slugs without /service-manual/ prefix" do
-      guide = Guide.new(slug: "/something", editions: [ edition ])
-      guide.valid?
-      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/'"]
-    end
-
-    it "reminds users if they've forgotten to change the default pre-filled slug value" do
-      guide = Guide.new(slug: "/service-manual/", editions: [ edition ])
-      guide.valid?
-      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be filled in"]
-    end
-
     it "ensures that slugs aren't saved without the topic name in the path" do
       guide = Guide.new(slug: "/service-manual/guide-path")
       guide.valid?
@@ -77,9 +65,19 @@ RSpec.describe Guide do
     end
 
     it "does not allow unsupported characters in slugs" do
-      guide = Guide.new(slug: "/service-manual/financing$$$.xml}", editions: [ edition ])
+      guide = Guide.new(slug: "/service-manual/topic-name/$", editions: [ edition ])
       guide.valid?
-      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can only contain letters, numbers and dashes"]
+      expect(guide.errors.full_messages_for(:slug)).to eq [
+        "Slug can only contain letters, numbers and dashes",
+        "Slug must be present and start with '/service-manual/[topic]'",
+      ]
+
+      guide = Guide.new(slug: "/service-manual/$$$/title", editions: [ edition ])
+      guide.valid?
+      expect(guide.errors.full_messages_for(:slug)).to eq [
+        "Slug can only contain letters, numbers and dashes",
+        "Slug must be present and start with '/service-manual/[topic]'",
+      ]
     end
 
     describe "content owner" do

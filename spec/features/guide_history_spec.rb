@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe "Guide history", type: :feature do
   include ActiveSupport::Testing::TimeHelpers
 
+  before do
+    topic = create(:topic)
+    create(:topic_section, topic: topic)
+  end
+
   it "shows a header with pertinent edition information" do
     stub_publisher
     create_guide_community
@@ -76,12 +81,14 @@ RSpec.describe "Guide history", type: :feature do
   end
 
   def fill_out_new_guide_fields
-    fill_in "Slug", with: "/service-manual/the/path"
+    fill_in_final_url "/service-manual/the/path"
+    select TopicSection.first.title, from: "Topic section"
     select @community.title, from: "Community"
     fill_in "Description", with: "This guide acts as a test case"
 
     fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
+    select Topic
   end
 
   def events

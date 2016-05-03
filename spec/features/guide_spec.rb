@@ -6,6 +6,11 @@ RSpec.describe "creating guides", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   before do
+    topic1 = create(:topic, title: "My Topic Number 1", path: "/service-manual/topic-path1")
+    topic2 = create(:topic, title: "My Topic Number 2", path: "/service-manual/topic-path2")
+    create(:topic_section, topic: topic1, title: "My Topic Section Number 1")
+    create(:topic_section, topic: topic2, title: "My Topic Section Number 2")
+
     edition = build(
       :edition,
       content_owner: nil,
@@ -13,6 +18,8 @@ RSpec.describe "creating guides", type: :feature do
     )
     create(:guide_community, editions: [ edition ])
 
+    topic = create(:topic)
+    create(:topic_section, topic: topic)
     visit root_path
     click_link "Create a Guide"
 
@@ -22,10 +29,6 @@ RSpec.describe "creating guides", type: :feature do
 
   let(:topic) do
     create(:topic)
-  end
-
-  it "has a prepopulated slug field" do
-    expect(find_field('Slug').value).to eq "/service-manual/"
   end
 
   it "saves draft guide editions" do
@@ -59,7 +62,7 @@ RSpec.describe "creating guides", type: :feature do
 
     visit edit_guide_path(guide)
 
-    expect(page).to have_field("Slug", with: "/service-manual/the/path")
+    expect(page).to have_field("Final URL", with: "/service-manual/the/path")
     expect(page).to have_field("Title", with: "First Edition Title")
     expect(page).to have_field("Description", with: "This guide acts as a test case")
     expect(page).to have_field("Body", with: "## First Edition Title")
@@ -79,7 +82,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
 
-    expect(page).to have_field("Slug", with: "/service-manual/the/path")
+    expect(page).to have_field("Final URL", with: "/service-manual/the/path")
     expect(page).to have_field("Title", with: "Second Edition Title")
     expect(page).to have_field("Description", with: "This guide acts as a test case")
     expect(page).to have_field("Body", with: "## First Edition Title")
@@ -171,7 +174,12 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "shows the summary of validation errors" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/something", editions: [ build(:edition) ])
+      guide = create(
+        :guide,
+        :with_topic_section,
+        slug: "/service-manual/topic-name/something",
+        editions: [ build(:edition) ],
+      )
       visit edit_guide_path(guide)
       fill_in "Title", with: ""
       click_first_button "Save"
@@ -225,30 +233,6 @@ RSpec.describe "creating guides", type: :feature do
     end
   end
 
-  describe "slug generation" do
-    it "generates slug", js: true do
-      {
-        "Guide title": "guide-title",
-        "slug--with-----hyphens": "slug-with-hyphens",
-        "       space    slugs  ": "space-slugs",
-        'other things !@#$%^&*()_-+=/\\': "other-things",
-      }.each do |title, expected_slug|
-        expected_slug = "/service-manual/#{expected_slug}"
-
-        fill_in "Title", with: title
-        expect(find_field('Slug').value).to eq expected_slug
-      end
-    end
-
-    context "user edits slug manually" do
-      it "does not generate slug", js: true do
-        fill_in "Slug", with: "/service-manual/topic-name/something"
-        fill_in "Title", with: "My Guide Title"
-        expect(find_field('Slug').value).to eq '/service-manual/topic-name/something'
-      end
-    end
-  end
-
   it 'does not have a summary field' do
     visit root_path
     click_link "Create a Guide"
@@ -259,7 +243,8 @@ RSpec.describe "creating guides", type: :feature do
 private
 
   def fill_in_guide_form
-    fill_in "Slug", with: "/service-manual/the/path"
+    fill_in_final_url "/service-manual/the/path"
+    select TopicSection.first.title, from: "Topic section"
     select "Technology Community", from: "Community"
     fill_in "Description", with: "This guide acts as a test case"
 

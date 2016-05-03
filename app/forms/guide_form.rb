@@ -1,11 +1,10 @@
 class GuideForm
   DEFAULT_UPDATE_TYPE = "major"
-  DEFAULT_SLUG = "/service-manual/"
 
   include ActiveModel::Model
 
   attr_reader :guide, :edition, :user
-  attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
+  attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug, :topic_section_id,
     :summary, :title, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
@@ -21,7 +20,7 @@ class GuideForm
     self.change_summary = edition.change_summary
     self.content_owner_id = edition.content_owner_id
     self.description = edition.description
-    self.slug = guide.slug || DEFAULT_SLUG
+    self.slug = guide.slug
     self.summary = edition.summary
     self.title = edition.title
     self.type = guide.type
@@ -34,7 +33,19 @@ class GuideForm
     end
   end
 
+  def topic_slug
+    "#{topic.try(:path)}/"
+  end
+
+  def title_slug
+    slug ? slug.split("/").last : nil
+  end
+
+  def title_slug=slug
+  end
+
   def save
+    topic_section = TopicSection.where(id: topic_section_id).first
     guide.slug = slug
     edition.author_id = author_id
     edition.body = body
@@ -48,7 +59,20 @@ class GuideForm
     edition.update_type = update_type
     edition.version = version
 
-    if guide.save
+    passed_validation = if topic_section_id.present?
+                          guide.save
+                        else
+                          errors.add(:topic_section_id, "can't be blank")
+                          false
+                        end
+
+    if passed_validation
+      topic_section_guide = TopicSectionGuide.where(guide: guide).first
+      if topic_section_guide.present? && topic_section_guide.topic_section != topic_section
+        topic_section_guide.destroy!
+      end
+      topic_section.guides << guide
+
       true
     else
       promote_errors_for(guide)
@@ -56,6 +80,12 @@ class GuideForm
 
       false
     end
+  end
+
+  def stored_topic_section_id
+    TopicSectionGuide
+      .where(guide: guide)
+      .first.try(:topic_section).try(:id)
   end
 
   def to_param

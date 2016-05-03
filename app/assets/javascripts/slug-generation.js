@@ -1,17 +1,48 @@
 $(function() {
+  var $form = $(".js-guide-form");
+
+  if ($form.length == 0) {
+    return;
+  }
+
   var $title = $(".js-guide-title");
-  var $slug = $(".js-guide-slug");
-  var autoGenerate = $slug.val() == "/service-manual/";
+  var $slug = $(".js-slug");
+  var $titleSlug = $(".js-title-slug");
+  var $topicSection = $(".js-topic-section");
 
-  $(document).on("input", ".js-guide-slug", function() {
-    autoGenerate = false;
+  var hasBeenPublished = $form.data("has-been-published");
+  var titleSlugManuallyChanged = false;
+
+  $(document).on("input", ".js-title-slug", function() {
+    titleSlugManuallyChanged = true;
+    generateSlug();
   });
 
-  $(document).on("input", ".js-guide-title", function() {
-    if (autoGenerate) {
-      $slug.val("/service-manual/" + slugify($title.val()));
+  $(document).on("input", ".js-guide-title", generateSlug);
+  $(document).on("change", ".js-topic-section", generateSlug);
+
+  function generateSlug() {
+    if (hasBeenPublished) {
+      return;
     }
-  });
+
+    if (!titleSlugManuallyChanged) {
+      $titleSlug.val(slugify($title.val()));
+    }
+
+    var slug = "";
+
+    var topicPath = $topicSection.find(":selected").parent().data("path");
+    if (!topicPath) { return }
+    slug += topicPath + "/";
+
+    if (!$titleSlug.val()) { return }
+    slug += slugify($titleSlug.val())
+
+    $slug.val(slug);
+  }
+
+  generateSlug();
 
   function slugify(text) {
     // https://gist.github.com/mathewbyrne/1280286

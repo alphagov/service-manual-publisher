@@ -1,10 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Publisher, '#save_draft' do
+  let :topic_section do
+    topic = create(:topic)
+    create(:topic_section, topic: topic)
+  end
 
   it 'persists the content model and returns a successful response' do
     guide = create(:guide, :with_draft_edition)
     guide_form = GuideForm.new(guide: guide, edition: guide.editions.first, user: User.new)
+    guide_form.topic_section_id = topic_section.id
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
     allow(publishing_api).to receive(:patch_links)
@@ -20,6 +25,7 @@ RSpec.describe Publisher, '#save_draft' do
   it 'sends the draft and the links to the publishing api' do
     guide = create(:guide, :with_draft_edition)
     guide_form = GuideForm.new(guide: guide, edition: guide.editions.first, user: User.new)
+    guide_form.topic_section_id = topic_section.id
     publishing_api = double(:publishing_api)
 
     expect(publishing_api).to receive(:put_content).
@@ -36,6 +42,7 @@ RSpec.describe Publisher, '#save_draft' do
     edition = build(:edition)
     guide = build(:guide, slug: '/invalid-slug', editions: [ edition ])
     guide_form = GuideForm.new(guide: guide, edition: edition, user: User.new)
+    guide_form.topic_section_id = topic_section.id
     expect(guide).to_not be_valid
 
     publishing_api = double(:publishing_api)
@@ -63,6 +70,7 @@ RSpec.describe Publisher, '#save_draft' do
 
     it 'does not persist the content model and returns an unsuccessful response' do
       guide_form = GuideForm.new(guide: guide, edition: edition, user: User.new)
+      guide_form.topic_section_id = topic_section.id
       publication_response =
         Publisher.new(content_model: guide_form, publishing_api: publishing_api_which_always_fails).
                   save_draft(GuideFormPublicationPresenter.new(guide_form))
@@ -73,6 +81,7 @@ RSpec.describe Publisher, '#save_draft' do
 
     it 'returns the gds api error messages' do
       guide_form = GuideForm.new(guide: guide, edition: edition, user: User.new)
+      guide_form.topic_section_id = topic_section.id
       publication_response =
         Publisher.new(content_model: guide_form, publishing_api: publishing_api_which_always_fails).
                   save_draft(GuideFormPublicationPresenter.new(guide_form))

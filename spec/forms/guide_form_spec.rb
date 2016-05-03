@@ -2,12 +2,6 @@ require 'rails_helper'
 
 RSpec.describe GuideForm, "#initialize" do
   context "for a brand new guide" do
-    it "assigns an incomplete default slug value" do
-      expect(
-        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new).slug
-        ).to eq("/service-manual/")
-    end
-
     it "assigns a default update_type of major" do
       expect(
         described_class.new(guide: Guide.new, edition: Edition.new, user: User.new).update_type
@@ -147,6 +141,9 @@ RSpec.describe GuideForm, "#save" do
       guide_community = create(:guide_community)
       user = create(:user)
 
+      topic = create(:topic)
+      topic_section = create(:topic_section, topic: topic)
+
       guide = Guide.new
       edition = guide.editions.build
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
@@ -157,6 +154,7 @@ RSpec.describe GuideForm, "#save" do
         slug: "/service-manual/topic/a-fair-tale",
         title: "A fair tale",
         update_type: "minor",
+        topic_section_id: topic_section.id,
         })
       guide_form.save
 
@@ -225,25 +223,134 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.version).to eq(2)
     end
   end
+
+  context "when the guide doesn't have a topic section" do
+    it "assigns the guide to the topic section" do
+      guide_community = create(:guide_community)
+      user = create(:user)
+      guide = create(:published_guide)
+      guide_form = described_class.new(
+        guide: guide,
+        edition: guide.latest_edition,
+        user: user
+      )
+
+      topic = create(:topic)
+      topic_section = topic.topic_sections.create!(
+        title: "Topic Section Title",
+        description: "Topic Section Description",
+      )
+      guide_form.assign_attributes(
+        topic_section_id: topic_section.id,
+      )
+      guide_form.save
+
+      expect(topic_section.guides).to include guide
+    end
+  end
+
+  context "when the guide does have a topic section" do
+    context "that is the same as the chosen topic section" do
+      it "does not change anything" do
+        create(:guide_community)
+        user = create(:user)
+        guide = create(:published_guide)
+        guide_form = described_class.new(
+          guide: guide,
+          edition: guide.latest_edition,
+          user: user
+        )
+
+        topic = create(:topic)
+        topic_section = create(:topic_section, topic: topic)
+        topic_section.guides << guide
+
+        guide_form.assign_attributes(
+          topic_section_id: topic_section.id,
+        )
+        expect(TopicSectionGuide.where(guide: guide).count).to eq 1
+
+        guide_form.save
+      end
+    end
+
+    context "that is NOT the same as the chosen topic section" do
+      it "moves the guide to a new topic section" do
+        create(:guide_community)
+        user = create(:user)
+        guide = create(:published_guide)
+        guide_form = described_class.new(
+          guide: guide,
+          edition: guide.latest_edition,
+          user: user
+        )
+
+        topic = create(:topic)
+        topic_section = create(:topic_section, topic: topic)
+        other_topic_section = create(:topic_section, topic: topic)
+        other_topic_section.guides << guide
+
+        guide_form.assign_attributes(
+          topic_section_id: topic_section.id,
+        )
+        guide_form.save
+
+        expect(topic_section.reload.guides).to include guide
+        expect(other_topic_section.reload.guides).to_not include guide
+      end
+    end
+  end
 end
 
 RSpec.describe GuideForm, "validations" do
   it "passes validation errors up from the models" do
     guide = Guide.new
+
+    topic_section = create(:topic_section, topic: create(:topic))
+
     edition = guide.editions.build
     guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+    guide_form.topic_section_id = topic_section.id
     guide_form.save
 
     expect(
       guide_form.errors.full_messages
       ).to include(
-        "Slug must be filled in",
+        "Slug can only contain letters, numbers and dashes",
+        "Slug must be present and start with '/service-manual/[topic]'",
         "Latest edition must have a content owner",
         "Editions is invalid",
         "Description can't be blank",
         "Title can't be blank",
         "Body can't be blank",
         )
+  end
+
+  it "validates topic_section_id" do
+    guide = Guide.new
+    edition = guide.editions.build
+    guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+    guide_form.save
+
+    expect(guide_form.errors.full_messages).to include("Topic section can't be blank")
+  end
+end
+
+RSpec.describe GuideForm, "#stored_topic_section_id" do
+  it "returns the id of the topic section that contains this guide" do
+    create(:guide_community)
+    user = create(:user)
+    guide = create(:published_guide)
+    guide_form = described_class.new(
+      guide: guide,
+      edition: guide.latest_edition,
+      user: user
+    )
+
+    topic_section = create(:topic_section, topic: create(:topic))
+    topic_section.guides << guide
+
+    expect(guide_form.stored_topic_section_id).to eq topic_section.id
   end
 end
 
