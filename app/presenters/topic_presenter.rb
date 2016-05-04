@@ -23,6 +23,7 @@ class TopicPresenter
         { type: "exact", path: topic.path }
       ],
       details: {
+        visually_collapsed: topic.visually_collapsed,
         groups: groups
       }
     }

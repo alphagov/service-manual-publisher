@@ -85,7 +85,7 @@ private
   end
 
   def updatable_topic_attributes
-    [:title, :description, content_owner_ids: []]
+    [:title, :description, :visually_collapsed, content_owner_ids: []]
   end
 
   def store_topic_sections_in_topic

@@ -56,6 +56,14 @@ RSpec.describe TopicPresenter do
       expect(groups.first[:content_ids]).to eq [guide_1.content_id, guide_2.content_id]
       expect(groups.last).to include(name: "Group 2", description: "Berries")
     end
+
+    it "sets visually_expanded" do
+      topic.update_attribute(:visually_collapsed, true)
+
+      expect(
+        presented_topic.content_payload[:details][:visually_collapsed]
+        ).to eq(true)
+    end
   end
 end
 

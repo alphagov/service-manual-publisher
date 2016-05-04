@@ -31,6 +31,7 @@ RSpec.describe "Topics", type: :feature do
     fill_in "Path", with: "/service-manual/something"
     fill_in "Title", with: "The title"
     fill_in "Description", with: "The description"
+    check "Collapsed"
     click_button "Add Heading"
     fill_in "Heading Title", with: "The heading title"
     fill_in "Heading Description", with: "The heading description"
@@ -44,6 +45,7 @@ RSpec.describe "Topics", type: :feature do
 
     expect(page).to have_field('Title', with: 'The title')
     expect(page).to have_field('Description', with: 'The description')
+    expect(page).to have_checked_field('Collapsed')
 
     expect(find('.js-topic-title').value).to eq('The heading title')
     expect(find('.js-topic-description').value).to eq('The heading description')
