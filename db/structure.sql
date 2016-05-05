@@ -343,7 +343,8 @@ CREATE TABLE topics (
     path character varying NOT NULL,
     title character varying NOT NULL,
     description character varying NOT NULL,
-    content_id character varying
+    content_id character varying,
+    visually_collapsed boolean DEFAULT false
 );
 
 
@@ -746,4 +747,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160428124015');
 INSERT INTO schema_migrations (version) VALUES ('20160428190215');
 
 INSERT INTO schema_migrations (version) VALUES ('20160429134835');
+
+INSERT INTO schema_migrations (version) VALUES ('20160504064153');
 

@@ -21,6 +21,13 @@
           <%= f.label :description %>
           <%= f.text_field :description, class: "form-control" %>
         </div>
+        <div class="form-group">
+          <%= f.label :visually_collapsed, "Collapsed" %>
+          <div class="help-block">
+            By default the sections of a topic will be expanded. Setting this option will show all the sections collapsed, but expandable, when the user visits the page.
+          </div>
+          <%= f.check_box :visually_collapsed, class: "form-control" %>
+        </div>
       </div>
 
       <div class="well">
