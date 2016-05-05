@@ -50,7 +50,7 @@
           <%= f.label :summary %>
           <%= f.error_list :summary %>
           <span class="help-block">The summary beneath the title which does not support formatting.</span>
-          <%= f.text_area :summary, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
+          <%= f.text_area :summary, disabled: disable_inputs, rows: 5, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size' %>
         </div>
       <% end %>
 

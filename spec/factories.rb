@@ -87,6 +87,8 @@ FactoryGirl.define do
       ] }
   end
 
+  factory :published_guide_community, parent: :published_guide, class: 'GuideCommunity'
+
   factory :unpublished_guide, parent: :guide do
     transient do
       title "An Unpublished Guide"
@@ -102,7 +104,21 @@ FactoryGirl.define do
     }
   end
 
-  factory :published_guide_community, parent: :published_guide, class: 'GuideCommunity'
+  factory :unpublished_point, parent: :guide, class: 'Point' do
+    transient do
+      title "An Unpublished Point"
+      body "Some Body Text"
+      summary "A summary"
+    end
+
+    editions {
+      [
+        build(:edition, state: "draft", title: title, body: body, summary: summary),
+        build(:edition, state: "published", title: title, body: body, summary: summary),
+        build(:edition, state: "unpublished", title: title, body: body, summary: summary),
+      ]
+    }
+  end
 
   factory :user do
     name "Test User"
