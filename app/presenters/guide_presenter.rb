@@ -13,7 +13,7 @@ class GuidePresenter
   def content_payload
     {
       publishing_app: "service-manual-publisher",
-      rendering_app: "government-frontend",
+      rendering_app: "service-manual-frontend",
       format: "service_manual_guide",
       locale: "en",
       update_type: edition.update_type,
