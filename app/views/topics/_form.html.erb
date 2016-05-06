@@ -22,11 +22,13 @@
           <%= f.text_field :description, class: "form-control" %>
         </div>
         <div class="form-group">
-          <%= f.label :visually_collapsed, "Collapsed" %>
+          <%= f.label :visually_collapsed do %>
+            <%= f.check_box :visually_collapsed %>
+            Collapsed
+          <% end %>
           <div class="help-block">
             By default the sections of a topic will be expanded. Setting this option will show all the sections collapsed, but expandable, when the user visits the page.
           </div>
-          <%= f.check_box :visually_collapsed, class: "form-control" %>
         </div>
       </div>
 
@@ -40,7 +42,6 @@
           <%= button_tag "Add Guide", type: "button", class: "js-add-guide btn btn-success", disabled: true %>
         </div>
       </div>
-
 
       <%= f.hidden_field :tree, value: @topic_tree, class: "js-topic-tree" %>
       <%= f.submit "Save", class: "btn btn-default btn-save" %>
