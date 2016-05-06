@@ -4,6 +4,8 @@ class Topic < ActiveRecord::Base
   validate :path_format
 
   has_many :topic_sections, -> { order(position: :asc) }
+  accepts_nested_attributes_for :topic_sections, allow_destroy: true
+
   has_many :guides, through: :topic_sections
 
   def ready_to_publish?

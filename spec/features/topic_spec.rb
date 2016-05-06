@@ -13,7 +13,7 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to_not have_button('Publish')
   end
 
-  it "save a draft topic", js: true do
+  it "saves a draft topic" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
                             .once
@@ -21,8 +21,8 @@ RSpec.describe "Topics", type: :feature do
     expect(api_double).to receive(:patch_links)
                             .once
                             .with(an_instance_of(String), an_instance_of(Hash))
-    guide1 = create(:guide, editions: [ build(:edition, title: 'Guide 1') ])
-    guide2 = create(:guide, editions: [ build(:edition, title: 'Guide 2') ])
+    create(:guide, editions: [ build(:edition, title: 'Guide 1') ])
+    create(:guide, editions: [ build(:edition, title: 'Guide 2') ])
 
     visit root_path
     click_link "Manage Topics"
@@ -35,26 +35,14 @@ RSpec.describe "Topics", type: :feature do
     click_button "Add Heading"
     fill_in "Heading Title", with: "The heading title"
     fill_in "Heading Description", with: "The heading description"
-    add_guide "Guide 1"
-    add_guide "Guide 2"
     click_button "Save"
-
-    # Reload the page to be sure the fields don't contain params from the
-    # previous request
-    visit current_path
 
     expect(page).to have_field('Title', with: 'The title')
     expect(page).to have_field('Description', with: 'The description')
     expect(page).to have_checked_field('Collapsed')
 
-    expect(find('.js-topic-title').value).to eq('The heading title')
-    expect(find('.js-topic-description').value).to eq('The heading description')
-
-    guide_ids = all('.js-topic-guide').map(&:value)
-    expect(guide_ids).to eq [
-      guide1.id.to_param,
-      guide2.id.to_param,
-    ]
+    expect(find_field("Heading Title").value).to eq "The heading title"
+    expect(find_field("Heading Description").value).to eq "The heading description"
   end
 
   it "links to a preview from a saved draft" do
@@ -75,7 +63,7 @@ RSpec.describe "Topics", type: :feature do
     expect(api_double).to receive(:patch_links)
                             .once
                             .with(an_instance_of(String), an_instance_of(Hash))
-    topic = create(:topic, title: 'Agile Delivery')
+    create(:topic, title: 'Agile Delivery')
 
     visit root_path
     click_link "Manage Topics"
@@ -88,11 +76,6 @@ RSpec.describe "Topics", type: :feature do
     within('.alert') do
       expect(page).to have_content('Topic has been updated')
     end
-
-    # Reload the page to be sure the fields don't contain params from the
-    # previous request
-    visit current_path
-
     expect(page).to have_field('Description', with: 'Updated description')
   end
 
@@ -123,14 +106,6 @@ RSpec.describe "Topics", type: :feature do
     within('.alert') do
       expect(page).to have_content('Topic has been published')
     end
-  end
-
-  def add_guide(name)
-    click_button "Add Guide"
-
-    select = all(".js-topic-guide").select{|j| j.value == ""}.first
-    options = select.all(:option).select {|o| o.text == name}
-    options.first.select_option
   end
 end
 
