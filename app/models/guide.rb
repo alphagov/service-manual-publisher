@@ -7,8 +7,16 @@ class Guide < ActiveRecord::Base
 
   has_many :editions, dependent: :destroy
 
+  scope :only_latest_edition, -> {
+    joins(:editions)
+      .where('editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)')
+  }
+
+  scope :in_state, -> (state) {
+    only_latest_edition.where("editions.state = '#{state}'") if state.present?
+  }
+
   scope :by_author, ->(author_id) { where(editions: { author_id: author_id }) if author_id.present? }
-  scope :in_state, ->(state) { where(editions: { state: state }) if state.present? }
   scope :owned_by, ->(content_owner_id) { where(editions: { content_owner_id: content_owner_id }) if content_owner_id.present? }
 
   delegate :title, to: :latest_edition
