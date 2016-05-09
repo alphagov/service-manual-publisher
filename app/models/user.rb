@@ -6,6 +6,6 @@ class User < ActiveRecord::Base
   has_many :editions, foreign_key: :author_id
 
   def self.authors
-    User.joins(:editions)
+    User.joins(:editions).distinct
   end
 end

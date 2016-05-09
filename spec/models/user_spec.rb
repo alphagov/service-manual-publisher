@@ -18,5 +18,14 @@ RSpec.describe User, type: :model do
       expect(User.authors.to_a).to_not include user1
       expect(User.authors.to_a).to_not include user2
     end
+
+    it "drops duplicates" do
+      author = create(:user, name: "Author 1")
+      create(:edition, author: author)
+      create(:edition, author: author)
+
+      ids = User.authors.pluck(:id)
+      expect(ids.uniq).to eq ids
+    end
   end
 end
