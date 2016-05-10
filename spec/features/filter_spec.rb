@@ -6,40 +6,20 @@ RSpec.describe "filtering guides", type: :feature do
     create(
       :guide,
       editions: [
-        build(:edition, state:"draft"),
-        build(:edition, state:"review_requested", title: "Review Requested"),
+        build(:edition, state:"draft", title: "Edition that is not expected"),
+        build(:edition, state:"review_requested", title: "Edition that is not expected"),
       ],
     )
     create(
       :guide,
       editions: [
-        build(:edition, state: "draft", title: "Draft"),
-      ],
-    )
-    create(
-      :guide,
-      editions: [
-        build(:edition, state:"draft"),
-        build(:edition, state:"unpublished", title: "Unpublished"),
+        build(:edition, state: "draft", title: "Expected edition"),
       ],
     )
 
     filter_by_state "Draft"
-    expect(all_titles).to eq [
-      "Draft"
-    ]
-
-    filter_by_state "Review Requested"
-    expect(all_titles).to eq [
-      "Review Requested"
-    ]
-  end
-
-  def all_titles
-    page
-      .all(".guide-table a")
-      .map(&:text)
-      .reject {|i| i.include? "Community"}
+    expect(page).to have_content "Expected edition"
+    expect(page).to_not have_content "Edition that is not expected"
   end
 
   it "filters by user" do
