@@ -2,23 +2,24 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "filtering guides", type: :feature do
-  it "filters by state" do
-    create(:guide,
-          slug: "/service-manual/topic-name/a",
-          editions: [ build(:edition, state:"review_requested", title: "Edition 1") ],
-         )
-    create(:guide,
-          slug: "/service-manual/topic-name/b",
-          editions: [ build(:edition, state: "draft", title: "Edition 2") ],
+  it "filters by latest edition state" do
+    create(
+      :guide,
+      editions: [
+        build(:edition, state:"draft", title: "Edition that is not expected"),
+        build(:edition, state:"review_requested", title: "Edition that is not expected"),
+      ],
+    )
+    create(
+      :guide,
+      editions: [
+        build(:edition, state: "draft", title: "Expected edition"),
+      ],
     )
 
     filter_by_state "Draft"
-    expect(page).to_not have_text "Edition 1"
-    expect(page).to have_text "Edition 2"
-
-    filter_by_state "Review Requested"
-    expect(page).to have_text "Edition 1"
-    expect(page).to_not have_text "Edition 2"
+    expect(page).to have_content "Expected edition"
+    expect(page).to_not have_content "Edition that is not expected"
   end
 
   it "filters by user" do

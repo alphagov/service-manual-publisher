@@ -288,3 +288,90 @@ RSpec.describe Guide, "#live_edition" do
     expect(guide.live_edition).to eq(nil)
   end
 end
+
+RSpec.describe Guide, ".in_state" do
+  it "returns guides that have a latest edition in a state" do
+    published_guide = create(
+      :guide,
+      editions: [
+        build(:draft_edition),
+        build(:ready_edition),
+        build(:published_edition),
+      ],
+    )
+    ready_guide = create(
+      :guide,
+      editions: [
+        build(:draft_edition),
+        build(:ready_edition),
+      ],
+    )
+    draft_guide = create(
+      :guide,
+      editions: [
+        build(:draft_edition),
+      ],
+    )
+
+    draft_guides = Guide.where(type: nil).in_state("draft")
+    expect(draft_guides).to eq [draft_guide]
+
+    ready_guides = Guide.where(type: nil).in_state("ready")
+    expect(ready_guides).to eq [ready_guide]
+
+    published_guides = Guide.where(type: nil).in_state("published")
+    expect(published_guides).to eq [published_guide]
+  end
+end
+
+RSpec.describe Guide, ".by_author" do
+  it "returns guides that have a latest edition by the author" do
+    expected_author = create(:user)
+    another_author = create(:user)
+
+    create(
+      :guide,
+      editions: [
+        build(:draft_edition, author: expected_author),
+        build(:draft_edition, author: another_author),
+      ],
+    )
+    expected_guide = create(
+      :guide,
+      editions: [
+        build(:draft_edition, author: another_author),
+        build(:draft_edition, author: expected_author),
+      ],
+    )
+
+    expect(Guide.where(type: nil).by_author(expected_author.id).to_a).to eq [
+      expected_guide
+    ]
+  end
+end
+
+RSpec.describe Guide, ".owned_by" do
+  it "returns guides with a latest edition owned by the content owner" do
+    expected_content_owner = create(:guide_community)
+    another_content_owner = create(:guide_community)
+
+    create(
+      :guide,
+      editions: [
+        build(:draft_edition, content_owner: expected_content_owner),
+        build(:draft_edition, content_owner: another_content_owner),
+      ],
+    )
+    expected_guide = create(
+      :guide,
+      editions: [
+        build(:draft_edition, content_owner: another_content_owner),
+        build(:draft_edition, content_owner: expected_content_owner),
+      ],
+    )
+
+    expect(Guide.where(type: nil).owned_by(expected_content_owner.id).to_a).to eq [
+      expected_guide
+    ]
+  end
+end
