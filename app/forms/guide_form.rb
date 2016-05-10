@@ -33,10 +33,6 @@ class GuideForm
     end
   end
 
-  def topic_slug
-    "#{topic.try(:path)}/"
-  end
-
   def title_slug
     slug ? slug.split("/").last : nil
   end
