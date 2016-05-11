@@ -13,6 +13,12 @@ RSpec.describe GuideForm, "#initialize" do
         described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).author_id
         ).to eq(5)
     end
+
+    it "assigns title_slug to be nil" do
+      expect(
+        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).title_slug
+        ).to eq(nil)
+    end
   end
 
   context "for an existing guide" do
@@ -92,6 +98,15 @@ RSpec.describe GuideForm, "#initialize" do
       guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
 
       expect(guide_form.topic_section_id).to eq(topic_section.id)
+    end
+
+    it "calculates the title_slug" do
+      edition = build(:edition)
+      guide = create(:guide, editions: [ edition ], slug: "/service-manual/topic/my-guide")
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+
+      expect(guide_form.title_slug).to eq("my-guide")
     end
   end
 

@@ -5,7 +5,7 @@ class GuideForm
 
   attr_reader :guide, :edition, :user
   attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
-    :summary, :title, :topic_section_id, :type, :update_type, :version
+    :summary, :title, :title_slug, :topic_section_id, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
 
@@ -23,6 +23,7 @@ class GuideForm
     self.slug = guide.slug
     self.summary = edition.summary
     self.title = edition.title
+    self.title_slug = extracted_title_from_slug
     self.topic_section_id = topic_section.try(:id)
     self.type = guide.type
     self.update_type = next_update_type
@@ -32,13 +33,6 @@ class GuideForm
       self.change_note = nil
       self.change_summary = nil
     end
-  end
-
-  def title_slug
-    slug ? slug.split("/").last : nil
-  end
-
-  def title_slug=slug
   end
 
   def save
@@ -94,6 +88,10 @@ class GuideForm
   end
 
 private
+
+  def extracted_title_from_slug
+    slug ? slug.split("/").last : nil
+  end
 
   def topic_section
     TopicSection
