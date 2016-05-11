@@ -164,7 +164,7 @@ end
 
 RSpec.describe GuideForm, "#save" do
   context "for a brand new guide" do
-    it "persists a guide with an edition" do
+    it "persists a guide with an edition and puts it in the relevant topic section" do
       guide_community = create(:guide_community)
       user = create(:user)
 
@@ -187,6 +187,10 @@ RSpec.describe GuideForm, "#save" do
 
       expect(guide).to be_persisted
       expect(edition).to be_persisted
+
+      expect(
+        TopicSectionGuide.find_by(topic_section: topic_section, guide: guide)
+        ).to be_present
     end
 
     it "assigns a state of draft" do
@@ -248,31 +252,6 @@ RSpec.describe GuideForm, "#save" do
       guide_form.save
 
       expect(edition.version).to eq(2)
-    end
-  end
-
-  context "when the guide doesn't have a topic section" do
-    it "assigns the guide to the topic section" do
-      guide_community = create(:guide_community)
-      user = create(:user)
-      guide = create(:published_guide)
-      guide_form = described_class.new(
-        guide: guide,
-        edition: guide.latest_edition,
-        user: user
-      )
-
-      topic = create(:topic)
-      topic_section = topic.topic_sections.create!(
-        title: "Topic Section Title",
-        description: "Topic Section Description",
-      )
-      guide_form.assign_attributes(
-        topic_section_id: topic_section.id,
-      )
-      guide_form.save
-
-      expect(topic_section.guides).to include guide
     end
   end
 

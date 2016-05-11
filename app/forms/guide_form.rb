@@ -7,6 +7,8 @@ class GuideForm
   attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
     :summary, :title, :title_slug, :topic_section_id, :type, :update_type, :version
 
+  validates_presence_of :topic_section_id
+
   delegate :persisted?, to: :guide
 
   def initialize(guide:, edition:, user:)
@@ -50,14 +52,7 @@ class GuideForm
     edition.update_type = update_type
     edition.version = version
 
-    passed_validation = if topic_section_id.present?
-                          guide.save
-                        else
-                          errors.add(:topic_section_id, "can't be blank")
-                          false
-                        end
-
-    if passed_validation
+    if valid? && guide.save
       topic_section_guide = TopicSectionGuide.where(guide: guide).first
       if topic_section_guide.present? && topic_section_guide.topic_section != topic_section
         topic_section_guide.destroy!
