@@ -81,6 +81,18 @@ RSpec.describe GuideForm, "#initialize" do
       expect(guide_form.change_summary).to eq("summary")
       expect(guide_form.change_note).to eq("note")
     end
+
+    it "loads the topic_section_id" do
+      edition = build(:edition)
+      guide = create(:guide, editions: [ edition ])
+      topic = create(:topic)
+      topic_section = create(:topic_section, topic: topic)
+      TopicSectionGuide.create!(topic_section: topic_section, guide: guide)
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+
+      expect(guide_form.topic_section_id).to eq(topic_section.id)
+    end
   end
 
   context "for an existing published guide" do
@@ -333,24 +345,6 @@ RSpec.describe GuideForm, "validations" do
     guide_form.save
 
     expect(guide_form.errors.full_messages).to include("Topic section can't be blank")
-  end
-end
-
-RSpec.describe GuideForm, "#stored_topic_section_id" do
-  it "returns the id of the topic section that contains this guide" do
-    create(:guide_community)
-    user = create(:user)
-    guide = create(:published_guide)
-    guide_form = described_class.new(
-      guide: guide,
-      edition: guide.latest_edition,
-      user: user
-    )
-
-    topic_section = create(:topic_section, topic: create(:topic))
-    topic_section.guides << guide
-
-    expect(guide_form.stored_topic_section_id).to eq topic_section.id
   end
 end
 

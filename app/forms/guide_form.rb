@@ -23,6 +23,7 @@ class GuideForm
     self.slug = guide.slug
     self.summary = edition.summary
     self.title = edition.title
+    self.topic_section_id = topic_section.try(:id)
     self.type = guide.type
     self.update_type = next_update_type
     self.version = next_edition_version
@@ -78,12 +79,6 @@ class GuideForm
     end
   end
 
-  def stored_topic_section_id
-    TopicSectionGuide
-      .where(guide: guide)
-      .first.try(:topic_section).try(:id)
-  end
-
   def to_param
     guide.id.to_s
   end
@@ -99,6 +94,12 @@ class GuideForm
   end
 
 private
+
+  def topic_section
+    TopicSection
+      .joins(:topic_section_guides)
+      .find_by('topic_section_guides.guide_id = ?', guide.id)
+  end
 
   def next_edition_version
     if edition.published?
