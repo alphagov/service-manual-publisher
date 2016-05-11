@@ -4,8 +4,8 @@ class GuideForm
   include ActiveModel::Model
 
   attr_reader :guide, :edition, :user
-  attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug, :topic_section_id,
-    :summary, :title, :type, :update_type, :version
+  attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
+    :summary, :title, :topic_section_id, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
 
