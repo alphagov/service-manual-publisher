@@ -272,34 +272,27 @@ RSpec.describe GuideForm, "#save" do
         TopicSectionGuide.where(guide: guide).count
         ).to eq 1
     end
-  end
 
-  context "when the guide does have a topic section" do
-    context "that is NOT the same as the chosen topic section" do
-      it "moves the guide to a new topic section" do
-        create(:guide_community)
-        user = create(:user)
-        guide = create(:published_guide)
-        edition = guide.latest_edition
-        guide_form = described_class.new(
-          guide: guide,
-          edition: guide.latest_edition,
-          user: user
-        )
+    it "changes to a different topic section within the same topic" do
+      topic = create(:topic)
+      original_topic_section = create(:topic_section, topic: topic)
+      new_topic_section = create(:topic_section, topic: topic)
+      user = create(:user)
+      guide = create(:published_guide)
+      edition = guide.latest_edition
 
-        topic = create(:topic)
-        topic_section = create(:topic_section, topic: topic)
-        other_topic_section = create(:topic_section, topic: topic)
-        other_topic_section.guides << guide
+      original_topic_section.guides << guide
 
-        guide_form.assign_attributes(topic_section_id: topic_section.id)
-        expect(
-          guide_form.save
-          ).to eq(true)
+      guide_form = described_class.new(
+        guide: guide,
+        edition: edition,
+        user: user
+      )
+      guide_form.assign_attributes(topic_section_id: new_topic_section.id)
+      guide_form.save
 
-        expect(topic_section.reload.guides).to include guide
-        expect(other_topic_section.reload.guides).to_not include guide
-      end
+      expect(new_topic_section.reload.guides).to include guide
+      expect(original_topic_section.reload.guides).to_not include guide
     end
   end
 end
