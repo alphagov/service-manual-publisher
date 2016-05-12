@@ -253,38 +253,34 @@ RSpec.describe GuideForm, "#save" do
 
       expect(edition.version).to eq(2)
     end
+
+    it "doesn't create a duplicate TopicSectionGuide" do
+      user = create(:user)
+      guide = create(:published_guide)
+      edition = guide.latest_edition
+      topic = create(:topic)
+      topic_section = create(:topic_section, topic: topic)
+      topic_section.guides << guide
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+      guide_form.assign_attributes(topic_section_id: topic_section.id)
+      expect(
+        guide_form.save
+        ).to eq(true)
+
+      expect(
+        TopicSectionGuide.where(guide: guide).count
+        ).to eq 1
+    end
   end
 
   context "when the guide does have a topic section" do
-    context "that is the same as the chosen topic section" do
-      it "does not change anything" do
-        create(:guide_community)
-        user = create(:user)
-        guide = create(:published_guide)
-        guide_form = described_class.new(
-          guide: guide,
-          edition: guide.latest_edition,
-          user: user
-        )
-
-        topic = create(:topic)
-        topic_section = create(:topic_section, topic: topic)
-        topic_section.guides << guide
-
-        guide_form.assign_attributes(
-          topic_section_id: topic_section.id,
-        )
-        expect(TopicSectionGuide.where(guide: guide).count).to eq 1
-
-        guide_form.save
-      end
-    end
-
     context "that is NOT the same as the chosen topic section" do
       it "moves the guide to a new topic section" do
         create(:guide_community)
         user = create(:user)
         guide = create(:published_guide)
+        edition = guide.latest_edition
         guide_form = described_class.new(
           guide: guide,
           edition: guide.latest_edition,
@@ -296,10 +292,10 @@ RSpec.describe GuideForm, "#save" do
         other_topic_section = create(:topic_section, topic: topic)
         other_topic_section.guides << guide
 
-        guide_form.assign_attributes(
-          topic_section_id: topic_section.id,
-        )
-        guide_form.save
+        guide_form.assign_attributes(topic_section_id: topic_section.id)
+        expect(
+          guide_form.save
+          ).to eq(true)
 
         expect(topic_section.reload.guides).to include guide
         expect(other_topic_section.reload.guides).to_not include guide

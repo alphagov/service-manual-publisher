@@ -38,7 +38,6 @@ class GuideForm
   end
 
   def save
-    topic_section = TopicSection.where(id: topic_section_id).first
     guide.slug = slug
     edition.author_id = author_id
     edition.body = body
@@ -52,13 +51,10 @@ class GuideForm
     edition.update_type = update_type
     edition.version = version
 
-    if valid? && guide.save
-      topic_section_guide = TopicSectionGuide.where(guide: guide).first
-      if topic_section_guide.present? && topic_section_guide.topic_section != topic_section
-        topic_section_guide.destroy!
-      end
-      topic_section.guides << guide
+    topic_section_guide = TopicSectionGuide.find_or_initialize_by(guide: guide)
+    topic_section_guide.topic_section_id = topic_section_id
 
+    if valid? && guide.save && topic_section_guide.save
       true
     else
       promote_errors_for(guide)
