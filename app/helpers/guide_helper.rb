@@ -26,15 +26,13 @@ module GuideHelper
   end
 
   def topic_section_options_for_select
-    options = []
-    Topic.all.each do |topic|
-      options << [
+    Topic.all.map do |topic|
+      [
         topic.title,
-        topic.topic_sections.map {|ts| ["#{ts.title}", ts.id] },
-        {"data-path" => topic.path}
+        topic.topic_sections.map { |ts| [ ts.title, ts.id ] },
+        { "data-path" => topic.path }
       ]
     end
-    options
   end
 
   def guide_form_for(guide, *args, &block)
