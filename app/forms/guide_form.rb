@@ -80,13 +80,12 @@ private
 
   def topic_section_id_from_within_the_same_topic
     if topic_section_id.present?
-      topic_section = TopicSection.find(topic_section_id)
-
       if topic_section_guide.new_record?
         topic_section_id
       else
+        requested_topic_section = TopicSection.find(topic_section_id)
         remaining_in_the_same_topic =
-          topic_section_guide.topic_section.topic_id == topic_section.topic_id
+          topic_section_guide.topic_section.topic_id == requested_topic_section.topic_id
 
         if remaining_in_the_same_topic
           topic_section_id
