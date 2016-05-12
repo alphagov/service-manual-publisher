@@ -233,7 +233,7 @@ RSpec.describe Guide, "#editions_since_last_published" do
     guide.editions << edition1
     guide.editions << edition2
 
-    expect(guide.editions_since_last_published.to_a).to eq [edition1, edition2]
+    expect(guide.editions_since_last_published.to_a).to match_array [edition2, edition1]
   end
 end
 

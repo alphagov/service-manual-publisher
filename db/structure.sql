@@ -563,6 +563,20 @@ CREATE INDEX guides_tsv_idx ON guides USING gin (tsv);
 
 
 --
+-- Name: index_approvals_on_edition_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_approvals_on_edition_id ON approvals USING btree (edition_id);
+
+
+--
+-- Name: index_approvals_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_approvals_on_user_id ON approvals USING btree (user_id);
+
+
+--
 -- Name: index_comments_on_commentable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -584,6 +598,48 @@ CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
 
 
 --
+-- Name: index_editions_on_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_editions_on_author_id ON editions USING btree (author_id);
+
+
+--
+-- Name: index_editions_on_content_owner_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_editions_on_content_owner_id ON editions USING btree (content_owner_id);
+
+
+--
+-- Name: index_editions_on_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_editions_on_guide_id ON editions USING btree (guide_id);
+
+
+--
+-- Name: index_guides_on_content_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_guides_on_content_id ON guides USING btree (content_id);
+
+
+--
+-- Name: index_redirects_on_content_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_redirects_on_content_id ON redirects USING btree (content_id);
+
+
+--
+-- Name: index_slug_migrations_on_content_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_slug_migrations_on_content_id ON slug_migrations USING btree (content_id);
+
+
+--
 -- Name: index_slug_migrations_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -602,6 +658,13 @@ CREATE INDEX index_topic_section_guides_on_guide_id ON topic_section_guides USIN
 --
 
 CREATE INDEX index_topic_section_guides_on_topic_section_id ON topic_section_guides USING btree (topic_section_id);
+
+
+--
+-- Name: index_topic_sections_on_topic_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_topic_sections_on_topic_id ON topic_sections USING btree (topic_id);
 
 
 --
@@ -749,4 +812,16 @@ INSERT INTO schema_migrations (version) VALUES ('20160428190215');
 INSERT INTO schema_migrations (version) VALUES ('20160429134835');
 
 INSERT INTO schema_migrations (version) VALUES ('20160504064153');
+
+INSERT INTO schema_migrations (version) VALUES ('20160510122323');
+
+INSERT INTO schema_migrations (version) VALUES ('20160510122324');
+
+INSERT INTO schema_migrations (version) VALUES ('20160510122325');
+
+INSERT INTO schema_migrations (version) VALUES ('20160510122326');
+
+INSERT INTO schema_migrations (version) VALUES ('20160510122327');
+
+INSERT INTO schema_migrations (version) VALUES ('20160510122328');
 
