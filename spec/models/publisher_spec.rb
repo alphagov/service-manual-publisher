@@ -141,7 +141,7 @@ RSpec.describe Publisher, "#discard_draft" do
     it "destroys all the latest drafts" do
       subject.discard_draft
 
-      expect(guide.reload.editions.map(&:title)).to eq [
+      expect(guide.reload.editions.map(&:title)).to match_array [
         "This is the first draft edition",
         "This is the published edition",
       ]
