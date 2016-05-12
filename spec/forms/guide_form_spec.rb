@@ -294,6 +294,29 @@ RSpec.describe GuideForm, "#save" do
       expect(new_topic_section.reload.guides).to include guide
       expect(original_topic_section.reload.guides).to_not include guide
     end
+
+    it "isn't possible to change the topic" do
+      original_topic = create(:topic)
+      original_topic_section = create(:topic_section, topic: original_topic)
+      different_topic = create(:topic)
+      different_topic_section = create(:topic_section, topic: different_topic)
+      user = create(:user)
+      guide = create(:published_guide)
+      edition = guide.latest_edition
+
+      original_topic_section.guides << guide
+
+      guide_form = described_class.new(
+        guide: guide,
+        edition: edition,
+        user: user
+      )
+      guide_form.assign_attributes(topic_section_id: different_topic_section.id)
+      guide_form.save
+
+      expect(original_topic_section.reload.guides).to include guide
+      expect(different_topic_section.reload.guides).to_not include guide
+    end
   end
 end
 

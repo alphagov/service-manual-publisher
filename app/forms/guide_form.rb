@@ -50,9 +50,7 @@ class GuideForm
     edition.title = title
     edition.update_type = update_type
     edition.version = version
-
-    topic_section_guide = TopicSectionGuide.find_or_initialize_by(guide: guide)
-    topic_section_guide.topic_section_id = topic_section_id
+    topic_section_guide.topic_section_id = topic_section_id_from_within_the_same_topic
 
     if valid? && guide.save && topic_section_guide.save
       true
@@ -79,6 +77,32 @@ class GuideForm
   end
 
 private
+
+  def topic_section_id_from_within_the_same_topic
+    if topic_section_id.present?
+      topic_section = TopicSection.find(topic_section_id)
+
+      if topic_section_guide.new_record?
+        topic_section_id
+      else
+        remaining_in_the_same_topic =
+          topic_section_guide.topic_section.topic_id == topic_section.topic_id
+
+        if remaining_in_the_same_topic
+          topic_section_id
+        else
+          topic_section_guide.topic_section_id
+        end
+      end
+    end
+  end
+
+  def topic_section_guide
+    @_topic_section_guide ||= TopicSectionGuide
+                                .includes(:topic_section)
+                                .references(:topic_section)
+                                .find_or_initialize_by(guide: guide)
+  end
 
   def extracted_title_from_slug
     slug ? slug.split("/").last : nil
