@@ -38,6 +38,8 @@ class GuideForm
     guide.slug = slug
     edition.author_id = author_id
     edition.body = body
+    edition.change_note = change_note
+    edition.change_summary = change_summary
     edition.content_owner_id = content_owner_id
     edition.description = description
     edition.state = Edition::STATES.first

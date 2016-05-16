@@ -194,6 +194,21 @@ RSpec.describe GuideForm, "#save" do
 
       expect(edition.author_id).to eq(5)
     end
+
+    it "assigns the changed note and summary to the edition" do
+      guide = Guide.new
+      edition = guide.editions.build
+      user = User.new
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+      guide_form.assign_attributes(
+        change_summary: "X happened",
+        change_note: "This happened because of X.",
+        )
+      guide_form.save
+
+      expect(edition.change_summary).to eq("X happened")
+      expect(edition.change_note).to eq("This happened because of X.")
+    end
   end
 
   context "for a published guide" do
