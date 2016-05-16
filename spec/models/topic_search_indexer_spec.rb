@@ -16,7 +16,7 @@ RSpec.describe TopicSearchIndexer do
       indexable_content: topic.title + "\n\n" + topic.description,
       title:             topic.title,
       link:              topic.path,
-      manual:            "service-manual",
+      manual:            "/service-manual",
       organisations:     ["government-digital-service"]
     }])
 

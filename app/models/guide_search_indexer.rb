@@ -15,7 +15,7 @@ class GuideSearchIndexer
         "indexable_content": live_edition.body,
         "title":             live_edition.title,
         "link":              guide.slug,
-        "manual":            "service-manual",
+        "manual":            "/service-manual",
         "organisations":     ["government-digital-service"],
       }])
     end
