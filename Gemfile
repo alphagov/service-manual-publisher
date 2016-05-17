@@ -21,7 +21,6 @@ gem 'active_link_to', '~> 1.0.3'
 gem 'select2-rails', '~> 4.0.0'
 gem 'diffy', '~> 3.0', '>= 3.0.7'
 gem 'redcarpet', '~> 3.3.3'
-gem 'rummageable', '1.2.0'
 gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
 gem 'rinku', '~> 1.7', '>= 1.7.3', require: "rails_rinku"
 gem 'acts_as_list', '~> 0.7.2'
