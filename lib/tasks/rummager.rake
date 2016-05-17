@@ -7,4 +7,25 @@ namespace :rummager do
       GuideSearchIndexer.new(guide).index
     end
   end
+
+  desc "A temporary task to delete some unpublished documents from rummager " \
+    "which failed due to a bug"
+  task delete_failed: :environment do
+    guide_slugs = %w(
+      /service-manual/agile-delivery/check-if-you-need-to-spend-money-on-a-service
+      /service-manual/spending-money-on-your-service/apply-for-approval-to-spend-money-on-a-service
+      /service-manual/spending-money-on-your-service/check-if-you-need-approval-to-spend-money-on-a-service
+      /service-manual/agile-delivery-community
+      /service-manual/digital-foundation-day-training
+    )
+    Guide.where(slug: guide_slugs).each do |guide|
+      begin
+        GuideSearchIndexer.new(guide).delete
+      rescue => e
+        puts "Guide failed: #{guide.slug}"
+        puts e.inspect
+        puts e.backtrace.join("\n")
+      end
+    end
+  end
 end
