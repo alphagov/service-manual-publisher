@@ -8,16 +8,21 @@ class GuideSearchIndexer
     live_edition = guide.live_edition
 
     if live_edition
-      rummager_api.add_batch([{
-        "format":            "service_manual_guide",
-        "_type":             "service_manual_guide",
-        "description":       live_edition.description,
-        "indexable_content": live_edition.body,
-        "title":             live_edition.title,
-        "link":              guide.slug,
-        "manual":            "/service-manual",
-        "organisations":     ["government-digital-service"],
-      }])
+      type = "service_manual_guide"
+      id = guide.slug
+
+      rummager_api.add_document(
+        type,
+        id,
+        {
+          "format":            "service_manual_guide",
+          "description":       live_edition.description,
+          "indexable_content": live_edition.body,
+          "title":             live_edition.title,
+          "link":              guide.slug,
+          "manual":            "/service-manual",
+          "organisations":     ["government-digital-service"],
+        })
     end
   end
 

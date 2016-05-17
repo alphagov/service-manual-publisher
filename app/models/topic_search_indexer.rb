@@ -5,16 +5,22 @@ class TopicSearchIndexer
   end
 
   def index
-    rummager_api.add_batch([{
-      "format":            "service_manual_topic",
-      "_type":             "service_manual_topic",
-      "description":       topic.description,
-      "indexable_content": topic.title + "\n\n" + topic.description,
-      "title":             topic.title,
-      "link":              topic.path,
-      "manual":            "/service-manual",
-      "organisations":     ["government-digital-service"],
-    }])
+    type = "service_manual_topic"
+    id = topic.path
+
+    rummager_api.add_batch(
+      type,
+      id,
+      {
+        "format":            "service_manual_topic",
+        "description":       topic.description,
+        "indexable_content": topic.title + "\n\n" + topic.description,
+        "title":             topic.title,
+        "link":              topic.path,
+        "manual":            "/service-manual",
+        "organisations":     ["government-digital-service"],
+      }
+    )
   end
 
 private

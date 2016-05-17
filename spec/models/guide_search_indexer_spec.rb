@@ -10,16 +10,19 @@ RSpec.describe GuideSearchIndexer, "#index" do
                     )
     guide.editions << build(:edition, body: "I'm reconsidering this draft..")
 
-    expect(rummager_api).to receive(:add_batch).with([{
-      format:            "service_manual_guide",
-      _type:             "service_manual_guide",
-      description:       "Description",
-      indexable_content: "It's my published guide content",
-      title:             "My guide",
-      link:              "/service-manual/topic/some-slug",
-      manual:            "/service-manual",
-      organisations:     ["government-digital-service"]
-    }])
+    expect(rummager_api).to receive(:add_document).with(
+      "service_manual_guide",
+      "/service-manual/topic/some-slug",
+      {
+        format:            "service_manual_guide",
+        description:       "Description",
+        indexable_content: "It's my published guide content",
+        title:             "My guide",
+        link:              "/service-manual/topic/some-slug",
+        manual:            "/service-manual",
+        organisations:     ["government-digital-service"]
+      }
+    )
 
     described_class.new(guide, rummager_api: rummager_api).index
   end
@@ -28,7 +31,7 @@ RSpec.describe GuideSearchIndexer, "#index" do
     rummager_api = double(:rummager_api)
     guide = create(:guide)
 
-    expect(rummager_api).to_not receive(:add_batch)
+    expect(rummager_api).to_not receive(:add_document)
 
     described_class.new(guide, rummager_api: rummager_api).index
   end
