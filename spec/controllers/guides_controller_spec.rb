@@ -30,7 +30,7 @@ RSpec.describe GuidesController, type: :controller do
 
     describe "#publish" do
       it 'notifies about search indexing errors but does not fail the transaction' do
-        expect_any_instance_of(Rummageable::Index).to receive(:add_batch).and_raise("Something went wrong")
+        expect_any_instance_of(GdsApi::Rummager).to receive(:add_document).and_raise("Something went wrong")
         edition = build(:edition, state: 'ready')
         guide = Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         expect(controller).to receive(:notify_airbrake)
@@ -42,7 +42,7 @@ RSpec.describe GuidesController, type: :controller do
       end
 
       it "sends an email notification when published by another user" do
-        allow_any_instance_of(Rummageable::Index).to receive(:add_batch)
+        allow_any_instance_of(GdsApi::Rummager).to receive(:add_document)
         edition = build(:edition, state: 'published')
         Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         publisher = build(:user, email: "ms.publisher@example.com")
@@ -56,7 +56,7 @@ RSpec.describe GuidesController, type: :controller do
       end
 
       it "avoids email notification when published by the author" do
-        allow_any_instance_of(Rummageable::Index).to receive(:add_batch)
+        allow_any_instance_of(GdsApi::Rummager).to receive(:add_document)
         edition = build(:edition, state: 'published')
         Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])

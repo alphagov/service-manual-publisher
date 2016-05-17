@@ -258,10 +258,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rummageable (1.2.0)
-      multi_json
-      null_logger
-      rest-client
     safe_yaml (1.0.4)
     sanitize (2.1.0)
       nokogiri (>= 1.4.4)
@@ -354,7 +350,6 @@ DEPENDENCIES
   redcarpet (~> 3.3.3)
   rinku (~> 1.7, >= 1.7.3)
   rspec-rails (~> 3.3)
-  rummageable (= 1.2.0)
   sass-rails (~> 5.0)
   select2-rails (~> 4.0.0)
   simplecov (= 0.10.0)
