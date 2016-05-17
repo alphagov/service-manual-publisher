@@ -1,11 +1,11 @@
 class TopicSearchIndexer
-  def initialize(topic, rummager_index: RUMMAGER_INDEX)
+  def initialize(topic, rummager_api: RUMMAGER_API)
     @topic = topic
-    @rummager_index = rummager_index
+    @rummager_api = rummager_api
   end
 
   def index
-    rummager_index.add_batch([{
+    rummager_api.add_batch([{
       "format":            "service_manual_topic",
       "_type":             "service_manual_topic",
       "description":       topic.description,
@@ -19,6 +19,6 @@ class TopicSearchIndexer
 
 private
 
-  attr_reader :topic, :rummager_index
+  attr_reader :topic, :rummager_api
 
 end

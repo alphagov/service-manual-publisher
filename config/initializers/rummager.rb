@@ -1,2 +1,4 @@
-RUMMAGER_INDEX =
-  Rummageable::Index.new(Plek.current.find('rummager'), '/mainstream')
+require 'gds_api/rummager'
+
+RUMMAGER_API =
+  GdsApi::Rummager.new(Plek.new.find("rummager"))
