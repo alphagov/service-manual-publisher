@@ -1,8 +1,5 @@
 $(function() {
   var $topics = $(".topics");
-  if ($topics.length == 0) {
-    return;
-  }
 
   $topics.on("click", ".js-delete-list-group-item", function() {
     $item = $(this).parents(".list-group-item");
