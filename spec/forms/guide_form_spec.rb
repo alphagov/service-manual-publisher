@@ -314,6 +314,10 @@ RSpec.describe GuideForm, "#save" do
       guide_form.assign_attributes(topic_section_id: different_topic_section.id)
       guide_form.save
 
+      expect(
+        guide_form.errors.full_messages_for(:topic_section_id)
+        ).to include("Topic section cannot change to a different topic")
+
       expect(original_topic_section.reload.guides).to include guide
       expect(different_topic_section.reload.guides).to_not include guide
     end

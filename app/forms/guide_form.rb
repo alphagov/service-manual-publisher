@@ -8,6 +8,7 @@ class GuideForm
     :summary, :title, :title_slug, :topic_section_id, :type, :update_type, :version
 
   validates_presence_of :topic_section_id
+  validate :topic_cannot_change
 
   delegate :persisted?, to: :guide
 
@@ -50,7 +51,7 @@ class GuideForm
     edition.title = title
     edition.update_type = update_type
     edition.version = version
-    topic_section_guide.topic_section_id = topic_section_id_from_within_the_same_topic
+    topic_section_guide.topic_section_id = topic_section_id
 
     if valid? && guide.save && topic_section_guide.save
       true
@@ -77,24 +78,6 @@ class GuideForm
   end
 
 private
-
-  def topic_section_id_from_within_the_same_topic
-    if topic_section_id.present?
-      if topic_section_guide.new_record?
-        topic_section_id
-      else
-        requested_topic_section = TopicSection.find(topic_section_id)
-        remaining_in_the_same_topic =
-          topic_section_guide.topic_section.topic_id == requested_topic_section.topic_id
-
-        if remaining_in_the_same_topic
-          topic_section_id
-        else
-          topic_section_guide.topic_section_id
-        end
-      end
-    end
-  end
 
   def topic_section_guide
     @_topic_section_guide ||= TopicSectionGuide
@@ -140,6 +123,19 @@ private
   def promote_errors_for(model)
     model.errors.each do |attrib, message|
       errors.add(attrib, message)
+    end
+  end
+
+  def topic_cannot_change
+    from, to = topic_section_guide.topic_section_id_change
+
+    return true if from.blank?
+
+    old_section = TopicSection.find(from)
+    new_section = TopicSection.find(to)
+
+    if old_section.topic_id != new_section.topic_id
+      errors.add(:topic_section_id, "cannot change to a different topic")
     end
   end
 end

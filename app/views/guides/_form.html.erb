@@ -11,7 +11,7 @@
   </div>
 
   <div class="col-md-8">
-    <%= render 'shared/form_error_summary', full_messages: guide.errors.full_messages + edition.errors.full_messages %>
+    <%= render 'shared/form_error_summary', full_messages: guide_form.errors.full_messages %>
 
     <div class="well">
       <h2><%= guide.model_name.human %> content</h2>
