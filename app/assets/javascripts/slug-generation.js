@@ -1,7 +1,7 @@
 $(function() {
   var $form = $(".js-guide-form");
 
-  if ($form.length == 0) {
+  if (!$form.length) {
     return;
   }
 
