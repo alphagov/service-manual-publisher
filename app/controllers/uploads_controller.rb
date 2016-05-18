@@ -4,7 +4,9 @@ class UploadsController < ApplicationController
       format.js do
         file = params[:file]
         unless file.content_type.start_with?("image")
-          return render text: "The file '#{file.original_filename}' that you're trying to upload does not seem to be an image", status: :unprocessable_entity
+          render text: "The file '#{sanitize(file.original_filename)}' that you're trying to upload " \
+            "does not seem to be an image", status: :unprocessable_entity
+          return
         end
 
         begin
@@ -15,5 +17,11 @@ class UploadsController < ApplicationController
         end
       end
     end
+  end
+
+private
+
+  def sanitize(input)
+    ActionController::Base.helpers.sanitize(input)
   end
 end
