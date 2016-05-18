@@ -10,6 +10,11 @@ module CapybaraHelpers
   def within_guide_index_row(title, &block)
     within(:xpath, %{//a[.="#{title}"]/ancestor::tr}, &block)
   end
+
+  def fill_in_final_url(with)
+    page.find_field("Final URL").base.native.remove_attribute("readonly")
+    fill_in "Final URL", with: with
+  end
 end
 
 RSpec.configure do |config|

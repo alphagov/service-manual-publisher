@@ -10,6 +10,14 @@ FactoryGirl.define do
         [ build(:edition, title: title) ]
       }
     end
+
+    trait :with_topic_section do
+      after(:create) do |guide, evaluator|
+        topic = create(:topic)
+        topic_section = create(:topic_section, topic: topic)
+        topic_section.guides << guide
+      end
+    end
   end
 
   factory :guide_community do
@@ -183,6 +191,11 @@ FactoryGirl.define do
     trait :with_redirect_to do
       redirect_to "/path-to-redirect-to"
     end
+  end
+
+  factory :topic_section do
+    title "Topic Section Title"
+    description "Topic Section Description"
   end
 end
 

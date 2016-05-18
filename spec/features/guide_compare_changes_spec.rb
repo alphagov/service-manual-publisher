@@ -10,7 +10,7 @@ RSpec.describe "Guide compare changes", type: :feature do
 
   [:published_guide, :published_guide_community].each do |guide_type|
     it "shows exact changes in any fields" do
-      guide = create(guide_type, title: "First version", body: "### Hello")
+      guide = create(guide_type, :with_topic_section, title: "First version", body: "### Hello")
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Second version"

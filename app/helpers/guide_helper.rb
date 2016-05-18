@@ -25,6 +25,16 @@ module GuideHelper
           map{ |g| [g.title, g.id] }
   end
 
+  def topic_section_options_for_select
+    Topic.all.map do |topic|
+      [
+        topic.title,
+        topic.topic_sections.map { |ts| [ ts.title, ts.id ] },
+        { "data-path" => topic.path }
+      ]
+    end
+  end
+
   def guide_form_for(guide, *args, &block)
     options = args.extract_options!
     url = url_for(guide.becomes(Guide))

@@ -1,7 +1,16 @@
 .topics {
+  .list-group {
+    min-height: 30px;
+  }
+
+  .list-group-item {
+    margin-bottom: 10px;
+  }
+
   .left {
     display: inline;
   }
+
   .right {
     display: inline;
   }
@@ -15,7 +24,3 @@
   }
 }
 
-.draggable-guide {
-  margin-left: 2em;
-  background-color: #f5f5f5;
-}

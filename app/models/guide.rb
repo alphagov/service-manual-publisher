@@ -105,13 +105,11 @@ private
   end
 
   def slug_format
-    if !slug.to_s.match(/\A\/service-manual\//)
-      errors.add(:slug, "must be present and start with '/service-manual/'")
-    elsif !slug.to_s.match(/\A\/service-manual\/\w+/)
-      errors.add(:slug, "must be filled in")
-    elsif !slug.to_s.match(/\A\/service-manual\/[a-z0-9\-\/]+$/i)
+    if !slug.to_s.match(/\A\/service-manual\/[a-z0-9\-\/]+$/i)
       errors.add(:slug, "can only contain letters, numbers and dashes")
-    elsif !slug.to_s.match(/\A\/service-manual\/[a-z0-9-]+\/[a-z0-9-]+/)
+    end
+
+    if !slug.to_s.match(/\A\/service-manual\/[a-z0-9-]+\/[a-z0-9-]+/)
       errors.add(:slug, "must be present and start with '/service-manual/[topic]'")
     end
   end

@@ -143,7 +143,7 @@ private
   end
 
   def guide_form_params
-    params.require(:guide)
+    params.require(:guide).permit!
   end
 
   def index_for_search(guide)

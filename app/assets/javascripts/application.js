@@ -13,4 +13,5 @@
 //= require select2
 //= require protect_form_data
 //= require jquery.textarea_autosize
+//= require dragula.min
 //= require_tree .

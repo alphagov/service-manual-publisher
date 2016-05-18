@@ -1,12 +1,14 @@
 class GuideForm
   DEFAULT_UPDATE_TYPE = "major"
-  DEFAULT_SLUG = "/service-manual/"
 
   include ActiveModel::Model
 
   attr_reader :guide, :edition, :user
   attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
-    :summary, :title, :type, :update_type, :version
+    :summary, :title, :title_slug, :topic_section_id, :type, :update_type, :version
+
+  validates_presence_of :topic_section_id
+  validate :topic_cannot_change
 
   delegate :persisted?, to: :guide
 
@@ -21,9 +23,11 @@ class GuideForm
     self.change_summary = edition.change_summary
     self.content_owner_id = edition.content_owner_id
     self.description = edition.description
-    self.slug = guide.slug || DEFAULT_SLUG
+    self.slug = guide.slug
     self.summary = edition.summary
     self.title = edition.title
+    self.title_slug = extracted_title_from_slug
+    self.topic_section_id = topic_section.try(:id)
     self.type = guide.type
     self.update_type = next_update_type
     self.version = next_edition_version
@@ -47,8 +51,9 @@ class GuideForm
     edition.title = title
     edition.update_type = update_type
     edition.version = version
+    topic_section_guide.topic_section_id = topic_section_id
 
-    if guide.save
+    if valid? && guide.save && topic_section_guide.save
       true
     else
       promote_errors_for(guide)
@@ -73,6 +78,23 @@ class GuideForm
   end
 
 private
+
+  def topic_section_guide
+    @_topic_section_guide ||= TopicSectionGuide
+                                .includes(:topic_section)
+                                .references(:topic_section)
+                                .find_or_initialize_by(guide: guide)
+  end
+
+  def extracted_title_from_slug
+    slug ? slug.split("/").last : nil
+  end
+
+  def topic_section
+    TopicSection
+      .joins(:topic_section_guides)
+      .find_by('topic_section_guides.guide_id = ?', guide.id)
+  end
 
   def next_edition_version
     if edition.published?
@@ -101,6 +123,19 @@ private
   def promote_errors_for(model)
     model.errors.each do |attrib, message|
       errors.add(attrib, message)
+    end
+  end
+
+  def topic_cannot_change
+    from, to = topic_section_guide.topic_section_id_change
+
+    return true if from.blank?
+
+    old_section = TopicSection.find(from)
+    new_section = TopicSection.find(to)
+
+    if old_section.topic_id != new_section.topic_id
+      errors.add(:topic_section_id, "cannot change to a different topic")
     end
   end
 end

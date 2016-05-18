@@ -1,6 +1,7 @@
-<%= form_for guide_form, html: { class: "js-protect-data" } do |f| %>
-  <% guide = guide_form.guide %>
-  <% edition = guide_form.edition %>
+<% guide = guide_form.guide %>
+<% edition = guide_form.edition %>
+
+<%= form_for guide_form, html: { class: "js-guide-form js-protect-data", data: { "has-been-published": guide.has_published_edition? } } do |f| %>
   <% disable_inputs = edition.unpublished? %>
 
   <%= f.hidden_field :type %>
@@ -10,7 +11,7 @@
   </div>
 
   <div class="col-md-8">
-    <%= render 'shared/form_error_summary', full_messages: guide.errors.full_messages + edition.errors.full_messages %>
+    <%= render 'shared/form_error_summary', full_messages: guide_form.errors.full_messages %>
 
     <div class="well">
       <h2><%= guide.model_name.human %> content</h2>
@@ -22,20 +23,25 @@
       </div>
 
       <div class='form-group'>
-        <%= f.label :slug  %>
-        <%= f.error_list :slug  %>
+        <%= f.label :title_slug, "Slug" %>
+        <%= f.error_list :title_slug %>
         <div class="help-block">
           <p>
-            Always use the format: <code>/service-manual/[topic]/[guide]</code>.
-          </p>
-          <p>
-            You must include a topic - it's not automatically generated.
-          </p>
-          <p>
-            Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>/service-manual/agile-delivery/writing-user-stories</code>.
+            Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>writing-user-stories</code>.
           </p>
         </div>
-        <%= f.text_field :slug, class: 'input-md-12 form-control guide-slug js-guide-slug', disabled: guide.has_published_edition? %>
+        <%= f.text_field :title_slug, {value: guide_form.title_slug, class: 'input-md-12 form-control guide-slug js-title-slug', disabled: guide.has_published_edition?} %>
+      </div>
+
+      <div class='form-group'>
+        <%= f.label :topic_section_id, "Topic section" %>
+        <%= f.error_list :topic_section_id %>
+        <%= f.select :topic_section_id, grouped_options_for_select(topic_section_options_for_select, guide_form.topic_section_id), {include_blank: ""}, {class: 'js-topic-section select2 input-md-12 form-control'} %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :slug, "Final URL" %>
+        <%= f.text_field :slug, class: "input-md-12 form-control js-slug", readonly: true, disabled: guide.has_published_edition? %>
       </div>
 
       <div class='form-group'>
