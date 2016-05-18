@@ -29,7 +29,7 @@ module GuideHelper
     Topic.all.map do |topic|
       [
         topic.title,
-        topic.topic_sections.map { |ts| [ ts.title, ts.id ] },
+        topic.topic_sections.map { |ts| [ "#{topic.title} -> #{ts.title}", ts.id ] },
         { "data-path" => topic.path }
       ]
     end
