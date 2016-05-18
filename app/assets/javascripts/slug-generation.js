@@ -22,20 +22,27 @@ $(function() {
   $(document).on("change", ".js-topic-section", generateSlug);
 
   function generateSlug() {
+    // Slug can't be changed if the guide has ever been published.
     if (hasBeenPublished) {
       return;
     }
 
+    // If a user has manually changed the slug, then we don't generate
+    // it from the title anymore.
     if (!titleSlugManuallyChanged) {
       $titleSlug.val(slugify($title.val()));
     }
 
     var slug = "";
 
+    // We get the first part of the full from the chosen topic sections' topic.
+    // This will be in the format /service-manual/topic-path
     var topicPath = $topicSection.find(":selected").parent().data("path");
     if (!topicPath) { return }
     slug += topicPath + "/";
 
+    // Now add whatever title slug was generated (or manually entered by user)
+    // to the full slug.
     if (!$titleSlug.val()) { return }
     slug += slugify($titleSlug.val())
 
