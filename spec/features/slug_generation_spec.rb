@@ -41,7 +41,7 @@ RSpec.describe "creating guides", type: :feature do
 
           fill_in "Slug", with: "something"
           fill_in "Title", with: "My Guide Title"
-          select "Topic Section Title", from: "Topic section"
+          select "Agile Delivery -> Topic Section Title", from: "Topic section", exact: true
           expect(find_field('Slug').value).to eq "something"
           expect(find_field('Final URL').value).to eq "#{guide.topic.path}/something"
         end
