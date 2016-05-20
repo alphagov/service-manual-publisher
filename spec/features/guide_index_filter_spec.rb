@@ -44,7 +44,7 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to have_text "/service-manual/topic-name/b"
   end
 
-  it "filters by published by" do
+  it "filters by community" do
     [1, 2].each do |i|
       edition = build(:edition, content_owner: nil, title: "Content Owner #{i}")
       guide_community = create(:guide_community, editions: [ edition ])
