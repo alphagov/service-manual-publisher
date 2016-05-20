@@ -13,26 +13,31 @@ RSpec.describe "Guide history", type: :feature do
     create_guide_community
 
     guide = create(:published_guide)
-    guide.editions.where(state: "published").update_all(updated_at: "2004-11-24".to_time)
-    guide.editions << build(:edition, version: 2, update_type: "minor")
-
+    published_edition = guide.editions.find_by(state: "published")
+    published_edition.update_attribute(:updated_at, "2004-11-24".to_time)
+    draft_edition = build(:edition, version: 2, update_type: "minor")
+    guide.editions << draft_edition
 
     visit edit_guide_path(guide)
 
     click_on "Comments and history"
 
-    headings = all(".panel-edition").map do |heading|
-      heading.all(".panel-heading-part").map(&:text)
+    within_edition(2) do
+      expect(page).to have_content("Edition #2")
+      expect(page).to have_content("Minor update")
+      expect(page).to have_content("Not yet published")
+      # A link that compares this version to the previous version
+      expect(page).to have_link("View changes", href: edition_changes_path(published_edition, draft_edition))
     end
 
-    expect(headings).to eq [
-      [
-        "Edition #2", "Minor update", "Not yet published", ""
-      ],
-      [
-        "Edition #1", "Major update", "Published on 24 November 2004",  '"change summary"'
-      ],
-    ]
+    within_edition(1) do
+      expect(page).to have_content("Edition #1")
+      expect(page).to have_content("Major update")
+      expect(page).to have_content("Published on 24 November 2004")
+      expect(page).to have_content('"change summary"')
+      # A link that shows one large addition for the first version
+      expect(page).to have_link("View changes", href: edition_changes_path(nil, published_edition))
+    end
   end
 
   it "shows a history of the latest edition" do
@@ -89,6 +94,10 @@ RSpec.describe "Guide history", type: :feature do
     fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
     select Topic
+  end
+
+  def within_edition(number, &block)
+    within(:xpath, "//div[contains(@class, 'panel') and div[contains(@class, 'panel-heading') and contains(., 'Edition ##{number}')]]", &block)
   end
 
   def events

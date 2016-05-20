@@ -5,7 +5,8 @@
   <%= render 'editions/actions', publish_controls_only: true, form: f, guide: @guide, edition: @current_edition %>
 <% end %>
 
-<% @latest_edition_per_edition_group.each do |latest_edition_of_group| %>
+<% @latest_edition_per_edition_group.each.with_index do |latest_edition_of_group, index| %>
+  <% previous_latest_edition_of_group = @latest_edition_per_edition_group[index + 1] %>
   <% if latest_edition_of_group == @current_edition %>
     <div class="panel-edition open-edition panel panel-default">
       <div class="panel-heading">
@@ -29,7 +30,7 @@
           <% end %>
         </span>
         <div class="pull-right">
-          <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
+          <%= link_to "View changes", edition_changes_path(previous_latest_edition_of_group, latest_edition_of_group) %>
         </div>
       </div>
       <div class="panel-body">
