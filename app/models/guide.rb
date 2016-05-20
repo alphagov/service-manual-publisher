@@ -21,7 +21,13 @@ class Guide < ActiveRecord::Base
   scope :owned_by, ->(content_owner_id) {
     only_latest_edition.where("editions.content_owner_id = ?", content_owner_id)
   }
-  scope :by_type, ->(type) { where(type: type) }
+  scope :by_type, ->(type) {
+    if type.blank?
+      where("type = '' OR type IS NULL")
+    else
+      where(type: type)
+    end
+  }
 
   delegate :title, to: :latest_edition
 
