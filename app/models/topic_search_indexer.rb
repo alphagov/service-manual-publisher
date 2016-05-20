@@ -8,7 +8,7 @@ class TopicSearchIndexer
     type = "service_manual_topic"
     id = topic.path
 
-    rummager_api.add_batch(
+    rummager_api.add_document(
       type,
       id,
       {
