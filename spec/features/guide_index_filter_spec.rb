@@ -66,6 +66,30 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to have_text "Edition 2"
   end
 
+  it "filters by page type" do
+    guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
+    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+
+    edition = build(:edition, content_owner: guide_community, title: "Scrum")
+    guide = create(:guide, editions: [ edition ])
+
+    visit root_path
+    expect(page).to have_css(".guide-table td", text: "Agile Community")
+    expect(page).to have_css(".guide-table td", text: "Scrum")
+
+    filter_by_page_type "All"
+    expect(page).to have_css(".guide-table td", text: "Agile Community")
+    expect(page).to have_css(".guide-table td", text: "Scrum")
+
+    filter_by_page_type "Guide Community"
+    expect(page).to have_css(".guide-table td", text: "Agile Community")
+    expect(page).to_not have_css(".guide-table td", text: "Scrum")
+
+    filter_by_page_type "Guide"
+    expect(page).to_not have_css(".guide-table td", text: "Agile Community")
+    expect(page).to have_css(".guide-table td", text: "Scrum")
+  end
+
   it "searches for keywords" do
     edition1 = build(:edition, state: "review_requested", title: "Standups")
     create(:guide, slug: "/service-manual/topic-name/something", editions: [ edition1 ])
@@ -116,7 +140,7 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by #{guide_community.title}"
   end
 
-  [:author, :state, :community].each do |n|
+  [:author, :state, :community, :page_type].each do |n|
     define_method("filter_by_#{n}") do |value|
       visit root_path
       within ".filters" do

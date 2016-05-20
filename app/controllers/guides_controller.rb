@@ -9,6 +9,17 @@ class GuidesController < ApplicationController
                    .owned_by(params[:content_owner])
                    .page(params[:page])
 
+    if params.has_key?(:page_type)
+      case params[:page_type]
+      when 'All'
+        @guides = @guides
+      when 'Guide'
+        @guides = @guides.by_type(nil)
+      else
+        @guides = @guides.by_type(params[:page_type])
+      end
+    end
+
     if params[:q].present?
       @guides = @guides.search(params[:q])
     else

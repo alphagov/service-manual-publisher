@@ -21,6 +21,7 @@ class Guide < ActiveRecord::Base
   scope :owned_by, ->(content_owner_id) {
     only_latest_edition.where("editions.content_owner_id = #{content_owner_id}") if content_owner_id.present?
   }
+  scope :by_type, ->(type) { where(type: type) }
 
   delegate :title, to: :latest_edition
 

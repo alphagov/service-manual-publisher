@@ -18,6 +18,15 @@ module GuideHelper
     guide.latest_edition.author.try(:name).to_s
   end
 
+  def guide_types_for_select
+    guide_types = Guide.distinct(:type).pluck(:type).compact
+    options = guide_types.map do |type|
+      [ type.underscore.humanize.titleize, type ]
+    end
+
+    [[ "All", "All" ], [ "Guide", 'Guide' ]] + options
+  end
+
   def guide_community_options_for_select
     # TODO: N+1 on loading the most recent edition
     GuideCommunity.all.

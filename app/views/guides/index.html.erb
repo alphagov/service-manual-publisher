@@ -23,6 +23,9 @@
         <%= label_tag :content_owner, "Community", class: "add-top-margin nav-header" %>
         <%= select_tag :content_owner, options_for_select(guide_community_options_for_select, params[:content_owner]), {include_blank: "All", class: "select2 input-md-12 form-control"} %>
 
+        <%= label_tag :page_type, nil, class: "add-top-margin nav-header" %>
+        <%= select_tag :page_type, options_for_select(guide_types_for_select, params[:page_type]), { class: "select2 input-md-12 form-control" } %>
+
         <input type="submit" class="add-top-margin btn btn-default" value="Filter guides">
       </form>
     </div>
