@@ -1,7 +1,5 @@
 class GuidesController < ApplicationController
   def index
-    @state_options = Edition::STATES.map { |s| [s.titleize, s] }
-
     scope = Guide.all
     @guides = GuidesFilter.new(scope).by(params)
   end

@@ -54,4 +54,8 @@ module GuideHelper
   def guide_community_title(guide_community)
     guide_community.title.gsub(/ [cC]ommunity$/, "")
   end
+
+  def state_options_for_select
+    Edition::STATES.map { |s| [s.titleize, s] }
+  end
 end
