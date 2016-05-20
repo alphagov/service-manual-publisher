@@ -2,29 +2,8 @@ class GuidesController < ApplicationController
   def index
     @state_options = Edition::STATES.map { |s| [s.titleize, s] }
 
-    # TODO: :content_owner not being included is resulting in an N+1 query
-    @guides = Guide.includes(editions: [:author]).references(:editions)
-                   .by_author(params[:author])
-                   .in_state(params[:state])
-                   .owned_by(params[:content_owner])
-                   .page(params[:page])
-
-    if params.has_key?(:page_type)
-      case params[:page_type]
-      when 'All'
-        @guides = @guides
-      when 'Guide'
-        @guides = @guides.by_type(nil)
-      else
-        @guides = @guides.by_type(params[:page_type])
-      end
-    end
-
-    if params[:q].present?
-      @guides = @guides.search(params[:q])
-    else
-      @guides = @guides.order(updated_at: :desc)
-    end
+    scope = Guide.all
+    @guides = GuidesFilter.new(scope).by(params)
   end
 
   def new
@@ -162,5 +141,61 @@ private
   rescue => e
     notify_airbrake(e)
     Rails.logger.error(e.message)
+  end
+
+  class GuidesFilter
+    VALID_FILTERS = [
+      'author',
+      'content_owner',
+      'page',
+      'page_type',
+      'q',
+      'state'
+    ]
+
+    def initialize(scope)
+      @scope = scope
+      # TODO: :content_owner not being included is resulting in an N+1 query
+      @scope = @scope.includes(editions: [:author]).references(:editions)
+      @scope = @scope.order(updated_at: :desc)
+      @scope = @scope.page(1)
+    end
+
+    def by(params)
+      params.slice(*VALID_FILTERS).each do |key, param|
+
+        next if param.blank?
+
+        case key
+        when 'author'
+          @scope = @scope.by_author(param)
+        when 'content_owner'
+          @scope = @scope.owned_by(param)
+        when 'page'
+          @scope = @scope.page(param)
+        when 'page_type'
+          apply_type_scope(param)
+        when 'q'
+          @scope = @scope.search(param)
+        when 'state'
+          @scope = @scope.in_state(param)
+        end
+      end
+
+      @scope
+    end
+
+  private
+
+    def apply_type_scope(type)
+      case type
+      when 'All'
+        @scope = @scope
+      when 'Guide'
+        @scope = @scope.by_type(nil)
+      else
+        @scope = @scope.by_type(type)
+      end
+    end
   end
 end

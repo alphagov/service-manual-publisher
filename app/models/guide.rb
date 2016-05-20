@@ -13,13 +13,13 @@ class Guide < ActiveRecord::Base
   }
 
   scope :in_state, ->(state) {
-    only_latest_edition.where("editions.state = '#{state}'") if state.present?
+    only_latest_edition.where("editions.state = ?", state)
   }
   scope :by_author, ->(author_id) {
-    only_latest_edition.where("editions.author_id = #{author_id}") if author_id.present?
+    only_latest_edition.where("editions.author_id = ?", author_id)
   }
   scope :owned_by, ->(content_owner_id) {
-    only_latest_edition.where("editions.content_owner_id = #{content_owner_id}") if content_owner_id.present?
+    only_latest_edition.where("editions.content_owner_id = ?", content_owner_id)
   }
   scope :by_type, ->(type) { where(type: type) }
 
