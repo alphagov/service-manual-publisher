@@ -95,7 +95,12 @@ RSpec.describe "Guide history", type: :feature do
   end
 
   def within_edition(number, &block)
-    within(:xpath, "//div[contains(@class, 'panel') and div[contains(@class, 'panel-heading') and contains(., 'Edition ##{number}')]]", &block)
+    within(:xpath, "//div
+                        [contains(@class, 'panel')]
+                        [div
+                          [contains(@class, 'panel-heading')]
+                          [contains(., 'Edition ##{number}')]
+                        ]", &block)
   end
 
   def events
