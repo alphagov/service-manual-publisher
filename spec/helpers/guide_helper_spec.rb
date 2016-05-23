@@ -15,3 +15,21 @@ RSpec.describe GuideHelper, '#guide_community_options_for_select', type: :helper
     )
   end
 end
+
+RSpec.describe GuideHelper, '#guide_types_for_select', type: :helper do
+  it 'returns an array of options for a select tag' do
+    guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
+    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+
+    edition = build(:edition, content_owner: guide_community, title: "Scrum")
+    guide = create(:guide, editions: [ edition ])
+
+    expect(helper.guide_types_for_select).to match_array(
+      [
+        ['All', 'All'],
+        ['Guide', 'Guide'],
+        ['Guide Community', 'GuideCommunity'],
+      ]
+    )
+  end
+end

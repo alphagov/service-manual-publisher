@@ -373,3 +373,26 @@ RSpec.describe Guide, ".owned_by" do
     ]
   end
 end
+
+RSpec.describe Guide, ".by_type" do
+  it "returns guides with a specific type" do
+    guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
+    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+
+    edition = build(:edition, content_owner: guide_community, title: "Scrum")
+    guide = create(:guide, editions: [ edition ])
+
+    expect(described_class.by_type("GuideCommunity")).to eq([guide_community])
+  end
+
+  it "returns guides of type Guide if nil or empty string is supplied" do
+    guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
+    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+
+    edition = build(:edition, content_owner: guide_community, title: "Scrum")
+    guide = create(:guide, editions: [ edition ])
+
+    expect(described_class.by_type(nil)).to eq([guide])
+    expect(described_class.by_type("")).to eq([guide])
+  end
+end
