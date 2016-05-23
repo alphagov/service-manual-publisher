@@ -9,7 +9,7 @@ RSpec.describe TopicSearchIndexer do
       description: "The Topic Description",
     )
 
-    expect(rummager_api).to receive(:add_batch).with(
+    expect(rummager_api).to receive(:add_document).with(
       "service_manual_topic",
       "/service-manual/topic1",
       {
