@@ -2,6 +2,7 @@ class Topic < ActiveRecord::Base
   include ContentIdentifiable
   validate :path_can_be_set_once
   validate :path_format
+  validates :path, uniqueness: true
 
   has_many :topic_sections, -> { order(position: :asc) }
   accepts_nested_attributes_for :topic_sections, allow_destroy: true

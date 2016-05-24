@@ -26,6 +26,16 @@ RSpec.describe Topic do
     expect(topic.errors.full_messages_for(:path)).to eq ["Path can only contain letters, numbers and dashes"]
   end
 
+  it "has a unique path" do
+    create(:topic, path: "/service-manual/nice-topic")
+    topic = build(:topic, path: "/service-manual/nice-topic")
+    topic.valid?
+
+    expect(
+      topic.errors.full_messages_for(:path)
+      ).to include("Path has already been taken")
+  end
+
   describe "on create callbacks" do
     it "generates and sets content_id" do
       topic = build(:topic, content_id: nil)
