@@ -57,9 +57,9 @@ class GuidesController < ApplicationController
       )
 
     if params[:send_for_review].present?
-      send_for_review
+      send_for_review(guide, edition)
     elsif params[:approve_for_publication].present?
-      approve_for_publication
+      approve_for_publication(guide, edition)
     elsif params[:publish].present?
       publish
     elsif params[:discard].present?
@@ -71,18 +71,23 @@ class GuidesController < ApplicationController
 
 private
 
-  def send_for_review
-    ApprovalProcess.new(content_model: @guide_form.guide, user: current_user)
-                   .request_review
+  def send_for_review(guide, edition)
+    edition.state = 'review_requested'
+    edition.created_by = current_user
+    edition.save!
 
-    redirect_to edit_guide_path(@guide_form), notice: "A review has been requested"
+    redirect_to edit_guide_path(guide), notice: "A review has been requested"
   end
 
-  def approve_for_publication
-    ApprovalProcess.new(content_model: @guide_form.guide, user: current_user)
-                   .give_approval
+  def approve_for_publication(guide, edition)
+    edition.build_approval(user: current_user)
+    edition.created_by = current_user
+    edition.state = "ready"
+    edition.save!
 
-    redirect_to edit_guide_path(@guide_form), notice: "Thanks for approving this guide"
+    NotificationMailer.ready_for_publishing(guide).deliver_later
+
+    redirect_to edit_guide_path(guide), notice: "Thanks for approving this guide"
   end
 
   def publish
