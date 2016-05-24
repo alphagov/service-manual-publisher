@@ -296,9 +296,9 @@ RSpec.describe GuideForm, "#save" do
     end
 
     it "isn't possible to change the topic" do
-      original_topic = create(:topic)
+      original_topic = create(:topic, path: "/service-manual/original-topic")
       original_topic_section = create(:topic_section, topic: original_topic)
-      different_topic = create(:topic)
+      different_topic = create(:topic, path: "/service-manual/different-topic")
       different_topic_section = create(:topic_section, topic: different_topic)
       user = create(:user)
       guide = create(:published_guide)
