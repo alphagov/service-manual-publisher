@@ -71,13 +71,15 @@ class GuidesController < ApplicationController
 private
 
   def send_for_review
-    ApprovalProcess.new(content_model: @guide_form.guide).request_review
+    ApprovalProcess.new(content_model: @guide_form.guide, user: current_user)
+                   .request_review
 
     redirect_to edit_guide_path(@guide_form), notice: "A review has been requested"
   end
 
   def approve_for_publication
-    ApprovalProcess.new(content_model: @guide_form.guide).give_approval(approver: current_user)
+    ApprovalProcess.new(content_model: @guide_form.guide, user: current_user)
+                   .give_approval
 
     redirect_to edit_guide_path(@guide_form), notice: "Thanks for approving this guide"
   end

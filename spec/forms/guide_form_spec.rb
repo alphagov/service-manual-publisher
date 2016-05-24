@@ -224,6 +224,17 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.author_id).to eq(5)
     end
 
+    it "assigns the created_by to the edition" do
+      guide = Guide.new
+      edition = guide.editions.build
+      user = create(:user)
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+      guide_form.assign_attributes({author_id: 5})
+      guide_form.save
+
+      expect(edition.created_by).to eq(user)
+    end
+
     it "assigns the changed note and summary to the edition" do
       guide = Guide.new
       edition = guide.editions.build

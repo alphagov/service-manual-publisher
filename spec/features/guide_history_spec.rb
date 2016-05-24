@@ -4,9 +4,15 @@ RSpec.describe "Guide history", type: :feature do
   include ActiveSupport::Testing::TimeHelpers
 
   it "shows a history of the latest edition" do
+    john = create(:user, name: "John")
+    sally = create(:user, name: "Sally")
+    dave = create(:user, name: "Dave")
+
     stub_publisher
     create(:topic_section, topic: create(:topic))
     community = create(:guide_community)
+
+    GDS::SSO.test_user = john
 
     travel_to "2004-11-24".to_time do
       visit root_path
@@ -21,6 +27,8 @@ RSpec.describe "Guide history", type: :feature do
       click_first_button "Save"
     end
 
+    GDS::SSO.test_user = sally
+
     travel_to "2004-11-25".to_time do
       click_on "Comments and history"
 
@@ -30,16 +38,27 @@ RSpec.describe "Guide history", type: :feature do
       end
     end
 
+    GDS::SSO.test_user = dave
+
     travel_to "2004-11-26".to_time do
       click_first_button "Send for review"
     end
 
+    GDS::SSO.test_user = sally
+
+    click_on "Edit"
+
+    travel_to "2004-11-27".to_time do
+      click_first_button "Approve for publication"
+    end
+
     click_on "Comments and history"
 
-    expect(events[0].text).to eq "26 November 2004 Review requested by Stub User"
-    expect(events[1].text).to include "25 November 2004 Stub User What a great piece of writing"
-    expect(events[2].text).to eq "24 November 2004 Assigned to Stub User"
-    expect(events[3].text).to eq "24 November 2004 New draft created by Stub User"
+    expect(events[0].text).to eq "27 November 2004 Approved by Sally"
+    expect(events[1].text).to eq "26 November 2004 Review requested by Dave"
+    expect(events[2].text).to include "25 November 2004 Sally What a great piece of writing"
+    expect(events[3].text).to eq "24 November 2004 Assigned to John"
+    expect(events[4].text).to eq "24 November 2004 New draft created by John"
   end
 
   it "shows a header with pertinent edition information" do

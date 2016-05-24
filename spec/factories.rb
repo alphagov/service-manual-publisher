@@ -55,6 +55,7 @@ FactoryGirl.define do
     version 1
     content_owner { build(:guide_community) }
     author { build(:user) }
+    created_by { author }
   end
 
   factory :community_edition, parent: :edition do

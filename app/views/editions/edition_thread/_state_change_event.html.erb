@@ -3,6 +3,6 @@
     <div class="pull-right">
       <%= l event.edition.updated_at, format: :date_without_time %>
     </div>
-    <%= event_action_for_changed_state(event.edition.state) %> by <%= event.edition.author.name %>
+    <%= event_action_for_changed_state(event.edition.state) %> by <%= event.edition.created_by.name %>
   </div>
 </div>
