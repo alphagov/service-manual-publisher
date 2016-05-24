@@ -48,6 +48,7 @@ class GuidesController < ApplicationController
   def update
     guide = Guide.find(params[:id])
     edition = guide.editions.build(guide.latest_edition.dup.attributes)
+    edition.created_by = current_user
 
     @guide_form = GuideForm.new(
       guide: guide,

@@ -4,11 +4,13 @@ RSpec.describe "Guide history", type: :feature do
   include ActiveSupport::Testing::TimeHelpers
 
   it "shows a history of the latest edition" do
+    stub_publisher
+    stub_rummager
+
     john = create(:user, name: "John")
     sally = create(:user, name: "Sally")
     dave = create(:user, name: "Dave")
 
-    stub_publisher
     create(:topic_section, topic: create(:topic))
     community = create(:guide_community)
 
@@ -52,13 +54,22 @@ RSpec.describe "Guide history", type: :feature do
       click_first_button "Approve for publication"
     end
 
+    GDS::SSO.test_user = dave
+
+    click_on "Edit"
+
+    travel_to "2004-11-28".to_time do
+      click_first_button "Publish"
+    end
+
     click_on "Comments and history"
 
-    expect(events[0].text).to eq "27 November 2004 Approved by Sally"
-    expect(events[1].text).to eq "26 November 2004 Review requested by Dave"
-    expect(events[2].text).to include "25 November 2004 Sally What a great piece of writing"
-    expect(events[3].text).to eq "24 November 2004 Assigned to John"
-    expect(events[4].text).to eq "24 November 2004 New draft created by John"
+    expect(events[0].text).to eq "28 November 2004 Published by Dave"
+    expect(events[1].text).to eq "27 November 2004 Approved by Sally"
+    expect(events[2].text).to eq "26 November 2004 Review requested by Dave"
+    expect(events[3].text).to include "25 November 2004 Sally What a great piece of writing"
+    expect(events[4].text).to eq "24 November 2004 Assigned to John"
+    expect(events[5].text).to eq "24 November 2004 New draft created by John"
   end
 
   it "shows a header with pertinent edition information" do
@@ -145,5 +156,13 @@ RSpec.describe "Guide history", type: :feature do
                             .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     allow(publishing_api).to receive(:patch_links)
                             .with(an_instance_of(String), an_instance_of(Hash))
+    allow(publishing_api).to receive(:publish)
+                            .with(an_instance_of(String), an_instance_of(String))
+  end
+
+  def stub_rummager
+    rummager_api = double(:rummager_api)
+    stub_const("RUMMAGER_API", rummager_api)
+    allow(rummager_api).to receive(:add_document)
   end
 end
