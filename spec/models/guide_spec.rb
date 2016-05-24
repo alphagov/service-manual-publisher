@@ -149,6 +149,8 @@ RSpec.describe Guide do
 
   describe "#search" do
     let :default_attributes do
+      user = build(:user)
+
       {
         title:          "The Title",
         state:          "draft",
@@ -159,7 +161,8 @@ RSpec.describe Guide do
         change_summary: "change summary",
         body:           "# Heading",
         content_owner:  build(:guide_community),
-        author:         build(:user),
+        author:         user,
+        created_by:     user,
       }
     end
 

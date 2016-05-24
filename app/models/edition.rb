@@ -23,6 +23,7 @@ class Edition < ActiveRecord::Base
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
   validates :version, presence: true
+  validates :created_by, presence: true
 
   auto_strip_attributes(
     :title,
