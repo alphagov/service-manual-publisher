@@ -10,7 +10,10 @@ class TopicsController < ApplicationController
   def create
     @topic = Topic.new(create_topic_params)
     if params[:add_heading]
-      @topic.topic_sections.build
+      @topic
+        .topic_sections
+        .includes(:guides)
+        .build
       render :edit
       return
     end
@@ -22,7 +25,7 @@ class TopicsController < ApplicationController
   end
 
   def edit
-    @topic = Topic.find(params[:id])
+    @topic = Topic.includes(topic_sections: :guides).find(params[:id])
   end
 
   def update

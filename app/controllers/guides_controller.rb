@@ -154,7 +154,7 @@ private
     def initialize(scope)
       @scope = scope
       # TODO: :content_owner not being included is resulting in an N+1 query
-      @scope = @scope.includes(editions: [:author]).references(:editions)
+      @scope = @scope.references(:editions)
       @scope = @scope.order(updated_at: :desc)
       @scope = @scope.page(1)
     end
