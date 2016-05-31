@@ -64,11 +64,7 @@
           <% end %>
         </span>
         <div class="pull-right">
-          <% if previous_latest_edition_of_group.present? %>
-            <%= link_to "View changes", edition_changes_path(latest_edition_of_group, previous_latest_edition_of_group) %>
-          <% else %>
-            <%= link_to "View changes", edition_changes_path(latest_edition_of_group) %>
-          <% end %>
+          <%= link_to "View changes", edition_changes_path(previous_latest_edition_of_group, latest_edition_of_group) %>
         </div>
       </div>
     </div>
