@@ -44,21 +44,33 @@ RSpec.describe "Guide history", type: :feature do
 
   it "shows a header with pertinent edition information" do
     guide = create(:published_guide)
-    published_edition = guide.editions.find_by(state: "published")
-    published_edition.update_attribute(:updated_at, "2004-11-24".to_time)
-    draft_edition = build(:edition, version: 2, update_type: "minor")
+    first_published_edition = guide.editions.find_by(state: "published")
+    first_published_edition.update_attribute(:updated_at, "2004-11-24".to_time)
+
+    second_published_edition = build(:edition, version: 2, update_type: "minor", state: "published", updated_at: "2004-11-25".to_time)
+    guide.editions << second_published_edition
+
+    draft_edition = build(:edition, version: 3, update_type: "minor")
     guide.editions << draft_edition
 
     visit edit_guide_path(guide)
 
     click_on "Comments and history"
 
-    within_edition(2) do
-      expect(page).to have_content("Edition #2")
+    within_edition(3) do
+      expect(page).to have_content("Edition #3")
       expect(page).to have_content("Minor update")
       expect(page).to have_content("Not yet published")
       # A link that compares this version to the previous version
-      expect(page).to have_link("View changes", href: edition_changes_path(published_edition, draft_edition))
+      expect(page).to have_link("View changes", href: edition_changes_path(second_published_edition, draft_edition))
+    end
+
+    within_edition(2) do
+      expect(page).to have_content("Edition #2")
+      expect(page).to have_content("Minor update")
+      expect(page).to have_content("Published on 25 November 2004")
+      # A link that compares this version to the previous version
+      expect(page).to have_link("View changes", href: edition_changes_path(first_published_edition, second_published_edition))
     end
 
     within_edition(1) do
@@ -67,7 +79,7 @@ RSpec.describe "Guide history", type: :feature do
       expect(page).to have_content("Published on 24 November 2004")
       expect(page).to have_content('"change summary"')
       # A link that shows one large addition for the first version
-      expect(page).to have_link("View changes", href: edition_changes_path(nil, published_edition))
+      expect(page).to have_link("View changes", href: edition_changes_path(nil, first_published_edition))
     end
   end
 
