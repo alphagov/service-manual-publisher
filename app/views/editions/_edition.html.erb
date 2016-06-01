@@ -1,0 +1,45 @@
+<div class="panel-edition <% if is_open -%>open-edition<% end -%> panel panel-default">
+  <div class="panel-heading">
+    <span class="glyphicon glyphicon-chevron-down"></span>
+
+    <span class="panel-heading-part">
+      <% if is_open %>
+        Edition #<%= latest_edition_of_group.version %>
+      <% else %>
+        <%= link_to "Edition ##{latest_edition_of_group.version}", guide_editions_path(@guide, current_edition: latest_edition_of_group) %>
+      <% end %>
+    </span>
+
+    <span class="panel-heading-part">
+      <%= latest_edition_of_group.update_type.titlecase %> update
+    </span>
+
+    <span class="panel-heading-part">
+      <% if latest_edition_of_group.published? %>
+        Published on <%= l latest_edition_of_group.updated_at, format: :date_without_time %>
+      <% else %>
+        Not yet published
+      <% end %>
+    </span>
+
+    <span class="panel-heading-part">
+      <% if latest_edition_of_group.major? %>
+        "<%= latest_edition_of_group.change_summary %>"
+      <% end %>
+    </span>
+
+    <div class="pull-right">
+      <%= link_to "View changes", edition_changes_path(previous_latest_edition_of_group, latest_edition_of_group) %>
+    </div>
+  </div>
+
+  <% if is_open %>
+    <div class="panel-body">
+      <%= render 'comment_form', comment: comment, edition: latest_edition_of_group %>
+
+      <% EditionThread.new(latest_edition_of_group).events.reverse.each do |event| %>
+        <%= render "editions/#{event.class.to_s.underscore}", event: event %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
