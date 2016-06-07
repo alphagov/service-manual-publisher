@@ -7,4 +7,12 @@ module EditionsHelper
       state.humanize
     end
   end
+
+  def edition_created_by_name(edition)
+    if edition.created_by
+      edition.created_by.name
+    else
+      "Unknown"
+    end
+  end
 end

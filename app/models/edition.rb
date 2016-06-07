@@ -6,6 +6,7 @@ class Edition < ActiveRecord::Base
 
   belongs_to :guide, touch: true
   belongs_to :author, class_name: "User"
+  belongs_to :created_by, class_name: "User"
 
   has_one :approval
 
@@ -22,6 +23,7 @@ class Edition < ActiveRecord::Base
   validates :change_note, presence: true, if: :major?
   validates :change_summary, presence: true, if: :major?
   validates :version, presence: true
+  validates :created_by, presence: true
 
   auto_strip_attributes(
     :title,

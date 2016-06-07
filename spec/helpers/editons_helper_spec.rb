@@ -33,3 +33,22 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
     end
   end
 end
+
+RSpec.describe EditionsHelper, "#edition_created_by_name", type: :helper do
+  it "returns the edition's created_by name" do
+    user = build(:user, name: "Henry")
+    edition = build(:edition, created_by: user)
+
+    expect(
+      helper.edition_created_by_name(edition)
+      ).to eq("Henry")
+  end
+
+  it "returns Unknown if showing an edition before we started storing who created the edition" do
+    edition = build(:edition, created_by: nil)
+
+    expect(
+      helper.edition_created_by_name(edition)
+      ).to eq("Unknown")
+  end
+end

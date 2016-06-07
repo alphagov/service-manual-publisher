@@ -45,6 +45,7 @@ class GuideForm
     edition.change_note = change_note
     edition.change_summary = change_summary
     edition.content_owner_id = content_owner_id
+    edition.created_by_id = user.id
     edition.description = description
     edition.state = Edition::STATES.first
     edition.summary = summary

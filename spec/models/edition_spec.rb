@@ -99,6 +99,14 @@ RSpec.describe Edition, type: :model do
       end
     end
 
+    it "requires a created_by user" do
+      edition = build(:edition, created_by: nil)
+      edition.valid?
+
+      expect(
+        edition.errors.full_messages_for(:created_by)
+        ).to include("Created by can't be blank")
+    end
   end
 
   context "review and approval" do

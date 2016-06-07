@@ -15,7 +15,7 @@ class UnpublishesController < ApplicationController
     if @redirect.save
       edition = @guide.editions.build(@guide.latest_edition.dup.attributes)
       edition.state = "unpublished"
-      edition.author = current_user
+      edition.created_by = current_user
       edition.save!
       RedirectPublisher.new.process(
         content_id: @redirect.content_id,

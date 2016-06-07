@@ -8,8 +8,11 @@ RSpec.describe "unpublishing guides", type: :feature do
       allow_any_instance_of(GuideSearchIndexer).to receive(:delete)
     end
 
-    it "redirects to topics" do
-      guide = create(:published_guide)
+    it "creates a Redirect, sets the guide state to unpublished and shows who unpublished in the history" do
+      bob = create(:user, name: "Bob")
+      GDS::SSO.test_user = bob
+
+      guide = create(:published_guide, title: "Scrum")
       topic = create(:topic, path: "/service-manual/agile-delivery")
 
       expect_any_instance_of(RedirectPublisher).to receive(:process).with(
@@ -23,31 +26,49 @@ RSpec.describe "unpublishing guides", type: :feature do
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
 
-      expect(Redirect.count).to eq 1
-      expect(Redirect.first.old_path).to eq guide.slug
-      expect(Redirect.first.new_path).to eq topic.path
-      expect(guide.reload.latest_edition).to be_unpublished
+      # We are storing where the user redirected to in the `redirects`
+      # table but we aren't displaying in the browser yet. Therefore
+      # we are testing it here.
+      expect(
+        Redirect.find_by(old_path: guide.slug, new_path: topic.path)
+        ).to be_present
+
+      # Assert the guide is unpublished
+      expect(current_path).to eq(root_path)
+      within_guide_index_row("Scrum") do
+        expect(page).to have_content("Unpublished")
+      end
+
+      # Assert the current user did the unpublishing on the history tab
+      visit(guide_editions_path(guide))
+      within_guide_history_edition(1) do
+        expect(page).to have_content("Unpublished by Bob")
+      end
     end
 
-    it "redirects to guides" do
-      guide = create(:published_guide)
-      new_guide = create(:published_guide)
+    context "before we stored who created an edition" do
+      it "does not error and sets the guide state to Unpublished" do
+        guide = create(:published_guide, title: "Scrum")
+        topic = create(:topic, path: "/service-manual/agile-delivery")
 
-      expect_any_instance_of(RedirectPublisher).to receive(:process).with(
-        content_id: anything,
-        old_path:   guide.slug,
-        new_path:   new_guide.slug,
-      )
+        # Fake the situation we have in production where the
+        # `editions.created_by_id` field is NULL
+        latest_edition = guide.latest_edition
+        latest_edition.created_by_id = nil
+        latest_edition.save(validate: false)
 
-      visit edit_guide_path(guide)
-      click_first_link "Unpublish"
-      select new_guide.slug, from: "Redirect to"
-      click_button "Unpublish"
+        expect_any_instance_of(RedirectPublisher).to receive(:process)
 
-      expect(Redirect.count).to eq 1
-      expect(Redirect.first.old_path).to eq guide.slug
-      expect(Redirect.first.new_path).to eq new_guide.slug
-      expect(guide.reload.latest_edition).to be_unpublished
+        visit edit_guide_path(guide)
+        click_first_link "Unpublish"
+        select topic.path, from: "Redirect to"
+        click_button "Unpublish"
+
+        expect(current_path).to eq(root_path)
+        within_guide_index_row("Scrum") do
+          expect(page).to have_content("Unpublished")
+        end
+      end
     end
 
     it "disables all form submits in the guide editor" do
@@ -60,23 +81,6 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(page).to_not have_button "Discard new guide"
       expect(page).to_not have_button "Discard draft"
       expect(page).to_not have_link "Unpublish"
-    end
-
-    it "stores the user who unpublished the guide" do
-      guide = create(:published_guide)
-      new_guide = create(:published_guide)
-
-      previous_author = create(:user)
-      guide.editions.update_all(author_id: previous_author.id)
-
-      allow_any_instance_of(RedirectPublisher).to receive(:process)
-
-      visit edit_guide_path(guide)
-      click_first_link "Unpublish"
-      select new_guide.slug, from: "Redirect to"
-      click_button "Unpublish"
-
-      expect(guide.latest_edition.author).to_not eq previous_author
     end
 
     it "removes the guide from the search index" do
