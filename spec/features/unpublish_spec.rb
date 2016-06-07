@@ -47,28 +47,27 @@ RSpec.describe "unpublishing guides", type: :feature do
     end
 
     context "before we stored who created an edition" do
-      it "creates a Redirect record and marks as unpublished" do
-        guide = create(:published_guide)
+      it "does not error and sets the guide state to Unpublished" do
+        guide = create(:published_guide, title: "Scrum")
+        topic = create(:topic, path: "/service-manual/agile-delivery")
+
+        # Fake the situation we have in production where the
+        # `editions.created_by_id` field is NULL
         latest_edition = guide.latest_edition
         latest_edition.created_by_id = nil
         latest_edition.save(validate: false)
-        topic = create(:topic, path: "/service-manual/agile-delivery")
 
-        expect_any_instance_of(RedirectPublisher).to receive(:process).with(
-          content_id: anything,
-          old_path:   guide.slug,
-          new_path:   topic.path,
-        )
+        expect_any_instance_of(RedirectPublisher).to receive(:process)
 
         visit edit_guide_path(guide)
         click_first_link "Unpublish"
         select topic.path, from: "Redirect to"
         click_button "Unpublish"
 
-        expect(Redirect.count).to eq 1
-        expect(Redirect.first.old_path).to eq guide.slug
-        expect(Redirect.first.new_path).to eq topic.path
-        expect(guide.reload.latest_edition).to be_unpublished
+        expect(current_path).to eq(root_path)
+        within_guide_index_row("Scrum") do
+          expect(page).to have_content("Unpublished")
+        end
       end
     end
 
