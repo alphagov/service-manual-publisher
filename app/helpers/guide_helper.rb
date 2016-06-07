@@ -35,7 +35,7 @@ module GuideHelper
   end
 
   def topic_section_options_for_select
-    Topic.all.map do |topic|
+    Topic.includes(:topic_sections).map do |topic|
       [
         topic.title,
         topic.topic_sections.map { |ts| [ "#{topic.title} -> #{ts.title}", ts.id ] },
