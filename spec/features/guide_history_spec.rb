@@ -87,7 +87,7 @@ RSpec.describe "Guide history", type: :feature do
 
     click_on "Comments and history"
 
-    within_edition(3) do
+    within_guide_history_edition(3) do
       expect(page).to have_content("Edition #3")
       expect(page).to have_content("Minor update")
       expect(page).to have_content("Not yet published")
@@ -95,7 +95,7 @@ RSpec.describe "Guide history", type: :feature do
       expect(page).to have_link("View changes", href: edition_changes_path(second_published_edition, draft_edition))
     end
 
-    within_edition(2) do
+    within_guide_history_edition(2) do
       expect(page).to have_content("Edition #2")
       expect(page).to have_content("Minor update")
       expect(page).to have_content("Published on 25 November 2004")
@@ -103,7 +103,7 @@ RSpec.describe "Guide history", type: :feature do
       expect(page).to have_link("View changes", href: edition_changes_path(first_published_edition, second_published_edition))
     end
 
-    within_edition(1) do
+    within_guide_history_edition(1) do
       expect(page).to have_content("Edition #1")
       expect(page).to have_content("Major update")
       expect(page).to have_content("Published on 24 November 2004")
@@ -119,30 +119,21 @@ RSpec.describe "Guide history", type: :feature do
 
     visit guide_editions_path(guide)
 
-    within_edition(1) do
+    within_guide_history_edition(1) do
       expect(events).to be_empty
     end
-    within_edition(2) do
+    within_guide_history_edition(2) do
       expect(page).to have_css(".event", text: "New draft created")
     end
 
     click_link "Edition #1"
 
-    within_edition(1) do
+    within_guide_history_edition(1) do
       expect(page).to have_css(".event", text: "New draft created")
     end
-    within_edition(2) do
+    within_guide_history_edition(2) do
       expect(events).to be_empty
     end
-  end
-
-  def within_edition(number, &block)
-    within(:xpath, "//div
-                        [contains(@class, 'panel')]
-                        [div
-                          [contains(@class, 'panel-heading')]
-                          [contains(., 'Edition ##{number}')]
-                        ]", &block)
   end
 
   def events

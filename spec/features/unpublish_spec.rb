@@ -8,8 +8,11 @@ RSpec.describe "unpublishing guides", type: :feature do
       allow_any_instance_of(GuideSearchIndexer).to receive(:delete)
     end
 
-    it "creates a Redirect record and marks as unpublished" do
-      guide = create(:published_guide)
+    it "creates a Redirect, sets the guide state to unpublished and shows who unpublished in the history" do
+      bob = create(:user, name: "Bob")
+      GDS::SSO.test_user = bob
+
+      guide = create(:published_guide, title: "Scrum")
       topic = create(:topic, path: "/service-manual/agile-delivery")
 
       expect_any_instance_of(RedirectPublisher).to receive(:process).with(
@@ -23,10 +26,24 @@ RSpec.describe "unpublishing guides", type: :feature do
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
 
-      expect(Redirect.count).to eq 1
-      expect(Redirect.first.old_path).to eq guide.slug
-      expect(Redirect.first.new_path).to eq topic.path
-      expect(guide.reload.latest_edition).to be_unpublished
+      # We are storing where the user redirected to in the `redirects`
+      # table but we aren't displaying in the browser yet. Therefore
+      # we are testing it here.
+      expect(
+        Redirect.find_by(old_path: guide.slug, new_path: topic.path)
+        ).to be_present
+
+      # Assert the guide is unpublished
+      expect(current_path).to eq(root_path)
+      within_guide_index_row("Scrum") do
+        expect(page).to have_content("Unpublished")
+      end
+
+      # Assert the current user did the unpublishing on the history tab
+      visit(guide_editions_path(guide))
+      within_guide_history_edition(1) do
+        expect(page).to have_content("Unpublished by Bob")
+      end
     end
 
     context "before we stored who created an edition" do

@@ -15,6 +15,15 @@ module CapybaraHelpers
     page.find_field("Final URL").base.native.remove_attribute("readonly")
     fill_in "Final URL", with: with
   end
+
+  def within_guide_history_edition(number, &block)
+    within(:xpath, "//div
+                        [contains(@class, 'panel')]
+                        [div
+                          [contains(@class, 'panel-heading')]
+                          [contains(., 'Edition ##{number}')]
+                        ]", &block)
+  end
 end
 
 RSpec.configure do |config|
