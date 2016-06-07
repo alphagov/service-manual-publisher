@@ -81,17 +81,21 @@ RSpec.describe GuidePresenter do
   end
 
   describe '#links_payload' do
+    it "includes an organisation" do
+      expect(
+        presenter.links_payload[:links][:organisations]
+        ).to match_array([ an_instance_of(String) ])
+    end
+
     it 'returns an empty hash without a content owner' do
-      expect(presenter.links_payload).to eq({links: {}})
+      expect(presenter.links_payload[:links][:content_owners]).to be_nil
     end
 
     it 'returns the content owner if present' do
       edition.content_owner = build(:guide_community)
-      expect(presenter.links_payload).to eq({
-        links: {
-          content_owners: [edition.content_owner.content_id]
-        }
-      })
+      expect(presenter.links_payload[:links][:content_owners]).to eq(
+        [edition.content_owner.content_id]
+      )
     end
   end
 end

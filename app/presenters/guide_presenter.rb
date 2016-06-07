@@ -30,7 +30,9 @@ class GuidePresenter
   end
 
   def links_payload
-    links = {}
+    links = {
+      organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
+    }
 
     if edition.content_owner
       links[:content_owners] = [ edition.content_owner.content_id ]

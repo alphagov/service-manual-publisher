@@ -68,6 +68,18 @@ RSpec.describe TopicPresenter do
 end
 
 RSpec.describe TopicPresenter, "#links_payload" do
+  it "includes an organisation" do
+    guide1 = create(:guide, :with_draft_edition)
+    topic = create_topic_in_groups([[guide1]])
+    presented_topic = TopicPresenter.new(topic)
+
+    links = presented_topic.links_payload[:links]
+
+    expect(
+      presented_topic.links_payload[:links][:organisations]
+      ).to match_array([ an_instance_of(String) ])
+  end
+
   it "references all content_ids that appear in groups" do
     guide1 = create(:guide, :with_draft_edition)
     guide2 = create(:guide, :with_draft_edition)
