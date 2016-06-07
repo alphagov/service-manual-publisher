@@ -91,12 +91,6 @@ private
   end
 
   def publish
-    unless @guide_form.guide.included_in_a_topic?
-      flash[:error] = "This guide could not be published because it is not included in a topic page."
-      render 'edit'
-      return
-    end
-
     @guide_form.edition.assign_attributes(state: 'published')
 
     publication = Publisher.new(content_model: @guide_form.guide).publish
