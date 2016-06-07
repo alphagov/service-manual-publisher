@@ -28,7 +28,6 @@ gem 'acts_as_list', '~> 0.7.2'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bullet'
 end
 
 group :development, :test do
@@ -40,6 +39,7 @@ group :development, :test do
   gem 'pry-remote'
   gem 'pry-nav'
   gem 'jasmine'
+  gem 'bullet'
 end
 
 group :test do
