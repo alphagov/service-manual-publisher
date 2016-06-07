@@ -5,6 +5,7 @@
   <% disable_inputs = edition.unpublished? %>
 
   <%= f.hidden_field :type %>
+  <%= f.hidden_field :version %>
 
   <div class="col-md-12">
     <%= render 'editions/actions', publish_controls_only: false, form: f, guide: guide, edition: edition %>

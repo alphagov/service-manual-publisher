@@ -2,11 +2,6 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "discarding guides", type: :feature do
-  before do
-    allow_any_instance_of(Publisher).to receive(:discard_draft)
-      .and_return(Publisher::Response.new(success: true))
-  end
-
   it "makes the user confirm discarding the draft", js: true do
     guide = create(:guide, :with_draft_edition)
     visit edit_guide_path(guide)
@@ -26,15 +21,11 @@ RSpec.describe "discarding guides", type: :feature do
     it "discards the draft in the publishing api" do
       guide = create(:guide, :with_draft_edition)
 
-      fake_publisher = double(:publisher)
-      expect(Publisher).to receive(:new)
-        .with(content_model: guide)
-        .and_return(fake_publisher)
-      expect(fake_publisher).to receive(:discard_draft)
-        .and_return(Publisher::Response.new(success: true))
+      expect(PUBLISHING_API).to receive(:discard_draft)
 
       visit edit_guide_path(guide)
       click_first_button "Discard draft"
+
       within ".alert" do
         expect(page).to have_content "Draft has been discarded"
       end
@@ -44,15 +35,17 @@ RSpec.describe "discarding guides", type: :feature do
   context "with an unsuccessful discard_draft" do
     it "does not discard the draft" do
       guide = create(:guide, :with_draft_edition)
-      discard_draft_response = Publisher::Response.new(
-        success: false,
-        error: "An error occurred",
-      )
-      expect_any_instance_of(Publisher).to receive(:discard_draft)
-        .and_return(discard_draft_response)
+
+      api_error = GdsApi::HTTPClientError.new(
+        422,
+        "An error occurred",
+        "error" => { "message" => "An error occurred" }
+        )
+      expect(PUBLISHING_API).to receive(:discard_draft).and_raise(api_error)
 
       visit edit_guide_path(guide)
       click_first_button "Discard draft"
+
       within ".alert" do
         expect(page).to have_content "An error occurred"
       end

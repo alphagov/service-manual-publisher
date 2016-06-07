@@ -1,4 +1,4 @@
-class Publisher
+class TopicPublisher
   attr_reader :content_model, :publishing_api
 
   def initialize(content_model:, publishing_api: PUBLISHING_API)
@@ -17,23 +17,6 @@ class Publisher
     save_catching_gds_api_errors do
       publishing_api.publish(content_model.content_id, content_model.latest_edition.update_type)
     end
-  end
-
-  def discard_draft
-    ActiveRecord::Base.transaction do
-      publishing_api.discard_draft(content_model.content_id)
-
-      if content_model.has_published_edition?
-        content_model
-          .editions_since_last_published
-          .destroy_all
-      else
-        content_model.destroy!
-      end
-    end
-    Response.new(success: true)
-  rescue GdsApi::HTTPErrorResponse => e
-    Response.new(success: false, error: e.error_details['error']['message'])
   end
 
 private

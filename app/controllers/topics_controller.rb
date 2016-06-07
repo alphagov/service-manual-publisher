@@ -15,7 +15,7 @@ class TopicsController < ApplicationController
       return
     end
 
-    publication = Publisher.new(content_model: @topic).
+    publication = TopicPublisher.new(content_model: @topic).
                             save_draft(TopicPresenter.new(@topic))
 
     respond_for_topic_publication publication, notice: "Topic has been created"
@@ -44,7 +44,7 @@ class TopicsController < ApplicationController
 private
 
   def publish
-    publication = Publisher.new(content_model: @topic).
+    publication = TopicPublisher.new(content_model: @topic).
                             publish
 
     if publication.success?
@@ -59,7 +59,7 @@ private
   end
 
   def save_draft
-    publication = Publisher.new(content_model: @topic).
+    publication = TopicPublisher.new(content_model: @topic).
                             save_draft(TopicPresenter.new(@topic))
 
     respond_for_topic_publication publication, notice: "Topic has been updated"

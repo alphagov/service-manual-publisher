@@ -29,18 +29,6 @@ RSpec.describe GuidesController, type: :controller do
     end
 
     describe "#publish" do
-      it 'notifies about search indexing errors but does not fail the transaction' do
-        expect_any_instance_of(GdsApi::Rummager).to receive(:add_document).and_raise("Something went wrong")
-        edition = build(:edition, state: 'ready')
-        guide = Guide.create!(slug: "/service-manual/topic-name/test", editions: [edition])
-        expect(controller).to receive(:notify_airbrake)
-
-        put :update, id: edition.guide_id, publish: true
-
-        expect(response).to redirect_to(edit_guide_path(guide))
-        expect(flash[:notice]).to eq "Guide has been published"
-      end
-
       it "sends an email notification when published by another user" do
         allow_any_instance_of(GdsApi::Rummager).to receive(:add_document)
         edition = build(:edition, state: 'published')

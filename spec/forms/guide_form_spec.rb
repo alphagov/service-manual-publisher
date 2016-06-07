@@ -159,12 +159,25 @@ RSpec.describe GuideForm, "#initialize" do
 
       expect(guide_form.author_id).to eq(8)
     end
+
+    it "increments the version number" do
+      user = create(:user)
+      guide = create(:published_guide)
+      edition = guide.latest_edition
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+
+      expect(guide_form.version).to eq(2)
+    end
   end
 end
 
 RSpec.describe GuideForm, "#save" do
   context "for a brand new guide" do
     it "persists a guide with an edition and puts it in the relevant topic section" do
+      expect(PUBLISHING_API).to receive(:put_content)
+      expect(PUBLISHING_API).to receive(:patch_links)
+
       guide_community = create(:guide_community)
       user = create(:user)
 
@@ -252,19 +265,6 @@ RSpec.describe GuideForm, "#save" do
   end
 
   context "for a published guide" do
-    it "increments the version number" do
-      guide = create(:published_guide)
-      edition = guide.editions.build(guide.latest_edition.dup.attributes)
-      user = User.new
-
-      expect(guide.latest_edition.version).to eq(1)
-
-      guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.save
-
-      expect(edition.version).to eq(2)
-    end
-
     it "doesn't create a duplicate TopicSectionGuide" do
       user = create(:user)
       guide = create(:published_guide)
@@ -272,6 +272,9 @@ RSpec.describe GuideForm, "#save" do
       topic = create(:topic)
       topic_section = create(:topic_section, topic: topic)
       topic_section.guides << guide
+
+      expect(PUBLISHING_API).to receive(:put_content).with(guide.content_id, an_instance_of(Hash))
+      expect(PUBLISHING_API).to receive(:patch_links).with(guide.content_id, an_instance_of(Hash))
 
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(topic_section_id: topic_section.id)
@@ -291,8 +294,10 @@ RSpec.describe GuideForm, "#save" do
       user = create(:user)
       guide = create(:published_guide)
       edition = guide.latest_edition
-
       original_topic_section.guides << guide
+
+      expect(PUBLISHING_API).to receive(:put_content).with(guide.content_id, an_instance_of(Hash))
+      expect(PUBLISHING_API).to receive(:patch_links).with(guide.content_id, an_instance_of(Hash))
 
       guide_form = described_class.new(
         guide: guide,
@@ -331,6 +336,28 @@ RSpec.describe GuideForm, "#save" do
 
       expect(original_topic_section.reload.guides).to include guide
       expect(different_topic_section.reload.guides).to_not include guide
+    end
+
+    it "does not persist changes if communication with the publishing api fails" do
+      gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
+                                            'https://some-service.gov.uk',
+                                            {'error' => {'message' => 'trouble'}})
+      expect(PUBLISHING_API).to receive(:put_content).and_raise(gds_api_exception)
+
+      user = create(:user)
+      guide = create(:guide, :with_draft_edition)
+      edition = guide.latest_edition
+      original_body = edition.body
+      guide_form = described_class.new(
+        guide: guide,
+        edition: edition,
+        user: user
+      )
+      guide_form.assign_attributes(body: 'Nice new copy', topic_section_id: 5)
+
+      expect(guide_form.save).to eq(false)
+      expect(guide.reload.latest_edition.body).to eq(original_body)
+      expect(guide_form.errors.full_messages).to include('trouble')
     end
   end
 end
