@@ -5,9 +5,16 @@ class ApplicationController < ActionController::Base
 
   include GDS::SSO::ControllerMethods
   before_filter :require_signin_permission!
+  before_filter :set_authenticated_user_header
 
   def preview_content_model_url(content_model)
     [Plek.find('draft-origin'), content_model.slug].join('')
   end
   helper_method :preview_content_model_url
+
+  def set_authenticated_user_header
+    if current_user && GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user].nil?
+      GdsApi::GovukHeaders.set_header(:x_govuk_authenticated_user, current_user.uid)
+    end
+  end
 end
