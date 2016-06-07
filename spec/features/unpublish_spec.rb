@@ -8,7 +8,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       allow_any_instance_of(GuideSearchIndexer).to receive(:delete)
     end
 
-    it "redirects to topics" do
+    it "creates a Redirect record and marks as unpublished" do
       guide = create(:published_guide)
       topic = create(:topic, path: "/service-manual/agile-delivery")
 
@@ -29,25 +29,30 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(guide.reload.latest_edition).to be_unpublished
     end
 
-    it "redirects to guides" do
-      guide = create(:published_guide)
-      new_guide = create(:published_guide)
+    context "before we stored who created an edition" do
+      it "creates a Redirect record and marks as unpublished" do
+        guide = create(:published_guide)
+        latest_edition = guide.latest_edition
+        latest_edition.created_by_id = nil
+        latest_edition.save(validate: false)
+        topic = create(:topic, path: "/service-manual/agile-delivery")
 
-      expect_any_instance_of(RedirectPublisher).to receive(:process).with(
-        content_id: anything,
-        old_path:   guide.slug,
-        new_path:   new_guide.slug,
-      )
+        expect_any_instance_of(RedirectPublisher).to receive(:process).with(
+          content_id: anything,
+          old_path:   guide.slug,
+          new_path:   topic.path,
+        )
 
-      visit edit_guide_path(guide)
-      click_first_link "Unpublish"
-      select new_guide.slug, from: "Redirect to"
-      click_button "Unpublish"
+        visit edit_guide_path(guide)
+        click_first_link "Unpublish"
+        select topic.path, from: "Redirect to"
+        click_button "Unpublish"
 
-      expect(Redirect.count).to eq 1
-      expect(Redirect.first.old_path).to eq guide.slug
-      expect(Redirect.first.new_path).to eq new_guide.slug
-      expect(guide.reload.latest_edition).to be_unpublished
+        expect(Redirect.count).to eq 1
+        expect(Redirect.first.old_path).to eq guide.slug
+        expect(Redirect.first.new_path).to eq topic.path
+        expect(guide.reload.latest_edition).to be_unpublished
+      end
     end
 
     it "disables all form submits in the guide editor" do
@@ -60,23 +65,6 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(page).to_not have_button "Discard new guide"
       expect(page).to_not have_button "Discard draft"
       expect(page).to_not have_link "Unpublish"
-    end
-
-    it "stores the user who unpublished the guide" do
-      guide = create(:published_guide)
-      new_guide = create(:published_guide)
-
-      previous_author = create(:user)
-      guide.editions.update_all(author_id: previous_author.id)
-
-      allow_any_instance_of(RedirectPublisher).to receive(:process)
-
-      visit edit_guide_path(guide)
-      click_first_link "Unpublish"
-      select new_guide.slug, from: "Redirect to"
-      click_button "Unpublish"
-
-      expect(guide.latest_edition.author).to_not eq previous_author
     end
 
     it "removes the guide from the search index" do
