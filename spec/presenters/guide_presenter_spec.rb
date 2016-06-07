@@ -81,6 +81,12 @@ RSpec.describe GuidePresenter do
   end
 
   describe '#links_payload' do
+    it "includes an organisation" do
+      expect(
+        presenter.links_payload[:links][:organisations]
+        ).to match_array([ an_instance_of(String) ])
+    end
+
     it 'returns an empty hash without a content owner' do
       expect(presenter.links_payload[:links][:content_owners]).to be_nil
     end
