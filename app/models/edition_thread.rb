@@ -9,12 +9,19 @@ class EditionThread
     @events << AssignedToEvent.new(all_editions_in_thread.first)
 
     current_state = all_editions_in_thread.first.state
+    current_author = all_editions_in_thread.first.author.name
 
     all_editions_in_thread.each do |edition|
       if edition.state != current_state
         @events << StateChangeEvent.new(edition)
 
         current_state = edition.state
+      end
+
+      if edition.author.name != current_author
+        @events << AssignedToEvent.new(edition)
+
+        current_author = edition.author.name
       end
 
       edition.comments.includes(:user).oldest_first.each do |comment|

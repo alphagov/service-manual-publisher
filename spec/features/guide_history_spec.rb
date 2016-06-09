@@ -40,13 +40,22 @@ RSpec.describe "Guide history", type: :feature do
       end
     end
 
-    GDS::SSO.test_user = dave
+    GDS::SSO.test_user = john
+
+    travel_to "2004-11-25".to_time do
+      click_on "Edit"
+      select "Sally", from: "Author"
+
+      click_first_button "Save"
+    end
+
+    GDS::SSO.test_user = sally
 
     travel_to "2004-11-26".to_time do
       click_first_button "Send for review"
     end
 
-    GDS::SSO.test_user = sally
+    GDS::SSO.test_user = john
 
     click_on "Edit"
 
@@ -65,11 +74,12 @@ RSpec.describe "Guide history", type: :feature do
     click_on "Comments and history"
 
     expect(events[0].text).to eq "28 November 2004 Published by Dave"
-    expect(events[1].text).to eq "27 November 2004 Approved by Sally"
-    expect(events[2].text).to eq "26 November 2004 Review requested by Dave"
-    expect(events[3].text).to include "25 November 2004 Sally What a great piece of writing"
-    expect(events[4].text).to eq "24 November 2004 Assigned to John"
-    expect(events[5].text).to eq "24 November 2004 New draft created by John"
+    expect(events[1].text).to eq "27 November 2004 Approved by John"
+    expect(events[2].text).to eq "26 November 2004 Review requested by Sally"
+    expect(events[3].text).to eq "25 November 2004 Assigned to Sally"
+    expect(events[4].text).to include "25 November 2004 Sally What a great piece of writing"
+    expect(events[5].text).to eq "24 November 2004 Assigned to John"
+    expect(events[6].text).to eq "24 November 2004 New draft created by John"
   end
 
   it "shows a header with pertinent edition information" do
