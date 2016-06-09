@@ -6,7 +6,7 @@ class EditionThread
 
   def events
     @events << NewDraftEvent.new(all_editions_in_thread.first)
-    @events << AssignedToEvent.new(all_editions_in_thread.first)
+    @events << AuthorAutoAssignedEvent.new(all_editions_in_thread.first)
 
     current_state = all_editions_in_thread.first.state
     current_author = all_editions_in_thread.first.author.name
@@ -19,7 +19,7 @@ class EditionThread
       end
 
       if edition.author.name != current_author
-        @events << AssignedToEvent.new(edition)
+        @events << AuthorChangedEvent.new(edition)
 
         current_author = edition.author.name
       end
@@ -41,7 +41,8 @@ private
   end
 
   NewDraftEvent = Struct.new(:edition)
-  AssignedToEvent = Struct.new(:edition)
+  AuthorAutoAssignedEvent = Struct.new(:edition)
+  AuthorChangedEvent = Struct.new(:edition)
   CommentEvent = Struct.new(:comment)
   StateChangeEvent = Struct.new(:edition)
 end
