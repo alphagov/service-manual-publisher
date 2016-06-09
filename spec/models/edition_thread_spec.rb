@@ -20,13 +20,13 @@ RSpec.describe EditionThread, "#events" do
     end
   end
 
-  describe "assigned to event" do
+  describe "author auto assigned event" do
     it "the second event is an 'assigned to' event" do
       most_recent_edition = create(:edition, version: 1)
 
       event = described_class.new(most_recent_edition).events.second
 
-      expect(event).to be_a(EditionThread::AssignedToEvent)
+      expect(event).to be_a(EditionThread::AuthorAutoAssignedEvent)
     end
 
     it "relates to the first edition in the thread" do
@@ -36,6 +36,28 @@ RSpec.describe EditionThread, "#events" do
       event = described_class.new(most_recent_edition).events.second
 
       expect(event.edition).to eq(first_edition)
+    end
+  end
+
+  describe "author changed event" do
+    it "is a 'author changed' event" do
+      new_author = create(:user, name: "John")
+      create(:edition, version: 1)
+      next_edition = create(:edition, version: 1, author: new_author)
+
+      event = described_class.new(next_edition).events.third
+
+      expect(event).to be_a(EditionThread::AuthorChangedEvent)
+    end
+
+    it "has a reference to the relevent edition" do
+      new_author = create(:user, name: "John")
+      create(:edition, version: 1)
+      next_edition = create(:edition, version: 1, author: new_author)
+
+      event = described_class.new(next_edition).events.third
+
+      expect(event.edition).to eq(next_edition)
     end
   end
 
