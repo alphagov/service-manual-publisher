@@ -131,22 +131,6 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq true
   end
 
-  context "guide is not included in a topic" do
-    before do
-      expect_any_instance_of(Guide).to receive(:topic).and_return nil
-    end
-
-    let :guide do
-      create(:ready_guide, slug: "/service-manual/topic-name/something")
-    end
-
-    it "does not publish the guide" do
-      visit edit_guide_path(guide)
-      click_first_button "Publish"
-      expect(page).to have_content "This guide could not be published because it is not included in a topic page."
-    end
-  end
-
   context "when creating a new guide" do
     it 'displays an alert if it fails' do
       publication = Publisher::Response.new(success: false, error: 'trouble')
