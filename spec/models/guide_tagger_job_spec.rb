@@ -16,7 +16,7 @@ RSpec.describe GuideTaggerJob do
         expect(api_double).to receive(:patch_links)
           .with(
             guide_content_id,
-            links: { topics: [topic.content_id] },
+            links: { service_manual_topics: [topic.content_id] },
           )
       end
 
