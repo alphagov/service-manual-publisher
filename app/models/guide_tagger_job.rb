@@ -10,7 +10,7 @@ class GuideTaggerJob < ActiveJob::Base
   def perform(guide_content_id:, topic_content_id:)
     PUBLISHING_API.patch_links(
       guide_content_id,
-      links: { service_manual_topics: [ topic_content_id ] }
+      links: { service_manual_topics: [ topic_content_id ], topics: [] }
       )
   end
 end
