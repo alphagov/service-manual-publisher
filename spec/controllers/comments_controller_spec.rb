@@ -12,7 +12,6 @@ RSpec.describe CommentsController, type: :controller do
 
   before do
     login_as commenter
-    ActionMailer::Base.deliveries.clear
   end
 
   describe "#create" do

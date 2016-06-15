@@ -9,7 +9,6 @@ RSpec.describe GuidesController, type: :controller do
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:publish)
     stub_const('PUBLISHING_API', publishing_api)
-    ActionMailer::Base.deliveries.clear
     allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
   end
 
