@@ -54,13 +54,17 @@ class GuideForm
     edition.version = version
     topic_section_guide.topic_section_id = topic_section_id
 
-    if valid? && guide.save && topic_section_guide.save
-      true
-    else
-      promote_errors_for(guide)
-      promote_errors_for(edition)
+    catching_gds_api_exceptions do
+      if valid? && guide.save && topic_section_guide.save
+        save_draft_to_publishing_api
 
-      false
+        true
+      else
+        promote_errors_for(guide)
+        promote_errors_for(edition)
+
+        false
+      end
     end
   end
 
@@ -138,5 +142,23 @@ private
     if old_section.topic_id != new_section.topic_id
       errors.add(:topic_section_id, "cannot change to a different topic")
     end
+  end
+
+  def catching_gds_api_exceptions(&block)
+    begin
+      ActiveRecord::Base.transaction do
+        block.call
+      end
+    rescue GdsApi::HTTPErrorResponse => e
+      errors.add(:base, e.error_details['error']['message'])
+
+      false
+    end
+  end
+
+  def save_draft_to_publishing_api
+    content_for_publication = GuideFormPublicationPresenter.new(self)
+    PUBLISHING_API.put_content(content_for_publication.content_id, content_for_publication.content_payload)
+    PUBLISHING_API.patch_links(content_for_publication.content_id, content_for_publication.links_payload)
   end
 end

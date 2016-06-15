@@ -7,7 +7,6 @@ RSpec.describe NotificationMailer, type: :mailer do
   let(:edition) { build(:edition, title: "Agile", author: gary) }
 
   before do
-    ActionMailer::Base.deliveries.clear
     guide.save!
     allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([gary])
   end

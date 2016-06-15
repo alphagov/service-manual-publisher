@@ -45,7 +45,7 @@ RSpec.describe "creating guides", type: :feature do
     click_first_button "Save"
 
     within ".alert" do
-      expect(page).to have_content('created')
+      expect(page).to have_content('saved')
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
@@ -72,7 +72,7 @@ RSpec.describe "creating guides", type: :feature do
     click_first_button "Save"
 
     within ".alert" do
-      expect(page).to have_content('updated')
+      expect(page).to have_content('saved')
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
@@ -133,59 +133,18 @@ RSpec.describe "creating guides", type: :feature do
 
   context "when creating a new guide" do
     it 'displays an alert if it fails' do
-      publication = Publisher::Response.new(success: false, error: 'trouble')
-      allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
+      api_error = GdsApi::HTTPClientError.new(
+        422,
+        "An error occurred",
+        "error" => { "message" => "An error occurred" }
+        )
+      expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
       fill_in_guide_form
       click_first_button "Save"
 
       within ".alert" do
-        expect(page).to have_content('trouble')
-      end
-    end
-  end
-
-  context "when updating a guide" do
-    context "the guide has previously been published" do
-      before do
-        @guide = create(:published_guide, slug: "/service-manual/topic-name/something")
-      end
-
-      it "prevents users from editing the url slug" do
-        visit edit_guide_path(@guide)
-        expect(find('input.guide-slug')['disabled']).to be_present
-      end
-    end
-
-    it "shows the summary of validation errors" do
-      topic = create(:topic, path: "/service-manual/technology")
-      topic_section = create(:topic_section, topic: topic)
-      guide = create(
-        :guide,
-        slug: "/service-manual/topic-name/something",
-        editions: [ build(:edition) ],
-      )
-      topic_section.guides << guide
-      visit edit_guide_path(guide)
-      fill_in "Title", with: ""
-      click_first_button "Save"
-
-      within(".full-error-list") do
-        expect(page).to have_content("Title can't be blank")
-      end
-    end
-
-    it 'displays an alert if it fails' do
-      publication = Publisher::Response.new(success: false, error: 'trouble')
-      allow_any_instance_of(Publisher).to receive(:save_draft).and_return(publication)
-
-      guide = create(:guide, :with_draft_edition, slug: "/service-manual/topic-name/something")
-
-      visit edit_guide_path(guide)
-      click_first_button "Save"
-
-      within ".alert" do
-        expect(page).to have_content('trouble')
+        expect(page).to have_content("An error occurred")
       end
     end
   end
@@ -236,5 +195,58 @@ private
 
     fill_in "Title", with: "First Edition Title"
     fill_in "Body", with: "## First Edition Title"
+  end
+end
+
+RSpec.describe "Updating guides", type: :feature do
+  context "the guide has previously been published" do
+    it "prevents users from editing the url slug" do
+      @guide = create(:published_guide, slug: "/service-manual/topic-name/something")
+
+      visit edit_guide_path(@guide)
+
+      expect(find('input.guide-slug')['disabled']).to be_present
+    end
+  end
+
+  it "shows the summary of validation errors" do
+    topic = create(:topic, path: "/service-manual/technology")
+    topic_section = create(:topic_section, topic: topic)
+    guide = create(
+      :guide,
+      slug: "/service-manual/topic-name/something",
+      editions: [ build(:edition) ],
+    )
+    topic_section.guides << guide
+    visit edit_guide_path(guide)
+    fill_in "Title", with: ""
+    click_first_button "Save"
+
+    within(".full-error-list") do
+      expect(page).to have_content("Title can't be blank")
+    end
+  end
+
+  it 'displays an alert if it fails' do
+    guide = create(
+      :guide,
+      :with_draft_edition,
+      :with_topic_section,
+      slug: "/service-manual/topic-name/something"
+      )
+
+    api_error = GdsApi::HTTPClientError.new(
+      422,
+      "An error occurred",
+      "error" => { "message" => "An error occurred" }
+      )
+    expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
+
+    visit edit_guide_path(guide)
+    click_first_button "Save"
+
+    within ".alert" do
+      expect(page).to have_content("An error occurred")
+    end
   end
 end

@@ -6,9 +6,10 @@ class GuidesController < ApplicationController
 
   def new
     type = params[:type].presence_in(%w{ GuideCommunity Point })
+    guide = Guide.new(type: type)
 
     @guide_form = GuideForm.new(
-      guide: Guide.new(type: type),
+      guide: guide,
       edition: Edition.new,
       user: current_user,
       )
@@ -16,186 +17,87 @@ class GuidesController < ApplicationController
 
   def create
     guide = Guide.new(type: guide_form_params[:type])
-    edition = guide.editions.build
-    @guide_form = GuideForm.new(
-      guide: guide,
-      edition: edition,
-      user: current_user,
-      )
-    @guide_form.assign_attributes(guide_form_params)
 
-    publication = Publisher.new(content_model: @guide_form)
-                    .save_draft(GuideFormPublicationPresenter.new(@guide_form))
-    if publication.success?
-      redirect_to edit_guide_path(@guide_form), notice: 'Guide has been created'
-    else
-      flash.now[:error] = publication.error
-      render 'new'
-    end
+    save(guide)
   end
 
   def edit
     guide = Guide.find(params[:id])
-    edition = guide.latest_edition
 
     @guide_form = GuideForm.new(
       guide: guide,
-      edition: edition,
+      edition: guide.latest_edition,
       user: current_user
       )
   end
 
   def update
     guide = Guide.find(params[:id])
-    edition = guide.editions.build(guide.latest_edition.dup.attributes)
-    edition.created_by = current_user
-
-    @guide_form = GuideForm.new(
-      guide: guide,
-      edition: edition,
-      user: current_user
-      )
 
     if params[:send_for_review].present?
-      send_for_review(guide, edition)
+      manage!(guide, :request_review, message: "A review has been requested")
     elsif params[:approve_for_publication].present?
-      approve_for_publication(guide, edition)
+      manage!(guide, :approve_for_publication, message: "Thanks for approving this guide")
     elsif params[:publish].present?
-      publish
+      manage(guide, :publish, message: "Guide has been published")
     elsif params[:discard].present?
-      discard
+      manage(guide, :discard_draft, message: "Draft has been discarded", redirect: root_path)
     else
-      save_draft
+      save(guide)
     end
   end
 
 private
 
-  def send_for_review(guide, edition)
-    edition.state = 'review_requested'
-    edition.created_by = current_user
-    edition.save!
+  def manage!(guide, action, opts = {})
+    message = opts.fetch(:message, nil)
 
-    redirect_to edit_guide_path(guide), notice: "A review has been requested"
+    guide_manager = GuideManager.new(guide: guide, user: current_user)
+    guide_manager.public_send("#{action}!")
+
+    redirect_to edit_guide_path(guide), notice: message
   end
 
-  def approve_for_publication(guide, edition)
-    edition.build_approval(user: current_user)
-    edition.created_by = current_user
-    edition.state = "ready"
-    edition.save!
+  def manage(guide, action, opts = {})
+    redirect = opts.fetch(:redirect, edit_guide_path(guide))
+    message = opts.fetch(:message, nil)
 
-    NotificationMailer.ready_for_publishing(guide).deliver_later
+    guide_manager = GuideManager.new(guide: guide, user: current_user)
+    result = guide_manager.public_send(action)
 
-    redirect_to edit_guide_path(guide), notice: "Thanks for approving this guide"
-  end
-
-  def publish
-    @guide_form.edition.assign_attributes(state: 'published')
-
-    publication = Publisher.new(content_model: @guide_form.guide).publish
-    if publication.success?
-      index_for_search(@guide_form.guide)
-
-      unless @guide_form.edition.notification_subscribers == [current_user]
-        NotificationMailer.published(@guide_form.guide, current_user).deliver_later
-      end
-
-      redirect_to edit_guide_path(@guide_form), notice: "Guide has been published"
+    if result.success?
+      redirect_to redirect, notice: message
     else
-      flash.now[:error] = publication.error
+      @guide_form = GuideForm.new(
+        guide: guide,
+        edition: guide.latest_edition,
+        user: current_user
+        )
+
+      flash.now[:error] = result.errors
       render 'edit'
     end
   end
 
-  def discard
-    discard_draft = Publisher.new(content_model: @guide_form.guide)
-      .discard_draft
-    if discard_draft.success?
-      redirect_to root_path, notice: "Draft has been discarded"
-    else
-      flash.now[:error] = discard_draft.error
-      render 'edit'
-    end
-  end
+  def save(guide)
+    failure_template = guide.persisted? ? 'edit' : 'new'
 
-  def save_draft
+    @guide_form = GuideForm.new(
+      guide: guide,
+      edition: guide.editions.build(created_by: current_user),
+      user: current_user
+      )
     @guide_form.assign_attributes(guide_form_params)
 
-    publication = Publisher.new(content_model: @guide_form)
-                    .save_draft(GuideFormPublicationPresenter.new(@guide_form))
-    if publication.success?
-      redirect_to edit_guide_path(@guide_form), notice: "Guide has been updated"
+    if @guide_form.save
+      redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
     else
-      flash.now[:error] = publication.error
-      render 'edit'
+      flash.now[:error] = @guide_form.errors.full_messages
+      render failure_template
     end
   end
 
   def guide_form_params
     params.fetch(:guide, {})
-  end
-
-  def index_for_search(guide)
-    GuideSearchIndexer.new(guide).index
-  rescue => e
-    notify_airbrake(e)
-    Rails.logger.error(e.message)
-  end
-
-  class GuidesFilter
-    VALID_FILTERS = [
-      'author',
-      'content_owner',
-      'page',
-      'page_type',
-      'q',
-      'state'
-    ]
-
-    def initialize(scope)
-      @scope = scope
-      # TODO: :content_owner not being included is resulting in an N+1 query
-      @scope = @scope.includes(editions: [:author]).references(:editions)
-      @scope = @scope.order(updated_at: :desc)
-      @scope = @scope.page(1)
-    end
-
-    def by(params)
-      params.slice(*VALID_FILTERS).each do |key, param|
-
-        next if param.blank?
-
-        case key
-        when 'author'
-          @scope = @scope.by_author(param)
-        when 'content_owner'
-          @scope = @scope.owned_by(param)
-        when 'page'
-          @scope = @scope.page(param)
-        when 'page_type'
-          apply_type_scope(param)
-        when 'q'
-          @scope = @scope.search(param)
-        when 'state'
-          @scope = @scope.in_state(param)
-        end
-      end
-
-      @scope
-    end
-
-  private
-
-    def apply_type_scope(type)
-      case type
-      when 'All'
-        @scope = @scope
-      when 'Guide'
-        @scope = @scope.by_type(nil)
-      else
-        @scope = @scope.by_type(type)
-      end
-    end
   end
 end

@@ -23,7 +23,7 @@ RSpec.describe 'Create a guide community', type: :feature do
     click_first_button "Save"
 
     within ".alert" do
-      expect(page).to have_content('created')
+      expect(page).to have_content('saved')
     end
 
     # Reload the page to avoid any false positive assertions on
