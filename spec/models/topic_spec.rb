@@ -33,7 +33,7 @@ RSpec.describe Topic do
 
     expect(
       topic.errors.full_messages_for(:path)
-      ).to include("Path has already been taken")
+    ).to include("Path has already been taken")
   end
 
   describe "on create callbacks" do
@@ -64,7 +64,8 @@ RSpec.describe Topic do
       topic = create(:topic, :with_some_guides)
       guide_content_ids = topic.topic_sections.map do |topic_section|
         topic_section.guides.map(&:content_id)
-      end.flatten
+      end
+      guide_content_ids = guide_content_ids.flatten
 
       expect(topic.guide_content_ids).to match_array(guide_content_ids)
       expect(topic.guide_content_ids).to_not be_empty

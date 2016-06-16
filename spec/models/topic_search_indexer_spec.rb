@@ -12,15 +12,13 @@ RSpec.describe TopicSearchIndexer do
     expect(rummager_api).to receive(:add_document).with(
       "service_manual_topic",
       "/service-manual/topic1",
-      {
-        format:            "service_manual_topic",
-        description:       "The Topic Description",
-        indexable_content: "The Topic Title\n\nThe Topic Description",
-        title:             "The Topic Title",
-        link:              "/service-manual/topic1",
-        manual:            "/service-manual",
-        organisations:     ["government-digital-service"]
-      }
+      format:            "service_manual_topic",
+      description:       "The Topic Description",
+      indexable_content: "The Topic Title\n\nThe Topic Description",
+      title:             "The Topic Title",
+      link:              "/service-manual/topic1",
+      manual:            "/service-manual",
+      organisations:     ["government-digital-service"],
     )
 
 

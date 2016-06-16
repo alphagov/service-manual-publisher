@@ -5,82 +5,82 @@ RSpec.describe GuideForm, "#initialize" do
     it "assigns a default update_type of major" do
       expect(
         described_class.new(guide: Guide.new, edition: Edition.new, user: User.new).update_type
-        ).to eq("major")
+      ).to eq("major")
     end
 
     it "assigns author_id to be the current user" do
       expect(
         described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).author_id
-        ).to eq(5)
+      ).to eq(5)
     end
 
     it "assigns title_slug to be nil" do
       expect(
         described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).title_slug
-        ).to eq(nil)
+      ).to eq(nil)
     end
   end
 
   context "for an existing guide" do
     it "loads the author_id" do
       edition = build(:edition, body: "A great body")
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
       author = edition.author
 
       expect(
         described_class.new(guide: guide, edition: edition, user: User.new).author_id
-        ).to eq(author.id)
+      ).to eq(author.id)
     end
 
     it "loads the body" do
       edition = build(:edition, body: "A great body")
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
 
       expect(
         described_class.new(guide: guide, edition: edition, user: User.new).body
-        ).to eq("A great body")
+      ).to eq("A great body")
     end
 
     it "loads the content_owner_id" do
       guide_community = create(:guide_community)
       edition = build(:edition, content_owner: guide_community)
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
 
       expect(
         described_class.new(guide: guide, edition: edition, user: User.new).content_owner_id
-        ).to eq(guide_community.id)
+      ).to eq(guide_community.id)
     end
 
     it "loads the description" do
       edition = build(:edition, description: "Whales should live in Wales")
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
 
       expect(
         described_class.new(guide: guide, edition: edition, user: User.new).description
-        ).to eq("Whales should live in Wales")
+      ).to eq("Whales should live in Wales")
     end
 
     it "loads the title" do
       edition = build(:edition, title: "U wot")
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
 
       expect(
         described_class.new(guide: guide, edition: edition, user: User.new).title
-        ).to eq("U wot")
+      ).to eq("U wot")
     end
 
     it "loads the type" do
       edition = build(:edition, content_owner: nil)
-      guide = create(:guide_community, editions: [ edition ])
+      guide = create(:guide_community, editions: [edition])
 
       expect(
         described_class.new(guide: guide, edition: edition, user: User.new).type
-        ).to eq("GuideCommunity")
+      ).to eq("GuideCommunity")
     end
 
     it "loads the change note and summary" do
       edition = build(:edition, change_summary: "summary", change_note: "note")
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
 
       guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
 
@@ -90,7 +90,7 @@ RSpec.describe GuideForm, "#initialize" do
 
     it "loads the topic_section_id" do
       edition = build(:edition)
-      guide = create(:guide, editions: [ edition ])
+      guide = create(:guide, editions: [edition])
       topic = create(:topic)
       topic_section = create(:topic_section, topic: topic)
       TopicSectionGuide.create!(topic_section: topic_section, guide: guide)
@@ -102,7 +102,7 @@ RSpec.describe GuideForm, "#initialize" do
 
     it "calculates the title_slug" do
       edition = build(:edition)
-      guide = create(:guide, editions: [ edition ], slug: "/service-manual/topic/my-guide")
+      guide = create(:guide, editions: [edition], slug: "/service-manual/topic/my-guide")
 
       guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
 
@@ -187,15 +187,13 @@ RSpec.describe GuideForm, "#save" do
       guide = Guide.new
       edition = guide.editions.build
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.assign_attributes({
-        body: "a fair old body",
+      guide_form.assign_attributes(body: "a fair old body",
         content_owner_id: guide_community.id,
         description: "a pleasant description",
         slug: "/service-manual/topic/a-fair-tale",
         title: "A fair tale",
         update_type: "minor",
-        topic_section_id: topic_section.id,
-        })
+        topic_section_id: topic_section.id)
       guide_form.save
 
       expect(guide).to be_persisted
@@ -203,7 +201,7 @@ RSpec.describe GuideForm, "#save" do
 
       expect(
         TopicSectionGuide.find_by(topic_section: topic_section, guide: guide)
-        ).to be_present
+      ).to be_present
     end
 
     it "assigns a state of draft" do
@@ -231,7 +229,7 @@ RSpec.describe GuideForm, "#save" do
       edition = guide.editions.build
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.assign_attributes({author_id: 5})
+      guide_form.assign_attributes(author_id: 5)
       guide_form.save
 
       expect(edition.author_id).to eq(5)
@@ -242,7 +240,7 @@ RSpec.describe GuideForm, "#save" do
       edition = guide.editions.build
       user = create(:user)
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.assign_attributes({author_id: 5})
+      guide_form.assign_attributes(author_id: 5)
       guide_form.save
 
       expect(edition.created_by).to eq(user)
@@ -256,7 +254,7 @@ RSpec.describe GuideForm, "#save" do
       guide_form.assign_attributes(
         change_summary: "X happened",
         change_note: "This happened because of X.",
-        )
+      )
       guide_form.save
 
       expect(edition.change_summary).to eq("X happened")
@@ -280,11 +278,11 @@ RSpec.describe GuideForm, "#save" do
       guide_form.assign_attributes(topic_section_id: topic_section.id)
       expect(
         guide_form.save
-        ).to eq(true)
+      ).to eq(true)
 
       expect(
         TopicSectionGuide.where(guide: guide).count
-        ).to eq 1
+      ).to eq 1
     end
 
     it "changes to a different topic section within the same topic" do
@@ -332,7 +330,7 @@ RSpec.describe GuideForm, "#save" do
 
       expect(
         guide_form.errors.full_messages_for(:topic_section_id)
-        ).to include("Topic section cannot change to a different topic")
+      ).to include("Topic section cannot change to a different topic")
 
       expect(original_topic_section.reload.guides).to include guide
       expect(different_topic_section.reload.guides).to_not include guide
@@ -341,7 +339,7 @@ RSpec.describe GuideForm, "#save" do
     it "does not persist changes if communication with the publishing api fails" do
       gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
                                             'https://some-service.gov.uk',
-                                            {'error' => {'message' => 'trouble'}})
+                                            'error' => { 'message' => 'trouble' })
       expect(PUBLISHING_API).to receive(:put_content).and_raise(gds_api_exception)
 
       user = create(:user)
@@ -375,15 +373,15 @@ RSpec.describe GuideForm, "validations" do
 
     expect(
       guide_form.errors.full_messages
-      ).to include(
-        "Slug can only contain letters, numbers and dashes",
+    ).to include(
+      "Slug can only contain letters, numbers and dashes",
         "Slug must be present and start with '/service-manual/[topic]'",
         "Latest edition must have a content owner",
         "Editions is invalid",
         "Description can't be blank",
         "Title can't be blank",
         "Body can't be blank",
-        )
+    )
   end
 
   it "validates topic_section_id" do

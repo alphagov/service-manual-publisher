@@ -16,7 +16,7 @@ RSpec.describe GuidePresenter do
   let(:guide) do
     Guide.new(
       content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
-      editions: [ edition ],
+      editions: [edition],
       slug: '/service/manual/test'
     )
   end
@@ -84,7 +84,7 @@ RSpec.describe GuidePresenter do
     it "includes an organisation" do
       expect(
         presenter.links_payload[:links][:organisations]
-        ).to match_array([ an_instance_of(String) ])
+      ).to match_array([an_instance_of(String)])
     end
 
     it 'returns an empty hash without a content owner' do

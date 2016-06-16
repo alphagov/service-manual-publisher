@@ -21,11 +21,11 @@ class TopicPublisher
 
 private
 
-  def save_catching_gds_api_errors(&block)
+  def save_catching_gds_api_errors
     begin
       ActiveRecord::Base.transaction do
         if content_model.save
-          block.call
+          yield
 
           Response.new(success: true)
         else
@@ -47,8 +47,6 @@ private
       @success
     end
 
-    def error
-      @error
-    end
+    attr_reader :error
   end
 end

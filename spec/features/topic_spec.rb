@@ -16,13 +16,13 @@ RSpec.describe "Topics", type: :feature do
   it "saves a draft topic" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
-                            .once
-                            .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
+      .once
+      .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
     expect(api_double).to receive(:patch_links)
-                            .once
-                            .with(an_instance_of(String), an_instance_of(Hash))
-    create(:guide, editions: [ build(:edition, title: 'Guide 1') ])
-    create(:guide, editions: [ build(:edition, title: 'Guide 2') ])
+      .once
+      .with(an_instance_of(String), an_instance_of(Hash))
+    create(:guide, editions: [build(:edition, title: 'Guide 1')])
+    create(:guide, editions: [build(:edition, title: 'Guide 2')])
 
     visit root_path
     click_link "Manage Topics"
@@ -58,11 +58,11 @@ RSpec.describe "Topics", type: :feature do
   it "update a topic to save another draft" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
-                            .once
-                            .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
+      .once
+      .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
     expect(api_double).to receive(:patch_links)
-                            .once
-                            .with(an_instance_of(String), an_instance_of(Hash))
+      .once
+      .with(an_instance_of(String), an_instance_of(Hash))
     create(:topic, title: 'Agile Delivery')
 
     visit root_path
@@ -82,7 +82,7 @@ RSpec.describe "Topics", type: :feature do
   it "publish a topic" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:publish).
-                          once
+      once
     topic = create(:topic, :with_some_guides)
 
     # When publishing a topic we also need to update the links for all the relevant
@@ -111,7 +111,7 @@ end
 
 RSpec.describe "topic editor", type: :feature do
   it "can view topics" do
-    topic = Topic.create!(
+    Topic.create!(
       path: "/service-manual/topic1",
       title: "Topic 1",
       description: "A Description",

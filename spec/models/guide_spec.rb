@@ -5,7 +5,7 @@ RSpec.describe Guide do
 
   context "with a topic" do
     let(:guide) do
-      create(:guide, slug: "/service-manual/topic-name/slug", editions: [ edition ])
+      create(:guide, slug: "/service-manual/topic-name/slug", editions: [edition])
     end
 
     let!(:topic) do
@@ -29,12 +29,11 @@ RSpec.describe Guide do
         expect(guide.topic).to eq topic
       end
     end
-
   end
 
   context "without a topic" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/topic-name/slug", editions: [ edition ])
+      Guide.create!(slug: "/service-manual/topic-name/slug", editions: [edition])
     end
 
     describe "#included_in_a_topic?" do
@@ -52,7 +51,7 @@ RSpec.describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil, editions: [ edition ])
+      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil, editions: [edition])
       expect(guide.content_id).to be_present
     end
   end
@@ -65,14 +64,14 @@ RSpec.describe Guide do
     end
 
     it "does not allow unsupported characters in slugs" do
-      guide = Guide.new(slug: "/service-manual/topic-name/$", editions: [ edition ])
+      guide = Guide.new(slug: "/service-manual/topic-name/$", editions: [edition])
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq [
         "Slug can only contain letters, numbers and dashes",
         "Slug must be present and start with '/service-manual/[topic]'",
       ]
 
-      guide = Guide.new(slug: "/service-manual/$$$/title", editions: [ edition ])
+      guide = Guide.new(slug: "/service-manual/$$$/title", editions: [edition])
       guide.valid?
       expect(guide.errors.full_messages_for(:slug)).to eq [
         "Slug can only contain letters, numbers and dashes",
@@ -83,7 +82,7 @@ RSpec.describe Guide do
     describe "content owner" do
       it "requires the latest edition to have a content owner" do
         edition_without_content_owner = build(:edition, content_owner: nil)
-        guide = build(:guide, editions: [ edition_without_content_owner ])
+        guide = build(:guide, editions: [edition_without_content_owner])
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a content owner')
@@ -91,7 +90,7 @@ RSpec.describe Guide do
 
       it "requires the latest edition to have a content owner unless it is a GuideCommunity" do
         edition = build(:edition, content_owner: nil)
-        guide = build(:guide_community, editions: [ edition ])
+        guide = build(:guide_community, editions: [edition])
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
@@ -102,7 +101,7 @@ RSpec.describe Guide do
       [:guide, :guide_community].each do |klass|
         it "does not require a summary if the guide is an instance of #{klass.to_s.classify}" do
           edition = build(:edition)
-          guide = build(klass, editions: [ edition ])
+          guide = build(klass, editions: [edition])
           guide.valid?
 
           expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
@@ -111,7 +110,7 @@ RSpec.describe Guide do
 
       it "requires a summary if the guide is an instance of Point" do
         edition = build(:edition)
-        guide = build(:point, editions: [ edition ])
+        guide = build(:point, editions: [edition])
         guide.valid?
 
         expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a summary')
@@ -142,7 +141,7 @@ RSpec.describe Guide do
           build(:published_edition),
           build(:published_edition),
         ],
-      )
+                    )
       expect(Guide.with_published_editions.to_a).to eq [guide]
     end
   end
@@ -170,10 +169,10 @@ RSpec.describe Guide do
       titles = ["Standups", "Unit Testing"]
       titles.each_with_index do |title, index|
         edition = build(:review_requested_edition, title: title)
-        create(:guide, slug: "/service-manual/topic-name/#{index}", editions: [ edition ])
+        create(:guide, slug: "/service-manual/topic-name/#{index}", editions: [edition])
       end
 
-      results = Guide.search("testing").map {|e| e.latest_edition.title}
+      results = Guide.search("testing").map { |e| e.latest_edition.title }
       expect(results).to eq ["Unit Testing"]
     end
 
@@ -197,16 +196,15 @@ RSpec.describe Guide do
 
     it "searches for slug" do
       edition = Edition.new(default_attributes.merge(version: 1, title: "1"))
-      Guide.create!(editions: [ edition ], slug: "/service-manual/topic-name/1")
+      Guide.create!(editions: [edition], slug: "/service-manual/topic-name/1")
 
       edition = Edition.new(default_attributes.merge(version: 1, title: "2"))
-      Guide.create!(editions: [ edition ], slug: "/service-manual/topic-name/2")
+      Guide.create!(editions: [edition], slug: "/service-manual/topic-name/2")
 
-      results = Guide.search("/service-manual/2").map {|e| e.latest_edition.title}
+      results = Guide.search("/service-manual/2").map { |e| e.latest_edition.title }
       expect(results).to eq ["2"]
     end
   end
-
 end
 
 RSpec.describe Guide, "#latest_edition_per_edition_group" do
@@ -222,7 +220,7 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
 
     expect(
       guide.latest_edition_per_edition_group
-      ).to eq([second_version_second_edition, first_version_second_edition])
+    ).to eq([second_version_second_edition, first_version_second_edition])
   end
 end
 
@@ -380,20 +378,20 @@ end
 RSpec.describe Guide, ".by_type" do
   it "returns guides with a specific type" do
     guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
-    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+    guide_community = create(:guide_community, editions: [guide_community_edition])
 
     edition = build(:edition, content_owner: guide_community, title: "Scrum")
-    guide = create(:guide, editions: [ edition ])
+    create(:guide, editions: [edition])
 
     expect(described_class.by_type("GuideCommunity")).to eq([guide_community])
   end
 
   it "returns guides of type Guide if nil or empty string is supplied" do
     guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
-    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+    guide_community = create(:guide_community, editions: [guide_community_edition])
 
     edition = build(:edition, content_owner: guide_community, title: "Scrum")
-    guide = create(:guide, editions: [ edition ])
+    guide = create(:guide, editions: [edition])
 
     expect(described_class.by_type(nil)).to eq([guide])
     expect(described_class.by_type("")).to eq([guide])

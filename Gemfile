@@ -33,13 +33,14 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'rspec-rails', '~> 3.3'
-  gem 'simplecov', '0.10.0', require: false
-  gem 'simplecov-rcov', '0.2.3', require: false
+  gem 'govuk-lint'
+  gem 'jasmine'
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
-  gem 'jasmine'
+  gem 'rspec-rails', '~> 3.3'
+  gem 'simplecov', '0.10.0', require: false
+  gem 'simplecov-rcov', '0.2.3', require: false
 end
 
 group :test do

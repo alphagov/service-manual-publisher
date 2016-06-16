@@ -16,7 +16,7 @@ class TopicsController < ApplicationController
     end
 
     publication = TopicPublisher.new(content_model: @topic).
-                            save_draft(TopicPresenter.new(@topic))
+      save_draft(TopicPresenter.new(@topic))
 
     respond_for_topic_publication publication, notice: "Topic has been created"
   end
@@ -45,7 +45,7 @@ private
 
   def publish
     publication = TopicPublisher.new(content_model: @topic).
-                            publish
+      publish
 
     if publication.success?
       GuideTaggerJob.batch_perform_later(@topic)
@@ -60,7 +60,7 @@ private
 
   def save_draft
     publication = TopicPublisher.new(content_model: @topic).
-                            save_draft(TopicPresenter.new(@topic))
+      save_draft(TopicPresenter.new(@topic))
 
     respond_for_topic_publication publication, notice: "Topic has been updated"
   end

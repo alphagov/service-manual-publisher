@@ -16,7 +16,7 @@ require "sprockets/railtie"
 Bundler.require(*Rails.groups)
 
 module ServiceManualPublisher
-  GDS_ORGANISATION_CONTENT_ID = 'af07d5a5-df63-4ddc-9383-6a666845ebe9'
+  GDS_ORGANISATION_CONTENT_ID = 'af07d5a5-df63-4ddc-9383-6a666845ebe9'.freeze
 
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

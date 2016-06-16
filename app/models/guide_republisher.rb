@@ -16,7 +16,7 @@ class GuideRepublisher
     end
   end
 
-  private
+private
 
   attr_reader :guide, :publishing_api
 end

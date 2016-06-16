@@ -1,12 +1,11 @@
 class GuidesFilter
-  VALID_FILTERS = [
-    'author',
-    'content_owner',
-    'page',
-    'page_type',
-    'q',
-    'state'
-  ]
+  VALID_FILTERS = %w(
+    author
+    content_owner
+    page
+    page_type
+    q
+    state).freeze
 
   def initialize(scope)
     @scope = scope
@@ -18,7 +17,6 @@ class GuidesFilter
 
   def by(params)
     params.slice(*VALID_FILTERS).each do |key, param|
-
       next if param.blank?
 
       case key
@@ -43,13 +41,13 @@ class GuidesFilter
 private
 
   def apply_type_scope(type)
-    case type
-    when 'All'
-      @scope = @scope
-    when 'Guide'
-      @scope = @scope.by_type(nil)
-    else
-      @scope = @scope.by_type(type)
-    end
+    @scope = case type
+             when 'All'
+               @scope
+             when 'Guide'
+               @scope.by_type(nil)
+             else
+               @scope.by_type(type)
+             end
   end
 end

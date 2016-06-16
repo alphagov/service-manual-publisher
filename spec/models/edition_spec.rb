@@ -9,7 +9,7 @@ RSpec.describe Edition, type: :model do
       first_edition = build(:edition, author: joe, created_at: 1.week.ago)
       last_edition = build(:edition, author: liz, created_at: 1.day.ago)
 
-      guide = create(:guide, editions: [
+      create(:guide, editions: [
         first_edition,
         last_edition,
       ])
@@ -20,7 +20,7 @@ RSpec.describe Edition, type: :model do
     it "avoids duplicates" do
       first = build(:edition, author: joe, created_at: 1.week.ago)
       second = build(:edition, author: joe, created_at: 1.day.ago)
-      guide = create(:guide, editions: [ first, second ])
+      guide = create(:guide, editions: [first, second])
 
       expect(guide.latest_edition.notification_subscribers).to match_array [joe]
     end
@@ -105,7 +105,7 @@ RSpec.describe Edition, type: :model do
 
       expect(
         edition.errors.full_messages_for(:created_by)
-        ).to include("Created by can't be blank")
+      ).to include("Created by can't be blank")
     end
   end
 
@@ -117,7 +117,7 @@ RSpec.describe Edition, type: :model do
     end
 
     let :guide do
-      build(:guide, slug: "/service-manual/topic-name/something", editions: [ edition ])
+      build(:guide, slug: "/service-manual/topic-name/something", editions: [edition])
     end
 
     describe "#can_be_approved?" do

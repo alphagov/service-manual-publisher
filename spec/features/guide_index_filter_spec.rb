@@ -6,8 +6,8 @@ RSpec.describe "filtering guides", type: :feature do
     create(
       :guide,
       editions: [
-        build(:edition, state:"draft", title: "Edition that is not expected"),
-        build(:edition, state:"review_requested", title: "Edition that is not expected"),
+        build(:edition, state: "draft", title: "Edition that is not expected"),
+        build(:edition, state: "review_requested", title: "Edition that is not expected"),
       ],
     )
     create(
@@ -28,12 +28,12 @@ RSpec.describe "filtering guides", type: :feature do
 
     create(:guide,
            slug: "/service-manual/topic-name/a",
-           editions: [ build(:edition, author: dave) ],
-    )
+           editions: [build(:edition, author: dave)],
+          )
     create(:guide,
            slug: "/service-manual/topic-name/b",
-           editions: [ build(:edition, author: linda) ],
-    )
+           editions: [build(:edition, author: linda)],
+          )
 
     filter_by_author "Dave"
     expect(page).to have_text "/service-manual/topic-name/a"
@@ -47,14 +47,14 @@ RSpec.describe "filtering guides", type: :feature do
   it "filters by community" do
     [1, 2].each do |i|
       edition = build(:edition, content_owner: nil, title: "Content Owner #{i}")
-      guide_community = create(:guide_community, editions: [ edition ])
+      guide_community = create(:guide_community, editions: [edition])
 
       edition = build(:edition,
                       state: "review_requested",
                       title: "Edition #{i}",
                       content_owner_id: guide_community.id,
-      )
-      create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [ edition ])
+                     )
+      create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [edition])
     end
 
     filter_by_community "Content Owner 1"
@@ -68,10 +68,10 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "filters by page type" do
     guide_community_edition = build(:edition, content_owner: nil, title: "Agile Community")
-    guide_community = create(:guide_community, editions: [ guide_community_edition ])
+    guide_community = create(:guide_community, editions: [guide_community_edition])
 
     edition = build(:edition, content_owner: guide_community, title: "Scrum")
-    guide = create(:guide, editions: [ edition ])
+    create(:guide, editions: [edition])
 
     visit root_path
     expect(page).to have_css(".guide-table td", text: "Agile Community")
@@ -92,10 +92,10 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "searches for keywords" do
     edition1 = build(:edition, state: "review_requested", title: "Standups")
-    create(:guide, slug: "/service-manual/topic-name/something", editions: [ edition1 ])
+    create(:guide, slug: "/service-manual/topic-name/something", editions: [edition1])
 
     edition2 = build(:edition, state: "review_requested", title: "Unit Testing")
-    create(:guide, slug: "/service-manual/topic-name/something", editions: [ edition2 ])
+    create(:guide, slug: "/service-manual/topic-name/something", editions: [edition2])
 
     search_for "testing"
 

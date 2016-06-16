@@ -5,7 +5,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
     it "describes the action" do
       expect(
         helper.event_action_for_changed_state("draft")
-        ).to eq("Draft")
+      ).to eq("Draft")
     end
   end
 
@@ -13,7 +13,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
     it "describes the action" do
       expect(
         helper.event_action_for_changed_state("review_requested")
-        ).to eq("Review requested")
+      ).to eq("Review requested")
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
     it "describes the action" do
       expect(
         helper.event_action_for_changed_state("ready")
-        ).to eq("Approved")
+      ).to eq("Approved")
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
     it "describes the action" do
       expect(
         helper.event_action_for_changed_state("published")
-        ).to eq("Published")
+      ).to eq("Published")
     end
   end
 end
@@ -41,7 +41,7 @@ RSpec.describe EditionsHelper, "#edition_created_by_name", type: :helper do
 
     expect(
       helper.edition_created_by_name(edition)
-      ).to eq("Henry")
+    ).to eq("Henry")
   end
 
   it "returns Unknown if showing an edition before we started storing who created the edition" do
@@ -49,6 +49,6 @@ RSpec.describe EditionsHelper, "#edition_created_by_name", type: :helper do
 
     expect(
       helper.edition_created_by_name(edition)
-      ).to eq("Unknown")
+    ).to eq("Unknown")
   end
 end

@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'capybara/rails'
 
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
-
   let(:fake_publishing_api) { FakePublishingApi.new }
 
   before do
@@ -35,7 +34,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     it "defaults to a major update and the new change note is empty" do
       title = "A guide to agile"
-      guide = create(:guide, editions: [
+      create(:guide, editions: [
         build(:edition, state: "draft", title: title, update_type: "minor"),
         build(:edition, state: "review_requested", title: title, update_type: "minor"),
         build(:edition, state: "ready", title: title, update_type: "minor"),
@@ -90,7 +89,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows api errors in the UI" do
-      guide = create(:published_guide, :with_topic_section, title: "Scrum")
+      create(:published_guide, :with_topic_section, title: "Scrum")
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -270,7 +269,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       visit guides_path
       click_link "Current Draft Edition"
       click_link "Comments and history"
-      view_edition_links = page.find_all("a").select {|a| a.text == "View changes"}
+      view_edition_links = page.find_all("a").select { |a| a.text == "View changes" }
       expect(view_edition_links.size).to eq 2
       view_edition_links.last.click
 

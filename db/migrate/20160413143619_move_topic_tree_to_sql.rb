@@ -1,7 +1,7 @@
 class MoveTopicTreeToSql < ActiveRecord::Migration
   def up
     Topic.all.each do |topic|
-      Array(topic.tree).each_with_index do |item, index|
+      Array(topic.tree).each_with_index do |item, _index|
         topic_section = topic.topic_sections.create!(
           title:       item["title"],
           description: item["description"],

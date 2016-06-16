@@ -1,10 +1,10 @@
 class Comment < ActiveRecord::Base
   include ActsAsCommentable::Comment
 
-  belongs_to :commentable, :polymorphic => true
+  belongs_to :commentable, polymorphic: true
   belongs_to :user
 
-  scope :for_rendering, ->{ order(created_at: :desc).includes(:user) }
+  scope :for_rendering, -> { order(created_at: :desc).includes(:user) }
   scope :oldest_first, -> { order('created_at, id') }
 
   validates :comment, presence: true

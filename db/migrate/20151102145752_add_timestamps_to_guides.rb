@@ -1,8 +1,6 @@
 class AddTimestampsToGuides < ActiveRecord::Migration
   def up
-    change_table :guides do |t|
-      t.timestamps
-    end
+    change_table :guides, &:timestamps
 
     Guide.all.each do |guide|
       if guide.latest_edition

@@ -6,7 +6,6 @@ RSpec.describe GuideRouteHelper, '#guide_frontend_published_url' do
 
     expect(
       helper.guide_frontend_published_url(guide)
-      ).to eq("#{Plek.find('www')}/service-manual/technology")
+    ).to eq("#{Plek.find('www')}/service-manual/technology")
   end
 end
-

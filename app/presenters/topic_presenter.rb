@@ -58,9 +58,7 @@ private
     content_ids = topic.guides.map do |guide|
       edition = guide.latest_edition
 
-      if edition.content_owner
-        edition.content_owner.content_id
-      end
+      edition.content_owner.content_id if edition.content_owner
     end
     content_ids.compact.uniq
   end

@@ -59,7 +59,7 @@ RSpec.describe GuideManager, '#approve_for_publication!' do
 
     expect(
       ActionMailer::Base.deliveries.last.subject
-      ).to include("ready for publishing")
+    ).to include("ready for publishing")
   end
 
   def create_guide
@@ -110,7 +110,7 @@ RSpec.describe GuideManager, '#publish' do
 
     expect(
       ActionMailer::Base.deliveries.last.subject
-      ).to include("has been published")
+    ).to include("has been published")
   end
 
   it "is successful" do
@@ -155,10 +155,10 @@ RSpec.describe GuideManager, '#publish' do
 
     def stub_publishing_api_to_fail
       gds_api_exception = GdsApi::HTTPErrorResponse.new(
-                            422,
+        422,
                             'https://some-service.gov.uk',
-                            { 'error' => { 'message' => 'trouble' } }
-                            )
+                            'error' => { 'message' => 'trouble' }
+      )
       expect(PUBLISHING_API).to receive(:publish).and_raise(gds_api_exception)
     end
   end
@@ -182,7 +182,7 @@ RSpec.describe GuideManager, '#discard_draft' do
       guide = create_guide
 
       manager = described_class.new(guide: guide, user: user)
-      result = manager.discard_draft
+      manager.discard_draft
 
       guide_id = guide.id
       expect(Guide.find_by_id(guide_id)).to eq(nil)
@@ -255,10 +255,10 @@ RSpec.describe GuideManager, '#discard_draft' do
 
     def stub_publishing_api_to_fail
       gds_api_exception = GdsApi::HTTPErrorResponse.new(
-                            422,
+        422,
                             'https://some-service.gov.uk',
-                            { 'error' => { 'message' => 'trouble' } }
-                            )
+                            'error' => { 'message' => 'trouble' }
+      )
       expect(PUBLISHING_API).to receive(:discard_draft).and_raise(gds_api_exception)
     end
   end

@@ -12,11 +12,13 @@ class ActionView::Helpers::FormBuilder
     return nil if object.errors.messages[field].nil?
 
     content_tag :ul do
-      object.errors.messages[field].map do |error|
-        content_tag :li, class: "text-danger" do
-          error
+      error_list_items =
+        object.errors.messages[field].map do |error|
+          content_tag :li, class: "text-danger" do
+            error
+          end
         end
-      end.join("").html_safe
+      error_list_items.join("").html_safe
     end
   end
 end

@@ -68,7 +68,7 @@ class Edition < ActiveRecord::Base
     return false if !persisted?
     return false if published?
     return false if unpublished?
-    return true
+    true
   end
 
   def latest_edition?
@@ -86,9 +86,7 @@ class Edition < ActiveRecord::Base
   def change_note_html
     Redcarpet::Markdown.new(
       Redcarpet::Render::HTML,
-      extensions = {
-        autolink: true,
-      },
+              autolink: true,
     ).render(change_note)
   end
 

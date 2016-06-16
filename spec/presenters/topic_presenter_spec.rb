@@ -10,7 +10,7 @@ RSpec.describe TopicPresenter do
       title: "Test topic",
       path: "/service-manual/test-topic",
       description: "Topic description",
-    )
+                  )
 
     topic_section = topic.topic_sections.create!(
       title: "Group 1",
@@ -62,7 +62,7 @@ RSpec.describe TopicPresenter do
 
       expect(
         presented_topic.content_payload[:details][:visually_collapsed]
-        ).to eq(true)
+      ).to eq(true)
     end
   end
 end
@@ -76,8 +76,8 @@ RSpec.describe TopicPresenter, "#links_payload" do
     links = presented_topic.links_payload[:links]
 
     expect(
-      presented_topic.links_payload[:links][:organisations]
-      ).to match_array([ an_instance_of(String) ])
+      links[:organisations]
+    ).to match_array([an_instance_of(String)])
   end
 
   it "references all content_ids that appear in groups" do
@@ -112,8 +112,8 @@ RSpec.describe TopicPresenter, "#links_payload" do
 
   it "contains unique content_owners content ids" do
     guide_community = create(:guide_community)
-    guide1 = create(:guide, editions: [ build(:edition, content_owner: guide_community) ])
-    guide2 = create(:guide, editions: [ build(:edition, content_owner: guide_community) ])
+    guide1 = create(:guide, editions: [build(:edition, content_owner: guide_community)])
+    guide2 = create(:guide, editions: [build(:edition, content_owner: guide_community)])
     topic = create_topic_in_groups([[guide1], [guide2]])
     presented_topic = TopicPresenter.new(topic)
 
@@ -130,7 +130,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
 
     expect(
       presented_topic.links_payload[:links][:content_owners]
-      ).to eq([])
+    ).to eq([])
   end
 
   def create_topic_in_groups(groups)
