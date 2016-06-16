@@ -1,7 +1,7 @@
 require "gds_api/publishing_api_v2"
 
 class RedirectPublisher
-  def initialize(publishing_api=PUBLISHING_API)
+  def initialize(publishing_api = PUBLISHING_API)
     @publishing_api = publishing_api
   end
 

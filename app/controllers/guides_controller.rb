@@ -12,7 +12,7 @@ class GuidesController < ApplicationController
       guide: guide,
       edition: Edition.new,
       user: current_user,
-      )
+    )
   end
 
   def create
@@ -28,7 +28,7 @@ class GuidesController < ApplicationController
       guide: guide,
       edition: guide.latest_edition,
       user: current_user
-      )
+    )
   end
 
   def update
@@ -72,7 +72,7 @@ private
         guide: guide,
         edition: guide.latest_edition,
         user: current_user
-        )
+      )
 
       flash.now[:error] = result.errors
       render 'edit'
@@ -86,7 +86,7 @@ private
       guide: guide,
       edition: guide.editions.build(created_by: current_user),
       user: current_user
-      )
+    )
     @guide_form.assign_attributes(guide_form_params)
 
     if @guide_form.save

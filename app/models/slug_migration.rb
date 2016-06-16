@@ -10,17 +10,15 @@ class SlugMigration < ActiveRecord::Base
     object.content_id = SecureRandom.uuid
   end
 
-  private
+private
 
-    def is_not_already_completed
-      if completed_was
-        errors.add(:base, "is completed and can not be modified")
-      end
-    end
+  def is_not_already_completed
+    errors.add(:base, "is completed and can not be modified") if completed_was
+  end
 
-    def redirect_to_is_not_slug
-      if redirect_to == slug
-        errors.add(:redirect_to, "must not be the same as slug")
-      end
+  def redirect_to_is_not_slug
+    if redirect_to == slug
+      errors.add(:redirect_to, "must not be the same as slug")
     end
+  end
 end

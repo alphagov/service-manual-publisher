@@ -5,7 +5,7 @@ module GuideHelper
     "ready"            => "success",
     "published"        => "info",
     "unpublished"      => "default",
-  }
+  }.freeze
 
   def state_label(guide)
     state     = guide.latest_edition.try(:state)
@@ -21,24 +21,24 @@ module GuideHelper
   def guide_types_for_select
     guide_types = Guide.distinct(:type).pluck(:type).compact
     options = guide_types.map do |type|
-      [ type.underscore.humanize.titleize, type ]
+      [type.underscore.humanize.titleize, type]
     end
 
-    [[ "All", "All" ], [ "Guide", 'Guide' ]] + options
+    [%w(All All), %w(Guide Guide)] + options
   end
 
   def guide_community_options_for_select
     # TODO: N+1 on loading the most recent edition
     GuideCommunity.all.
-          sort_by{ |guide| guide.title }.
-          map{ |g| [g.title, g.id] }
+      sort_by(&:title).
+      map { |g| [g.title, g.id] }
   end
 
   def topic_section_options_for_select
     Topic.includes(:topic_sections).map do |topic|
       [
         topic.title,
-        topic.topic_sections.map { |ts| [ "#{topic.title} -> #{ts.title}", ts.id ] },
+        topic.topic_sections.map { |ts| ["#{topic.title} -> #{ts.title}", ts.id] },
         { "data-path" => topic.path }
       ]
     end

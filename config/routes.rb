@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get '/healthcheck', :to => proc { [200, {}, ['OK']] }
+  get '/healthcheck', to: proc { [200, {}, ['OK']] }
   mount GovukAdminTemplate::Engine, at: "/style-guide"
 
   root 'guides#index'

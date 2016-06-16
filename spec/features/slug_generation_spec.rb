@@ -59,6 +59,5 @@ RSpec.describe "creating guides", type: :feature do
         expect(find_field('Final URL', disabled: true).value).to eq guide.slug
       end
     end
-
   end
 end

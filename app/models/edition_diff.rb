@@ -1,5 +1,5 @@
 class EditionDiff
-  TRACKABLE_FIELDS = [:title, :content_owner_title, :description, :body]
+  TRACKABLE_FIELDS = [:title, :content_owner_title, :description, :body].freeze
 
   attr_reader :old_edition, :new_edition
 
@@ -9,16 +9,18 @@ class EditionDiff
   end
 
   def changes
-    TRACKABLE_FIELDS.inject({}) do |memo, field|
-      old_text = old_edition.public_send(field).to_s
-      new_text = new_edition.public_send(field).to_s
-      memo[field] = FieldChange.new(
-                         old_text: old_text,
-                         new_text: new_text,
-                         field: field
-                       )
-      memo
-    end.with_indifferent_access
+    field_changes =
+      TRACKABLE_FIELDS.inject({}) do |memo, field|
+        old_text = old_edition.public_send(field).to_s
+        new_text = new_edition.public_send(field).to_s
+        memo[field] = FieldChange.new(
+          old_text: old_text,
+          new_text: new_text,
+          field: field
+        )
+        memo
+      end
+    field_changes.with_indifferent_access
   end
 
   class FieldChange

@@ -13,6 +13,6 @@ RSpec.describe TopicSectionGuide, 'validations' do
 
     expect(
       topic_section_guide.errors.full_messages
-      ).to include("Guide can only be in one topic section")
+    ).to include("Guide can only be in one topic section")
   end
 end

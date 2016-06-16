@@ -31,7 +31,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       # we are testing it here.
       expect(
         Redirect.find_by(old_path: guide.slug, new_path: topic.path)
-        ).to be_present
+      ).to be_present
 
       # Assert the guide is unpublished
       expect(current_path).to eq(root_path)

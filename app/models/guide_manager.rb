@@ -53,6 +53,7 @@ class GuideManager
   end
 
 private
+
   attr_reader :guide, :user
 
   ManageResult = Struct.new(:success, :errors) do
@@ -65,13 +66,13 @@ private
     end
   end
 
-  def catching_gds_api_exceptions(&block)
+  def catching_gds_api_exceptions
     begin
       ActiveRecord::Base.transaction do
-        block.call
+        yield
       end
     rescue GdsApi::HTTPErrorResponse => e
-      ManageResult.new(false, [ e.error_details['error']['message'] ])
+      ManageResult.new(false, [e.error_details['error']['message']])
     end
   end
 end

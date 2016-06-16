@@ -14,15 +14,14 @@ class GuideSearchIndexer
       rummager_api.add_document(
         type,
         id,
-        {
-          "format":            "service_manual_guide",
-          "description":       live_edition.description,
-          "indexable_content": live_edition.body,
-          "title":             live_edition.title,
-          "link":              guide.slug,
-          "manual":            "/service-manual",
-          "organisations":     ["government-digital-service"],
-        })
+        "format":            "service_manual_guide",
+        "description":       live_edition.description,
+        "indexable_content": live_edition.body,
+        "title":             live_edition.title,
+        "link":              guide.slug,
+        "manual":            "/service-manual",
+        "organisations":     ["government-digital-service"],
+      )
     end
   end
 
@@ -33,5 +32,4 @@ class GuideSearchIndexer
 private
 
   attr_reader :guide, :rummager_api
-
 end

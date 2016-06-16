@@ -31,12 +31,10 @@ class Topic < ActiveRecord::Base
     guides.pluck(:content_id).uniq
   end
 
-  private
+private
 
   def path_can_be_set_once
-    if persisted? && path != path_was
-      errors.add(:path, "can not be changed")
-    end
+    errors.add(:path, "can not be changed") if persisted? && path != path_was
   end
 
   def path_format

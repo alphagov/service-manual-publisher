@@ -8,9 +8,7 @@ module ApplicationHelper
   end
 
   def css_class_if_current(path, class_name)
-    if current_page?(path)
-      class_name
-    end
+    class_name if current_page?(path)
   end
 
   def name_for_user(user)

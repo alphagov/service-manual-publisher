@@ -11,7 +11,7 @@ end
 RSpec.describe TopicHelper, "#all_guides_container_for_select" do
   it "returns the container of pairs for all guides suitable for options_for_select" do
     agile_community = create(:guide_community,
-                             editions: [ build(:edition,
+                             editions: [build(:edition,
                                              content_owner: nil,
                                              title: 'Agile Community')
                                         ])

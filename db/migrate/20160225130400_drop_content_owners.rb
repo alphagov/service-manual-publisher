@@ -16,11 +16,11 @@ class DropContentOwners < ActiveRecord::Migration
     add_column :editions, :new_content_owner_id, :integer
 
     design_community_guide = FakeGuide.joins(:editions).
-                                       where('editions.title = ?', 'Design Community').
-                                       first
+      where('editions.title = ?', 'Design Community').
+      first
     agile_community_guide  = FakeGuide.joins(:editions).
-                                       where('editions.title = ?', 'Agile Community').
-                                       first
+      where('editions.title = ?', 'Agile Community').
+      first
 
     design_content_owner = FakeContentOwner.find_by_title('Design Community')
     agile_content_owner = FakeContentOwner.find_by_title('Agile Community')
@@ -28,12 +28,12 @@ class DropContentOwners < ActiveRecord::Migration
 
     if design_community_guide && design_content_owner
       FakeEdition.where(content_owner_id: design_content_owner.id).
-                  update_all(new_content_owner_id: design_community_guide.id)
+        update_all(new_content_owner_id: design_community_guide.id)
     end
 
     if agile_community_guide && agile_content_owner
       FakeEdition.where(content_owner_id: agile_content_owner.id).
-                  update_all(new_content_owner_id: agile_community_guide.id)
+        update_all(new_content_owner_id: agile_community_guide.id)
     end
 
 

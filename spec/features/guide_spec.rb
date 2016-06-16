@@ -16,7 +16,7 @@ RSpec.describe "creating guides", type: :feature do
       content_owner: nil,
       title: "Technology Community"
     )
-    create(:guide_community, editions: [ edition ])
+    create(:guide_community, editions: [edition])
 
     topic = create(:topic)
     create(:topic_section, topic: topic)
@@ -36,11 +36,11 @@ RSpec.describe "creating guides", type: :feature do
 
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
-                            .twice
-                            .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+      .twice
+      .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:patch_links)
-                            .twice
-                            .with(an_instance_of(String), an_instance_of(Hash))
+      .twice
+      .with(an_instance_of(String), an_instance_of(Hash))
 
     click_first_button "Save"
 
@@ -94,14 +94,14 @@ RSpec.describe "creating guides", type: :feature do
 
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
-                            .once
-                            .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+      .once
+      .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
     expect(api_double).to receive(:patch_links)
-                            .once
-                            .with(an_instance_of(String), an_instance_of(Hash))
+      .once
+      .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:publish)
-                            .once
-                            .with(an_instance_of(String), 'minor')
+      .once
+      .with(an_instance_of(String), 'minor')
 
     click_first_button "Save"
     guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
@@ -137,7 +137,7 @@ RSpec.describe "creating guides", type: :feature do
         422,
         "An error occurred",
         "error" => { "message" => "An error occurred" }
-        )
+      )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
       fill_in_guide_form
@@ -215,7 +215,7 @@ RSpec.describe "Updating guides", type: :feature do
     guide = create(
       :guide,
       slug: "/service-manual/topic-name/something",
-      editions: [ build(:edition) ],
+      editions: [build(:edition)],
     )
     topic_section.guides << guide
     visit edit_guide_path(guide)
@@ -233,13 +233,13 @@ RSpec.describe "Updating guides", type: :feature do
       :with_draft_edition,
       :with_topic_section,
       slug: "/service-manual/topic-name/something"
-      )
+    )
 
     api_error = GdsApi::HTTPClientError.new(
       422,
       "An error occurred",
       "error" => { "message" => "An error occurred" }
-      )
+    )
     expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
     visit edit_guide_path(guide)

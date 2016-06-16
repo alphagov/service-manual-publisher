@@ -7,12 +7,12 @@ FactoryGirl.define do
 
     trait :with_draft_edition do
       editions {
-        [ build(:edition, title: title) ]
+        [build(:edition, title: title)]
       }
     end
 
     trait :with_topic_section do
-      after(:create) do |guide, evaluator|
+      after(:create) do |guide, _evaluator|
         topic = create(:topic)
         topic_section = create(:topic_section, topic: topic)
         topic_section.guides << guide
@@ -24,7 +24,7 @@ FactoryGirl.define do
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
 
     editions {
-      [ build(:community_edition, content_owner: nil) ]
+      [build(:community_edition, content_owner: nil)]
     }
   end
 
@@ -36,7 +36,7 @@ FactoryGirl.define do
 
     trait :with_draft_edition do
       editions {
-        [ build(:edition, title: title) ]
+        [build(:edition, title: title)]
       }
     end
   end
@@ -66,19 +66,19 @@ FactoryGirl.define do
 
   factory :draft_guide, parent: :guide do
     editions {
-      [ build(:edition, state: "draft") ]
+      [build(:edition, state: "draft")]
     }
   end
 
   factory :review_requested_guide, parent: :guide do
     editions {
-      [ build(:edition, state: "review_requested") ]
+      [build(:edition, state: "review_requested")]
     }
   end
 
   factory :ready_guide, parent: :guide do
     editions {
-      [ build(:edition, state: "ready") ]
+      [build(:edition, state: "ready")]
     }
   end
 
@@ -88,12 +88,14 @@ FactoryGirl.define do
       body "The quick brown fox jumped over the lazy dog."
     end
 
-    editions { [
+    editions {
+      [
       build(:edition, state: "draft", title: title, body: body),
       build(:edition, state: "review_requested", title: title, body: body),
       build(:edition, state: "ready", title: title, body: body),
       build(:edition, state: "published", title: title, body: body),
-      ] }
+      ]
+    }
   end
 
   factory :published_guide_community, parent: :published_guide, class: 'GuideCommunity'
@@ -141,7 +143,7 @@ FactoryGirl.define do
     description "Agile description"
 
     trait :with_some_guides do
-      after(:create) do |topic, evaluator|
+      after(:create) do |topic, _evaluator|
         guide1 = create(:published_guide)
         topic_section1 = topic.topic_sections.create!(
           title: "Group 1 title",
@@ -199,4 +201,3 @@ FactoryGirl.define do
     description "Topic Section Description"
   end
 end
-

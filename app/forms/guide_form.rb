@@ -1,5 +1,5 @@
 class GuideForm
-  DEFAULT_UPDATE_TYPE = "major"
+  DEFAULT_UPDATE_TYPE = "major".freeze
 
   include ActiveModel::Model
 
@@ -86,9 +86,9 @@ private
 
   def topic_section_guide
     @_topic_section_guide ||= TopicSectionGuide
-                                .includes(:topic_section)
-                                .references(:topic_section)
-                                .find_or_initialize_by(guide: guide)
+      .includes(:topic_section)
+      .references(:topic_section)
+      .find_or_initialize_by(guide: guide)
   end
 
   def extracted_title_from_slug
@@ -144,10 +144,10 @@ private
     end
   end
 
-  def catching_gds_api_exceptions(&block)
+  def catching_gds_api_exceptions
     begin
       ActiveRecord::Base.transaction do
-        block.call
+        yield
       end
     rescue GdsApi::HTTPErrorResponse => e
       errors.add(:base, e.error_details['error']['message'])

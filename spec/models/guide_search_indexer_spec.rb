@@ -7,21 +7,19 @@ RSpec.describe GuideSearchIndexer, "#index" do
                     title: "My guide",
                     body: "It's my published guide content",
                     slug: "/service-manual/topic/some-slug"
-                    )
+                  )
     guide.editions << build(:edition, body: "I'm reconsidering this draft..")
 
     expect(rummager_api).to receive(:add_document).with(
       "service_manual_guide",
       "/service-manual/topic/some-slug",
-      {
-        format:            "service_manual_guide",
-        description:       "Description",
-        indexable_content: "It's my published guide content",
-        title:             "My guide",
-        link:              "/service-manual/topic/some-slug",
-        manual:            "/service-manual",
-        organisations:     ["government-digital-service"]
-      }
+      format:            "service_manual_guide",
+      description:       "Description",
+      indexable_content: "It's my published guide content",
+      title:             "My guide",
+      link:              "/service-manual/topic/some-slug",
+      manual:            "/service-manual",
+      organisations:     ["government-digital-service"],
     )
 
     described_class.new(guide, rummager_api: rummager_api).index

@@ -94,7 +94,7 @@ RSpec.describe EditionThread, "#events" do
 
   describe "state change event" do
     it "is a 'state change' event" do
-      first_edition = create(:edition, version: 1, created_at: 1.day.ago)
+      create(:edition, version: 1, created_at: 1.day.ago)
       most_recent_edition = create(:edition, version: 1, state: 'review_requested')
 
       event = described_class.new(most_recent_edition).events.third
@@ -103,7 +103,7 @@ RSpec.describe EditionThread, "#events" do
     end
 
     it "has a reference to the edition in which the state changed" do
-      first_edition = create(:edition, version: 1, created_at: 1.day.ago)
+      create(:edition, version: 1, created_at: 1.day.ago)
       most_recent_edition = create(:edition, version: 1, state: 'review_requested')
 
       event = described_class.new(most_recent_edition).events.third
@@ -112,7 +112,7 @@ RSpec.describe EditionThread, "#events" do
     end
 
     it "adds a state change event if the state changes back" do
-      draft_edition = create(:edition, version: 1, created_at: 1.day.ago)
+      create(:edition, version: 1, created_at: 1.day.ago)
       review_requested_edition = create(:edition, version: 1, state: 'review_requested')
       next_draft_edition = create(:edition, version: 1, state: 'draft')
 

@@ -18,10 +18,10 @@ class SlugMigrationsController < ApplicationController
     guide_select_options = Guide
       .with_published_editions
       .order(:slug).pluck(:slug)
-      .map{|g| [g, g]}
+      .map { |g| [g, g] }
     topic_select_options = Topic
       .order(:path).pluck(:path)
-      .map{|g| [g, g]}
+      .map { |g| [g, g] }
     {
       "Other" => ["/service-manual"],
       "Topics" => topic_select_options,
@@ -50,10 +50,10 @@ class SlugMigrationsController < ApplicationController
         render action: :edit
       end
     end
-  rescue GdsApi::HTTPServerError => e
+  rescue GdsApi::HTTPServerError
     flash[:error] = "An error was encountered while trying to publish the slug redirect"
     render action: :edit
-  rescue GdsApi::HTTPNotFound => e
+  rescue GdsApi::HTTPNotFound
     flash[:error] = "Couldn't migrate slug because the previous slug does not exist"
     render action: :edit
   end

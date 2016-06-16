@@ -21,8 +21,8 @@ RSpec.describe "Slug migration", type: :feature do
           m.slug,
           m.redirect_to || "",
         ]
-      end.reverse
-      expect(table_data).to eq(expected)
+      end
+      expect(table_data).to eq(expected.reverse)
     end
   end
 

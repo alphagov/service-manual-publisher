@@ -35,7 +35,7 @@ class GuidePresenter
     }
 
     if edition.content_owner
-      links[:content_owners] = [ edition.content_owner.content_id ]
+      links[:content_owners] = [edition.content_owner.content_id]
     end
 
     { links: links }
@@ -51,9 +51,7 @@ private
       header_links: level_two_headers,
     }
 
-    if edition.summary.present?
-      details_hash[:summary] = edition.summary
-    end
+    details_hash[:summary] = edition.summary if edition.summary.present?
 
     details_hash
   end
