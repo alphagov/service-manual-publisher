@@ -58,6 +58,11 @@ class GuideForm
       if valid? && guide.save && topic_section_guide.save
         save_draft_to_publishing_api
 
+        if guide.is_a? Point
+          PUBLISHING_API.put_content("", {})
+          PUBLISHING_API.patch_links("", links: {points: []})
+        end
+
         true
       else
         promote_errors_for(guide)
