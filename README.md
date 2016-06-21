@@ -12,7 +12,7 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 - **Guide**: A service manual guide is the main document format used for manuals.
 - **Guide Community**: A profile page that represents the community who curate a collection of guides.
-- **Topic**: A collection guides.
+- **Topic**: A collection of guides.
 
 ## Technical documentation
 
@@ -47,21 +47,31 @@ for each one:
 
 ```
 bundle
-bundle exec rake db:create
-bundle exec rake db:migrate
+bundle exec rake db:setup
 ```
 
 ### Development
 
-To launch the application, run `./startup.sh` in the `service-manual-publisher` directory on the VM.
-
-The application runs on port `3111` by default. If you're using the GDS VM it's exposed on http://service-manual-publisher.dev.gov.uk.
+You can use [Bowler](https://github.com/JordanHatch/bowler) to automatically run
+the application and all of its dependencies. To do this, you'll need to check
+out the [development repository](https://github.gds/gds/development) where the
+`Pinfile` is located.
 
 ```
-bowl service-manual-publisher
-# to run everything you might need:
-# bowl service-manual-publisher service-manual-frontend www rummager designprinciples draft-content-store router asset_manager
+cd /var/govuk/development
+bowl service-manual-publisher service-manual-frontend
 ```
+
+Alternatively, run `./startup.sh` in the `service-manual-publisher` directory on
+the development VM.
+
+```
+cd /var/govuk/service-manual-publisher
+./startup.sh
+```
+
+The application runs on port `3111` by default. If you're using the GDS VM it's
+exposed on http://service-manual-publisher.dev.gov.uk.
 
 The application has a style guide that can be accessed on `/style-guide`.
 
