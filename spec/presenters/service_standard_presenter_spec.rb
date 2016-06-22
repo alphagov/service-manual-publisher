@@ -10,6 +10,29 @@ RSpec.describe ServiceStandardPresenter, "#content_id" do
   end
 end
 
+RSpec.describe ServiceStandardPresenter, "#content_payload" do
+  it "returns a hash suitable for a service standard draft" do
+    point_scope = double(:point_scope)
+
+    expected_payload = {
+      base_path: '/service-manual/service-standard',
+      document_type: 'service_manual_service_standard',
+      phase: 'beta',
+      publishing_app: 'service-manual-publisher',
+      rendering_app: 'service-manual-frontend',
+      routes: [
+        { type: 'exact', path: '/service-manual/service-standard' }
+      ],
+      schema_name: 'service_manual_service_standard',
+      title: 'The Digital Service Standard',
+    }
+
+    expect(
+      described_class.new(point_scope).content_payload
+    ).to eq(expected_payload)
+  end
+end
+
 RSpec.describe ServiceStandardPresenter, "#links_payload" do
   it "includes points" do
     point1 = create(:point)

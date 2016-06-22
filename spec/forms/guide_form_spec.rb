@@ -284,7 +284,7 @@ RSpec.describe GuideForm, "#save" do
       allow(PUBLISHING_API).to receive(:put_content)
       allow(PUBLISHING_API)
         .to receive(:patch_links)
-        .with(an_instance_of(String), hash_including(:links => an_instance_of(Hash)))
+        .with(an_instance_of(String), hash_including(links: an_instance_of(Hash)))
 
       # Expect communication with the publishing api for the service
       # standard
