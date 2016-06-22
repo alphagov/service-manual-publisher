@@ -264,7 +264,7 @@ RSpec.describe GuideForm, "#save" do
     it "saves a service standard draft when saving a point" do
       # We expect to publish a point and the service standard to the publishing API
       # by calling put_content twice and patch_links twice
-      expect(PUBLISHING_API).to receive(:put_content).exactly(4).times
+      expect(PUBLISHING_API).to receive(:put_content).exactly(2).times
       allow(PUBLISHING_API)
         .to receive(:patch_links)
         .with(an_instance_of(String), hash_including(:links => an_instance_of(Hash)))

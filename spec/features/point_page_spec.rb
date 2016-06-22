@@ -10,7 +10,7 @@ RSpec.describe 'Create a point page', type: :feature do
 
     publishing_api = double(:publishing_api)
     stub_const("PUBLISHING_API", publishing_api)
-    expect(publishing_api).to receive(:put_content).twice
+    expect(publishing_api).to receive(:put_content).once
     expect(publishing_api).to receive(:patch_links).twice
 
     fill_in_final_url '/service-manual/service-standard/point-1'
