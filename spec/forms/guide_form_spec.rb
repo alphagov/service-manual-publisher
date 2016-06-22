@@ -261,45 +261,12 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.change_note).to eq("This happened because of X.")
     end
 
-    it "saves a service standard draft when saving a point" do
-      # We expect to publish a point and the service standard to the publishing API
-      # by calling put_content twice and patch_links twice
-      expect(PUBLISHING_API).to receive(:put_content).exactly(2).times
-      allow(PUBLISHING_API)
-        .to receive(:patch_links)
-        .with(an_instance_of(String), hash_including(:links => an_instance_of(Hash)))
-
+    it "saves all points to the service standard when saving a point" do
       guide_community = create(:guide_community)
       user = create(:user)
-
       topic = create(:topic)
       topic_section = create(:topic_section, topic: topic)
-
-      point = Point.new
-      edition = point.editions.build
-      guide_form = described_class.new(guide: point, edition: edition, user: user)
-      guide_form.assign_attributes(body: "a fair old body",
-        content_owner_id: guide_community.id,
-        description: "a pleasant description",
-        summary: "a exciting summary",
-        slug: "/service-manual/service-standard/understand-user-needs",
-        title: "Understand user needs",
-        update_type: "minor",
-        topic_section_id: topic_section.id)
-
-      expect(PUBLISHING_API)
-        .to receive(:patch_links)
-        .with(
-          an_instance_of(String),
-          hash_including(
-            links: hash_including(
-              points: [an_instance_of(String)]
-            )
-          )
-        )
-        .once
-
-      guide_form.save
+      create(:point)
 
       point = Point.new
       edition = point.editions.build
@@ -313,6 +280,14 @@ RSpec.describe GuideForm, "#save" do
         update_type: "minor",
         topic_section_id: topic_section.id)
 
+      # Stub communication with the publishing api for the point
+      allow(PUBLISHING_API).to receive(:put_content)
+      allow(PUBLISHING_API)
+        .to receive(:patch_links)
+        .with(an_instance_of(String), hash_including(:links => an_instance_of(Hash)))
+
+      # Expect communication with the publishing api for the service
+      # standard
       expect(PUBLISHING_API)
         .to receive(:patch_links)
         .with(
@@ -323,7 +298,6 @@ RSpec.describe GuideForm, "#save" do
             )
           )
         )
-        .once
 
       guide_form.save
     end
