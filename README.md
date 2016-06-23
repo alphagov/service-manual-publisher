@@ -18,6 +18,8 @@ Service Manual Publisher is in very early stages and is going to be used for pub
 
 PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no public facing aspect.
 
+The Service manual's guide pages have a nested URL structure which is unusual for GOV.UK. The pros and cons to the nested URL structure are [retrospectively documented](https://github.com/alphagov/publishing-api/tree/master/doc/arch/001-nested-url-structure.md).
+
 ### Dependencies
 
 - [publishing-api](https://github.com/alphagov/publishing-api)
