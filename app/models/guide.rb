@@ -6,6 +6,7 @@ class Guide < ActiveRecord::Base
   validate :new_edition_has_summary, if: :requires_summary?
 
   has_many :editions, dependent: :destroy
+  has_many :topic_section_guides, autosave: true
 
   scope :only_latest_edition, -> {
     joins(:editions)
