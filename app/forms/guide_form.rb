@@ -68,15 +68,6 @@ class GuideForm
       if valid? && guide.save && topic_section_guide.save
         save_draft_to_publishing_api
 
-        if guide.is_a? Point
-          service_standard_for_publication =
-            ServiceStandardPresenter.new(Point.all)
-          PUBLISHING_API.patch_links(
-            service_standard_for_publication.content_id,
-            service_standard_for_publication.links_payload
-          )
-        end
-
         true
       else
         promote_errors_for(guide)

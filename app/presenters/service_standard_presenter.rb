@@ -1,9 +1,5 @@
 class ServiceStandardPresenter
-  SERVICE_STANDARD_CONTENT_ID = "00f693d4-866a-4fe6-a8d6-09cd7db8980b"
-
-  def initialize(points)
-    @points = points
-  end
+  SERVICE_STANDARD_CONTENT_ID = "00f693d4-866a-4fe6-a8d6-09cd7db8980b".freeze
 
   def content_id
     SERVICE_STANDARD_CONTENT_ID
@@ -26,13 +22,7 @@ class ServiceStandardPresenter
 
   def links_payload
     {
-      links: {
-        points: points.map(&:content_id)
-      }
+      links: {}
     }
   end
-
-private
-
-  attr_reader :points
 end

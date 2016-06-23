@@ -274,47 +274,6 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.change_summary).to eq("X happened")
       expect(edition.change_note).to eq("This happened because of X.")
     end
-
-    it "saves all points to the service standard when saving a point" do
-      guide_community = create(:guide_community)
-      user = create(:user)
-      topic = create(:topic)
-      topic_section = create(:topic_section, topic: topic)
-      create(:point)
-
-      point = Point.new
-      edition = point.editions.build
-      guide_form = described_class.new(guide: point, edition: edition, user: user)
-      guide_form.assign_attributes(body: "a fair old body",
-        content_owner_id: guide_community.id,
-        description: "a pleasant description",
-        summary: "a exciting summary",
-        slug: "/service-manual/service-standard/do-ongoing-user-research",
-        title: "Do ongoing user research",
-        update_type: "minor",
-        topic_section_id: topic_section.id)
-
-      # Stub communication with the publishing api for the point
-      allow(PUBLISHING_API).to receive(:put_content)
-      allow(PUBLISHING_API)
-        .to receive(:patch_links)
-        .with(an_instance_of(String), hash_including(links: an_instance_of(Hash)))
-
-      # Expect communication with the publishing api for the service
-      # standard
-      expect(PUBLISHING_API)
-        .to receive(:patch_links)
-        .with(
-          an_instance_of(String),
-          hash_including(
-            links: hash_including(
-              points: [an_instance_of(String), an_instance_of(String)]
-            )
-          )
-        )
-
-      guide_form.save
-    end
   end
 
   context "for a published guide" do

@@ -8,7 +8,7 @@ RSpec.describe 'Create a point page', type: :feature, js: true do
     publishing_api = double(:publishing_api)
     stub_const("PUBLISHING_API", publishing_api)
     expect(publishing_api).to receive(:put_content).once
-    expect(publishing_api).to receive(:patch_links).twice
+    expect(publishing_api).to receive(:patch_links).once
 
     fill_in "Description", with: "User needs should be your first focus."
     fill_in "Summary", with: "Understand user needs. Research to develop a deep knowledge of who the service users are and what that means for the design of the service."
