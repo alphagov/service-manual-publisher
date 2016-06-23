@@ -17,6 +17,10 @@ class ServiceStandardPresenter
       ],
       schema_name: 'service_manual_service_standard',
       title: 'The Digital Service Standard',
+      details: {
+        introduction: "The Digital Service Standard is a set of 18 criteria to help government create and run good digital services.",
+        body: "All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.",
+      }
     }
   end
 
