@@ -7,10 +7,20 @@ class GuideForm
   attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
     :summary, :title, :title_slug, :topic_section_id, :type, :update_type, :version
 
-  validates_presence_of :topic_section_id
+  validates_presence_of :topic_section_id, if: :requires_topic?
   validate :topic_cannot_change
 
   delegate :persisted?, to: :guide
+
+  def self.build(**args)
+    guide = args.fetch(:guide)
+
+    if guide.is_a? Point
+      PointForm.new(**args)
+    else
+      self.new(**args)
+    end
+  end
 
   def initialize(guide:, edition:, user:)
     @guide = guide
@@ -169,5 +179,9 @@ private
     content_for_publication = GuideFormPublicationPresenter.new(self)
     PUBLISHING_API.put_content(content_for_publication.content_id, content_for_publication.content_payload)
     PUBLISHING_API.patch_links(content_for_publication.content_id, content_for_publication.links_payload)
+  end
+
+  def requires_topic?
+    true
   end
 end

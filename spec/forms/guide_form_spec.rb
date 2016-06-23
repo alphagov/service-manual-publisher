@@ -1,5 +1,19 @@
 require 'rails_helper'
 
+RSpec.describe GuideForm, ".build" do
+  it "returns a GuideForm for a Guide" do
+    expect(
+      described_class.build(guide: Guide.new, edition: Edition.new, user: User.new)
+    ).to be_instance_of GuideForm
+  end
+
+  it "returns a PointForm for a Point" do
+    expect(
+      described_class.build(guide: Point.new, edition: Edition.new, user: User.new)
+    ).to be_instance_of PointForm
+  end
+end
+
 RSpec.describe GuideForm, "#initialize" do
   context "for a brand new guide" do
     it "assigns a default update_type of major" do
