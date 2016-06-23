@@ -31,10 +31,11 @@ RSpec.describe 'Create a point page', type: :feature, js: true do
     expect(page).to have_field('Body', with: "## Why it's in the standard")
   end
 
-  it 'does not have a content owner field' do
+  it 'does not have a content owner or a topic section field' do
     visit root_path
     click_link "Create a Point"
 
+    expect(page).to_not have_field('Topic section')
     expect(page).to_not have_field('Community')
   end
 end

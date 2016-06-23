@@ -49,19 +49,8 @@ class GuideForm
   end
 
   def save
-    guide.slug = slug
-    edition.author_id = author_id
-    edition.body = body
-    edition.change_note = change_note
-    edition.change_summary = change_summary
-    edition.content_owner_id = content_owner_id
-    edition.created_by_id = user.id
-    edition.description = description
-    edition.state = Edition::STATES.first
-    edition.summary = summary
-    edition.title = title
-    edition.update_type = update_type
-    edition.version = version
+    set_guide_attributes
+    set_edition_attributes
     topic_section_guide.topic_section_id = topic_section_id
 
     catching_gds_api_exceptions do
@@ -92,7 +81,34 @@ class GuideForm
     end
   end
 
+  def requires_topic?
+    true
+  end
+
+  def slug_prefix
+    "/service-manual"
+  end
+
 private
+
+  def set_guide_attributes
+    guide.slug = slug
+  end
+
+  def set_edition_attributes
+    edition.author_id = author_id
+    edition.body = body
+    edition.change_note = change_note
+    edition.change_summary = change_summary
+    edition.content_owner_id = content_owner_id
+    edition.created_by_id = user.id
+    edition.description = description
+    edition.state = Edition::STATES.first
+    edition.summary = summary
+    edition.title = title
+    edition.update_type = update_type
+    edition.version = version
+  end
 
   def topic_section_guide
     @_topic_section_guide ||= TopicSectionGuide
@@ -170,9 +186,5 @@ private
     content_for_publication = GuideFormPublicationPresenter.new(self)
     PUBLISHING_API.put_content(content_for_publication.content_id, content_for_publication.content_payload)
     PUBLISHING_API.patch_links(content_for_publication.content_id, content_for_publication.links_payload)
-  end
-
-  def requires_topic?
-    true
   end
 end

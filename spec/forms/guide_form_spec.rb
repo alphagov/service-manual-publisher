@@ -389,12 +389,12 @@ RSpec.describe GuideForm, "validations" do
       guide_form.errors.full_messages
     ).to include(
       "Slug can only contain letters, numbers and dashes",
-        "Slug must be present and start with '/service-manual/[topic]'",
-        "Latest edition must have a content owner",
-        "Editions is invalid",
-        "Description can't be blank",
-        "Title can't be blank",
-        "Body can't be blank",
+      "Slug must be present and start with '/service-manual/[topic]'",
+      "Latest edition must have a content owner",
+      "Editions is invalid",
+      "Description can't be blank",
+      "Title can't be blank",
+      "Body can't be blank",
     )
   end
 
@@ -416,5 +416,13 @@ RSpec.describe GuideForm, "#to_param" do
     guide_form = described_class.new(guide: guide, edition: edition, user: user)
 
     expect(guide_form.to_param).to eq("5")
+  end
+end
+
+RSpec.describe GuideForm, "#slug_prefix" do
+  it "is /service-manual" do
+    guide_form = described_class.new(guide: Guide.new, edition: Edition.new, user: User.new)
+
+    expect(guide_form.slug_prefix).to eq("/service-manual")
   end
 end
