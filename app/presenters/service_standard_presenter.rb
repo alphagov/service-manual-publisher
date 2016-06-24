@@ -1,6 +1,10 @@
 class ServiceStandardPresenter
   SERVICE_STANDARD_CONTENT_ID = "00f693d4-866a-4fe6-a8d6-09cd7db8980b".freeze
 
+  def initialize(points)
+    @points = points
+  end
+
   def content_id
     SERVICE_STANDARD_CONTENT_ID
   end
@@ -20,13 +24,24 @@ class ServiceStandardPresenter
       details: {
         introduction: "The Digital Service Standard is a set of 18 criteria to help government create and run good digital services.",
         body: "All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.",
+        points: points_payload,
       }
     }
   end
 
-  def links_payload
-    {
-      links: {}
-    }
+private
+
+  attr_reader :points
+
+  def points_payload
+    points.map do |point|
+      edition = point.latest_edition
+
+      {
+        base_path: point.slug,
+        summary: edition.summary,
+        title: edition.title,
+      }
+    end
   end
 end
