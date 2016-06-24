@@ -126,6 +126,27 @@ RSpec.describe GuideManager, '#publish' do
     expect(result).to be_success
   end
 
+  it "publishes the service standard if publishing a point" do
+    user = create(:user)
+    editions = [
+      build(:edition, title: 'Agile', summary: "Summary"),
+      build(:edition, title: 'Agile', summary: "Summary", state: 'review_requested'),
+      build(:edition, title: 'Agile', summary: "Summary", state: 'ready')
+    ]
+    point = create(:point, editions: editions)
+
+    expect(PUBLISHING_API).to receive(:publish)
+      .with(point.content_id, an_instance_of(String))
+      .once
+    expect(PUBLISHING_API).to receive(:publish)
+      .with(ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID, "major")
+      .once
+    expect(RUMMAGER_API).to receive(:add_document)
+
+    manager = described_class.new(guide: point, user: user)
+    manager.publish
+  end
+
   context "when communication with the publishing api fails" do
     it "doesn't create anything" do
       stub_publishing_api_to_fail
