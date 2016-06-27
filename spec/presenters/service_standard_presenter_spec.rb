@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ServiceStandardPresenter, "#content_id" do
-  it "is a preassigned UUID" do
+  it "returns a preassigned UUID" do
     point_scope = double(:point_scope)
 
     expect(

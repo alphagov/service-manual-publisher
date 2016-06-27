@@ -409,7 +409,7 @@ RSpec.describe GuideForm, "validations" do
 end
 
 RSpec.describe GuideForm, "#to_param" do
-  it "is the guide id" do
+  it "returns the guide id" do
     guide = Guide.new(id: 5)
     edition = guide.editions.build
     user = User.new
@@ -420,7 +420,7 @@ RSpec.describe GuideForm, "#to_param" do
 end
 
 RSpec.describe GuideForm, "#slug_prefix" do
-  it "is /service-manual" do
+  it "returns /service-manual" do
     guide_form = described_class.new(guide: Guide.new, edition: Edition.new, user: User.new)
 
     expect(guide_form.slug_prefix).to eq("/service-manual")

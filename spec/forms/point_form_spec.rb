@@ -12,7 +12,7 @@ RSpec.describe PointForm, "validations" do
 end
 
 RSpec.describe PointForm, "#slug_prefix" do
-  it "is /service-manual/service-standard" do
+  it "returns /service-manual/service-standard" do
     guide_form = described_class.new(guide: Guide.new, edition: Edition.new, user: User.new)
 
     expect(guide_form.slug_prefix).to eq("/service-manual/service-standard")
