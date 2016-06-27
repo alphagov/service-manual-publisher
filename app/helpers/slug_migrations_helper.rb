@@ -10,7 +10,7 @@ module SlugMigrationsHelper
       .map { |g| [g, g] }
 
     {
-      "Other" => ["/service-manual"],
+      "Other" => ["/service-manual", "/service-manual/service-standard"],
       "Topics" => topic_select_options,
       "Guides" => guide_select_options,
     }
