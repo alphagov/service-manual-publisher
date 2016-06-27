@@ -36,7 +36,7 @@ module GuideHelper
 
   def topic_section_options_for_select
     Topic.includes(:topic_sections).map do |topic|
-      relative_path = topic.path.gsub("/service-manual", "")
+      relative_path = topic.path.sub("/service-manual", "")
 
       [
         topic.title,
