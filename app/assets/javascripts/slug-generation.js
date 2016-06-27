@@ -13,8 +13,6 @@ $(function() {
   var hasBeenPublished = $form.data("has-been-published");
   var titleSlugManuallyChanged = false;
 
-  generateSlug();
-
   $(document).on("input", ".js-title-slug", function() {
     titleSlugManuallyChanged = true;
     generateSlug();
