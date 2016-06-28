@@ -30,6 +30,24 @@ RSpec.describe "Commenting", type: :feature do
         expect(page).to have_link "http://google.com", href: "http://google.com"
       end
     end
+
+    it "presents multi line comments correctly" do
+      guide = create(:guide, :with_draft_edition)
+
+      comment_text = %{This guide sure could use more cow bell.
+Cow bell makes everything better!
+
+Much better.}
+      formatted_comment = %{<p>This guide sure could use more cow bell.
+<br>Cow bell makes everything better!</p>
+
+<p>Much better.</p>}
+
+      write_a_comment(guide: guide, comment: comment_text)
+
+      comment_html = find('.comment').native.inner_html
+      expect(comment_html).to include formatted_comment
+    end
   end
 
   describe 'for a guide community' do
