@@ -12,7 +12,7 @@ end
 
 RSpec.describe ServiceStandardPresenter, "#content_payload" do
   it "returns a hash suitable for a service standard draft" do
-    edition = create(:edition, summary: "This is a summary", title: "1. Understand user needs")
+    edition = create(:edition, summary: "This is a summary", title: "1. Understand user needs", state: "published")
     point = create(:point, editions: [edition], slug: "/service-manual/service-standard/understand-user-needs")
 
     expected_payload = {
@@ -42,5 +42,35 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
     expect(
       described_class.new([point]).content_payload
     ).to eq(expected_payload)
+  end
+
+  it "only includes published editions" do
+    point1_edition = create(:edition, summary: "This is a summary", title: "1. Understand user needs",)
+    create(:point, editions: [point1_edition], slug: "/service-manual/service-standard/understand-user-needs")
+
+    point2_edition = create(:edition, summary: "This is a summary", title: "2. Do ongoing user research", state: "published")
+    create(:point, editions: [point2_edition], slug: "/service-manual/service-standard/do-ongoing-user-research")
+
+    point3_edition1 = create(:edition, summary: "This is a summary", title: "3. Have a multidisciplinary team", state: "published")
+    point3_edition2 = create(:edition, summary: "This is a summary", title: "3. Have a multidisciplinary team with a typo")
+    create(:point, editions: [point3_edition1, point3_edition2], slug: "/service-manual/service-standard/have-a-multidisciplinary-team")
+
+    expected_points_payload =
+      [
+        {
+          title: "2. Do ongoing user research",
+          summary: "This is a summary",
+          base_path: "/service-manual/service-standard/do-ongoing-user-research",
+        },
+        {
+          title: "3. Have a multidisciplinary team",
+          summary: "This is a summary",
+          base_path: "/service-manual/service-standard/have-a-multidisciplinary-team",
+        }
+      ]
+
+    expect(
+      described_class.new(Point.all).content_payload[:details][:points]
+    ).to match_array(expected_points_payload)
   end
 end

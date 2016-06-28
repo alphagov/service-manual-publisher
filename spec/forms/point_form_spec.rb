@@ -49,7 +49,7 @@ RSpec.describe PointForm, "#save" do
 
   it "saves all points to the service standard when saving a point" do
     user = create(:user)
-    edition = create(:edition, summary: "This is a summary")
+    edition = create(:edition, summary: "This is a summary", state: "published")
     create(:point, editions: [edition])
 
     point = Point.new
@@ -69,8 +69,7 @@ RSpec.describe PointForm, "#save" do
       .to receive(:patch_links)
       .with(an_instance_of(String), hash_including(links: an_instance_of(Hash)))
 
-    # Expect communication with the publishing api for the service
-    # standard
+    # Expect to save all published points to the publishing api when saving a point
     expect(PUBLISHING_API)
       .to receive(:put_content)
       .with(
@@ -78,7 +77,6 @@ RSpec.describe PointForm, "#save" do
         hash_including(
           details: hash_including(
             points: [
-              hash_including(:base_path, :summary, :title),
               hash_including(:base_path, :summary, :title),
             ]
           )
