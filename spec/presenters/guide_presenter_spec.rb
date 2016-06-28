@@ -99,3 +99,16 @@ RSpec.describe GuidePresenter do
     end
   end
 end
+
+RSpec.describe GuidePresenter, "for a Point" do
+  it "includes the service standard as a parent in the links" do
+    edition = create(:edition)
+    point = create(:point, editions: [edition])
+
+    presenter = described_class.new(point, edition)
+
+    expect(presenter.links_payload[:links]).to include(
+      parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"]
+    )
+  end
+end

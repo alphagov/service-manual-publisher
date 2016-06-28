@@ -1,7 +1,16 @@
 <% guide = guide_form.guide %>
 <% edition = guide_form.edition %>
 
-<%= form_for guide_form, html: { class: "js-guide-form js-protect-data", data: { "has-been-published": guide.has_published_edition? } } do |f| %>
+<%= form_for(
+      guide_form,
+      html: {
+        class: "js-guide-form js-protect-data",
+        data: {
+          "has-been-published": guide.has_published_edition?,
+          "slug-prefix": guide_form.slug_prefix
+        }
+      }
+    ) do |f| %>
   <% disable_inputs = edition.unpublished? %>
 
   <%= f.hidden_field :type %>
@@ -34,11 +43,13 @@
         <%= f.text_field :title_slug, {value: guide_form.title_slug, class: 'input-md-12 form-control guide-slug js-title-slug', disabled: guide.has_published_edition?} %>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :topic_section_id, "Topic section" %>
-        <%= f.error_list :topic_section_id %>
-        <%= f.select :topic_section_id, grouped_options_for_select(topic_section_options_for_select, guide_form.topic_section_id), {include_blank: ""}, {class: 'js-topic-section select2 input-md-12 form-control'} %>
-      </div>
+      <% if guide_form.requires_topic? %>
+        <div class='form-group'>
+          <%= f.label :topic_section_id, "Topic section" %>
+          <%= f.error_list :topic_section_id %>
+          <%= f.select :topic_section_id, grouped_options_for_select(topic_section_options_for_select, guide_form.topic_section_id), {include_blank: ""}, {class: 'js-topic-section select2 input-md-12 form-control'} %>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= f.label :slug, "Final URL" %>

@@ -26,6 +26,13 @@ class GuideManager
       edition.save!
       PUBLISHING_API.publish(guide.content_id, edition.update_type)
 
+      if guide.is_a?(Point)
+        PUBLISHING_API.publish(
+          ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID,
+          "major"
+        )
+      end
+
       unless edition.notification_subscribers == [user]
         NotificationMailer.published(guide, user).deliver_later
       end

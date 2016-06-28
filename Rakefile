@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
-task default: "jasmine:ci"
+task default: ["jasmine:ci", "lint"]

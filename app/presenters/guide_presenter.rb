@@ -38,6 +38,10 @@ class GuidePresenter
       links[:content_owners] = [edition.content_owner.content_id]
     end
 
+    if guide.is_a?(Point)
+      links[:parent] = [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID]
+    end
+
     { links: links }
   end
 

@@ -11,27 +11,10 @@ class SlugMigrationsController < ApplicationController
 
   def edit
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = select_options
-  end
-
-  def select_options
-    guide_select_options = Guide
-      .with_published_editions
-      .order(:slug).pluck(:slug)
-      .map { |g| [g, g] }
-    topic_select_options = Topic
-      .order(:path).pluck(:path)
-      .map { |g| [g, g] }
-    {
-      "Other" => ["/service-manual"],
-      "Topics" => topic_select_options,
-      "Guides" => guide_select_options,
-    }
   end
 
   def update
     @slug_migration = SlugMigration.find(params[:id])
-    @select_options = select_options
 
     slug_migration_parameters = params.require(:slug_migration)
       .permit(:redirect_to)

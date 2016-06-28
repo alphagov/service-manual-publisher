@@ -1,5 +1,19 @@
 require 'rails_helper'
 
+RSpec.describe GuideForm, ".build" do
+  it "returns a GuideForm for a Guide" do
+    expect(
+      described_class.build(guide: Guide.new, edition: Edition.new, user: User.new)
+    ).to be_instance_of GuideForm
+  end
+
+  it "returns a PointForm for a Point" do
+    expect(
+      described_class.build(guide: Point.new, edition: Edition.new, user: User.new)
+    ).to be_instance_of PointForm
+  end
+end
+
 RSpec.describe GuideForm, "#initialize" do
   context "for a brand new guide" do
     it "assigns a default update_type of major" do
@@ -375,12 +389,12 @@ RSpec.describe GuideForm, "validations" do
       guide_form.errors.full_messages
     ).to include(
       "Slug can only contain letters, numbers and dashes",
-        "Slug must be present and start with '/service-manual/[topic]'",
-        "Latest edition must have a content owner",
-        "Editions is invalid",
-        "Description can't be blank",
-        "Title can't be blank",
-        "Body can't be blank",
+      "Slug must be present and start with '/service-manual/[topic]'",
+      "Latest edition must have a content owner",
+      "Editions is invalid",
+      "Description can't be blank",
+      "Title can't be blank",
+      "Body can't be blank",
     )
   end
 
@@ -395,12 +409,20 @@ RSpec.describe GuideForm, "validations" do
 end
 
 RSpec.describe GuideForm, "#to_param" do
-  it "is the guide id" do
+  it "returns the guide id" do
     guide = Guide.new(id: 5)
     edition = guide.editions.build
     user = User.new
     guide_form = described_class.new(guide: guide, edition: edition, user: user)
 
     expect(guide_form.to_param).to eq("5")
+  end
+end
+
+RSpec.describe GuideForm, "#slug_prefix" do
+  it "returns /service-manual" do
+    guide_form = described_class.new(guide: Guide.new, edition: Edition.new, user: User.new)
+
+    expect(guide_form.slug_prefix).to eq("/service-manual")
   end
 end

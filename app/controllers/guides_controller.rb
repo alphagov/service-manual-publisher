@@ -8,7 +8,7 @@ class GuidesController < ApplicationController
     type = params[:type].presence_in(%w{ GuideCommunity Point })
     guide = Guide.new(type: type)
 
-    @guide_form = GuideForm.new(
+    @guide_form = GuideForm.build(
       guide: guide,
       edition: Edition.new,
       user: current_user,
@@ -24,7 +24,7 @@ class GuidesController < ApplicationController
   def edit
     guide = Guide.find(params[:id])
 
-    @guide_form = GuideForm.new(
+    @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.latest_edition,
       user: current_user
@@ -68,7 +68,7 @@ private
     if result.success?
       redirect_to redirect, notice: message
     else
-      @guide_form = GuideForm.new(
+      @guide_form = GuideForm.build(
         guide: guide,
         edition: guide.latest_edition,
         user: current_user
@@ -82,7 +82,7 @@ private
   def save(guide)
     failure_template = guide.persisted? ? 'edit' : 'new'
 
-    @guide_form = GuideForm.new(
+    @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.editions.build(created_by: current_user),
       user: current_user

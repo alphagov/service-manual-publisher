@@ -13,8 +13,6 @@ $(function() {
   var hasBeenPublished = $form.data("has-been-published");
   var titleSlugManuallyChanged = false;
 
-  generateSlug();
-
   $(document).on("input", ".js-title-slug", function() {
     titleSlugManuallyChanged = true;
     generateSlug();
@@ -29,26 +27,43 @@ $(function() {
       return;
     }
 
-    // If a user has manually changed the slug, then we don't generate
-    // it from the title anymore.
+    // Update the title slug field as long as it hasn't been manually edited yet
     if (!titleSlugManuallyChanged) {
-      $titleSlug.val(slugify($title.val()));
+      $titleSlug.val(slugifiedGuideTitle());
     }
 
     var slug = "";
-
-    // We get the first part of the full from the chosen topic sections' topic.
-    // This will be in the format /service-manual/topic-path
-    var topicPath = $topicSection.find(":selected").parent().data("path");
-    if (!topicPath) { return }
-    slug += topicPath + "/";
-
-    // Now add whatever title slug was generated (or manually entered by user)
-    // to the full slug.
-    if (!$titleSlug.val()) { return }
-    slug += slugify($titleSlug.val())
+    slug += slugPrefix();
+    slug += topicSectionPathIfPresent();
+    slug += "/" + slugifiedSlugTitle();
 
     $slug.val(slug);
+  }
+
+  function topicSectionPathIfPresent() {
+    var $topicSection = $(".js-topic-section");
+
+    if ($topicSection.length) {
+      var selectedParent = $topicSection.find(":selected").parent('optgroup');
+
+      if (selectedParent.length) {
+        return selectedParent.data("path");
+      }
+    }
+
+    return "";
+  }
+
+  function slugPrefix() {
+    return $form.data("slug-prefix");
+  }
+
+  function slugifiedGuideTitle() {
+    return slugify($title.val());
+  }
+
+  function slugifiedSlugTitle() {
+    return slugify($titleSlug.val());
   }
 
   function slugify(text) {

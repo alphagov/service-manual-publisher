@@ -11,5 +11,3 @@ task :lint do
     sh "bundle exec govuk-lint-sass #{sass_paths}"
   end
 end
-
-Rake::Task[:default].enhance [:lint]
