@@ -34,14 +34,18 @@ private
   attr_reader :points
 
   def points_payload
-    points.map do |point|
-      edition = point.latest_edition
+    point_payloads = points.map do |point|
+      edition = point.live_edition
 
-      {
-        base_path: point.slug,
-        summary: edition.summary,
-        title: edition.title,
-      }
+      if edition
+        {
+          base_path: point.slug,
+          summary: edition.summary,
+          title: edition.title,
+        }
+      end
     end
+
+    point_payloads.compact
   end
 end
