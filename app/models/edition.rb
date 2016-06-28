@@ -2,11 +2,11 @@ class Edition < ActiveRecord::Base
   STATES = %w(draft published review_requested ready unpublished).freeze
   STATES_THAT_UPDATE_THE_FRONTEND = %w(published unpublished).freeze
 
-  acts_as_commentable
-
   belongs_to :guide, touch: true
   belongs_to :author, class_name: "User"
   belongs_to :created_by, class_name: "User"
+
+  has_many :comments, as: :commentable
 
   has_one :approval
 
