@@ -5,7 +5,7 @@
 </p>
 
 <blockquote>
-  <%= @comment.comment %>
+  <%= auto_link(simple_format(@comment.comment), :all) %>
 </blockquote>
 
 <p>

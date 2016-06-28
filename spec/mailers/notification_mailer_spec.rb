@@ -26,6 +26,29 @@ RSpec.describe NotificationMailer, type: :mailer do
         expect(part.body.to_s).to include "guides/#{guide.id}/editions"
       end
     end
+
+    it "presents multi line comments correctly" do
+      comment_text = %{This guide sure could use more cow bell.
+Cow bell makes everything better!
+
+Much better.}
+      formatted_comment = %{<p>This guide sure could use more cow bell.
+<br />Cow bell makes everything better!</p>
+
+<p>Much better.</p>}
+
+      comment = edition.comments.create!(comment: comment_text, user: luke)
+
+      email = NotificationMailer.comment_added(comment).deliver_now
+
+      # The HTML part of the email should include the comment wrapped in
+      # paragraph tags and using line breaks
+      expect(email.html_part.body.to_s).to include formatted_comment
+
+      # The text part of the email should include the comment with normal
+      # whitespace.
+      expect(email.text_part.body.to_s).to include comment_text
+    end
   end
 
   describe "#ready_for_publishing" do

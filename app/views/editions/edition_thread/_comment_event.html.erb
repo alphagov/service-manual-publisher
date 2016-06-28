@@ -6,6 +6,6 @@
     <%= event.comment.user.name %>
   </div>
   <div class="panel-body">
-    <div class="comment-body"><%= auto_link(event.comment.comment, :all, target: "_blank") %></div>
+    <%= auto_link(simple_format(event.comment.comment), :all, target: "_blank") %>
   </div>
 </div>
