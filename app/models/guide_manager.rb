@@ -27,10 +27,7 @@ class GuideManager
       PUBLISHING_API.publish(guide.content_id, edition.update_type)
 
       if guide.is_a?(Point)
-        PUBLISHING_API.publish(
-          ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID,
-          "major"
-        )
+        save_and_publish_the_service_standard
       end
 
       unless edition.notification_subscribers == [user]
@@ -81,5 +78,26 @@ private
     rescue GdsApi::HTTPErrorResponse => e
       ManageResult.new(false, [e.error_details['error']['message']])
     end
+  end
+
+  # Until we can use custom link expansion we need to save a draft and publish the
+  # standard whenever we publish a new point.
+  #
+  # If we save a draft of the service standard when we save a draft of a specific point, the
+  # saving of any other point before our point will overwrite the previously created
+  # draft. This will confuse the user because they will click "publish" on a point page and the
+  # relevant point will not appear in the standard.
+  #
+  def save_and_publish_the_service_standard
+    service_standard_for_publication = ServiceStandardPresenter.new(Point.all)
+    PUBLISHING_API.put_content(
+      service_standard_for_publication.content_id,
+      service_standard_for_publication.content_payload
+    )
+
+    PUBLISHING_API.publish(
+      ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID,
+      "major"
+    )
   end
 end
