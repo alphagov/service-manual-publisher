@@ -42,9 +42,9 @@ GEM
     acts_as_list (0.7.4)
       activerecord (>= 3.0)
     addressable (2.3.8)
-    airbrake (4.2.1)
-      builder
-      multi_json
+    airbrake (5.4.1)
+      airbrake-ruby (~> 1.4)
+    airbrake-ruby (1.4.3)
     arel (6.0.3)
     ast (2.3.0)
     auto_strip_attributes (2.0.6)
@@ -342,7 +342,7 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   acts_as_list
-  airbrake (= 4.2.1)
+  airbrake
   auto_strip_attributes
   better_errors
   binding_of_caller
