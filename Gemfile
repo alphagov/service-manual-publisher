@@ -8,7 +8,7 @@ gem 'uglifier'
 gem 'unicorn'
 gem 'logstasher'
 gem 'plek'
-gem 'airbrake'
+gem 'airbrake', '4.2.1'
 
 gem 'govuk_admin_template'
 
