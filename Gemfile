@@ -1,28 +1,28 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.5.2'
-gem 'pg', '~> 0.18'
-gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
+gem 'pg'
+gem 'sass-rails'
+gem 'uglifier'
 
-gem 'unicorn', '~> 4.9.0'
-gem 'logstasher', '0.6.2'
-gem 'plek', '~> 1.12'
-gem 'airbrake', '~> 4.2.1'
+gem 'unicorn'
+gem 'logstasher'
+gem 'plek'
+gem 'airbrake'
 
-gem 'govuk_admin_template', '~> 3.5.0'
+gem 'govuk_admin_template'
 
-gem 'gds-sso', '~> 11.0.0'
-gem 'gds-api-adapters', '~> 29.1', '>= 29.1.1'
-gem 'govspeak', '~> 3.4.0'
-gem 'kaminari', '~> 0.16.3'
-gem 'active_link_to', '~> 1.0.3'
-gem 'select2-rails', '~> 4.0.0'
-gem 'diffy', '~> 3.0', '>= 3.0.7'
-gem 'redcarpet', '~> 3.3.3'
-gem 'auto_strip_attributes', '~> 2.0', '>= 2.0.6'
-gem 'rinku', '~> 1.7', '>= 1.7.3', require: "rails_rinku"
-gem 'acts_as_list', '~> 0.7.2'
+gem 'gds-sso'
+gem 'gds-api-adapters'
+gem 'govspeak'
+gem 'kaminari'
+gem 'active_link_to'
+gem 'select2-rails'
+gem 'diffy'
+gem 'redcarpet'
+gem 'auto_strip_attributes'
+gem 'rinku', require: "rails_rinku"
+gem 'acts_as_list'
 
 group :development do
   gem 'better_errors'
@@ -37,9 +37,9 @@ group :development, :test do
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
-  gem 'rspec-rails', '~> 3.3'
-  gem 'simplecov', '0.10.0', require: false
-  gem 'simplecov-rcov', '0.2.3', require: false
+  gem 'rspec-rails'
+  gem 'simplecov', require: false
+  gem 'simplecov-rcov', require: false
 end
 
 group :test do
@@ -48,6 +48,6 @@ group :test do
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'govuk-content-schema-test-helpers', '~> 1.3.0'
+  gem 'govuk-content-schema-test-helpers'
   gem 'webmock'
 end
