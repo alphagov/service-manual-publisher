@@ -24,6 +24,10 @@ RSpec.describe GuideHelper, '#guide_types_for_select', type: :helper do
     edition = build(:edition, content_owner: guide_community, title: "Scrum")
     create(:guide, editions: [edition])
 
+    # explicitly create a guide with an 'empty' type, to check we don't get
+    # a blank option in the drop down.
+    create(:guide, type: '')
+
     expect(helper.guide_types_for_select).to match_array(
       [
         %w(All All),

@@ -19,7 +19,7 @@ module GuideHelper
   end
 
   def guide_types_for_select
-    guide_types = Guide.distinct(:type).pluck(:type).compact
+    guide_types = Guide.distinct(:type).pluck(:type).reject(&:blank?)
     options = guide_types.map do |type|
       [type.underscore.humanize.titleize, type]
     end
