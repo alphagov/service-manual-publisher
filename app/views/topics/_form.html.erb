@@ -36,11 +36,16 @@
         <h3>Grouping</h3>
         <ul class="list-group js-topic-section-list">
           <%= f.fields_for :topic_sections do |topic_section_form| %>
+            <% section_is_deletable = topic_section_form.object.guides.empty? %>
             <li class="list-group-item">
+            <% if section_is_deletable %>
               <%= topic_section_form.hidden_field :_destroy, value: "0", class: "js-destroy" %>
+            <% end %>
               <div class="left">
                 <span class="glyphicon glyphicon-move js-topic-section-handle"></span>
+              <% if section_is_deletable %>
                 <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
+              <% end %>
               </div>
 
               <div class="right">
