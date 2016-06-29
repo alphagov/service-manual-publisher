@@ -11,6 +11,10 @@ module CapybaraHelpers
     within(:xpath, %{//a[.="#{title}"]/ancestor::tr}, &block)
   end
 
+  def within_topic_section(title, &block)
+    within(:xpath, %{//li[contains(@class, "list-group-item")][.//input[@value="#{title}"]]}, &block)
+  end
+
   def fill_in_final_url(with)
     page.find_field("Final URL").base.native.remove_attribute("readonly")
     fill_in "Final URL", with: with
