@@ -2,12 +2,52 @@ FactoryGirl.define do
   factory :guide do
     transient do
       title "Example Guide"
+      body "The quick brown fox jumped over the lazy dog."
+      edition_factory :edition
     end
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
 
+    # a guide can't exist without an edition, so by default include one draft
+    editions {
+      [build(edition_factory, title: title, body: body)]
+    }
+
     trait :with_draft_edition do
+      # noop
+    end
+
+    trait :with_published_edition do
       editions {
-        [build(:edition, title: title)]
+        [
+          build(edition_factory, state: "draft", title: title, body: body),
+          build(edition_factory, state: "review_requested", title: title, body: body),
+          build(edition_factory, state: "ready", title: title, body: body),
+          build(edition_factory, state: "published", title: title, body: body)
+        ]
+      }
+    end
+
+    trait :with_previously_published_edition do
+      editions {
+        [
+          build(edition_factory, state: "draft", title: title, body: body),
+          build(edition_factory, state: "review_requested", title: title, body: body),
+          build(edition_factory, state: "ready", title: title, body: body),
+          build(edition_factory, state: "published", title: title, body: body),
+          build(edition_factory, state: "draft", title: title, body: body)
+        ]
+      }
+    end
+
+    trait :has_been_unpublished do
+      editions {
+        [
+          build(edition_factory, state: "draft", title: title, body: body),
+          build(edition_factory, state: "review_requested", title: title, body: body),
+          build(edition_factory, state: "ready", title: title, body: body),
+          build(edition_factory, state: "published", title: title, body: body),
+          build(edition_factory, state: "unpublished")
+        ]
       }
     end
 
@@ -20,25 +60,21 @@ FactoryGirl.define do
     end
   end
 
-  factory :guide_community do
-    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
-
-    editions {
-      [build(:community_edition, content_owner: nil)]
-    }
+  factory :guide_community, parent: :guide, class: GuideCommunity do
+    transient do
+      title "Example Guide Community"
+      edition_factory :community_edition
+    end
   end
 
-  factory :point do
+  factory :point, parent: :guide, class: Point do
     transient do
-      title "Example Guide"
+      sequence :title do |n|
+        "Point #{n}. Point Title"
+      end
+      edition_factory :summary_edition
     end
-    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
-
-    trait :with_draft_edition do
-      editions {
-        [build(:edition, title: title)]
-      }
-    end
+    slug "/service-manual/service-standard/#{SecureRandom.hex}"
   end
 
   factory :edition do
@@ -59,16 +95,17 @@ FactoryGirl.define do
   end
 
   factory :community_edition, parent: :edition do
+    content_owner nil
     sequence :title do |n|
       "#{n} Community"
     end
   end
 
-  factory :draft_guide, parent: :guide do
-    editions {
-      [build(:edition, state: "draft")]
-    }
+  factory :summary_edition, parent: :edition do
+    summary "Description"
   end
+
+  factory :draft_guide, parent: :guide
 
   factory :review_requested_guide, parent: :guide do
     editions {
@@ -82,54 +119,11 @@ FactoryGirl.define do
     }
   end
 
-  factory :published_guide, parent: :guide do
-    transient do
-      title "Example Guide"
-      body "The quick brown fox jumped over the lazy dog."
-    end
+  factory :published_guide, parent: :guide, traits: [:with_published_edition]
+  factory :published_guide_community, parent: :guide_community, traits: [:with_published_edition]
 
-    editions {
-      [
-      build(:edition, state: "draft", title: title, body: body),
-      build(:edition, state: "review_requested", title: title, body: body),
-      build(:edition, state: "ready", title: title, body: body),
-      build(:edition, state: "published", title: title, body: body),
-      ]
-    }
-  end
-
-  factory :published_guide_community, parent: :published_guide, class: 'GuideCommunity'
-
-  factory :unpublished_guide, parent: :guide do
-    transient do
-      title "An Unpublished Guide"
-      body "Some Body Text"
-    end
-
-    editions {
-      [
-        build(:edition, state: "draft", title: title, body: body),
-        build(:edition, state: "published", title: title, body: body),
-        build(:edition, state: "unpublished", title: title, body: body),
-      ]
-    }
-  end
-
-  factory :unpublished_point, parent: :guide, class: 'Point' do
-    transient do
-      title "An Unpublished Point"
-      body "Some Body Text"
-      summary "A summary"
-    end
-
-    editions {
-      [
-        build(:edition, state: "draft", title: title, body: body, summary: summary),
-        build(:edition, state: "published", title: title, body: body, summary: summary),
-        build(:edition, state: "unpublished", title: title, body: body, summary: summary),
-      ]
-    }
-  end
+  factory :unpublished_guide, parent: :guide, traits: [:has_been_unpublished]
+  factory :unpublished_point, parent: :point, traits: [:has_been_unpublished]
 
   factory :user do
     name "Test User"
