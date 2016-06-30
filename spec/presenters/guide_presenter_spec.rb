@@ -97,4 +97,13 @@ RSpec.describe GuidePresenter, "for a Point" do
       parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"]
     )
   end
+
+  it "includes the show_description boolean in the details" do
+    edition = create(:edition)
+    point = create(:point, editions: [edition])
+
+    presenter = described_class.new(point, edition)
+
+    expect(presenter.content_payload[:details][:show_description]).to eq(true)
+  end
 end
