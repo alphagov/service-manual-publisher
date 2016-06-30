@@ -64,20 +64,6 @@ RSpec.describe GuidePresenter do
       edition.title = "Agile Process"
       expect(presenter.content_payload[:title]).to eq("Agile Process")
     end
-
-    describe "summary" do
-      it "contains the summary" do
-        edition.summary = 'A sample summary'
-
-        expect(presenter.content_payload[:details][:summary]).to eq('A sample summary')
-      end
-
-      it "does not contain summary if the summary is not present" do
-        edition.summary = nil
-
-        expect(presenter.content_payload[:details]).to_not have_key(:summary)
-      end
-    end
   end
 
   describe '#links_payload' do
