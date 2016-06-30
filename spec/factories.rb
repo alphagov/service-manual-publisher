@@ -115,22 +115,6 @@ FactoryGirl.define do
     }
   end
 
-  factory :unpublished_point, parent: :guide, class: 'Point' do
-    transient do
-      title "An Unpublished Point"
-      body "Some Body Text"
-      description "A summary"
-    end
-
-    editions {
-      [
-        build(:edition, state: "draft", title: title, body: body, description: description),
-        build(:edition, state: "published", title: title, body: body, description: description),
-        build(:edition, state: "unpublished", title: title, body: body, description: description),
-      ]
-    }
-  end
-
   factory :user do
     name "Test User"
     permissions ["signin"]
