@@ -55,6 +55,10 @@ private
       header_links: level_two_headers,
     }
 
+    if guide.is_a?(Point)
+      details_hash[:show_description] = true
+    end
+
     details_hash
   end
 
