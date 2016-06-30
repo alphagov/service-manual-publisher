@@ -12,7 +12,7 @@ end
 
 RSpec.describe ServiceStandardPresenter, "#content_payload" do
   it "returns a hash suitable for a service standard draft" do
-    edition = create(:edition, summary: "This is a summary", title: "1. Understand user needs", state: "published")
+    edition = create(:edition, description: "This is a description", title: "1. Understand user needs", state: "published")
     point = create(:point, editions: [edition], slug: "/service-manual/service-standard/understand-user-needs")
 
     expected_payload = {
@@ -32,7 +32,7 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
         points: [
           {
             title: "1. Understand user needs",
-            summary: "This is a summary",
+            summary: "This is a description",
             base_path: "/service-manual/service-standard/understand-user-needs",
           }
         ]
@@ -45,26 +45,26 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
   end
 
   it "only includes published editions" do
-    point1_edition = create(:edition, summary: "This is a summary", title: "1. Understand user needs",)
+    point1_edition = create(:edition, description: "This is a description", title: "1. Understand user needs",)
     create(:point, editions: [point1_edition], slug: "/service-manual/service-standard/understand-user-needs")
 
-    point2_edition = create(:edition, summary: "This is a summary", title: "2. Do ongoing user research", state: "published")
+    point2_edition = create(:edition, description: "This is a description", title: "2. Do ongoing user research", state: "published")
     create(:point, editions: [point2_edition], slug: "/service-manual/service-standard/do-ongoing-user-research")
 
-    point3_edition1 = create(:edition, summary: "This is a summary", title: "3. Have a multidisciplinary team", state: "published")
-    point3_edition2 = create(:edition, summary: "This is a summary", title: "3. Have a multidisciplinary team with a typo")
+    point3_edition1 = create(:edition, description: "This is a description", title: "3. Have a multidisciplinary team", state: "published")
+    point3_edition2 = create(:edition, description: "This is a description", title: "3. Have a multidisciplinary team with a typo")
     create(:point, editions: [point3_edition1, point3_edition2], slug: "/service-manual/service-standard/have-a-multidisciplinary-team")
 
     expected_points_payload =
       [
         {
           title: "2. Do ongoing user research",
-          summary: "This is a summary",
+          summary: "This is a description",
           base_path: "/service-manual/service-standard/do-ongoing-user-research",
         },
         {
           title: "3. Have a multidisciplinary team",
-          summary: "This is a summary",
+          summary: "This is a description",
           base_path: "/service-manual/service-standard/have-a-multidisciplinary-team",
         }
       ]

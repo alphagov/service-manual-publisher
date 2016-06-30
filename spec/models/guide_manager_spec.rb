@@ -129,13 +129,13 @@ RSpec.describe GuideManager, '#publish' do
   it "saves and publishes the service standard with other published points if publishing a point" do
     user = create(:user)
 
-    other_edition = create(:edition, title: "Scrum", summary: "This is a summary", state: "published")
+    other_edition = create(:edition, title: "Scrum", description: "This is a description", state: "published")
     create(:point, editions: [other_edition])
 
     editions = [
-      build(:edition, title: 'Agile', summary: "Summary"),
-      build(:edition, title: 'Agile', summary: "Summary", state: 'review_requested'),
-      build(:edition, title: 'Agile', summary: "Summary", state: 'ready')
+      build(:edition, title: 'Agile', description: "Summary"),
+      build(:edition, title: 'Agile', description: "Summary", state: 'review_requested'),
+      build(:edition, title: 'Agile', description: "Summary", state: 'ready')
     ]
     point = create(:point, editions: editions)
 

@@ -55,8 +55,6 @@ private
       header_links: level_two_headers,
     }
 
-    details_hash[:summary] = edition.summary if edition.summary.present?
-
     details_hash
   end
 

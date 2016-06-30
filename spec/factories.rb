@@ -119,14 +119,14 @@ FactoryGirl.define do
     transient do
       title "An Unpublished Point"
       body "Some Body Text"
-      summary "A summary"
+      description "A summary"
     end
 
     editions {
       [
-        build(:edition, state: "draft", title: title, body: body, summary: summary),
-        build(:edition, state: "published", title: title, body: body, summary: summary),
-        build(:edition, state: "unpublished", title: title, body: body, summary: summary),
+        build(:edition, state: "draft", title: title, body: body, description: description),
+        build(:edition, state: "published", title: title, body: body, description: description),
+        build(:edition, state: "unpublished", title: title, body: body, description: description),
       ]
     }
   end
