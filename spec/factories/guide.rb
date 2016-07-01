@@ -1,20 +1,19 @@
 FactoryGirl.define do
-
   # Example Usage
-  # 
+  #
   # Create a guide with a single draft edition, with title "Hello World"
   # -> create(:guide, title: "Hello World")
-  # 
+  #
   # Create a guide community, that has had a review requested
   # -> create(:guide_community, :has_had_review_requested)
-  # 
+  #
   # Create a guide, which has an non conventional edition history
   # -> create(:guide, states: [:draft, :published, :ready])
-  # 
+  #
   # Create a point, which has been published, with every edition created by bob.
   # Note that edition overrides title, body if specified
   # -> create(:point, :has_been_pubished, edition: {created_by: bob})
-  # 
+  #
   # Create a guide with manually defined editions
   # -> create(:guide, editions: [create(:edition)])
 
@@ -74,7 +73,7 @@ FactoryGirl.define do
     after(:build) do |guide, evaluator|
       if guide.editions.empty?
         evaluator.states.each do |state|
-          edition = evaluator.edition || {title: evaluator.title, body: evaluator.body}
+          edition = evaluator.edition || { title: evaluator.title, body: evaluator.body }
           create(evaluator.edition_factory, state, **edition, guide: guide)
         end
       end
