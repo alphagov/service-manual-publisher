@@ -1,11 +1,12 @@
 FactoryGirl.define do
   # Example Usage
   #
-  # create(:edition, :draft, title: "A Draft Edition")
-  # create(:community_edition, :published, title: "A Published Community Edition")
+  # Create a draft with the title "A Draft Edition"
+  # -> create(:edition, :draft, title: "A Draft Edition")
   #
-  # Legacy Usage:
-  # create(:draft_edition)
+  # Create a published edition suitable for use by a guide community, with
+  # the title "A Published Community Edition"
+  # -> create(:community_edition, :published, title: "A Published Community Edition")
 
   states = [:draft, :ready, :review_requested, :published, :unpublished].freeze
 

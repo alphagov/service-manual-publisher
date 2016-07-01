@@ -12,7 +12,11 @@ FactoryGirl.define do
   #
   # Create a point, which has been published, with every edition created by bob.
   # Note that edition overrides title, body if specified
-  # -> create(:point, :has_been_pubished, edition: {created_by: bob})
+  # -> create(:point, :has_been_pubished, edition: { created_by: bob })
+  #
+  # Create a guide where every edition belongs to a specific community
+  # -> guide_community = create(:guide_community)
+  #    create(:guide, edition: { content_owner_id: guide_community.id })
   #
   # Create a guide with manually defined editions
   # -> create(:guide, editions: [create(:edition)])
@@ -101,7 +105,8 @@ FactoryGirl.define do
     slug "/service-manual/service-standard/#{SecureRandom.hex}"
   end
 
-  # ----- Legacy Shortcuts
+  # Legacy Factories
+  # Please don't use for new tests.
 
   factory :draft_guide, parent: :guide
 
