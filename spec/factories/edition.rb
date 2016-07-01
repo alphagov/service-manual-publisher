@@ -7,7 +7,7 @@ FactoryGirl.define do
   # Legacy Usage:
   # create(:draft_edition)
 
-  STATES = [:draft, :ready, :review_requested, :published, :unpublished].freeze
+  states = [:draft, :ready, :review_requested, :published, :unpublished].freeze
 
   factory :edition do
     sequence :title do |n|
@@ -25,8 +25,8 @@ FactoryGirl.define do
     author { build(:user) }
     created_by { author }
 
-    # create traits for all STATES
-    STATES.each do |state|
+    # create traits for all states
+    states.each do |state|
       trait state do
         state state.to_s
       end
@@ -49,7 +49,7 @@ FactoryGirl.define do
   # Create *legacy* draft_edition, ready_edition [..,] unpublished_edition
   # factories. These should be phased out in favour of traits
 
-  STATES.each do |state|
+  states.each do |state|
     factory "#{state}_edition".to_sym, parent: :edition, traits: [state]
   end
 end
