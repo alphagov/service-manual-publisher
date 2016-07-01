@@ -120,7 +120,7 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "displays a page header that's based on the query" do
     ronan = create(:user, name: "Ronan")
-    guide_community = create(:guide_community, :with_published_edition, edition: {author: ronan})
+    guide_community = create(:guide_community, :with_published_edition, edition: { author: ronan })
 
     visit root_path
     within ".filters" do
