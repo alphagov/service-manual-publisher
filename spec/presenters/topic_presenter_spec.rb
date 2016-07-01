@@ -52,7 +52,6 @@ RSpec.describe TopicPresenter do
       groups = presented_topic.content_payload[:details][:groups]
       expect(groups.size).to eq 2
       expect(groups.first).to include(name: "Group 1", description: "Fruits")
-      expect(groups.first[:contents]).to eq [guide_1.slug, guide_2.slug]
       expect(groups.first[:content_ids]).to eq [guide_1.content_id, guide_2.content_id]
       expect(groups.last).to include(name: "Group 2", description: "Berries")
     end
