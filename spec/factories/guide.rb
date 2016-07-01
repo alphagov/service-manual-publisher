@@ -19,10 +19,10 @@ FactoryGirl.define do
     trait :with_published_edition do
       editions {
         [
-          build(edition_factory, state: "draft", title: title, body: body),
-          build(edition_factory, state: "review_requested", title: title, body: body),
-          build(edition_factory, state: "ready", title: title, body: body),
-          build(edition_factory, state: "published", title: title, body: body)
+          build(edition_factory, :draft, title: title, body: body),
+          build(edition_factory, :review_requested, title: title, body: body),
+          build(edition_factory, :ready, title: title, body: body),
+          build(edition_factory, :published, title: title, body: body)
         ]
       }
     end
@@ -30,11 +30,11 @@ FactoryGirl.define do
     trait :with_previously_published_edition do
       editions {
         [
-          build(edition_factory, state: "draft", title: title, body: body),
-          build(edition_factory, state: "review_requested", title: title, body: body),
-          build(edition_factory, state: "ready", title: title, body: body),
-          build(edition_factory, state: "published", title: title, body: body),
-          build(edition_factory, state: "draft", title: title, body: body)
+          build(edition_factory, :draft, title: title, body: body),
+          build(edition_factory, :review_requested, title: title, body: body),
+          build(edition_factory, :ready, title: title, body: body),
+          build(edition_factory, :published, title: title, body: body),
+          build(edition_factory, :draft, title: title, body: body)
         ]
       }
     end
@@ -42,11 +42,11 @@ FactoryGirl.define do
     trait :has_been_unpublished do
       editions {
         [
-          build(edition_factory, state: "draft", title: title, body: body),
-          build(edition_factory, state: "review_requested", title: title, body: body),
-          build(edition_factory, state: "ready", title: title, body: body),
-          build(edition_factory, state: "published", title: title, body: body),
-          build(edition_factory, state: "unpublished")
+          build(edition_factory, :draft, title: title, body: body),
+          build(edition_factory, :review_requested, title: title, body: body),
+          build(edition_factory, :ready, title: title, body: body),
+          build(edition_factory, :published, title: title, body: body),
+          build(edition_factory, :unpublished)
         ]
       }
     end
