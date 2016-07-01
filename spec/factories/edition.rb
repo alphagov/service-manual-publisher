@@ -46,11 +46,4 @@ FactoryGirl.define do
   factory :summary_edition, parent: :edition do
     summary "Description"
   end
-
-  # Create *legacy* draft_edition, ready_edition [..,] unpublished_edition
-  # factories. These should be phased out in favour of traits
-
-  states.each do |state|
-    factory "#{state}_edition".to_sym, parent: :edition, traits: [state]
-  end
 end
