@@ -117,7 +117,7 @@ RSpec.describe Guide do
 
     context "has a published edition" do
       it "does not allow changing the slug" do
-        guide = create(:published_guide)
+        guide = create(:guide, :with_published_edition)
         guide.slug = "/service-manual/topic-name/something-else"
         guide.valid?
         expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can't be changed if guide has a published edition"]
@@ -128,7 +128,7 @@ RSpec.describe Guide do
   describe "#with_published_editions" do
     it "only returns published editions" do
       create(:guide, slug: "/service-manual/topic-name/1")
-      guide_with_published_editions = create(:published_guide, slug: "/service-manual/topic-name/2")
+      guide_with_published_editions = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/2")
       expect(Guide.with_published_editions.to_a).to eq [guide_with_published_editions]
     end
 
@@ -136,8 +136,8 @@ RSpec.describe Guide do
       guide = create(:guide,
         slug: "/service-manual/topic-name/2",
         editions: [
-          build(:published_edition),
-          build(:published_edition),
+          build(:edition, :published),
+          build(:edition, :published),
         ],
                     )
       expect(Guide.with_published_editions.to_a).to eq [guide]
@@ -223,7 +223,7 @@ end
 
 RSpec.describe Guide, "#editions_since_last_published" do
   it "returns editions since last published" do
-    guide = create(:published_guide)
+    guide = create(:guide, :with_published_edition)
     edition1 = build(:edition)
     edition2 = build(:edition)
     guide.editions << edition1

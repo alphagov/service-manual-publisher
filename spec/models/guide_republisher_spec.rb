@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe GuideRepublisher, "#republish" do
   it "saves the content, links and publishes" do
     publishing_api = double(:publishing_api)
-    guide = create(:published_guide, slug: "/service-manual/topic/guide")
+    guide = create(:guide, :with_published_edition, slug: "/service-manual/topic/guide")
 
     expect(publishing_api).to receive(:put_content)
       .with(guide.content_id, hash_including(base_path: "/service-manual/topic/guide"))

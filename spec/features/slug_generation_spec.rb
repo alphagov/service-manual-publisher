@@ -51,7 +51,7 @@ RSpec.describe "creating guides", type: :feature do
 
     context "published guide" do
       it "does not generate slug and final url", js: true do
-        guide = create(:published_guide, :with_topic_section)
+        guide = create(:guide, :with_published_edition, :with_topic_section)
         visit edit_guide_path(guide)
 
         fill_in "Title", with: "My Guide Title"

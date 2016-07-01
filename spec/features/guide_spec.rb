@@ -160,7 +160,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "a review requested guide can only be approved" do
-      guide = create(:review_requested_guide)
+      guide = create(:guide, :with_review_requested_edition)
       visit edit_guide_path(guide)
 
       expect(page).to_not have_button("Send for review")
@@ -169,7 +169,7 @@ RSpec.describe "creating guides", type: :feature do
     end
 
     it "a ready guide can only be published" do
-      guide = create(:ready_guide)
+      guide = create(:guide, :with_ready_edition)
       visit edit_guide_path(guide)
 
       expect(page).to_not have_button("Send for review")
@@ -201,7 +201,7 @@ end
 RSpec.describe "Updating guides", type: :feature do
   context "the guide has previously been published" do
     it "prevents users from editing the url slug" do
-      @guide = create(:published_guide, slug: "/service-manual/topic-name/something")
+      @guide = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/something")
 
       visit edit_guide_path(@guide)
 

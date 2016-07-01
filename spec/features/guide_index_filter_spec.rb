@@ -104,8 +104,8 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
   it "combines keywords with state filters" do
-    draft_guide = create(:draft_guide, title: "Hello World")
-    review_requested_guide = create(:review_requested_guide, title: "Hello Earth")
+    draft_guide = create(:guide, title: "Hello World")
+    review_requested_guide = create(:guide, :with_review_requested_edition, title: "Hello Earth")
 
     visit root_path
 
