@@ -11,12 +11,7 @@ RSpec.describe "creating guides", type: :feature do
     create(:topic_section, topic: topic1, title: "My Topic Section Number 1")
     create(:topic_section, topic: topic2, title: "My Topic Section Number 2")
 
-    edition = build(
-      :edition,
-      content_owner: nil,
-      title: "Technology Community"
-    )
-    create(:guide_community, editions: [edition])
+    create(:guide_community, :with_published_edition, title: "Technology Community")
 
     topic = create(:topic)
     create(:topic_section, topic: topic)
