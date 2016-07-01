@@ -48,7 +48,6 @@ private
       {
         name: topic_section.title,
         description: topic_section.description,
-        contents: topic_section.guides.map(&:slug),
         content_ids: topic_section.guides.map(&:content_id),
       }
     end
