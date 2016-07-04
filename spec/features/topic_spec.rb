@@ -107,6 +107,15 @@ RSpec.describe "Topics", type: :feature do
       expect(page).to have_content('Topic has been published')
     end
   end
+
+  it 'displays validation messages when validation fails' do
+    visit new_topic_path
+    click_button 'Save'
+
+    within '.full-error-list' do
+      expect(page).to have_content "Path must be present and start with '/service-manual/'"
+    end
+  end
 end
 
 RSpec.describe "topic editor", type: :feature do

@@ -8,6 +8,8 @@
         <h2><%= topic.title %></h2>
       <% end %>
 
+      <%= render 'shared/form_error_summary', full_messages: topic.errors.full_messages %>
+
       <div class="well">
         <div class="form-group">
           <%= f.label :path %>
