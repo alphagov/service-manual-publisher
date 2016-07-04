@@ -92,7 +92,6 @@ private
     if @guide_form.save
       redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
     else
-      flash.now[:error] = @guide_form.errors.full_messages
       render failure_template
     end
   end
