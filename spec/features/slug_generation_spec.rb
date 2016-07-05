@@ -34,6 +34,20 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
         expect(find_field('Slug').value).to eq 'something'
         expect(find_field('Final URL').value).to eq "#{guide.topic.path}/something"
       end
+
+      it 'remembers that the slug was edited when coming back to edit it' do
+        topic_section = create(:topic_section)
+
+        slug = 'my-custom-slug'
+        guide = create(:guide, :with_draft_edition, slug: "#{topic_section.topic.path}/#{slug}")
+        topic_section.guides << guide
+
+        visit edit_guide_path(guide)
+
+        fill_in 'Title', with: 'A New Title'
+        expect(find_field('Slug').value).to eq slug
+        expect(find_field('Final URL').value).to eq "#{guide.topic.path}/#{slug}"
+      end
     end
   end
 
