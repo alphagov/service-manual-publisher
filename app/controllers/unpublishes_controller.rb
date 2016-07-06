@@ -2,7 +2,6 @@ class UnpublishesController < ApplicationController
   def new
     @guide = Guide.find(params[:guide_id])
     @redirect = Redirect.new(old_path: @guide.slug)
-    @select_options = select_options
   end
 
   def create
@@ -25,25 +24,7 @@ class UnpublishesController < ApplicationController
       GuideSearchIndexer.new(@guide).delete
       redirect_to root_path
     else
-      @select_options = select_options
       render :new
     end
-  end
-
-private
-
-  def select_options
-    guide_select_options = Guide
-      .with_published_editions
-      .order(:slug).pluck(:slug)
-      .map { |g| [g, g] }
-    topic_select_options = Topic
-      .order(:path).pluck(:path)
-      .map { |g| [g, g] }
-    {
-      "Other" => ["/service-manual"],
-      "Topics" => topic_select_options,
-      "Guides" => guide_select_options,
-    }
   end
 end
