@@ -1,5 +1,5 @@
-module SlugMigrationsHelper
-  def select_options
+module RedirectDestinationHelper
+  def redirect_destination_select_options
     guide_select_options = Guide
       .with_published_editions
       .order(:slug).pluck(:slug)
