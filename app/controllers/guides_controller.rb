@@ -61,9 +61,15 @@ class GuidesController < ApplicationController
     )
 
     guide_manager = GuideManager.new(guide: guide, user: current_user)
-    guide_manager.unpublish(redirect)
+    result = guide_manager.unpublish(redirect)
 
-    redirect_to edit_guide_path(guide), notice: "Guide has been unpublished"
+    if result.success?
+      redirect_to edit_guide_path(guide), notice: "Guide has been unpublished"
+    else
+      redirect_to unpublish_guide_path(guide), flash: {
+        error: "Guide could not be unpublished"
+      }
+    end
   end
 
 private

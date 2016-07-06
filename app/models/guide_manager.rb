@@ -97,7 +97,8 @@ private
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e
-      ManageResult.new(false, [e.error_details['error']['message']])
+      error_message = e.error_details['error']['message'] rescue "Received error #{e.code} from Publishing API"
+      ManageResult.new(false, [error_message])
     end
   end
 

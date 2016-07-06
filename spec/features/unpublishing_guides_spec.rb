@@ -92,6 +92,49 @@ RSpec.describe "unpublishing guides", type: :feature do
       end
     end
   end
+
+  context 'when the publishing api is not available' do
+    before do
+      publishing_api_isnt_available
+    end
+
+    it 'does not redirect you to the edit screen' do
+      visit unpublish_guide_path(guide)
+      select topic.path, from: "Redirect to"
+      click_button "Unpublish"
+
+      expect(page.current_path).to eq unpublish_guide_path(guide)
+    end
+
+    it 'displays an error message' do
+      visit unpublish_guide_path(guide)
+      select topic.path, from: "Redirect to"
+      click_button "Unpublish"
+
+      expect(page).to have_content "Guide could not be unpublished"
+    end
+
+    it 'does not record a redirect' do
+      visit unpublish_guide_path(guide)
+      select topic.path, from: "Redirect to"
+      click_button "Unpublish"
+
+      # We are storing where the user redirected to in the `redirects`
+      # table but we aren't displaying in the browser yet. Therefore
+      # we are testing it here.
+      expect(Redirect.find_by(old_path: guide.slug)).not_to be_present
+    end
+
+    it 'does not record the guide as unpublished' do
+      visit unpublish_guide_path(guide)
+      select topic.path, from: "Redirect to"
+      click_button "Unpublish"
+
+      visit edit_guide_path(guide)
+
+      expect(page).not_to have_content "Unpublished"
+    end
+  end
 end
 
 RSpec.describe 'Once a guide has been unpublished', type: :feature do
