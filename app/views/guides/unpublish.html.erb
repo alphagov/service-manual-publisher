@@ -1,10 +1,10 @@
 <div class='well'>
-  <%= form_for @redirect, url: guide_unpublishes_path(@guide) do |f| %>
+  <%= form_for @redirect, url: unpublish_guide_path(@guide) do |f| %>
     <h2>Unpublish <small><%= @guide.slug %></small></h2>
 
     <div class="form-group">
       <%= f.label :new_path do %>
-        Redirect to (<span class="text-info">only published guides and topics will appear in this list</span>)
+        Redirect to
       <% end %>
       <%=
         f.select :new_path,
@@ -12,6 +12,8 @@
           {include_blank: "Please choose a path to redirect to"},
           {class: "select2 input-md-12 form-control"}
       %>
+      <span class="help-block">Only published guides and topics will appear in this list</span>
+
       <%= f.error_list :new_path %>
     </div>
 

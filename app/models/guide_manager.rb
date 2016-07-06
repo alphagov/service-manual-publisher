@@ -40,6 +40,27 @@ class GuideManager
     end
   end
 
+  def unpublish(redirect)
+    catching_gds_api_exceptions do
+      if redirect.save
+        edition = build_clone_of_latest_edition
+        edition.state = "unpublished"
+        edition.save!
+
+        PUBLISHING_API.unpublish(guide.content_id,
+          type: 'redirect',
+          alternative_path: redirect.new_path
+        )
+
+        GuideSearchIndexer.new(@guide).delete
+
+        ManageResult.new(true, [])
+      else
+        ManageResult.new(false, 'Could not save redirect')
+      end
+    end
+  end
+
   def discard_draft
     catching_gds_api_exceptions do
       if guide.has_published_edition?

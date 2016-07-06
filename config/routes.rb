@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   resources :guides do
     resources :editions, only: [:index]
     resources :unpublishes, only: [:new, :create]
+
+    member do
+      get 'unpublish'
+      post 'unpublish' => 'guides#confirm_unpublish'
+    end
   end
 
   resources :comments
