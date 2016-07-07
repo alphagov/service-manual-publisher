@@ -14,6 +14,14 @@ RSpec.describe "unpublishing guides", type: :feature do
       stub_any_rummager_delete_content
     end
 
+    it 'requires you to choose a redirect destination' do
+      visit unpublish_guide_path(guide)
+      click_button "Unpublish"
+
+      expect(page.current_path).to eq unpublish_guide_path(guide)
+      expect(page).to have_content "Guide could not be unpublished"
+    end
+
     it 'creates a record of the redirect' do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"

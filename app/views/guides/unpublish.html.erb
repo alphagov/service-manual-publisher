@@ -10,7 +10,7 @@
         f.select :new_path,
           grouped_options_for_select(redirect_destination_select_options),
           {include_blank: "Please choose a path to redirect to"},
-          {class: "select2 input-md-12 form-control"}
+          {class: "select2 input-md-12 form-control", required: true}
       %>
       <span class="help-block">Only published guides and topics will appear in this list</span>
 
