@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe GuideSearchIndexer, "#index" do
   it "indexes a document in rummager for the live edition" do
     rummager_api = double(:rummager_api)
-    guide = create(:published_guide,
+    guide = create(:guide, :with_published_edition,
                     title: "My guide",
                     body: "It's my published guide content",
                     slug: "/service-manual/topic/some-slug"

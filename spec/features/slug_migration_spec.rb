@@ -73,7 +73,7 @@ RSpec.describe "Slug migration", type: :feature do
         create_slug_migration_without_redirect_to "/old/bar/#{i}"
       end
 
-      guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
       @complete = (1..2).map do |i|
         SlugMigration.create!(
           completed: true,
@@ -121,7 +121,7 @@ RSpec.describe "Slug migration", type: :feature do
   end
 
   it "migrates to a guide slug" do
-    guide = create(:published_guide)
+    guide = create(:guide, :with_published_edition)
 
     slug_migration = create_slug_migration_without_redirect_to(
       "/service-manual/some-jekyll-path.html",
@@ -191,7 +191,7 @@ RSpec.describe "Slug migration", type: :feature do
   context "with a failing publisher-api" do
     context "that raises GdsApi::HTTPServerError" do
       it "does not migrate" do
-        create(:published_guide, slug: "/service-manual/topic-name/new-path")
+        create(:guide, :with_published_edition, slug: "/service-manual/topic-name/new-path")
 
         slug_migration = create_slug_migration_without_redirect_to(
           "/service-manual/some-jekyll-path.html",
@@ -213,7 +213,7 @@ RSpec.describe "Slug migration", type: :feature do
 
     context "that raises GdsApi::HTTPNotFound" do
       it "does not migrate" do
-        guide = create(:published_guide)
+        guide = create(:guide, :with_published_edition)
 
         slug_migration = create_slug_migration_without_redirect_to(
           "/service-manual/some-jekyll-path.html",

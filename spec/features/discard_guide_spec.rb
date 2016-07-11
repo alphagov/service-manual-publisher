@@ -11,7 +11,7 @@ RSpec.describe "discarding guides", type: :feature do
 
   context "when the latest edition is published" do
     it "does not allow discarding" do
-      guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
       visit edit_guide_path(guide)
       expect(page).to_not have_button "Discard draft"
     end

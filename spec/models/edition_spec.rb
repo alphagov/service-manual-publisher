@@ -34,11 +34,11 @@ RSpec.describe Edition, type: :model do
 
   describe "#previously_published_edition" do
     let :editions do
-      1.upto(4).map { build(:published_edition) }
+      1.upto(4).map { build(:edition, :published) }
     end
 
     before do
-      create(:published_guide, editions: editions)
+      create(:guide, :with_published_edition, editions: editions)
     end
 
     it "returns an edition that was the latest edition published before the current one" do
@@ -46,7 +46,7 @@ RSpec.describe Edition, type: :model do
       expect(editions[3].previously_published_edition).to eq editions[2]
     end
 
-    it "returns nil if it has no prviously published editions" do
+    it "returns nil if it has no previously published editions" do
       expect(editions[0].previously_published_edition).to eq nil
     end
   end
@@ -66,7 +66,7 @@ RSpec.describe Edition, type: :model do
 
     describe "state" do
       it "allows 'published' state" do
-        edition = build(:published_edition)
+        edition = build(:edition, :published)
         edition.valid?
         expect(edition.errors.full_messages_for(:state).size).to eq 0
       end

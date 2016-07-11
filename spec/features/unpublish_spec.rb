@@ -12,7 +12,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       bob = create(:user, name: "Bob")
       GDS::SSO.test_user = bob
 
-      guide = create(:published_guide, title: "Scrum")
+      guide = create(:guide, :with_published_edition, title: "Scrum")
       topic = create(:topic, path: "/service-manual/agile-delivery")
 
       expect_any_instance_of(RedirectPublisher).to receive(:process).with(
@@ -48,7 +48,7 @@ RSpec.describe "unpublishing guides", type: :feature do
 
     context "before we stored who created an edition" do
       it "does not error and sets the guide state to Unpublished" do
-        guide = create(:published_guide, title: "Scrum")
+        guide = create(:guide, :with_published_edition, title: "Scrum")
         topic = create(:topic, path: "/service-manual/agile-delivery")
 
         # Fake the situation we have in production where the
@@ -72,7 +72,7 @@ RSpec.describe "unpublishing guides", type: :feature do
     end
 
     it "disables all form submits in the guide editor" do
-      guide = create(:unpublished_guide)
+      guide = create(:guide, :has_been_unpublished)
 
       visit edit_guide_path(guide)
 
@@ -84,8 +84,8 @@ RSpec.describe "unpublishing guides", type: :feature do
     end
 
     it "removes the guide from the search index" do
-      guide = create(:published_guide)
-      new_guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
+      new_guide = create(:guide, :with_published_edition)
 
       allow_any_instance_of(RedirectPublisher).to receive(:process)
 
@@ -100,7 +100,7 @@ RSpec.describe "unpublishing guides", type: :feature do
     end
 
     it "disables all inputs in the guide editor" do
-      guide = create(:unpublished_guide)
+      guide = create(:guide, :has_been_unpublished)
 
       visit edit_guide_path(guide)
 
@@ -118,7 +118,7 @@ RSpec.describe "unpublishing guides", type: :feature do
     end
 
     it "disables the summary field for a points page" do
-      guide = create(:unpublished_point)
+      guide = create(:point, :has_been_unpublished)
 
       visit edit_guide_path(guide)
 

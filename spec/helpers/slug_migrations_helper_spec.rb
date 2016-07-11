@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SlugMigrationsHelper, '#select_options', type: :helper do
   it 'should return all available slugs' do
-    guide = create(:published_guide)
+    guide = create(:guide, :with_published_edition)
     topic = create(:topic)
 
     expect(helper.select_options).to eq(

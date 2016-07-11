@@ -12,7 +12,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "latest edition is published" do
     it "creates a new draft version" do
-      guide = create(:published_guide, :with_topic_section, title: "Scrum")
+      guide = create(:guide, :with_published_edition, :with_topic_section, title: "Scrum")
 
       expect(guide.editions.count).to eq(4)
       expect(guide.editions.order(:created_at).last.version).to eq(1)
@@ -72,7 +72,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "keeps the changes made in form fields" do
-      guide = create(:published_guide, :with_topic_section)
+      guide = create(:guide, :with_published_edition, :with_topic_section)
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -89,7 +89,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows api errors in the UI" do
-      create(:published_guide, :with_topic_section, title: "Scrum")
+      create(:guide, :with_published_edition, :with_topic_section, title: "Scrum")
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -107,7 +107,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows the correct state of the guide if publishing fails" do
-      guide = create(:ready_guide)
+      guide = create(:guide, :with_ready_edition)
 
       visit edit_guide_path(guide)
       expect(fake_publishing_api).to receive(:publish).and_raise api_error
@@ -165,7 +165,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "latest edition is published" do
       it "sets the author to the current user" do
-        guide = create(:published_guide)
+        guide = create(:guide, :with_published_edition)
         original_editor = create(:user)
         guide.editions.update_all(author_id: original_editor)
         guide.reload
@@ -223,7 +223,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "approved by another user" do
       it "lists editions that are approved" do
-        guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
+        guide = create(:guide, :with_review_requested_edition, slug: "/service-manual/topic-name/something")
 
         reviewer = create(:user, name: "Keanu Reviews")
         login_as reviewer
@@ -246,7 +246,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
     context "without approval" do
       it "does not allow guides to be published" do
-        guide = create(:review_requested_guide, slug: "/service-manual/topic-name/something")
+        guide = create(:guide, :with_review_requested_edition, slug: "/service-manual/topic-name/something")
         visit edit_guide_path(guide)
         expect(page).to_not have_button "Publish"
       end
@@ -255,7 +255,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "guide edition history" do
     it "allows seeing previous edition changes" do
-      guide = create(:published_guide, :with_topic_section, title: "Original Title")
+      guide = create(:guide, :with_published_edition, :with_topic_section, title: "Original Title")
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Current Draft Edition"

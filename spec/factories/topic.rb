@@ -6,14 +6,14 @@ FactoryGirl.define do
 
     trait :with_some_guides do
       after(:create) do |topic, _evaluator|
-        guide1 = create(:published_guide)
+        guide1 = create(:guide, :with_published_edition)
         topic_section1 = topic.topic_sections.create!(
           title: "Group 1 title",
           description: "Group 1 description",
         )
         topic_section1.guides << guide1
 
-        guide2 = create(:published_guide)
+        guide2 = create(:guide, :with_published_edition)
         topic_section2 = topic.topic_sections.create!(
           title: "Group 2",
           description: "Group 2 description",

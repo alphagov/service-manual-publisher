@@ -176,7 +176,7 @@ RSpec.describe GuideForm, "#initialize" do
 
     it "increments the version number" do
       user = create(:user)
-      guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
       edition = guide.latest_edition
 
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
@@ -279,7 +279,7 @@ RSpec.describe GuideForm, "#save" do
   context "for a published guide" do
     it "doesn't create a duplicate TopicSectionGuide" do
       user = create(:user)
-      guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
       edition = guide.latest_edition
       topic = create(:topic)
       topic_section = create(:topic_section, topic: topic)
@@ -304,7 +304,7 @@ RSpec.describe GuideForm, "#save" do
       original_topic_section = create(:topic_section, topic: topic)
       new_topic_section = create(:topic_section, topic: topic)
       user = create(:user)
-      guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
       edition = guide.latest_edition
       original_topic_section.guides << guide
 
@@ -329,7 +329,7 @@ RSpec.describe GuideForm, "#save" do
       different_topic = create(:topic, path: "/service-manual/different-topic")
       different_topic_section = create(:topic_section, topic: different_topic)
       user = create(:user)
-      guide = create(:published_guide)
+      guide = create(:guide, :with_published_edition)
       edition = guide.latest_edition
 
       original_topic_section.guides << guide

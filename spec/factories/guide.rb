@@ -104,18 +104,4 @@ FactoryGirl.define do
     end
     slug "/service-manual/service-standard/#{SecureRandom.hex}"
   end
-
-  # Legacy Factories
-  # Please don't use for new tests.
-
-  factory :draft_guide, parent: :guide
-
-  factory :review_requested_guide, parent: :guide, traits: [:with_review_requested_edition]
-  factory :ready_guide, parent: :guide, traits: [:with_ready_edition]
-
-  factory :published_guide, parent: :guide, traits: [:with_published_edition]
-  factory :published_guide_community, parent: :guide_community, traits: [:with_published_edition]
-
-  factory :unpublished_guide, parent: :guide, traits: [:has_been_unpublished]
-  factory :unpublished_point, parent: :point, traits: [:has_been_unpublished]
 end
