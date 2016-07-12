@@ -35,7 +35,6 @@ RSpec.describe PointForm, "#save" do
       content_owner_id: guide_community.id,
       description: "a pleasant description",
       slug: "/service-manual/topic/a-fair-tale",
-      summary: "This is my nice summary",
       title: "A fair tale",
       update_type: "minor",
     )
@@ -65,7 +64,6 @@ RSpec.describe PointForm, "validations" do
       "Description can't be blank",
       "Title can't be blank",
       "Body can't be blank",
-      "Latest edition must have a summary",
     )
   end
 end

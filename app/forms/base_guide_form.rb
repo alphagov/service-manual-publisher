@@ -5,7 +5,7 @@ class BaseGuideForm
 
   attr_reader :guide, :edition, :user
   attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
-    :summary, :title, :title_slug, :type, :update_type, :version
+    :title, :title_slug, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
 
@@ -31,7 +31,6 @@ class BaseGuideForm
     self.content_owner_id = edition.content_owner_id
     self.description = edition.description
     self.slug = guide.slug
-    self.summary = edition.summary
     self.title = edition.title
     self.title_slug = extracted_title_from_slug
     self.type = guide.type
@@ -56,7 +55,6 @@ class BaseGuideForm
     edition.created_by_id = user.id
     edition.description = description
     edition.state = Edition::STATES.first
-    edition.summary = summary
     edition.title = title
     edition.update_type = update_type
     edition.version = version

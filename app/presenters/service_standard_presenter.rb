@@ -40,7 +40,7 @@ private
       if edition
         {
           base_path: point.slug,
-          summary: edition.summary,
+          summary: edition.description,
           title: edition.title,
         }
       end

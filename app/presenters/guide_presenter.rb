@@ -55,7 +55,9 @@ private
       header_links: level_two_headers,
     }
 
-    details_hash[:summary] = edition.summary if edition.summary.present?
+    if guide.is_a?(Point)
+      details_hash[:show_description] = true
+    end
 
     details_hash
   end

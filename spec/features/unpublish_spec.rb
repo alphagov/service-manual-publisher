@@ -116,13 +116,5 @@ RSpec.describe "unpublishing guides", type: :feature do
 
       expect(page).to_not have_field("Author")
     end
-
-    it "disables the summary field for a points page" do
-      guide = create(:point, :has_been_unpublished)
-
-      visit edit_guide_path(guide)
-
-      expect(page).to_not have_field("Summary")
-    end
   end
 end
