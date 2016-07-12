@@ -125,7 +125,7 @@ RSpec.describe Guide do
     end
   end
 
-  describe "#with_published_editions" do
+  describe ".with_published_editions" do
     it "only returns published editions" do
       guide_community = create(:guide_community, :with_published_edition)
       create(:guide, slug: "/service-manual/topic-name/1", edition: {
@@ -138,7 +138,7 @@ RSpec.describe Guide do
         }
       )
 
-      expect(Guide.with_published_editions.to_a).to eq [guide_community, published_guide]
+      expect(Guide.with_published_editions).to match_array [guide_community, published_guide]
     end
 
     it "does not return duplicates" do
@@ -149,7 +149,7 @@ RSpec.describe Guide do
         edition: { content_owner_id: guide_community.id }
       )
 
-      expect(Guide.with_published_editions.to_a).to eq [guide_community, guide]
+      expect(Guide.with_published_editions).to match_array [guide_community, guide]
     end
   end
 
