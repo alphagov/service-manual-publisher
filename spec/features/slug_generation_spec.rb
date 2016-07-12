@@ -24,29 +24,33 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
 
     context 'when the user has manually edited the slug' do
       it 'does not update the slug or final url when you change the title' do
-        guide = create(:guide, :with_draft_edition, :with_topic_section)
-        visit edit_guide_path(guide)
+        topic = create(:topic, path: '/service-manual/my-topic')
+        topic_section = create(:topic_section, topic: topic)
+        topic_section_label = "#{topic.title} -> #{topic_section.title}"
+
+        visit new_guide_path
 
         fill_in 'Slug', with: 'something'
         fill_in 'Title', with: 'My Guide Title'
-        select 'Agile Delivery -> Topic Section Title', from: 'Topic section', exact: true
+
+        select topic_section_label, from: 'Topic section', exact: true
 
         expect(find_field('Slug').value).to eq 'something'
-        expect(find_field('Final URL').value).to eq "#{guide.topic.path}/something"
+        expect(find_field('Final URL').value).to eq '/service-manual/my-topic/something'
       end
 
       it 'remembers that the slug was edited when coming back to edit it' do
-        topic_section = create(:topic_section)
+        topic = create(:topic, path: '/service-manual/my-topic')
+        topic_section = create(:topic_section, topic: topic)
 
-        slug = 'my-custom-slug'
-        guide = create(:guide, :with_draft_edition, slug: "#{topic_section.topic.path}/#{slug}")
+        guide = create(:guide, :with_draft_edition, slug: '/service-manual/my-topic/my-custom-slug')
         topic_section.guides << guide
 
         visit edit_guide_path(guide)
 
         fill_in 'Title', with: 'A New Title'
-        expect(find_field('Slug').value).to eq slug
-        expect(find_field('Final URL').value).to eq "#{guide.topic.path}/#{slug}"
+        expect(find_field('Slug').value).to eq 'my-custom-slug'
+        expect(find_field('Final URL').value).to eq '/service-manual/my-topic/my-custom-slug'
       end
     end
   end
