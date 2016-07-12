@@ -46,15 +46,11 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "filters by community" do
     [1, 2].each do |i|
-      edition = build(:edition, content_owner: nil, title: "Content Owner #{i}")
-      guide_community = create(:guide_community, editions: [edition])
-
-      edition = build(:edition,
-                      state: "review_requested",
-                      title: "Edition #{i}",
-                      content_owner_id: guide_community.id,
-                     )
-      create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [edition])
+      guide_community = create(:guide_community, :with_published_edition, title: "Content Owner #{i}")
+      create(:guide, :with_review_requested_edition, edition: {
+        title: "Edition #{i}",
+        content_owner_id: guide_community.id
+      })
     end
 
     filter_by_community "Content Owner 1"
@@ -124,8 +120,7 @@ RSpec.describe "filtering guides", type: :feature do
 
   it "displays a page header that's based on the query" do
     ronan = create(:user, name: "Ronan")
-    edition = create(:edition, author: ronan)
-    guide_community = create(:guide_community, editions: [edition])
+    guide_community = create(:guide_community, :with_published_edition, edition: { author: ronan })
 
     visit root_path
     within ".filters" do

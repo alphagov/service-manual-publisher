@@ -12,7 +12,7 @@ RSpec.describe "Guide history", type: :feature do
     dave = create(:user, name: "Dave")
 
     create(:topic_section, topic: create(:topic))
-    community = create(:guide_community)
+    community = create(:guide_community, :with_published_edition)
 
     GDS::SSO.test_user = john
 

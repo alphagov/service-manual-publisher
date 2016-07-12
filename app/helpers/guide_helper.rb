@@ -29,7 +29,7 @@ module GuideHelper
 
   def guide_community_options_for_select
     # TODO: N+1 on loading the most recent edition
-    GuideCommunity.all.
+    GuideCommunity.with_published_editions.
       sort_by(&:title).
       map { |g| [g.title, g.id] }
   end
