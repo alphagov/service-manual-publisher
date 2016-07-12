@@ -57,10 +57,12 @@ RSpec.describe GuideManager, '#approve_for_publication!' do
 end
 
 RSpec.describe GuideManager, '#publish' do
-  it "creates a new edition with a state of 'published'" do
-    expect(PUBLISHING_API).to receive(:publish)
-    expect(RUMMAGER_API).to receive(:add_document)
+  before do
+    stub_any_publishing_api_publish
+    stub_any_rummager_post
+  end
 
+  it "creates a new edition with a state of 'published'" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
@@ -71,9 +73,6 @@ RSpec.describe GuideManager, '#publish' do
   end
 
   it "creates a new edition created by the supplied user" do
-    expect(PUBLISHING_API).to receive(:publish)
-    expect(RUMMAGER_API).to receive(:add_document)
-
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
@@ -83,10 +82,27 @@ RSpec.describe GuideManager, '#publish' do
     expect(guide.latest_edition.created_by).to eq(user)
   end
 
-  it "delivers a notification" do
-    expect(PUBLISHING_API).to receive(:publish)
-    expect(RUMMAGER_API).to receive(:add_document)
+  it 'publishes the guide against the publishing api' do
+    user = create(:user)
+    guide = create(:guide, :with_ready_edition)
 
+    manager = described_class.new(guide: guide, user: user)
+    manager.publish
+
+    assert_publishing_api_publish(guide.content_id)
+  end
+
+  it 'indexes the document with rummager' do
+    user = create(:user)
+    guide = create(:guide, :with_ready_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    manager.publish
+
+    assert_rummager_posted_item({ link: guide.slug }.as_json)
+  end
+
+  it "delivers a notification" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
@@ -99,9 +115,6 @@ RSpec.describe GuideManager, '#publish' do
   end
 
   it "is successful" do
-    expect(PUBLISHING_API).to receive(:publish)
-    expect(RUMMAGER_API).to receive(:add_document)
-
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
@@ -186,10 +199,10 @@ end
 RSpec.describe GuideManager, '#discard_draft' do
   context "without published editions" do
     it "destroys the guide and all editions" do
-      expect(PUBLISHING_API).to receive(:discard_draft)
-
       user = create(:user)
       guide = create(:guide)
+
+      stub_publishing_api_discard_draft(guide.content_id)
 
       manager = described_class.new(guide: guide, user: user)
       manager.discard_draft
@@ -199,11 +212,23 @@ RSpec.describe GuideManager, '#discard_draft' do
       expect(Edition.where(guide_id: guide_id).count).to eq(0)
     end
 
-    it "is successful" do
-      expect(PUBLISHING_API).to receive(:discard_draft)
-
+    it 'discards drafts against the publishing api' do
       user = create(:user)
       guide = create(:guide)
+
+      stub_publishing_api_discard_draft(guide.content_id)
+
+      manager = described_class.new(guide: guide, user: user)
+      manager.discard_draft
+
+      assert_publishing_api_discard_draft(guide.content_id)
+    end
+
+    it "is successful" do
+      user = create(:user)
+      guide = create(:guide)
+
+      stub_publishing_api_discard_draft(guide.content_id)
 
       manager = described_class.new(guide: guide, user: user)
       result = manager.discard_draft
@@ -214,10 +239,10 @@ RSpec.describe GuideManager, '#discard_draft' do
 
   context "with published editions" do
     it "destroys just the editions since the last published edition" do
-      expect(PUBLISHING_API).to receive(:discard_draft)
-
       user = create(:user)
       guide = create_guide
+
+      stub_publishing_api_discard_draft(guide.content_id)
 
       manager = described_class.new(guide: guide, user: user)
       manager.discard_draft
@@ -242,7 +267,7 @@ RSpec.describe GuideManager, '#discard_draft' do
 
   context 'when communication with the publishing api fails' do
     it "doesn't destroy anything if communication with the publishing api fails" do
-      stub_publishing_api_to_fail
+      publishing_api_isnt_available
 
       user = create(:user)
       guide = create(:guide, :with_topic_section)
@@ -251,15 +276,6 @@ RSpec.describe GuideManager, '#discard_draft' do
       manager.discard_draft
 
       expect(Guide.find_by_id(guide.id)).to be_present
-    end
-
-    def stub_publishing_api_to_fail
-      gds_api_exception = GdsApi::HTTPErrorResponse.new(
-        422,
-                            'https://some-service.gov.uk',
-                            'error' => { 'message' => 'trouble' }
-      )
-      expect(PUBLISHING_API).to receive(:discard_draft).and_raise(gds_api_exception)
     end
   end
 end
