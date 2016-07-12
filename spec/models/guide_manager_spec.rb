@@ -196,6 +196,93 @@ RSpec.describe GuideManager, '#publish' do
   end
 end
 
+RSpec.describe GuideManager, '#unpublish_with_redirect' do
+  before do
+    stub_any_publishing_api_call
+    stub_any_rummager_delete_content
+  end
+
+  it "creates a new edition with a state of 'unpublished'" do
+    user = create(:user)
+    guide = create(:guide, :with_published_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    manager.unpublish_with_redirect('/service-manual/somewhere-else')
+
+    expect(guide.latest_edition.state).to eq('unpublished')
+  end
+
+  it 'creates a new edition created by the supplied user' do
+    user = create(:user)
+    guide = create(:guide, :with_published_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    manager.unpublish_with_redirect('/service-manual/somewhere-else')
+
+    expect(guide.latest_edition.created_by).to eq(user)
+  end
+
+  it 'unpublishes the guide and creates a redirect with the publishing api' do
+    user = create(:user)
+    guide = create(:guide, :with_published_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+
+    assert_publishing_api_unpublish(guide.content_id,
+      type: 'redirect',
+      alternative_path: '/service-manual/suitable-redirect'
+    )
+  end
+
+  it 'deletes the document from rummager' do
+    user = create(:user)
+    guide = create(:guide, :with_ready_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+
+    assert_rummager_deleted_content(guide.slug)
+  end
+
+  it "is successful" do
+    user = create(:user)
+    guide = create(:guide, :with_ready_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+
+    expect(result).to be_success
+  end
+
+  context "when communication with the publishing api fails" do
+    before do
+      publishing_api_isnt_available
+    end
+
+    it 'does not create a new edition' do
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+
+      manager = described_class.new(guide: guide, user: user)
+      manager.unpublish_with_redirect('/service-manual/somewhere-else')
+
+      expect(guide.latest_edition.state).to eq('published')
+    end
+
+    it 'is not successful and returns an error' do
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+
+      manager = described_class.new(guide: guide, user: user)
+      result = manager.unpublish_with_redirect('/service-manual/somewhere-else')
+
+      expect(result).to_not be_success
+      expect(result.errors).to include('Received error 503 from Publishing API')
+    end
+  end
+end
+
 RSpec.describe GuideManager, '#discard_draft' do
   context "without published editions" do
     it "destroys the guide and all editions" do

@@ -40,7 +40,12 @@ class GuideManager
     end
   end
 
-  def unpublish(redirect)
+  def unpublish_with_redirect(destination)
+    redirect = Redirect.new(
+      old_path: guide.slug,
+      new_path: destination
+    )
+
     catching_gds_api_exceptions do
       if redirect.save
         edition = build_clone_of_latest_edition
@@ -56,7 +61,7 @@ class GuideManager
 
         ManageResult.new(true, [])
       else
-        ManageResult.new(false, 'Could not save redirect')
+        ManageResult.new(false, redirect.errors)
       end
     end
   end
