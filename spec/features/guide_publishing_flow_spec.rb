@@ -101,7 +101,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       fill_in "Why the change is being made", with: "There was a spelling mistake"
       click_first_button 'Save'
 
-      within ".alert" do
+      within ".full-error-list" do
         expect(page).to have_content('Error message stub')
       end
     end

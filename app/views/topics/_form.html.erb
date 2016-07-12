@@ -1,4 +1,4 @@
-<div class="topics">
+<div class="row">
   <%= form_for topic do |f| %>
     <div class="col-md-8">
 
@@ -7,6 +7,8 @@
       <% else %>
         <h2><%= topic.title %></h2>
       <% end %>
+
+      <%= render 'shared/form_error_summary', full_messages: topic.errors.full_messages %>
 
       <div class="well">
         <div class="form-group">
@@ -34,7 +36,7 @@
 
       <div class="well">
         <h3>Grouping</h3>
-        <ul class="list-group js-topic-section-list">
+        <ul class="list-group topic-section-list js-topic-section-list">
           <%= f.fields_for :topic_sections do |topic_section_form| %>
             <% section_is_deletable = topic_section_form.object.guides.empty? %>
             <li class="list-group-item">

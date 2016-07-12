@@ -143,7 +143,7 @@ RSpec.describe "creating guides", type: :feature do
       fill_in_guide_form
       click_first_button "Save"
 
-      within ".alert" do
+      within ".full-error-list" do
         expect(page).to have_content("An error occurred")
       end
     end
@@ -245,7 +245,7 @@ RSpec.describe "Updating guides", type: :feature do
     visit edit_guide_path(guide)
     click_first_button "Save"
 
-    within ".alert" do
+    within ".full-error-list" do
       expect(page).to have_content("An error occurred")
     end
   end
