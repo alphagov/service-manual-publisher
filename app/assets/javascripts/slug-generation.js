@@ -11,7 +11,7 @@ $(function() {
   var $topicSection = $(".js-topic-section");
 
   var hasBeenPublished = $form.data("has-been-published");
-  var titleSlugManuallyChanged = false;
+  var titleSlugManuallyChanged = titleSlugPreviouslyChanged();
 
   $(document).on("input", ".js-title-slug", function() {
     titleSlugManuallyChanged = true;
@@ -64,6 +64,10 @@ $(function() {
 
   function slugifiedSlugTitle() {
     return slugify($titleSlug.val());
+  }
+
+  function titleSlugPreviouslyChanged() {
+    return $titleSlug.val() != slugifiedGuideTitle();
   }
 
   function slugify(text) {
