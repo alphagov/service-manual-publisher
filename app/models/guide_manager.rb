@@ -61,7 +61,7 @@ class GuideManager
 
         ManageResult.new(true, [])
       else
-        ManageResult.new(false, redirect.errors)
+        ManageResult.new(false, redirect.errors.full_messages)
       end
     end
   end

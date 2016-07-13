@@ -53,19 +53,19 @@ class GuidesController < ApplicationController
   end
 
   def confirm_unpublish
-    guide = Guide.find(params[:id])
+    @guide = Guide.find(params[:id])
+    @redirect = Redirect.new(old_path: @guide.slug)
 
     destination = params.fetch(:redirect).fetch(:new_path)
 
-    guide_manager = GuideManager.new(guide: guide, user: current_user)
+    guide_manager = GuideManager.new(guide: @guide, user: current_user)
     result = guide_manager.unpublish_with_redirect(destination)
 
     if result.success?
-      redirect_to edit_guide_path(guide), notice: "Guide has been unpublished"
+      redirect_to edit_guide_path(@guide), notice: "Guide has been unpublished"
     else
-      redirect_to unpublish_guide_path(guide), flash: {
-        error: "Guide could not be unpublished"
-      }
+      @errors = result.errors
+      render 'unpublish'
     end
   end
 

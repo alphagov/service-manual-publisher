@@ -1,3 +1,5 @@
+<%= render 'shared/form_error_summary', full_messages: @errors || [] %>
+
 <div class='well'>
   <%= form_for @redirect, url: unpublish_guide_path(@guide) do |f| %>
     <h2>Unpublish <small><%= @guide.slug %></small></h2>
