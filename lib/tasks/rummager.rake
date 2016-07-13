@@ -6,6 +6,15 @@ namespace :rummager do
 
       GuideSearchIndexer.new(guide).index
     end
+
+    Rake::Task['rummager:index_service_standard'].execute
+  end
+
+  desc 'index the service standard in rummager'
+  task index_service_standard: :environment do
+    puts "Indexing Service Standard..."
+
+    ServiceStandardSearchIndexer.new.index
   end
 
   desc "A temporary task to delete some unpublished documents from rummager " \
