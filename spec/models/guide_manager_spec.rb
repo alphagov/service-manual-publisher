@@ -277,7 +277,7 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       expect(Airbrake).to receive(:notify)
 
       manager = described_class.new(guide: guide, user: user)
-      result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+      manager.unpublish_with_redirect('/service-manual/suitable-redirect')
     end
 
     it 'is not successful and returns an error' do
@@ -305,7 +305,7 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       expect(Airbrake).to receive(:notify)
 
       manager = described_class.new(guide: guide, user: user)
-      result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+      manager.unpublish_with_redirect('/service-manual/suitable-redirect')
     end
 
     it 'is successful' do

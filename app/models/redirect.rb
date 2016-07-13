@@ -7,10 +7,9 @@ class Redirect < ActiveRecord::Base
   HUMANIZED_ATTRIBUTES = {
     old_path: 'Redirect source',
     new_path: 'Redirect destination'
-  }
+  }.freeze
 
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
-
 end
