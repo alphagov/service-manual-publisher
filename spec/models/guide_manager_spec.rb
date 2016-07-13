@@ -270,6 +270,16 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       expect(guide.latest_edition.state).to eq('published')
     end
 
+    it 'sends a notification to Airbrake' do
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+
+      expect(Airbrake).to receive(:notify)
+
+      manager = described_class.new(guide: guide, user: user)
+      result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+    end
+
     it 'is not successful and returns an error' do
       user = create(:user)
       guide = create(:guide, :with_published_edition)
@@ -286,7 +296,6 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
     before do
       stub_any_publishing_api_call
       stub_any_rummager_delete_content.to_return(status: [404, "Not Found"])
-      # stub_const("Airbrake", double(:airbrake))
     end
 
     it 'sends a notification to Airbrake' do
