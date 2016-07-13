@@ -278,7 +278,7 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       result = manager.unpublish_with_redirect('/service-manual/somewhere-else')
 
       expect(result).to_not be_success
-      expect(result.errors).to include('Received error 503 from Publishing API')
+      expect(result.errors).to include('Could not communicate with upstream API')
     end
   end
 

@@ -106,7 +106,7 @@ private
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e
-      error_message = e.error_details['error']['message'] rescue "Received error #{e.code} from Publishing API"
+      error_message = e.error_details['error']['message'] rescue "Could not communicate with upstream API"
       ManageResult.new(false, [error_message])
     end
   end

@@ -119,7 +119,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
 
-      expect(page).to have_content "Guide could not be unpublished"
+      expect(page).to have_content 'Could not communicate with upstream API'
     end
 
     it 'does not record a redirect' do
