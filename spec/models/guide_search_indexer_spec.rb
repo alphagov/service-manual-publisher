@@ -25,7 +25,7 @@ RSpec.describe GuideSearchIndexer, "#index" do
     described_class.new(guide, rummager_api: rummager_api).index
   end
 
-  it "does not attempt to index a guide if it has no live editons" do
+  it "does not attempt to index a guide if it has no live editions" do
     rummager_api = double(:rummager_api)
     guide = create(:guide)
 
