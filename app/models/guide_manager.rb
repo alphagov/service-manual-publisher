@@ -57,7 +57,11 @@ class GuideManager
           alternative_path: redirect.new_path
         )
 
-        GuideSearchIndexer.new(@guide).delete
+        begin
+          GuideSearchIndexer.new(guide).delete
+        rescue GdsApi::HTTPNotFound => exception
+          Airbrake.notify(exception)
+        end
 
         ManageResult.new(true, [])
       else

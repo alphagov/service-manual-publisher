@@ -281,6 +281,34 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       expect(result.errors).to include('Received error 503 from Publishing API')
     end
   end
+
+  context 'when rummager returns a 404 trying to delete the content' do
+    before do
+      stub_any_publishing_api_call
+      stub_any_rummager_delete_content.to_return(status: [404, "Not Found"])
+      # stub_const("Airbrake", double(:airbrake))
+    end
+
+    it 'sends a notification to Airbrake' do
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+
+      expect(Airbrake).to receive(:notify)
+
+      manager = described_class.new(guide: guide, user: user)
+      result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+    end
+
+    it 'is successful' do
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+
+      manager = described_class.new(guide: guide, user: user)
+      result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
+
+      expect(result).to be_success
+    end
+  end
 end
 
 RSpec.describe GuideManager, '#discard_draft' do
