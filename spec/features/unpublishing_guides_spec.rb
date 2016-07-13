@@ -19,7 +19,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       click_button "Unpublish"
 
       expect(page.current_path).to eq unpublish_guide_path(guide)
-      expect(page).to have_content "Guide could not be unpublished"
+      expect(page).to have_content "Redirect destination can't be blank"
     end
 
     it 'creates a record of the redirect' do
