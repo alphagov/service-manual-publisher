@@ -36,3 +36,9 @@ en:
   time:
     formats:
       date_without_time: "%d %B %Y"
+
+  activerecord:
+    attributes:
+      redirect:
+        old_path: "Redirect source"
+        new_path: "Redirect destination"
