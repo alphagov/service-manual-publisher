@@ -40,6 +40,36 @@ class GuideManager
     end
   end
 
+  def unpublish_with_redirect(destination)
+    redirect = Redirect.new(
+      old_path: guide.slug,
+      new_path: destination
+    )
+
+    catching_gds_api_exceptions do
+      if redirect.save
+        edition = build_clone_of_latest_edition
+        edition.state = "unpublished"
+        edition.save!
+
+        PUBLISHING_API.unpublish(guide.content_id,
+          type: 'redirect',
+          alternative_path: redirect.new_path
+        )
+
+        begin
+          GuideSearchIndexer.new(guide).delete
+        rescue GdsApi::HTTPNotFound => exception
+          Airbrake.notify(exception)
+        end
+
+        ManageResult.new(true, [])
+      else
+        ManageResult.new(false, redirect.errors.full_messages)
+      end
+    end
+  end
+
   def discard_draft
     catching_gds_api_exceptions do
       if guide.has_published_edition?
@@ -76,7 +106,9 @@ private
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e
-      ManageResult.new(false, [e.error_details['error']['message']])
+      Airbrake.notify(e)
+      error_message = e.error_details['error']['message'] rescue "Could not communicate with upstream API"
+      ManageResult.new(false, [error_message])
     end
   end
 

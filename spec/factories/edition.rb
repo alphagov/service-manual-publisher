@@ -41,9 +41,4 @@ FactoryGirl.define do
       "#{n} Community"
     end
   end
-
-  # summary editions also need a summary
-  factory :summary_edition, parent: :edition do
-    summary "Description"
-  end
 end

@@ -78,7 +78,7 @@ FactoryGirl.define do
       if guide.editions.empty?
         evaluator.states.each do |state|
           edition = evaluator.edition || { title: evaluator.title, body: evaluator.body }
-          create(evaluator.edition_factory, state, **edition, guide: guide)
+          guide.editions << create(evaluator.edition_factory, state, **edition, guide: guide)
         end
       end
     end
@@ -100,7 +100,6 @@ FactoryGirl.define do
       sequence :title do |n|
         "Point #{n}. Point Title"
       end
-      edition_factory :summary_edition
     end
     slug "/service-manual/service-standard/#{SecureRandom.hex}"
   end

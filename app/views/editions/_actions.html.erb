@@ -46,7 +46,7 @@
         <% end %>
 
         <% if guide.can_be_unpublished? %>
-          <%= link_to "Unpublish", new_guide_unpublish_path(guide), class: 'btn btn-danger pull-right' %>
+          <%= link_to "Unpublish", unpublish_guide_path(guide), class: 'btn btn-danger pull-right' %>
         <% end %>
 
       <% end %>
