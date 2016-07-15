@@ -9,13 +9,13 @@ class ServiceStandardSearchIndexer
       # concerned it might as well be.
       'service_manual_guide',
       @service_standard[:base_path],
-      'format':            'service_manual_guide',
-      'description':       @service_standard[:details][:introduction],
-      'indexable_content': @service_standard[:details][:body],
-      'title':             @service_standard[:title],
-      'link':              @service_standard[:base_path],
-      'manual':            '/service-manual',
-      'organisations':     ['government-digital-service'],
+      format:            'service_manual_guide',
+      description:       @service_standard[:details][:introduction],
+      indexable_content: @service_standard[:details][:body],
+      title:             @service_standard[:title],
+      link:              @service_standard[:base_path],
+      manual:            '/service-manual',
+      organisations:     ['government-digital-service'],
     )
   end
 
