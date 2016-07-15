@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'capybara/rails'
-require 'gds_api/rummager'
 
 RSpec.describe "Slug migration", type: :feature do
   before do

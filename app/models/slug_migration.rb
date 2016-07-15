@@ -1,5 +1,3 @@
-require 'gds_api/rummager'
-
 class SlugMigration < ActiveRecord::Base
   validates :slug, uniqueness: true
   validates :redirect_to, presence: true

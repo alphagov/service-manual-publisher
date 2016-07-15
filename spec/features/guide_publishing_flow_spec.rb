@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'capybara/rails'
 
 RSpec.describe "Taking a guide through the publishing process", type: :feature do
   let(:fake_publishing_api) { FakePublishingApi.new }

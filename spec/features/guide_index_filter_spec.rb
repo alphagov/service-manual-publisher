@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'capybara/rails'
 
 RSpec.describe "filtering guides", type: :feature do
   it "filters by latest edition state" do
