@@ -41,6 +41,11 @@ RSpec.describe GuidePresenter do
       )
     end
 
+    it "doesn't contain public_updated_at so that it represents the published at time" \
+     " on the frontend" do
+      expect(presenter.content_payload).to_not have_key(:public_updated_at)
+    end
+
     it "omits the content owner if the edition doesn't have one" do
       edition.content_owner = nil
 

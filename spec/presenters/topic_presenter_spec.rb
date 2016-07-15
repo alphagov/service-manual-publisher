@@ -48,6 +48,11 @@ RSpec.describe TopicPresenter do
       )
     end
 
+    it "doesn't contain public_updated_at so that it represents the published at time" \
+     " on the frontend" do
+      expect(presented_topic.content_payload).to_not have_key(:public_updated_at)
+    end
+
     it "transforms nested guides into the groups format" do
       groups = presented_topic.content_payload[:details][:groups]
       expect(groups.size).to eq 2
