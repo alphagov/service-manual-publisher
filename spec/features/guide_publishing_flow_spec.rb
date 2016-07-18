@@ -143,7 +143,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   describe "author behaviour" do
     context "creating a new guide" do
       it "sets the author to the current user" do
-        create(:guide_community, :with_published_edition)
+        create(:guide_community)
 
         topic = create(:topic)
         topic_section = create(:topic_section, topic: topic)
