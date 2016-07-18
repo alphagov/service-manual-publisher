@@ -1,5 +1,3 @@
-require 'govspeak'
-
 class GuidePresenter
   def initialize(guide, edition)
     @guide = guide

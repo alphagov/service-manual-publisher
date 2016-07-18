@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'capybara/rails'
-require 'gds_api/publishing_api_v2'
 
 RSpec.describe "Topics", type: :feature do
   let(:api_double) { double(:publishing_api) }

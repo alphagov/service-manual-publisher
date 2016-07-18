@@ -1,7 +1,7 @@
 require 'capybara/rspec'
 require 'webmock/rspec'
-require 'plek'
 
+require 'plek'
 require 'gds_api/test_helpers/publishing_api_v2'
 require 'gds_api/test_helpers/rummager'
 

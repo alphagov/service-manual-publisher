@@ -1,5 +1,4 @@
 require 'gds_api/asset_manager'
-require 'plek'
 
 ASSET_API = GdsApi::AssetManager.new(
   Plek.current.find('asset-manager'),

@@ -1,5 +1,4 @@
 require 'gds_api/publishing_api_v2'
-require 'plek'
 
 PUBLISHING_API = GdsApi::PublishingApiV2.new(
   Plek.new.find('publishing-api'),
