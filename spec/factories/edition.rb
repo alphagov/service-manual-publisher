@@ -22,7 +22,7 @@ FactoryGirl.define do
     change_summary "change summary"
     body "Heading"
     version 1
-    content_owner { build(:guide_community, :with_published_edition) }
+    content_owner { build(:guide_community) }
     author { build(:user) }
     created_by { author }
 
