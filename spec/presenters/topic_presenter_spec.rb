@@ -34,7 +34,7 @@ RSpec.describe TopicPresenter, "#content_payload" do
     expect(topic_presenter.content_payload).to_not have_key(:public_updated_at)
   end
 
-  it "sets visually_expanded" do
+  it "sets visually_collapsed" do
     topic = build(:topic, visually_collapsed: true)
     topic_presenter = described_class.new(topic)
 
