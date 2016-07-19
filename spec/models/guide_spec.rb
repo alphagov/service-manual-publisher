@@ -345,3 +345,17 @@ RSpec.describe Guide, ".by_type" do
     expect(described_class.by_type("")).to eq([guide])
   end
 end
+
+
+RSpec.describe Guide, ".live" do
+  it "returns guides that are currently published" do
+    create(:guide, :with_draft_edition)
+    create(:guide, :with_review_requested_edition)
+    create(:guide, :with_ready_edition)
+    with_published_edition_guide = create(:guide, :with_published_edition)
+    with_previously_published_edition_guide = create(:guide, :with_previously_published_edition)
+    create(:guide, :has_been_unpublished)
+
+    expect(Guide.live).to match_array([with_published_edition_guide, with_previously_published_edition_guide])
+  end
+end
