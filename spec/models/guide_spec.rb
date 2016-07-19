@@ -105,25 +105,6 @@ RSpec.describe Guide do
     end
   end
 
-  describe "#with_published_editions" do
-    it "only returns published editions" do
-      create(:guide, slug: "/service-manual/topic-name/1")
-      guide_with_published_editions = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/2")
-      expect(Guide.with_published_editions.to_a).to eq [guide_with_published_editions]
-    end
-
-    it "does not return duplicates" do
-      guide = create(:guide,
-        slug: "/service-manual/topic-name/2",
-        editions: [
-          build(:edition, :published),
-          build(:edition, :published),
-        ],
-                    )
-      expect(Guide.with_published_editions.to_a).to eq [guide]
-    end
-  end
-
   describe "#search" do
     let :default_attributes do
       user = build(:user)

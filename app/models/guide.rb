@@ -42,12 +42,6 @@ class Guide < ActiveRecord::Base
     where("editions.state = ?", state)
   end
 
-  def self.with_published_editions
-    joins(:editions)
-      .where(editions: { state: "published" })
-      .uniq
-  end
-
   def self.search(search_terms)
     words = sanitize(search_terms.scan(/\w+/) * "|")
     where("tsv @@ to_tsquery('pg_catalog.english', #{words})")
