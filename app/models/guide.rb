@@ -32,8 +32,8 @@ class Guide < ActiveRecord::Base
   delegate :title, to: :latest_edition
 
   def self.live
-    where("EXISTS(#{editions_count_in_state_subquery('published').to_sql})").
-    not_unpublished
+    where("EXISTS(#{editions_count_in_state_subquery('published').to_sql})")
+      .not_unpublished
   end
 
   def self.not_unpublished
@@ -41,9 +41,9 @@ class Guide < ActiveRecord::Base
   end
 
   def self.editions_count_in_state_subquery(state)
-    from("editions").
-    where("editions.guide_id = guides.id").
-    where("editions.state = ?", state)
+    from("editions")
+      .where("editions.guide_id = guides.id")
+      .where("editions.state = ?", state)
   end
 
   def self.search(search_terms)
