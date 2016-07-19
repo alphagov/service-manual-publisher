@@ -20,6 +20,18 @@ module CapybaraHelpers
     fill_in "Final URL", with: with
   end
 
+  def drag_topic_section_above(dragged_section_title, destination_section_title)
+    handle = within_topic_section dragged_section_title do
+      find('.js-topic-section-handle')
+    end
+
+    destination = within_topic_section destination_section_title do
+      find('.js-topic-section-handle')
+    end
+
+    handle.drag_to destination
+  end
+
   def within_guide_history_edition(number, &block)
     within(:xpath, "//div
                         [contains(@class, 'panel')]
