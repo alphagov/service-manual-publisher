@@ -1,7 +1,7 @@
 module RedirectDestinationHelper
   def redirect_destination_select_options
     guide_select_options = Guide
-      .with_published_editions
+      .live
       .order(:slug).pluck(:slug)
       .map { |g| [g, g] }
 
