@@ -126,40 +126,6 @@ RSpec.describe GuideManager, '#publish' do
     expect(result).to be_success
   end
 
-  it "saves and publishes the service standard with other published points if publishing a point" do
-    user = create(:user)
-
-    other_edition = create(:edition, title: "Scrum", description: "This is a description", state: "published")
-    create(:point, editions: [other_edition])
-
-    editions = [
-      build(:edition, title: 'Agile', description: "Summary"),
-      build(:edition, title: 'Agile', description: "Summary", state: 'review_requested'),
-      build(:edition, title: 'Agile', description: "Summary", state: 'ready')
-    ]
-    point = create(:point, editions: editions)
-
-    expect(PUBLISHING_API).to receive(:publish)
-      .with(point.content_id, an_instance_of(String))
-      .once
-
-    expect(PUBLISHING_API).to receive(:put_content)
-      .with(
-        an_instance_of(String),
-        an_instance_of(Hash),
-      )
-      .once
-
-    expect(PUBLISHING_API).to receive(:publish)
-      .with(ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID, "major")
-      .once
-
-    expect(RUMMAGER_API).to receive(:add_document)
-
-    manager = described_class.new(guide: point, user: user)
-    manager.publish
-  end
-
   context "when communication with the publishing api fails" do
     it "doesn't create anything" do
       stub_publishing_api_to_fail
