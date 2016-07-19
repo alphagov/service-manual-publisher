@@ -146,14 +146,7 @@ RSpec.describe GuideManager, '#publish' do
     expect(PUBLISHING_API).to receive(:put_content)
       .with(
         an_instance_of(String),
-        hash_including(
-          details: hash_including(
-            points: [
-              hash_including(:base_path, :summary, title: "Scrum"),
-              hash_including(:base_path, :summary, title: "Agile"),
-            ]
-          )
-        )
+        an_instance_of(Hash),
       )
       .once
 

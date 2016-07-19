@@ -89,7 +89,7 @@ private
   # relevant point will not appear in the standard.
   #
   def save_and_publish_the_service_standard
-    service_standard_for_publication = ServiceStandardPresenter.new(Point.all)
+    service_standard_for_publication = ServiceStandardPresenter.new
     PUBLISHING_API.put_content(
       service_standard_for_publication.content_id,
       service_standard_for_publication.content_payload
