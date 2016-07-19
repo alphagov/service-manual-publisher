@@ -340,3 +340,25 @@ RSpec.describe Guide, ".live" do
     expect(Guide.live).to match_array([with_published_edition_guide, with_previously_published_edition_guide])
   end
 end
+
+RSpec.describe Guide, ".not_unpublished" do
+  it "returns guides that are currently published" do
+    guide_community = create(:guide_community)
+
+    relevant_traits = [
+      :with_draft_edition,
+      :with_review_requested_edition,
+      :with_ready_edition,
+      :with_published_edition,
+      :with_previously_published_edition
+    ]
+
+    relevant_guides = relevant_traits.map do |trait|
+      create(:guide, trait, edition: { content_owner_id: guide_community.id })
+    end
+
+    create(:guide, :has_been_unpublished, edition: { content_owner_id: guide_community.id })
+
+    expect(Guide.not_unpublished).to match_array(relevant_guides + [guide_community])
+  end
+end

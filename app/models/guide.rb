@@ -33,6 +33,10 @@ class Guide < ActiveRecord::Base
 
   def self.live
     where("EXISTS(#{editions_count_in_state_subquery('published').to_sql})").
+    not_unpublished
+  end
+
+  def self.not_unpublished
     where("NOT EXISTS(#{editions_count_in_state_subquery('unpublished').to_sql})")
   end
 
