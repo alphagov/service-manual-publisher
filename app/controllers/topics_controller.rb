@@ -85,6 +85,12 @@ private
   end
 
   def updatable_topic_attributes
-    [:title, :description, :visually_collapsed, content_owner_ids: [], topic_sections_attributes: [:id, :_destroy, :title, :description]]
+    [
+      :title,
+      :description,
+      :visually_collapsed,
+      content_owner_ids: [],
+      topic_sections_attributes: [:id, :_destroy, :title, :description, :position]
+    ]
   end
 end

@@ -7,11 +7,16 @@ $(function() {
     $item.hide();
   });
 
-  $(".js-topic-section-list").each(function() {
-    dragula([this], {
-      moves: function (el, source, handle, sibling) {
-        return $(handle).hasClass("js-topic-section-handle");
-      }
+  // Set up dragula on the overall section list
+  var sectionList = dragula($('.js-topic-section-list').get(), {
+    moves: function (el, source, handle, sibling) {
+      return $(handle).hasClass("js-topic-section-handle");
+    }
+  });
+
+  sectionList.on('dragend', function () {
+    $('.js-section-position').each(function (index) {
+      $(this).val(index);
     });
   });
 

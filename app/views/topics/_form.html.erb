@@ -40,6 +40,7 @@
           <%= f.fields_for :topic_sections do |topic_section_form| %>
             <% section_is_deletable = topic_section_form.object.guides.empty? %>
             <li class="list-group-item">
+              <%= topic_section_form.hidden_field :position, class: 'js-section-position' %>
             <% if section_is_deletable %>
               <%= topic_section_form.hidden_field :_destroy, value: "0", class: "js-destroy" %>
             <% end %>
