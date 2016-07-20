@@ -1,5 +1,5 @@
 $(function() {
-  var $topics = $(".topics");
+  var $topics = $(".js-topic-section-list");
 
   $topics.on("click", ".js-delete-list-group-item", function() {
     $item = $(this).parents(".list-group-item");
