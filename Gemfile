@@ -8,7 +8,11 @@ gem 'uglifier'
 gem 'unicorn'
 gem 'logstasher'
 gem 'plek'
-gem 'airbrake'
+# We pin airbrake because we tried to upgrade to version 5 and failed to deploy it
+# in staging. The gem complained about a configuration error when precompiling the
+# asserts. Here is the attempt:
+# https://github.com/alphagov/service-manual-publisher/commit/ae7f0f1016d84f71282adfac3640c00047115ebe
+gem 'airbrake', '~> 4.2.1'
 
 gem 'govuk_admin_template'
 
