@@ -79,8 +79,8 @@ RSpec.describe "Topics", type: :feature do
 
   it "publish a topic" do
     stub_const("PUBLISHING_API", api_double)
-    expect(api_double).to receive(:publish).
-      once
+    expect(api_double).to receive(:publish)
+      .once
     topic = create(:topic, :with_some_guides)
 
     # When publishing a topic we also need to update the links for all the relevant

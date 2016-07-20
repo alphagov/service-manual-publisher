@@ -29,9 +29,9 @@ module GuideHelper
 
   def guide_community_options_for_select
     # TODO: N+1 on loading the most recent edition
-    GuideCommunity.not_unpublished.
-      sort_by(&:title).
-      map { |g| [g.title, g.id] }
+    GuideCommunity.not_unpublished
+      .sort_by(&:title)
+      .map { |g| [g.title, g.id] }
   end
 
   def topic_section_options_for_select

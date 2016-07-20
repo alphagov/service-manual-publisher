@@ -24,13 +24,13 @@ RSpec.describe TopicPublisher, '#save_draft' do
     topic = create(:topic)
     publishing_api = double(:publishing_api)
 
-    expect(publishing_api).to receive(:put_content).
-      with(topic.content_id, a_hash_including(base_path: topic.path))
-    expect(publishing_api).to receive(:patch_links).
-      with(topic.content_id, a_kind_of(Hash))
+    expect(publishing_api).to receive(:put_content)
+      .with(topic.content_id, a_hash_including(base_path: topic.path))
+    expect(publishing_api).to receive(:patch_links)
+      .with(topic.content_id, a_kind_of(Hash))
 
-    described_class.new(content_model: topic, publishing_api: publishing_api).
-      save_draft(TopicPresenter.new(topic))
+    described_class.new(content_model: topic, publishing_api: publishing_api)
+      .save_draft(TopicPresenter.new(topic))
   end
 
   it 'does not send the draft to the publishing api if the content model is not valid'\
@@ -65,8 +65,8 @@ RSpec.describe TopicPublisher, '#save_draft' do
       topic = build(:topic)
 
       publication_response =
-        described_class.new(content_model: topic, publishing_api: publishing_api_which_always_fails).
-          save_draft(TopicPresenter.new(topic))
+        described_class.new(content_model: topic, publishing_api: publishing_api_which_always_fails)
+          .save_draft(TopicPresenter.new(topic))
 
       expect(topic).to be_new_record
       expect(publication_response).to_not be_success
@@ -76,8 +76,8 @@ RSpec.describe TopicPublisher, '#save_draft' do
       topic = build(:topic)
 
       publication_response =
-        described_class.new(content_model: topic, publishing_api: publishing_api_which_always_fails).
-          save_draft(TopicPresenter.new(topic))
+        described_class.new(content_model: topic, publishing_api: publishing_api_which_always_fails)
+          .save_draft(TopicPresenter.new(topic))
 
       expect(publication_response.error).to include('trouble')
     end
@@ -89,10 +89,10 @@ RSpec.describe TopicPublisher, '#publish' do
     publishing_api = double(:publishing_api)
     topic = create(:topic)
 
-    expect(publishing_api).to receive(:publish).
-      with(topic.content_id, topic.update_type)
+    expect(publishing_api).to receive(:publish)
+      .with(topic.content_id, topic.update_type)
 
-    described_class.new(content_model: topic, publishing_api: publishing_api).
-      publish
+    described_class.new(content_model: topic, publishing_api: publishing_api)
+      .publish
   end
 end

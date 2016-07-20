@@ -92,11 +92,11 @@ task import_old_service_manual_content: :environment do
       next
     end
 
-    Publisher.new(content_model: guide).
-      save_draft(GuidePresenter.new(guide, guide.latest_edition))
+    Publisher.new(content_model: guide)
+      .save_draft(GuidePresenter.new(guide, guide.latest_edition))
     if object[:state] == "published" && !Rails.env.production?
-      Publisher.new(content_model: guide).
-        publish
+      Publisher.new(content_model: guide)
+        .publish
     end
   end
 end
