@@ -27,16 +27,14 @@ RSpec.describe 'Re-ordering topic sections', type: :feature, js: true do
 
 private
 
+  def handle_for_topic_section(section_title)
+    within_topic_section(section_title) { find('.js-topic-section-handle') }
+  end
+
   def drag_topic_section_above(dragged_section_title, destination_section_title)
-    handle = within_topic_section dragged_section_title do
-      find('.js-topic-section-handle')
-    end
-
-    destination = within_topic_section destination_section_title do
-      find('.js-topic-section-handle')
-    end
-
-    handle.drag_to destination
+    handle_for_topic_section(dragged_section_title).drag_to(
+      handle_for_topic_section(destination_section_title)
+    )
   end
 
   def sections_in_order
