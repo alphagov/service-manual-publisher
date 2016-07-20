@@ -20,11 +20,19 @@ $(function() {
     });
   });
 
+  // Individual instances of dragula for each section's guide list
   $(".js-guide-list").each(function() {
-    dragula([this], {
+    var $guideList = $(this);
+    var guideListDragula = dragula([this], {
       moves: function (el, source, handle, sibling) {
         return $(handle).hasClass("js-guide-handle");
       }
+    });
+
+    guideListDragula.on('dragend', function () {
+      $guideList.find('.js-guide-position').each(function (index) {
+        $(this).val(index);
+      });
     });
   });
 });

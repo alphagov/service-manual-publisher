@@ -65,14 +65,14 @@
                 </div>
                 <div class="panel-body">
                   <ul class="list-group js-guide-list">
-                    <%= topic_section_form.fields_for :guides do |guide_form| %>
+                    <%= topic_section_form.fields_for :topic_section_guides do |topic_section_guide_form| %>
                       <li class="list-group-item">
-                        <%= guide_form.hidden_field :id %>
+                        <%= topic_section_guide_form.hidden_field :position, class: 'js-guide-position' %>
                           <div class="left">
                             <span class="glyphicon glyphicon-move js-guide-handle"></span>
                           </div>
                           <div class="right">
-                            <%= guide_form.object.title %>
+                            <%= topic_section_guide_form.object.guide.title %>
                           </div>
                       </li>
                     <% end %>

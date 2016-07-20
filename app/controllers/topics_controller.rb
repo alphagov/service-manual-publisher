@@ -90,7 +90,17 @@ private
       :description,
       :visually_collapsed,
       content_owner_ids: [],
-      topic_sections_attributes: [:id, :_destroy, :title, :description, :position]
+      topic_sections_attributes: [
+        :id,
+        :_destroy,
+        :title,
+        :description,
+        :position,
+        topic_section_guides_attributes: [
+          :id,
+          :position
+        ]
+      ]
     ]
   end
 end
