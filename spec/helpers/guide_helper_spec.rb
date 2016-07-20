@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GuideHelper, '#guide_community_options_for_select', type: :helper do
   it 'returns an array of options for a select tag in alphabetical order' do
-    second = create(:guide_community, :with_published_edition, title: 'Banana')
+    second = create(:guide_community, :with_draft_edition, title: 'Banana')
     first = create(:guide_community, :with_published_edition, title: 'Apple')
     third = create(:guide_community, :with_published_edition, title: 'Cucumber')
 
