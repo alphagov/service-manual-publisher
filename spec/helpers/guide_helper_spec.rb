@@ -2,15 +2,26 @@ require 'rails_helper'
 
 RSpec.describe GuideHelper, '#guide_community_options_for_select', type: :helper do
   it 'returns an array of options for a select tag in alphabetical order' do
-    second = create(:guide_community, editions: [build(:edition, title: 'Banana', content_owner: nil)])
-    first = create(:guide_community, editions: [build(:edition, title: 'Apple', content_owner: nil)])
-    third = create(:guide_community, editions: [build(:edition, title: 'Cucumber', content_owner: nil)])
+    second = create(:guide_community, :with_draft_edition, title: 'Banana')
+    first = create(:guide_community, :with_published_edition, title: 'Apple')
+    third = create(:guide_community, :with_published_edition, title: 'Cucumber')
 
     expect(helper.guide_community_options_for_select).to eq(
       [
         [first.title,  first.id],
         [second.title, second.id],
         [third.title, third.id],
+      ]
+    )
+  end
+
+  it "excludes unpublished guide communities" do
+    create(:guide_community, :has_been_unpublished, title: 'Not to be returned')
+    guide = create(:guide_community, :with_published_edition, title: 'Banana')
+
+    expect(helper.guide_community_options_for_select).to eq(
+      [
+        [guide.title, guide.id]
       ]
     )
   end

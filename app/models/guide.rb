@@ -31,10 +31,19 @@ class Guide < ActiveRecord::Base
 
   delegate :title, to: :latest_edition
 
-  def self.with_published_editions
-    joins(:editions)
-      .where(editions: { state: "published" })
-      .uniq
+  def self.live
+    where("EXISTS(#{editions_count_in_state_subquery('published').to_sql})")
+      .not_unpublished
+  end
+
+  def self.not_unpublished
+    where("NOT EXISTS(#{editions_count_in_state_subquery('unpublished').to_sql})")
+  end
+
+  def self.editions_count_in_state_subquery(state)
+    from("editions")
+      .where("editions.guide_id = guides.id")
+      .where("editions.state = ?", state)
   end
 
   def self.search(search_terms)

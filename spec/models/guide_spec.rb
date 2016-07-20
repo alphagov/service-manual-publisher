@@ -105,25 +105,6 @@ RSpec.describe Guide do
     end
   end
 
-  describe "#with_published_editions" do
-    it "only returns published editions" do
-      create(:guide, slug: "/service-manual/topic-name/1")
-      guide_with_published_editions = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/2")
-      expect(Guide.with_published_editions.to_a).to eq [guide_with_published_editions]
-    end
-
-    it "does not return duplicates" do
-      guide = create(:guide,
-        slug: "/service-manual/topic-name/2",
-        editions: [
-          build(:edition, :published),
-          build(:edition, :published),
-        ],
-                    )
-      expect(Guide.with_published_editions.to_a).to eq [guide]
-    end
-  end
-
   describe "#search" do
     let :default_attributes do
       user = build(:user)
@@ -343,5 +324,41 @@ RSpec.describe Guide, ".by_type" do
 
     expect(described_class.by_type(nil)).to eq([guide])
     expect(described_class.by_type("")).to eq([guide])
+  end
+end
+
+
+RSpec.describe Guide, ".live" do
+  it "returns guides that are currently published" do
+    create(:guide, :with_draft_edition)
+    create(:guide, :with_review_requested_edition)
+    create(:guide, :with_ready_edition)
+    with_published_edition_guide = create(:guide, :with_published_edition)
+    with_previously_published_edition_guide = create(:guide, :with_previously_published_edition)
+    create(:guide, :has_been_unpublished)
+
+    expect(Guide.live).to match_array([with_published_edition_guide, with_previously_published_edition_guide])
+  end
+end
+
+RSpec.describe Guide, ".not_unpublished" do
+  it "returns guides that are currently published" do
+    guide_community = create(:guide_community)
+
+    relevant_traits = [
+      :with_draft_edition,
+      :with_review_requested_edition,
+      :with_ready_edition,
+      :with_published_edition,
+      :with_previously_published_edition
+    ]
+
+    relevant_guides = relevant_traits.map do |trait|
+      create(:guide, trait, edition: { content_owner_id: guide_community.id })
+    end
+
+    create(:guide, :has_been_unpublished, edition: { content_owner_id: guide_community.id })
+
+    expect(Guide.not_unpublished).to match_array(relevant_guides + [guide_community])
   end
 end

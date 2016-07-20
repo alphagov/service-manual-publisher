@@ -139,10 +139,12 @@ RSpec.describe GuideManager, '#publish' do
         an_instance_of(String),
         hash_including(
           details: hash_including(
-            points: [
-              hash_including(:base_path, :summary, title: "Scrum"),
-              hash_including(:base_path, :summary, title: "Agile"),
-            ]
+            points: match_array(
+              [
+                hash_including(:base_path, :summary, title: "Scrum"),
+                hash_including(:base_path, :summary, title: "Agile"),
+              ]
+            )
           )
         )
       )
