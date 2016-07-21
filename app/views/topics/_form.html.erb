@@ -65,7 +65,10 @@
                 </div>
                 <div class="panel-body">
                   <ul class="list-group js-guide-list">
-                    <%= topic_section_form.fields_for :topic_section_guides do |topic_section_guide_form| %>
+                    <%= topic_section_form.fields_for(
+                      :topic_section_guides,
+                      topic_section_form.object.topic_section_guides.sort_by(&:position)
+                    ) do |topic_section_guide_form| %>
                       <li class="list-group-item">
                         <%= topic_section_guide_form.hidden_field :position, class: 'js-guide-position' %>
                           <div class="left">

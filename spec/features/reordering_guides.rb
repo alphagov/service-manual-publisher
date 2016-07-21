@@ -56,6 +56,23 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     expect(guides_within_section("Section 2")).to eq ["Guide A"]
   end
 
+  it 'remembers order changes when you add a heading' do
+    topic = create(:topic)
+    section = create(:topic_section, title: "Section 1", topic: topic)
+    topic.topic_sections << section
+    
+    section.guides << create(:guide, title: "Guide B")
+    section.guides << create(:guide, title: "Guide A")
+    section.guides << create(:guide, title: "Guide C")
+
+    visit edit_topic_path(topic)
+    drag_guide_above("Guide A", "Guide B")
+
+    click_button "Add Heading"
+    
+    expect(guides_within_section("Section 1")).to eq ["Guide A", "Guide B", "Guide C"]
+  end
+
 private
 
   def handle_for_guide(title)
