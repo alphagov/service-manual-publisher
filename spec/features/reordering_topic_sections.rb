@@ -64,6 +64,6 @@ private
   end
 
   def sections_in_order
-    all('.list-group-item input[placeholder="Heading Title"]').map &:value
+    all('.list-group-item input[placeholder="Heading Title"]').map(&:value)
   end
 end

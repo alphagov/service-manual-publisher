@@ -13,13 +13,13 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     topic = create(:topic)
     section = create(:topic_section, title: "Section 1", topic: topic)
     topic.topic_sections << section
-    
+
     section.guides << create(:guide, title: "Guide B")
     section.guides << create(:guide, title: "Guide A")
     section.guides << create(:guide, title: "Guide C")
 
     visit edit_topic_path(topic)
-    
+
     expect(guides_within_section("Section 1")).to eq ["Guide B", "Guide A", "Guide C"]
   end
 
@@ -27,7 +27,7 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     topic = create(:topic)
     section = create(:topic_section, title: "Section 1", topic: topic)
     topic.topic_sections << section
-    
+
     section.guides << create(:guide, title: "Guide B")
     section.guides << create(:guide, title: "Guide A")
     section.guides << create(:guide, title: "Guide C")
@@ -36,7 +36,7 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     drag_guide_above("Guide A", "Guide B")
 
     click_button "Save"
-    
+
     expect(guides_within_section("Section 1")).to eq ["Guide A", "Guide B", "Guide C"]
   end
 
@@ -45,13 +45,13 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     section1 = create(:topic_section, title: "Section 1", topic: topic)
     section2 = create(:topic_section, title: "Section 2", topic: topic)
     topic.topic_sections = [section1, section2]
-    
+
     section1.guides << create(:guide, title: "Guide B")
     section2.guides << create(:guide, title: "Guide A")
 
     visit edit_topic_path(topic)
     drag_guide_above("Guide A", "Guide B")
-    
+
     expect(guides_within_section("Section 1")).to eq ["Guide B"]
     expect(guides_within_section("Section 2")).to eq ["Guide A"]
   end
@@ -60,7 +60,7 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     topic = create(:topic)
     section = create(:topic_section, title: "Section 1", topic: topic)
     topic.topic_sections << section
-    
+
     section.guides << create(:guide, title: "Guide B")
     section.guides << create(:guide, title: "Guide A")
     section.guides << create(:guide, title: "Guide C")
@@ -69,7 +69,7 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     drag_guide_above("Guide A", "Guide B")
 
     click_button "Add Heading"
-    
+
     expect(guides_within_section("Section 1")).to eq ["Guide A", "Guide B", "Guide C"]
   end
 
@@ -87,7 +87,7 @@ private
 
   def guides_within_section(section_title)
     within_topic_section(section_title) do
-      all('.js-guide-list .list-group-item').map &:text
+      all('.js-guide-list .list-group-item').map(&:text)
     end
   end
 end
