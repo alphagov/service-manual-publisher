@@ -8,9 +8,11 @@ RSpec.describe Guide do
 
     let!(:topic) do
       topic = create(:topic)
-      topic_section = topic.topic_sections.create!(
+      topic_section = create(
+        :topic_section,
         "title"       => "Title",
         "description" => "Description",
+        topic: topic
       )
       topic_section.guides << guide
       topic

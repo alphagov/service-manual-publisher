@@ -10,7 +10,7 @@ class TopicsController < ApplicationController
   def create
     @topic = Topic.new(create_topic_params)
     if params[:add_heading]
-      @topic.topic_sections.build
+      @topic.add_section
       render :edit
       return
     end
@@ -29,7 +29,7 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.assign_attributes(update_topic_params)
     if params[:add_heading]
-      @topic.topic_sections.build
+      @topic.add_section
       render :edit
       return
     end
