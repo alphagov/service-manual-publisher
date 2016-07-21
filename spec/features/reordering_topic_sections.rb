@@ -9,7 +9,7 @@ RSpec.describe 'Re-ordering topic sections', type: :feature, js: true do
     page.driver.resize(1024, 2000)
   end
 
-  it 'lets you re-order topic sections' do
+  it 'displays topic sections in order of position' do
     topic = create(:topic)
 
     topic.topic_sections << create(:topic_section, title: "Section B", topic: topic)
@@ -18,8 +18,18 @@ RSpec.describe 'Re-ordering topic sections', type: :feature, js: true do
 
     visit edit_topic_path(topic)
 
-    drag_topic_section_above("Section A", "Section B")
+    expect(sections_in_order).to eq ["Section B", "Section A", "Section C"]
+  end
 
+  it 'lets you re-order topic sections' do
+    topic = create(:topic)
+
+    topic.topic_sections << create(:topic_section, title: "Section B", topic: topic)
+    topic.topic_sections << create(:topic_section, title: "Section A", topic: topic)
+    topic.topic_sections << create(:topic_section, title: "Section C", topic: topic)
+
+    visit edit_topic_path(topic)
+    drag_topic_section_above("Section A", "Section B")
     click_button "Save"
 
     expect(sections_in_order).to eq ["Section A", "Section B", "Section C"]

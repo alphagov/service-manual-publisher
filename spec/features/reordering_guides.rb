@@ -9,6 +9,20 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     page.driver.resize(1024, 2000)
   end
 
+  it 'displays guides in order of position' do
+    topic = create(:topic)
+    section = create(:topic_section, title: "Section 1", topic: topic)
+    topic.topic_sections << section
+    
+    section.guides << create(:guide, title: "Guide B")
+    section.guides << create(:guide, title: "Guide A")
+    section.guides << create(:guide, title: "Guide C")
+
+    visit edit_topic_path(topic)
+    
+    expect(guides_within_section("Section 1")).to eq ["Guide B", "Guide A", "Guide C"]
+  end
+
   it 'lets you re-order guides' do
     topic = create(:topic)
     section = create(:topic_section, title: "Section 1", topic: topic)
@@ -19,7 +33,6 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     section.guides << create(:guide, title: "Guide C")
 
     visit edit_topic_path(topic)
-
     drag_guide_above("Guide A", "Guide B")
 
     click_button "Save"
@@ -37,7 +50,6 @@ RSpec.describe 'Re-ordering guides', type: :feature, js: true do
     section2.guides << create(:guide, title: "Guide A")
 
     visit edit_topic_path(topic)
-
     drag_guide_above("Guide A", "Guide B")
     
     expect(guides_within_section("Section 1")).to eq ["Guide B"]
