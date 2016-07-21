@@ -28,15 +28,18 @@ RSpec.describe GuidePresenter do
       expect(presenter.content_payload).to be_valid_against_schema('service_manual_guide')
     end
 
+    describe "common service manual draft payload" do
+      let(:payload) { presenter.content_payload }
+
+      include_examples "common service manual draft payload"
+    end
+
     it "exports all necessary metadata" do
       expect(presenter.content_payload).to include(
         description: "Description",
         update_type: "major",
         phase: "beta",
-        publishing_app: "service-manual-publisher",
-        rendering_app: "service-manual-frontend",
         format: "service_manual_guide",
-        locale: "en",
         base_path: "/service/manual/test"
       )
     end

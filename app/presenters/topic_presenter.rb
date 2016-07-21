@@ -15,7 +15,6 @@ class TopicPresenter
       locale: "en",
       update_type: "minor",
       base_path: topic.path,
-      public_updated_at: topic.updated_at.iso8601,
       title: topic.title,
       description: topic.description,
       phase: "beta",
