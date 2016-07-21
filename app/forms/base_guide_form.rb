@@ -146,7 +146,7 @@ private
   end
 
   def save_draft_to_publishing_api
-    content_for_publication = GuideFormPublicationPresenter.new(self)
+    content_for_publication = GuidePresenter.new(guide, edition)
     PUBLISHING_API.put_content(content_for_publication.content_id, content_for_publication.content_payload)
     PUBLISHING_API.patch_links(content_for_publication.content_id, content_for_publication.links_payload)
   end
