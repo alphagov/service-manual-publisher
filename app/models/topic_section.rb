@@ -1,7 +1,7 @@
 class TopicSection < ActiveRecord::Base
   belongs_to :topic
   has_many :guides, through: :topic_section_guides
-  before_create :default_position_to_next_in_list
+  after_initialize :default_position_to_next_in_list
 
   has_many :topic_section_guides, -> { order(position: :asc) }, dependent: :destroy
   accepts_nested_attributes_for :topic_section_guides
@@ -11,7 +11,7 @@ class TopicSection < ActiveRecord::Base
   }
 
   def default_position_to_next_in_list
-    self.position ||= next_position_in_list
+    self.position ||= next_position_in_list if new_record?
   end
 
   def next_position_in_list

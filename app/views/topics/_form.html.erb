@@ -37,7 +37,7 @@
       <div class="well">
         <h3>Grouping</h3>
         <ul class="list-group topic-section-list js-topic-section-list">
-          <%= f.fields_for :topic_sections do |topic_section_form| %>
+          <%= f.fields_for :topic_sections, f.object.topic_sections.sort_by(&:position) do |topic_section_form| %>
             <% section_is_deletable = topic_section_form.object.guides.empty? %>
             <li class="list-group-item">
               <%= topic_section_form.hidden_field :position, class: 'js-section-position' %>

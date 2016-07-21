@@ -35,6 +35,22 @@ RSpec.describe 'Re-ordering topic sections', type: :feature, js: true do
     expect(sections_in_order).to eq ["Section A", "Section B", "Section C"]
   end
 
+  it 'remembers order changes when you add a heading' do
+    topic = create(:topic)
+
+    topic.topic_sections << create(:topic_section, title: "Section B", topic: topic)
+    topic.topic_sections << create(:topic_section, title: "Section A", topic: topic)
+    topic.topic_sections << create(:topic_section, title: "Section C", topic: topic)
+
+    visit edit_topic_path(topic)
+
+    drag_topic_section_above("Section A", "Section B")
+
+    click_button "Add Heading"
+
+    expect(sections_in_order).to eq ["Section A", "Section B", "Section C", ""]
+  end
+
 private
 
   def handle_for_topic_section(section_title)
