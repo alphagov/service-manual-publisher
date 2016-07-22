@@ -39,7 +39,11 @@ class Topic < ActiveRecord::Base
 private
 
   def next_position_in_list
-    (TopicSection.belonging_to_topic(self.id).maximum(:position) || 0) + 1
+    highest_position_in_list + 1
+  end
+
+  def highest_position_in_list
+    TopicSection.belonging_to_topic(id).maximum(:position) || 0
   end
 
   def path_can_be_set_once

@@ -11,11 +11,17 @@ class TopicSectionGuide < ActiveRecord::Base
     where(topic_section_id: topic_section_id)
   }
 
+private
+
   def default_position_to_next_in_list
     self.position ||= next_position_in_list
   end
 
   def next_position_in_list
-    (TopicSectionGuide.within_topic_section(self.topic_section_id).maximum(:position) || 0) + 1
+    highest_position_in_list + 1
+  end
+
+  def highest_position_in_list
+    TopicSectionGuide.within_topic_section(self.topic_section_id).maximum(:position) || 0
   end
 end
