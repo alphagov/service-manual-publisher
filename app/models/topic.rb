@@ -32,19 +32,7 @@ class Topic < ActiveRecord::Base
     guides.pluck(:content_id).uniq
   end
 
-  def add_section
-    self.topic_sections.build(position: next_position_in_list)
-  end
-
 private
-
-  def next_position_in_list
-    highest_position_in_list + 1
-  end
-
-  def highest_position_in_list
-    TopicSection.belonging_to_topic(id).maximum(:position) || 0
-  end
 
   def path_can_be_set_once
     errors.add(:path, "can not be changed") if persisted? && path != path_was

@@ -20,6 +20,23 @@ module CapybaraHelpers
     fill_in "Final URL", with: with
   end
 
+  ##
+  # Based on Capybara's fill_in method, but using all().last instead of find
+  def fill_in_last(locator, options = {})
+    if locator.is_a? Hash
+      options = locator
+      locator = nil
+    end
+
+    unless options.is_a?(Hash) && options.has_key?(:with)
+      raise "Must pass a hash containing 'with'"
+    end
+
+    with = options.delete(:with)
+    fill_options = options.delete(:fill_options)
+    all(:fillable_field, locator, options).last.set(with, fill_options)
+  end
+
   def within_guide_history_edition(number, &block)
     within(:xpath, "//div
                         [contains(@class, 'panel')]

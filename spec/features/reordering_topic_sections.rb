@@ -9,46 +9,79 @@ RSpec.describe 'Re-ordering topic sections', type: :feature, js: true do
     page.driver.resize(1024, 2000)
   end
 
-  it 'displays topic sections in order of position' do
-    topic = create(:topic)
+  context 'when creating a new topic' do
+    it 'displays topic sections in the order you create them' do
+      visit new_topic_path
 
-    topic.topic_sections << create(:topic_section, title: "Section B", topic: topic)
-    topic.topic_sections << create(:topic_section, title: "Section A", topic: topic)
-    topic.topic_sections << create(:topic_section, title: "Section C", topic: topic)
+      ["Section B", "Section A", "Section C"].each do |section_name|
+        click_button "Add Heading"
+        fill_in_last "Heading Title", with: section_name
+      end
 
-    visit edit_topic_path(topic)
+      expect(sections_in_order).to eq ["Section B", "Section A", "Section C"]
+    end
 
-    expect(sections_in_order).to eq ["Section B", "Section A", "Section C"]
+    it 'lets you reorder sections' do
+      visit new_topic_path
+
+      ["Section B", "Section A", "Section C"].each do |section_name|
+        click_button "Add Heading"
+        fill_in_last "Heading Title", with: section_name
+      end
+
+      drag_topic_section_above("Section A", "Section B")
+
+      expect(sections_in_order).to eq ["Section A", "Section B", "Section C"]
+    end
+
+    it 'remembers order changes when you add a heading' do
+      visit new_topic_path
+
+      ["Section B", "Section A", "Section C"].each do |section_name|
+        click_button "Add Heading"
+        fill_in_last "Heading Title", with: section_name
+      end
+
+      drag_topic_section_above("Section A", "Section B")
+
+      click_button "Add Heading"
+
+      expect(sections_in_order).to eq ["Section A", "Section B", "Section C", ""]
+    end
   end
 
-  it 'lets you re-order topic sections' do
-    topic = create(:topic)
+  context 'when editing an existing topic' do
+    let(:topic) { create(:topic) }
 
-    topic.topic_sections << create(:topic_section, title: "Section B", topic: topic)
-    topic.topic_sections << create(:topic_section, title: "Section A", topic: topic)
-    topic.topic_sections << create(:topic_section, title: "Section C", topic: topic)
+    before do
+      topic.topic_sections << create(:topic_section, title: "Section B", topic: topic, position: 1)
+      topic.topic_sections << create(:topic_section, title: "Section A", topic: topic, position: 1)
+      topic.topic_sections << create(:topic_section, title: "Section C", topic: topic, position: 1)
+    end
 
-    visit edit_topic_path(topic)
-    drag_topic_section_above("Section A", "Section B")
-    click_button "Save"
+    it 'displays topic sections ordered by position' do
+      visit edit_topic_path(topic)
 
-    expect(sections_in_order).to eq ["Section A", "Section B", "Section C"]
-  end
+      expect(sections_in_order).to eq ["Section B", "Section A", "Section C"]
+    end
 
-  it 'remembers order changes when you add a heading' do
-    topic = create(:topic)
+    it 'lets you re-order topic sections' do
+      visit edit_topic_path(topic)
+      drag_topic_section_above("Section A", "Section B")
+      click_button "Save"
 
-    topic.topic_sections << create(:topic_section, title: "Section B", topic: topic)
-    topic.topic_sections << create(:topic_section, title: "Section A", topic: topic)
-    topic.topic_sections << create(:topic_section, title: "Section C", topic: topic)
+      expect(sections_in_order).to eq ["Section A", "Section B", "Section C"]
+    end
 
-    visit edit_topic_path(topic)
+    it 'remembers order changes when you add a heading' do
+      visit edit_topic_path(topic)
 
-    drag_topic_section_above("Section A", "Section B")
+      drag_topic_section_above("Section A", "Section B")
 
-    click_button "Add Heading"
+      click_button "Add Heading"
 
-    expect(sections_in_order).to eq ["Section A", "Section B", "Section C", ""]
+      expect(sections_in_order).to eq ["Section A", "Section B", "Section C", ""]
+    end
   end
 
 private

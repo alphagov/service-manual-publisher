@@ -10,7 +10,7 @@ class TopicsController < ApplicationController
   def create
     @topic = Topic.new(create_topic_params)
     if params[:add_heading]
-      @topic.add_section
+      @topic.topic_sections.build(position: next_position_in_list(@topic))
       render :edit
       return
     end
@@ -29,7 +29,7 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.assign_attributes(update_topic_params)
     if params[:add_heading]
-      @topic.add_section
+      @topic.topic_sections.build(position: next_position_in_list(@topic))
       render :edit
       return
     end
@@ -74,6 +74,14 @@ private
       flash.now[:error] = publication.error
       render @topic.persisted? ? 'edit' : 'new'
     end
+  end
+
+  def next_position_in_list(topic)
+    highest_position_in_list(topic) + 1
+  end
+
+  def highest_position_in_list(topic)
+    topic.topic_sections.map(&:position).max || 0
   end
 
   def create_topic_params
