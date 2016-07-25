@@ -9,7 +9,9 @@ RSpec.describe GuidePresenter do
       description:         "Description",
       update_type:         "major",
       body:                "# Heading",
-      updated_at:          Time.now
+      updated_at:          Time.now,
+      change_summary:      "Add a new guide 'The Title'",
+      change_note:         "We added this guide so we can test the presenter"
     )
   end
 
@@ -41,6 +43,13 @@ RSpec.describe GuidePresenter do
         phase: "beta",
         format: "service_manual_guide",
         base_path: "/service/manual/test"
+      )
+    end
+
+    it 'includes the summary of, and reason for, the latest change' do
+      expect(presenter.content_payload[:details]).to include(
+        latest_change_note: "Add a new guide 'The Title'",
+        latest_change_reason_for_change: "We added this guide so we can test the presenter"
       )
     end
 
