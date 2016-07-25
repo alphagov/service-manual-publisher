@@ -18,6 +18,9 @@ class Edition < ActiveRecord::Base
   scope :most_recent_first, -> { order('created_at DESC, id DESC') }
   scope :which_update_the_frontend, -> { where(state: STATES_THAT_UPDATE_THE_FRONTEND) }
 
+  scope :major, -> { where(update_type: 'major') }
+  scope :minor, -> { where(update_type: 'minor') }
+
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
   validates :change_note, presence: true, if: :major?

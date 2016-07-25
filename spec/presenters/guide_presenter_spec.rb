@@ -30,6 +30,14 @@ RSpec.describe GuidePresenter do
       expect(presenter.content_payload).to be_valid_against_schema('service_manual_guide')
     end
 
+    context 'when the guide has a change history' do
+      it 'conforms to the schema' do
+        guide = create_guide_with_history
+        presenter = described_class.new(guide, guide.editions.last)
+        expect(presenter.content_payload).to be_valid_against_schema('service_manual_guide')
+      end
+    end
+
     describe "common service manual draft payload" do
       let(:payload) { presenter.content_payload }
 
@@ -50,6 +58,29 @@ RSpec.describe GuidePresenter do
       expect(presenter.content_payload[:details]).to include(
         latest_change_note: "Add a new guide 'The Title'",
         latest_change_reason_for_change: "We added this guide so we can test the presenter"
+      )
+    end
+
+    it 'includes the previous change history for the guide' do
+      guide = create_guide_with_history
+
+      presenter = described_class.new(guide, guide.editions.last)
+
+      expect(presenter.content_payload[:details]).to include(
+        change_history: [
+          {
+            public_timestamp: "2016-06-25T14:16:21Z",
+            note: "Create the guide",
+            reason_for_change: "Because we want to"
+          },
+          {
+            public_timestamp: "2016-07-01T14:16:21Z",
+            note: "Update the guide",
+            reason_for_change: "Needed to be better",
+          }
+        ],
+        latest_change_note: "Revise everything",
+        latest_change_reason_for_change: "Needed to be even better than that"
       )
     end
 
@@ -95,6 +126,59 @@ RSpec.describe GuidePresenter do
         [edition.content_owner.content_id]
       )
     end
+  end
+
+private
+
+  def create_guide_with_history
+    first_edition = {
+      change_summary: "Create the guide",
+      change_note: "Because we want to",
+      update_type: "major",
+      created_at: "2016-06-25T14:16:21Z"
+    }
+
+    second_edition = {
+      change_summary: "",
+      change_note: "",
+      update_type: "minor",
+      created_at: "2016-06-28T14:16:21Z"
+    }
+
+    third_edition = {
+      change_summary: "Update the guide",
+      change_note: "Needed to be better",
+      update_type: "major",
+      created_at: "2016-07-01T14:16:21Z"
+    }
+
+    current_edition = {
+      change_summary: "Revise everything",
+      change_note: "Needed to be even better than that",
+      update_type: "major",
+      created_at: "2016-07-25T14:16:21Z"
+    }
+
+    editions = [
+      build(:edition, :draft, **first_edition),
+      build(:edition, :review_requested, **first_edition),
+      build(:edition, :ready, **first_edition),
+      build(:edition, :published, **first_edition),
+
+      build(:edition, :draft, **second_edition),
+      build(:edition, :review_requested, **second_edition),
+      build(:edition, :ready, **second_edition),
+      build(:edition, :published, **second_edition),
+
+      build(:edition, :draft, **third_edition),
+      build(:edition, :review_requested, **third_edition),
+      build(:edition, :ready, **third_edition),
+      build(:edition, :published, **third_edition),
+
+      build(:edition, :draft, **current_edition)
+    ]
+
+    create(:guide, editions: editions)
   end
 end
 
