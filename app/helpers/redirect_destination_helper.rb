@@ -3,11 +3,9 @@ module RedirectDestinationHelper
     guide_select_options = Guide
       .live
       .order(:slug).pluck(:slug)
-      .map { |g| [g, g] }
 
     topic_select_options = Topic
       .order(:path).pluck(:path)
-      .map { |g| [g, g] }
 
     {
       "Other" => ["/service-manual", "/service-manual/service-standard"],
