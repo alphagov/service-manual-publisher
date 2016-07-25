@@ -128,8 +128,9 @@ private
   end
 
   def promote_errors_for(model)
+    ignored_attributes = [:editions]
     model.errors.each do |attrib, message|
-      errors.add(attrib, message)
+      errors.add(attrib, message) unless ignored_attributes.include? attrib
     end
   end
 

@@ -60,7 +60,6 @@ RSpec.describe PointForm, "validations" do
     ).to include(
       "Slug can only contain letters, numbers and dashes",
       "Slug must be present and start with '/service-manual/[topic]'",
-      "Editions is invalid",
       "Description can't be blank",
       "Title can't be blank",
       "Body can't be blank",
