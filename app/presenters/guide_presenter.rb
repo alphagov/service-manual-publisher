@@ -50,8 +50,8 @@ private
     details_hash = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
-      latest_change_note: edition.change_summary,
-      latest_change_reason_for_change: edition.change_note,
+      latest_change_note: edition.change_summary || "",
+      latest_change_reason_for_change: edition.change_note || "",
       change_history: GuideChangeHistoryPresenter.new(guide).change_history
     }
 
