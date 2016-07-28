@@ -10,7 +10,7 @@ class GuideChangeHistoryPresenter
 private
 
   def editions
-    guide.editions.published.major.order(:created_at)
+    guide.editions.published.major.order(created_at: :desc)
   end
 
   def history_entry(edition)

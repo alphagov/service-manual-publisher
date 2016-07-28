@@ -69,14 +69,14 @@ RSpec.describe GuidePresenter do
       expect(presenter.content_payload[:details]).to include(
         change_history: [
           {
-            public_timestamp: "2016-06-25T14:16:21Z",
-            note: "Create the guide",
-            reason_for_change: "Because we want to"
-          },
-          {
             public_timestamp: "2016-07-01T14:16:21Z",
             note: "Update the guide",
             reason_for_change: "Needed to be better",
+          },
+          {
+            public_timestamp: "2016-06-25T14:16:21Z",
+            note: "Create the guide",
+            reason_for_change: "Because we want to"
           }
         ],
         latest_change_note: "Revise everything",
