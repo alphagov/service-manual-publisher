@@ -16,4 +16,39 @@ RSpec.describe 'Guide index', type: :feature do
       expect(page).to have_content content_owner_title_without_community
     end
   end
+
+  it 'displays the version number from the latest edition' do
+    guide = create(:guide, :with_published_edition)
+    guide.editions << create(:edition, :draft, version: 2)
+
+    visit root_path
+
+    within_guide_index_row guide.title do
+      expect(page).to have_content "Edition 2"
+    end
+  end
+
+  it 'displays the update type of the latest edition' do
+    major_update_guide = create(:guide, :with_published_edition)
+    major_update_guide.editions << create(:edition, :draft,
+      update_type: "major",
+      title: "First Update Guide"
+    )
+
+    minor_update_guide = create(:guide, :with_published_edition)
+    minor_update_guide.editions << create(:edition, :draft,
+      update_type: "minor",
+      title: "Second Update Guide"
+    )
+
+    visit root_path
+
+    within_guide_index_row major_update_guide.title do
+      expect(page).to have_content "Major update"
+    end
+
+    within_guide_index_row minor_update_guide.title do
+      expect(page).to have_content "Minor update"
+    end
+  end
 end
