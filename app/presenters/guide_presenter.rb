@@ -52,7 +52,7 @@ private
       header_links: level_two_headers,
       latest_change_note: edition.change_summary || "",
       latest_change_reason_for_change: edition.change_note || "",
-      change_history: GuideChangeHistoryPresenter.new(guide).change_history
+      change_history: GuideChangeHistoryPresenter.new(guide, edition).change_history
     }
 
     if guide.is_a?(Point)

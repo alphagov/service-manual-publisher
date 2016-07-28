@@ -84,6 +84,18 @@ RSpec.describe GuidePresenter do
       )
     end
 
+    it 'does not duplicate history when the latest edition is the published edition' do
+      guide = create(:guide, :with_published_edition)
+
+      presenter = described_class.new(guide, guide.editions.last)
+
+      expect(presenter.content_payload[:details]).to include(
+        change_history: [],
+        latest_change_note: "change summary",
+        latest_change_reason_for_change: "change note"
+      )
+    end
+
     it "omits the content owner if the edition doesn't have one" do
       edition.content_owner = nil
 

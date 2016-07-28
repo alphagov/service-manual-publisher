@@ -1,6 +1,7 @@
 class GuideChangeHistoryPresenter
-  def initialize(guide)
+  def initialize(guide, edition)
     @guide = guide
+    @edition = edition
   end
 
   def change_history
@@ -10,7 +11,9 @@ class GuideChangeHistoryPresenter
 private
 
   def editions
-    guide.editions.published.major.order(created_at: :desc)
+    guide.editions
+      .published.major.where('id <> ?', edition.id)
+      .order(created_at: :desc)
   end
 
   def history_entry(edition)
@@ -21,5 +24,5 @@ private
     }
   end
 
-  attr_reader :guide
+  attr_reader :guide, :edition
 end
