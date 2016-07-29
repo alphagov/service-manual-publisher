@@ -42,6 +42,7 @@ group :development, :test do
   gem 'pry-remote'
   gem 'pry-nav'
   gem 'rspec-rails'
+  gem 'fuubar'
   gem 'simplecov', require: false
   gem 'simplecov-rcov', require: false
 end
