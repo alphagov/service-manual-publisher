@@ -19,8 +19,8 @@ private
   def history_entry(edition)
     {
       public_timestamp: edition.created_at.iso8601,
-      note: edition.change_summary,
-      reason_for_change: edition.change_note
+      note: edition.change_note,
+      reason_for_change: edition.reason_for_change
     }
   end
 

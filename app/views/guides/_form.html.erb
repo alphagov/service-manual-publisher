@@ -108,15 +108,15 @@
         </div>
 
         <div class="form-group change-note-form-group">
-          <%= f.label :change_summary, "Summary of change" %>
+          <%= f.label :change_note, "Summary of change" %>
           <div class="help-block">What is being changed in this update</div>
-          <%= f.text_field :change_summary, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
+          <%= f.text_field :change_note, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
         </div>
 
         <div class="form-group change-note-form-group">
-          <%= f.label :change_note, "Why the change is being made" %>
+          <%= f.label :reason_for_change, "Why the change is being made" %>
           <div class="help-block">Include any evidence from research and links to any related discussions</div>
-          <%= f.text_area :change_note, disabled: disable_inputs, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
+          <%= f.text_area :reason_for_change, disabled: disable_inputs, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
         </div>
 
         <p class="text-strong change-note-form-group">

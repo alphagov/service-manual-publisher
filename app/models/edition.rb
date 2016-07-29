@@ -23,8 +23,8 @@ class Edition < ActiveRecord::Base
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
+  validates :reason_for_change, presence: true, if: :major?
   validates :change_note, presence: true, if: :major?
-  validates :change_summary, presence: true, if: :major?
   validates :version, presence: true
   validates :created_by, presence: true
 
@@ -86,11 +86,11 @@ class Edition < ActiveRecord::Base
     @previously_published_edition ||= guide.editions.published.where("id < ?", id).order(id: :desc).first
   end
 
-  def change_note_html
+  def reason_for_change_html
     Redcarpet::Markdown.new(
       Redcarpet::Render::HTML,
               autolink: true,
-    ).render(change_note)
+    ).render(reason_for_change)
   end
 
   def notification_subscribers

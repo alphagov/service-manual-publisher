@@ -86,16 +86,16 @@ RSpec.describe Edition, type: :model do
         expect(edition.errors.full_messages_for(:state).size).to eq 1
       end
 
-      it "does not allow empty change_note when the update_type is 'major'" do
-        edition = build(:edition, update_type: "major", change_note: "")
+      it "does not allow empty reason_for_change when the update_type is 'major'" do
+        edition = build(:edition, update_type: "major", reason_for_change: "")
         edition.valid?
-        expect(edition.errors.full_messages_for(:change_note)).to eq ["Change note can't be blank"]
+        expect(edition.errors.full_messages_for(:reason_for_change)).to eq ["Reason for change can't be blank"]
       end
 
-      it "allows empty change_note when the update_type is 'minor'" do
-        edition = build(:edition, update_type: "minor", change_note: "")
+      it "allows empty reason_for_change when the update_type is 'minor'" do
+        edition = build(:edition, update_type: "minor", reason_for_change: "")
         edition.valid?
-        expect(edition.errors.full_messages_for(:change_note).size).to eq 0
+        expect(edition.errors.full_messages_for(:reason_for_change).size).to eq 0
       end
     end
 
@@ -234,15 +234,15 @@ RSpec.describe Edition, type: :model do
     end
   end
 
-  describe "#change_note_html" do
+  describe "#reason_for_change_html" do
     it "renders markdown" do
-      edition = build(:edition, change_note: "# heading")
-      expect(edition.change_note_html).to eq "<h1>heading</h1>\n"
+      edition = build(:edition, reason_for_change: "# heading")
+      expect(edition.reason_for_change_html).to eq "<h1>heading</h1>\n"
     end
 
     it "auto links" do
-      edition = build(:edition, change_note: "http://example.org")
-      expect(edition.change_note_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
+      edition = build(:edition, reason_for_change: "http://example.org")
+      expect(edition.reason_for_change_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
     end
   end
 end

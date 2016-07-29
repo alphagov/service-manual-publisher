@@ -18,8 +18,8 @@ FactoryGirl.define do
     phase "beta"
     description "Description"
     update_type "major"
-    change_note "change note"
-    change_summary "change summary"
+    reason_for_change "change note"
+    change_note "change summary"
     body "Heading"
     version 1
     content_owner { build(:guide_community) }

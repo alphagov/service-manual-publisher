@@ -10,8 +10,8 @@ RSpec.describe GuidePresenter do
       update_type:         "major",
       body:                "# Heading",
       updated_at:          Time.now,
-      change_summary:      "Add a new guide 'The Title'",
-      change_note:         "We added this guide so we can test the presenter"
+      change_note:      "Add a new guide 'The Title'",
+      reason_for_change:         "We added this guide so we can test the presenter"
     )
   end
 
@@ -144,29 +144,29 @@ private
 
   def create_guide_with_history
     first_edition = {
-      change_summary: "Create the guide",
-      change_note: "Because we want to",
+      change_note: "Create the guide",
+      reason_for_change: "Because we want to",
       update_type: "major",
       created_at: "2016-06-25T14:16:21Z"
     }
 
     second_edition = {
-      change_summary: "",
       change_note: "",
+      reason_for_change: "",
       update_type: "minor",
       created_at: "2016-06-28T14:16:21Z"
     }
 
     third_edition = {
-      change_summary: "Update the guide",
-      change_note: "Needed to be better",
+      change_note: "Update the guide",
+      reason_for_change: "Needed to be better",
       update_type: "major",
       created_at: "2016-07-01T14:16:21Z"
     }
 
     current_edition = {
-      change_summary: "Revise everything",
-      change_note: "Needed to be even better than that",
+      change_note: "Revise everything",
+      reason_for_change: "Needed to be even better than that",
       update_type: "major",
       created_at: "2016-07-25T14:16:21Z"
     }
