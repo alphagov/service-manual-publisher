@@ -91,8 +91,8 @@ RSpec.describe GuidePresenter do
 
       expect(presenter.content_payload[:details]).to include(
         change_history: [],
-        latest_change_note: "change summary",
-        latest_change_reason_for_change: "change note"
+        latest_change_note: "A summary of the changes in this edition",
+        latest_change_reason_for_change: "This is the reason for the change"
       )
     end
 
