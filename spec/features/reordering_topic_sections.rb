@@ -55,8 +55,8 @@ RSpec.describe 'Re-ordering topic sections', type: :feature, js: true do
 
     before do
       topic.topic_sections << create(:topic_section, title: "Section B", topic: topic, position: 1)
-      topic.topic_sections << create(:topic_section, title: "Section A", topic: topic, position: 1)
-      topic.topic_sections << create(:topic_section, title: "Section C", topic: topic, position: 1)
+      topic.topic_sections << create(:topic_section, title: "Section A", topic: topic, position: 2)
+      topic.topic_sections << create(:topic_section, title: "Section C", topic: topic, position: 3)
     end
 
     it 'displays topic sections ordered by position' do
