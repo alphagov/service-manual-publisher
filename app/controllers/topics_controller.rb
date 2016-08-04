@@ -1,4 +1,7 @@
 class TopicsController < ApplicationController
+
+  before_action :find_topic, only: [:edit, :update]
+
   def index
     @topics = Topic.all.order(updated_at: :desc)
   end
@@ -9,60 +12,52 @@ class TopicsController < ApplicationController
 
   def create
     @topic = Topic.new(create_topic_params)
+
     if params[:add_heading]
-      @topic.topic_sections.build(position: next_position_in_list(@topic))
-      render :edit
-      return
+      add_heading(@topic)
+    else
+      respond_for_topic_publication save_draft(@topic), notice: "Topic has been created"
     end
-
-    publication = TopicPublisher.new(content_model: @topic)
-      .save_draft(TopicPresenter.new(@topic))
-
-    respond_for_topic_publication publication, notice: "Topic has been created"
   end
 
   def edit
-    @topic = Topic.find(params[:id])
   end
 
   def update
-    @topic = Topic.find(params[:id])
     @topic.assign_attributes(update_topic_params)
-    if params[:add_heading]
-      @topic.topic_sections.build(position: next_position_in_list(@topic))
-      render :edit
-      return
-    end
 
-    if params[:publish]
-      publish
+    if params[:add_heading]
+      add_heading(@topic)
+    elsif params[:publish]
+      respond_for_topic_publication publish(@topic), notice: "Topic has been published"
     else
-      save_draft
+      respond_for_topic_publication save_draft(@topic), notice: "Topic has been updated"
     end
   end
 
 private
 
-  def publish
-    publication = TopicPublisher.new(content_model: @topic)
-      .publish
+  def find_topic
+    @topic = Topic.find(params[:id])
+  end
 
-    if publication.success?
-      GuideTaggerJob.batch_perform_later(@topic)
-      TopicSearchIndexer.new(@topic).index
+  def save_draft(topic)
+    TopicPublisher.new(content_model: topic).save_draft(TopicPresenter.new(topic))
+  end
 
-      redirect_to edit_topic_path(@topic), notice: "Topic has been published"
-    else
-      flash.now[:error] = publication.error
-      render 'edit'
+  def publish(topic)
+    TopicPublisher.new(content_model: topic).publish.tap do |publication|
+      if publication.success?
+        GuideTaggerJob.batch_perform_later(topic)
+        TopicSearchIndexer.new(topic).index
+      end
     end
   end
 
-  def save_draft
-    publication = TopicPublisher.new(content_model: @topic)
-      .save_draft(TopicPresenter.new(@topic))
+  def add_heading(topic)
+    topic.topic_sections.build(position: next_position_in_list(@topic))
 
-    respond_for_topic_publication publication, notice: "Topic has been updated"
+    render 'edit'
   end
 
   def respond_for_topic_publication(publication, opts = {})
