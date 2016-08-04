@@ -53,6 +53,10 @@
             <td>
               <%= link_to guide.latest_edition.title, edit_guide_path(guide) %>
               <div class='text-muted'><%= guide.slug %></div>
+              <div>
+                Edition <%= guide.latest_edition.version %> |
+                  <%= guide.latest_edition.update_type.capitalize %> update
+              </div>
             </td>
             <td>
               <% if guide.latest_edition.content_owner %>

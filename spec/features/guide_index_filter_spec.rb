@@ -50,19 +50,19 @@ RSpec.describe "filtering guides", type: :feature do
 
       edition = build(:edition,
                       state: "review_requested",
-                      title: "Edition #{i}",
+                      title: "Guide #{i}",
                       content_owner_id: guide_community.id,
                      )
       create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [edition])
     end
 
     filter_by_community "Content Owner 1"
-    expect(page).to have_text "Edition 1"
-    expect(page).to_not have_text "Edition 2"
+    expect(page).to have_text "Guide 1"
+    expect(page).to_not have_text "Guide 2"
 
     filter_by_community "Content Owner 2"
-    expect(page).to_not have_text "Edition 1"
-    expect(page).to have_text "Edition 2"
+    expect(page).to_not have_text "Guide 1"
+    expect(page).to have_text "Guide 2"
   end
 
   it "filters by page type" do
