@@ -67,7 +67,7 @@ class BaseGuideForm
 
         true
       else
-        promote_errors_for(guide)
+        promote_errors_for(guide, ignored_attributes: [:editions])
         promote_errors_for(edition)
 
         false
@@ -127,9 +127,10 @@ private
     end
   end
 
-  def promote_errors_for(model)
+  def promote_errors_for(model, opts = {})
+    ignored_attributes = opts.fetch(:ignored_attributes, [])
     model.errors.each do |attrib, message|
-      errors.add(attrib, message)
+      errors.add(attrib, message) unless ignored_attributes.include? attrib
     end
   end
 

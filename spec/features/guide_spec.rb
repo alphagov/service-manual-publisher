@@ -218,6 +218,24 @@ RSpec.describe "Updating guides", type: :feature do
     end
   end
 
+  it "omits the redundant 'editions is invalid' error message" do
+    topic = create(:topic, path: "/service-manual/technology")
+    topic_section = create(:topic_section, topic: topic)
+    guide = create(
+      :guide,
+      slug: "/service-manual/topic-name/something",
+      editions: [build(:edition)],
+    )
+    topic_section.guides << guide
+    visit edit_guide_path(guide)
+    fill_in "Title", with: ""
+    click_first_button "Save"
+
+    within(".full-error-list") do
+      expect(page).not_to have_content("Editions is invalid")
+    end
+  end
+
   it 'displays an alert if it fails' do
     guide = create(
       :guide,

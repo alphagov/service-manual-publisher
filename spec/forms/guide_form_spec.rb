@@ -391,7 +391,6 @@ RSpec.describe GuideForm, "validations" do
       "Slug can only contain letters, numbers and dashes",
       "Slug must be present and start with '/service-manual/[topic]'",
       "Latest edition must have a content owner",
-      "Editions is invalid",
       "Description can't be blank",
       "Title can't be blank",
       "Body can't be blank",
