@@ -10,7 +10,7 @@ class TopicsController < ApplicationController
   def create
     @topic = Topic.new(create_topic_params)
     if params[:add_heading]
-      @topic.topic_sections.build
+      @topic.topic_sections.build(position: next_position_in_list(@topic))
       render :edit
       return
     end
@@ -29,7 +29,7 @@ class TopicsController < ApplicationController
     @topic = Topic.find(params[:id])
     @topic.assign_attributes(update_topic_params)
     if params[:add_heading]
-      @topic.topic_sections.build
+      @topic.topic_sections.build(position: next_position_in_list(@topic))
       render :edit
       return
     end
@@ -76,6 +76,14 @@ private
     end
   end
 
+  def next_position_in_list(topic)
+    highest_position_in_list(topic) + 1
+  end
+
+  def highest_position_in_list(topic)
+    topic.topic_sections.map(&:position).max || 0
+  end
+
   def create_topic_params
     params.require(:topic).permit(:path, *updatable_topic_attributes)
   end
@@ -85,6 +93,22 @@ private
   end
 
   def updatable_topic_attributes
-    [:title, :description, :visually_collapsed, content_owner_ids: [], topic_sections_attributes: [:id, :_destroy, :title, :description]]
+    [
+      :title,
+      :description,
+      :visually_collapsed,
+      content_owner_ids: [],
+      topic_sections_attributes: [
+        :id,
+        :_destroy,
+        :title,
+        :description,
+        :position,
+        topic_section_guides_attributes: [
+          :id,
+          :position
+        ]
+      ]
+    ]
   end
 end

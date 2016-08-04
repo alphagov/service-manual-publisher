@@ -39,8 +39,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    acts_as_list (0.7.4)
-      activerecord (>= 3.0)
     addressable (2.3.8)
     airbrake (4.2.1)
       builder
@@ -348,7 +346,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
-  acts_as_list
   airbrake (~> 4.2.1)
   auto_strip_attributes
   better_errors

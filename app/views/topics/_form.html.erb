@@ -37,9 +37,10 @@
       <div class="well">
         <h3>Grouping</h3>
         <ul class="list-group topic-section-list js-topic-section-list">
-          <%= f.fields_for :topic_sections do |topic_section_form| %>
+          <%= f.fields_for :topic_sections, f.object.topic_sections.sort_by(&:position) do |topic_section_form| %>
             <% section_is_deletable = topic_section_form.object.guides.empty? %>
             <li class="list-group-item">
+              <%= topic_section_form.hidden_field :position, class: 'js-section-position' %>
             <% if section_is_deletable %>
               <%= topic_section_form.hidden_field :_destroy, value: "0", class: "js-destroy" %>
             <% end %>
@@ -64,14 +65,17 @@
                 </div>
                 <div class="panel-body">
                   <ul class="list-group js-guide-list">
-                    <%= topic_section_form.fields_for :guides do |guide_form| %>
+                    <%= topic_section_form.fields_for(
+                      :topic_section_guides,
+                      topic_section_form.object.topic_section_guides.sort_by(&:position)
+                    ) do |topic_section_guide_form| %>
                       <li class="list-group-item">
-                        <%= guide_form.hidden_field :id %>
+                        <%= topic_section_guide_form.hidden_field :position, class: 'js-guide-position' %>
                           <div class="left">
                             <span class="glyphicon glyphicon-move js-guide-handle"></span>
                           </div>
                           <div class="right">
-                            <%= guide_form.object.title %>
+                            <%= topic_section_guide_form.object.guide.title %>
                           </div>
                       </li>
                     <% end %>

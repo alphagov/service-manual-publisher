@@ -26,7 +26,6 @@ gem 'diffy'
 gem 'redcarpet'
 gem 'auto_strip_attributes'
 gem 'rinku', require: "rails_rinku"
-gem 'acts_as_list'
 
 group :development do
   gem 'better_errors'

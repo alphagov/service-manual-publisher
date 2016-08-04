@@ -7,19 +7,32 @@ $(function() {
     $item.hide();
   });
 
-  $(".js-topic-section-list").each(function() {
-    dragula([this], {
-      moves: function (el, source, handle, sibling) {
-        return $(handle).hasClass("js-topic-section-handle");
-      }
+  // Set up dragula on the overall section list
+  var sectionList = dragula($('.js-topic-section-list').get(), {
+    moves: function (el, source, handle, sibling) {
+      return $(handle).hasClass("js-topic-section-handle");
+    }
+  });
+
+  sectionList.on('dragend', function () {
+    $('.js-section-position').each(function (index) {
+      $(this).val(index);
     });
   });
 
+  // Individual instances of dragula for each section's guide list
   $(".js-guide-list").each(function() {
-    dragula([this], {
+    var $guideList = $(this);
+    var guideListDragula = dragula([this], {
       moves: function (el, source, handle, sibling) {
         return $(handle).hasClass("js-guide-handle");
       }
+    });
+
+    guideListDragula.on('dragend', function () {
+      $guideList.find('.js-guide-position').each(function (index) {
+        $(this).val(index);
+      });
     });
   });
 });
