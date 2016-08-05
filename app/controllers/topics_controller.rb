@@ -1,5 +1,4 @@
 class TopicsController < ApplicationController
-
   before_action :find_topic, only: [:edit, :update]
 
   def index
@@ -16,7 +15,7 @@ class TopicsController < ApplicationController
     if params[:add_heading]
       add_heading(@topic)
     else
-      respond_for_topic_publication save_draft(@topic), notice: "Topic has been created"
+      topic_respond_with save_draft(@topic), notice: "Topic has been created"
     end
   end
 
@@ -29,9 +28,9 @@ class TopicsController < ApplicationController
     if params[:add_heading]
       add_heading(@topic)
     elsif params[:publish]
-      respond_for_topic_publication publish(@topic), notice: "Topic has been published"
+      topic_respond_with publish(@topic), notice: "Topic has been published"
     else
-      respond_for_topic_publication save_draft(@topic), notice: "Topic has been updated"
+      topic_respond_with save_draft(@topic), notice: "Topic has been updated"
     end
   end
 
@@ -46,8 +45,8 @@ private
   end
 
   def publish(topic)
-    TopicPublisher.new(content_model: topic).publish.tap do |publication|
-      if publication.success?
+    TopicPublisher.new(content_model: topic).publish.tap do |response|
+      if response.success?
         GuideTaggerJob.batch_perform_later(topic)
         TopicSearchIndexer.new(topic).index
       end
@@ -60,13 +59,13 @@ private
     render 'edit'
   end
 
-  def respond_for_topic_publication(publication, opts = {})
+  def topic_respond_with(response, opts = {})
     success_notice = opts.fetch(:notice)
 
-    if publication.success?
+    if response.success?
       redirect_to edit_topic_path(@topic), notice: success_notice
     else
-      flash.now[:error] = publication.error
+      flash.now[:error] = response.error
       render @topic.persisted? ? 'edit' : 'new'
     end
   end
