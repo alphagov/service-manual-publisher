@@ -19,7 +19,6 @@ class Edition < ActiveRecord::Base
   scope :which_update_the_frontend, -> { where(state: STATES_THAT_UPDATE_THE_FRONTEND) }
 
   scope :major, -> { where(update_type: 'major') }
-  scope :minor, -> { where(update_type: 'minor') }
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
