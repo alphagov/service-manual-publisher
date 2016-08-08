@@ -233,16 +233,4 @@ RSpec.describe Edition, type: :model do
       end
     end
   end
-
-  describe "#reason_for_change_html" do
-    it "renders markdown" do
-      edition = build(:edition, reason_for_change: "# heading")
-      expect(edition.reason_for_change_html).to eq "<h1>heading</h1>\n"
-    end
-
-    it "auto links" do
-      edition = build(:edition, reason_for_change: "http://example.org")
-      expect(edition.reason_for_change_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
-    end
-  end
 end

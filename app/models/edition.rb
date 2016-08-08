@@ -86,13 +86,6 @@ class Edition < ActiveRecord::Base
     @previously_published_edition ||= guide.editions.published.where("id < ?", id).order(id: :desc).first
   end
 
-  def reason_for_change_html
-    Redcarpet::Markdown.new(
-      Redcarpet::Render::HTML,
-              autolink: true,
-    ).render(reason_for_change)
-  end
-
   def notification_subscribers
     [author, guide.latest_edition.author].uniq
   end
