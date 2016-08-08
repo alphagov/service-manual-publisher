@@ -4,7 +4,7 @@ class BaseGuideForm
   include ActiveModel::Model
 
   attr_reader :guide, :edition, :user
-  attr_accessor :author_id, :body, :change_note, :change_summary, :content_owner_id, :description, :slug,
+  attr_accessor :author_id, :body, :reason_for_change, :change_note, :content_owner_id, :description, :slug,
     :title, :title_slug, :type, :update_type, :version
 
   delegate :persisted?, to: :guide
@@ -26,8 +26,8 @@ class BaseGuideForm
 
     self.author_id = next_author_id
     self.body = edition.body
+    self.reason_for_change = edition.reason_for_change
     self.change_note = edition.change_note
-    self.change_summary = edition.change_summary
     self.content_owner_id = edition.content_owner_id
     self.description = edition.description
     self.slug = guide.slug
@@ -40,8 +40,8 @@ class BaseGuideForm
     load_custom_attributes
 
     if edition.published?
+      self.reason_for_change = nil
       self.change_note = nil
-      self.change_summary = nil
     end
   end
 
@@ -49,8 +49,8 @@ class BaseGuideForm
     guide.slug = slug
     edition.author_id = author_id
     edition.body = body
+    edition.reason_for_change = reason_for_change
     edition.change_note = change_note
-    edition.change_summary = change_summary
     edition.content_owner_id = content_owner_id
     edition.created_by_id = user.id
     edition.description = description

@@ -12,7 +12,7 @@ class GuideRepublisher
 
       publishing_api.put_content(guide.content_id, guide_for_publication.content_payload)
       publishing_api.patch_links(guide.content_id, guide_for_publication.links_payload)
-      publishing_api.publish(guide.content_id, live_edition.update_type)
+      publishing_api.publish(guide.content_id, "minor")
     end
   end
 

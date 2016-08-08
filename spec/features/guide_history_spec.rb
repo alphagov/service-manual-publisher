@@ -117,7 +117,7 @@ RSpec.describe "Guide history", type: :feature do
       expect(page).to have_content("Edition #1")
       expect(page).to have_content("Major update")
       expect(page).to have_content("Published on 24 November 2004")
-      expect(page).to have_content('"change summary"')
+      expect(page).to have_content('"A summary of the changes in this edition"')
       # A link that shows one large addition for the first version
       expect(page).to have_link("View changes", href: edition_changes_path(nil, first_published_edition))
     end

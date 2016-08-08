@@ -3,13 +3,16 @@ require 'rails_helper'
 RSpec.describe GuidePresenter do
   let(:edition) do
     Edition.new(
-      title:               "The Title",
-      state:               "draft",
-      phase:               "beta",
-      description:         "Description",
-      update_type:         "major",
-      body:                "# Heading",
-      updated_at:          Time.now
+      title: "The Title",
+      state: "draft",
+      phase: "beta",
+      description: "Description",
+      update_type: "major",
+      body: "# Heading",
+      created_at: "2016-06-28T14:16:21Z".to_time,
+      updated_at: "2016-06-28T14:16:21Z".to_time,
+      change_note: "Add a new guide 'The Title'",
+      reason_for_change: "We added this guide so we can test the presenter"
     )
   end
 
@@ -41,6 +44,18 @@ RSpec.describe GuidePresenter do
         phase: "beta",
         format: "service_manual_guide",
         base_path: "/service/manual/test"
+      )
+    end
+
+    it "includes the change history for the edition" do
+      expect(presenter.content_payload[:details]).to include(
+        change_history: [
+          {
+            public_timestamp: "2016-06-28T14:16:21Z",
+            note: "Add a new guide 'The Title'",
+            reason_for_change: "We added this guide so we can test the presenter"
+          }
+        ]
       )
     end
 

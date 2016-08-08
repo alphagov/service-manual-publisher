@@ -50,6 +50,7 @@ private
     details_hash = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
+      change_history: ChangeHistoryPresenter.new(guide, edition).change_history
     }
 
     if guide.is_a?(Point)

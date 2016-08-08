@@ -86,6 +86,18 @@ RSpec.describe Edition, type: :model do
         expect(edition.errors.full_messages_for(:state).size).to eq 1
       end
 
+      it "does not allow empty reason_for_change when the update_type is 'major'" do
+        edition = build(:edition, update_type: "major", reason_for_change: "")
+        edition.valid?
+        expect(edition.errors.full_messages_for(:reason_for_change)).to eq ["Reason for change can't be blank"]
+      end
+
+      it "allows empty reason_for_change when the update_type is 'minor'" do
+        edition = build(:edition, update_type: "minor", reason_for_change: "")
+        edition.valid?
+        expect(edition.errors.full_messages_for(:reason_for_change).size).to eq 0
+      end
+
       it "does not allow empty change_note when the update_type is 'major'" do
         edition = build(:edition, update_type: "major", change_note: "")
         edition.valid?
@@ -231,18 +243,6 @@ RSpec.describe Edition, type: :model do
         edition.state = "unpublished"
         expect(edition.can_discard_draft?).to be false
       end
-    end
-  end
-
-  describe "#change_note_html" do
-    it "renders markdown" do
-      edition = build(:edition, change_note: "# heading")
-      expect(edition.change_note_html).to eq "<h1>heading</h1>\n"
-    end
-
-    it "auto links" do
-      edition = build(:edition, change_note: "http://example.org")
-      expect(edition.change_note_html).to eq "<p><a href=\"http://example.org\">http://example.org</a></p>\n"
     end
   end
 end

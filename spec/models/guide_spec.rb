@@ -108,61 +108,30 @@ RSpec.describe Guide do
   end
 
   describe "#search" do
-    let :default_attributes do
-      user = build(:user)
+    it "searches titles" do
+      create(:guide, title: "Standups")
+      create(:guide, title: "Unit Testing")
 
-      {
-        title:          "The Title",
-        state:          "draft",
-        phase:          "beta",
-        description:    "Description",
-        update_type:    "major",
-        change_note:    "change note",
-        change_summary: "change summary",
-        body:           "# Heading",
-        content_owner:  build(:guide_community),
-        author:         user,
-        created_by:     user,
-      }
-    end
-
-    it "searches title" do
-      titles = ["Standups", "Unit Testing"]
-      titles.each_with_index do |title, index|
-        create(:guide, slug: "/service-manual/topic-name/#{index}", title: title)
-      end
-
-      results = Guide.search("testing").map { |e| e.latest_edition.title }
+      results = Guide.search("testing").map(&:title)
       expect(results).to eq ["Unit Testing"]
     end
 
     it "does not return duplicates" do
-      edition1 = Edition.new(
-        default_attributes.merge(
-          version: 1, state: "draft", title: "dictionary"
-        ),
-      )
-      edition2 = Edition.new(
-        default_attributes.merge(
-          version: 1, state: "published", title: "thesaurus"
-        ),
-      )
+      create(:guide, editions: [
+        create(:edition, :draft, title: "dictionary"),
+        create(:edition, :published, title: "thesaurus")
+      ])
 
-      Guide.create!(editions: [edition1, edition2], slug: "/service-manual/topic-name/guide")
-
-      expect(Guide.search("dictionary").count).to eq 0
-      expect(Guide.search("thesaurus").count).to eq 1
+      expect(described_class.search("dictionary").count).to eq 0
+      expect(described_class.search("thesaurus").count).to eq 1
     end
 
-    it "searches for slug" do
-      edition = Edition.new(default_attributes.merge(version: 1, title: "1"))
-      Guide.create!(editions: [edition], slug: "/service-manual/topic-name/1")
+    it "searches slugs" do
+      create(:guide, title: "Guide 1", slug: "/service-manual/topic-name/1")
+      create(:guide, title: "Guide 2", slug: "/service-manual/topic-name/2")
 
-      edition = Edition.new(default_attributes.merge(version: 1, title: "2"))
-      Guide.create!(editions: [edition], slug: "/service-manual/topic-name/2")
-
-      results = Guide.search("/service-manual/2").map { |e| e.latest_edition.title }
-      expect(results).to eq ["2"]
+      results = Guide.search("/service-manual/topic-name/2").map(&:title)
+      expect(results).to eq ["Guide 2"]
     end
   end
 end
