@@ -129,22 +129,27 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq true
   end
 
-  context "when creating a new guide" do
-    it 'displays an alert if it fails' do
-      api_error = GdsApi::HTTPClientError.new(
-        422,
-        "An error occurred",
-        "error" => { "message" => "An error occurred" }
-      )
-      expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
+  it "displays an alert if communication with the publishing-api fails" do
+    api_error = GdsApi::HTTPClientError.new(
+      422,
+      "An error occurred",
+      "error" => { "message" => "An error occurred" }
+    )
+    expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
-      fill_in_guide_form
-      click_first_button "Save"
+    fill_in_guide_form
+    click_first_button "Save"
 
-      within ".full-error-list" do
-        expect(page).to have_content("An error occurred")
-      end
+    within ".full-error-list" do
+      expect(page).to have_content("An error occurred")
     end
+  end
+
+  it "does not show the 'About this update' fields for the first version" do
+    expect(page).to_not have_field("Major update")
+    expect(page).to_not have_field("Minor update")
+    expect(page).to_not have_field("Summary of change")
+    expect(page).to_not have_field("Why the change is being made")
   end
 
   describe "action buttons" do
