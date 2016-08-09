@@ -23,6 +23,7 @@ class Edition < ActiveRecord::Base
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
+  validates_inclusion_of :update_type, in: ['major'], if: :first_version?, message: 'must be major'
   validates :reason_for_change, presence: true, if: :major_and_not_first_version?
   validates :change_note, presence: true, if: :major?
   validates :version, presence: true
@@ -93,6 +94,10 @@ class Edition < ActiveRecord::Base
 private
 
   def major_and_not_first_version?
-    major? && (version || 1) > 1
+    major? && !first_version?
+  end
+
+  def first_version?
+    (version || 1) == 1
   end
 end

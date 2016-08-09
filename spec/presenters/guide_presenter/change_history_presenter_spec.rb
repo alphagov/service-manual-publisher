@@ -79,7 +79,8 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
         change_note: "",
         reason_for_change: "",
         update_type: "minor",
-        created_at: "2016-06-28T14:16:21Z"
+        created_at: "2016-06-28T14:16:21Z",
+        version: 2
       )
     ]
 

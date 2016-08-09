@@ -130,6 +130,14 @@ RSpec.describe Edition, type: :model do
       end
     end
 
+    describe "update_type" do
+      it "cannot be minor for the first edition" do
+        edition = build(:edition, update_type: "minor", reason_for_change: "")
+        edition.valid?
+        expect(edition.errors.full_messages_for(:update_type)).to include 'Update type must be major'
+      end
+    end
+
     it "requires a created_by user" do
       edition = build(:edition, created_by: nil)
       edition.valid?
