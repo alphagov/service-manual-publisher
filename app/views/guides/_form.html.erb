@@ -82,55 +82,51 @@
       <% end %>
     </div>
 
-    <% if guide.new_record? %>
-      <%= f.hidden_field :update_type, value: "minor" %>
-    <% else %>
-      <div class="well">
-        <h2>About this update</h2>
+    <div class="well">
+      <h2>About this update</h2>
 
-        <div class='form-group'>
-          <label>Impact of the update</label>
-          <%= f.error_list :update_type %>
-          <div class="radio">
-            <%= label_tag do %>
-              <%= f.radio_button :update_type, "minor", {disabled: disable_inputs, class: 'update-type-select'} %>
-              Minor update
-              <span class='text-muted'>e.g. spelling or typographic corrections.</span>
-            <% end %>
-          </div>
-          <div class="radio">
-            <%= label_tag do %>
-              <%= f.radio_button :update_type, "major", {disabled: disable_inputs, class: 'update-type-select'} %>
-              Major update
-              <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
-            <% end %>
-          </div>
+      <div class='form-group'>
+        <label>Impact of the update</label>
+        <%= f.error_list :update_type %>
+        <div class="radio">
+          <%= label_tag do %>
+            <%= f.radio_button :update_type, "minor", {disabled: disable_inputs, class: 'update-type-select'} %>
+            Minor update
+            <span class='text-muted'>e.g. spelling or typographic corrections.</span>
+          <% end %>
         </div>
-
-        <div class="form-group change-note-form-group">
-          <%= f.label :change_note, "Summary of change" %>
-          <div class="help-block">What is being changed in this update</div>
-          <%= f.text_field :change_note, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
+        <div class="radio">
+          <%= label_tag do %>
+            <%= f.radio_button :update_type, "major", {disabled: disable_inputs, class: 'update-type-select'} %>
+            Major update
+            <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
+          <% end %>
         </div>
-
-        <div class="form-group change-note-form-group">
-          <%= f.label :reason_for_change, "Why the change is being made" %>
-          <div class="help-block">Include any evidence from research and links to any related discussions</div>
-          <%= f.text_area :reason_for_change, disabled: disable_inputs, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
-        </div>
-
-        <p class="text-strong change-note-form-group">
-          <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
-          <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
-        </p>
       </div>
 
-      <div class="well">
-        <h2>Assign authorship</h2>
-        <%= f.label :author_id, class: "add-top-margin nav-header" %>
-        <%= f.select :author_id, user_options, {include_blank: "Choose a user"}, {disabled: disable_inputs, class: 'select2 input-md-12 form-control'} %>
+      <div class="form-group change-note-form-group">
+        <%= f.label :change_note, "Summary of change" %>
+        <div class="help-block">What is being changed in this update</div>
+        <%= f.text_field :change_note, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
       </div>
-    <% end %>
+
+      <div class="form-group change-note-form-group">
+        <%= f.label :reason_for_change, "Why the change is being made" %>
+        <div class="help-block">Include any evidence from research and links to any related discussions</div>
+        <%= f.text_area :reason_for_change, disabled: disable_inputs, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
+      </div>
+
+      <p class="text-strong change-note-form-group">
+        <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
+        <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
+      </p>
+    </div>
+
+    <div class="well">
+      <h2>Assign authorship</h2>
+      <%= f.label :author_id, class: "add-top-margin nav-header" %>
+      <%= f.select :author_id, user_options, {include_blank: "Choose a user"}, {disabled: disable_inputs, class: 'select2 input-md-12 form-control'} %>
+    </div>
   </div>
 
   <div class="col-md-4">

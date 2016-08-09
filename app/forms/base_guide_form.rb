@@ -50,7 +50,7 @@ class BaseGuideForm
     edition.author_id = author_id
     edition.body = body
     edition.reason_for_change = reason_for_change
-    edition.change_note = change_note
+    edition.change_note = change_note_or_default
     edition.content_owner_id = content_owner_id
     edition.created_by_id = user.id
     edition.description = description
@@ -101,6 +101,24 @@ private
 
   def extracted_title_from_slug
     slug ? slug.split("/").last : nil
+  end
+
+  def change_note_or_default
+    if change_note.present?
+      change_note
+    else
+      default_change_note
+    end
+  end
+
+  def default_change_note
+    if first_version?
+      'Guidance first published'
+    end
+  end
+
+  def first_version?
+    Integer(version) == 1
   end
 
   def next_edition_version

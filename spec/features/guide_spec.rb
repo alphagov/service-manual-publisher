@@ -54,7 +54,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.content_owner.title).to eq "Technology Community"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
-    expect(edition.update_type).to eq "minor"
+    expect(edition.update_type).to eq "major"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
 
@@ -99,7 +99,7 @@ RSpec.describe "creating guides", type: :feature do
       .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:publish)
       .once
-      .with(an_instance_of(String), 'minor')
+      .with(an_instance_of(String), 'major')
 
     click_first_button "Save"
     guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first

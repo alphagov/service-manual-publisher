@@ -23,7 +23,7 @@ class Edition < ActiveRecord::Base
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
-  validates :reason_for_change, presence: true, if: :major?
+  validates :reason_for_change, presence: true, if: :major_and_not_first_version?
   validates :change_note, presence: true, if: :major?
   validates :version, presence: true
   validates :created_by, presence: true
@@ -88,5 +88,11 @@ class Edition < ActiveRecord::Base
 
   def notification_subscribers
     [author, guide.latest_edition.author].uniq
+  end
+
+private
+
+  def major_and_not_first_version?
+    major? && (version || 1) > 1
   end
 end
