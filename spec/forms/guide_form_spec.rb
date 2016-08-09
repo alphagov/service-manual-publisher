@@ -180,6 +180,15 @@ RSpec.describe GuideForm, "#initialize" do
   end
 end
 
+RSpec.describe GuideForm, "#assign_attributes" do
+  it "coerces version to an integer" do
+    guide_form = described_class.new(guide: Guide.new, edition: Edition.new, user: User.new)
+    guide_form.assign_attributes(version: "1")
+
+    expect(guide_form.version).to eq(1)
+  end
+end
+
 RSpec.describe GuideForm, "#save" do
   context "for a brand new guide" do
     it "persists a guide with an edition and puts it in the relevant topic section" do
