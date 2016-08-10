@@ -50,7 +50,7 @@ class BaseGuideForm
     edition.author_id = author_id
     edition.body = body
     edition.reason_for_change = reason_for_change
-    edition.change_note = change_note_or_default
+    edition.change_note = first_or_supplied_changed_note
     edition.content_owner_id = content_owner_id
     edition.created_by_id = user.id
     edition.description = description
@@ -103,18 +103,16 @@ private
     slug ? slug.split("/").last : nil
   end
 
-  def change_note_or_default
-    if change_note.present?
-      change_note
-    else
+  def first_or_supplied_changed_note
+    if version == 1
       default_change_note
+    else
+      change_note
     end
   end
 
   def default_change_note
-    if version == 1
-      'Guidance first published'
-    end
+    'Guidance first published'
   end
 
   def version=(number)

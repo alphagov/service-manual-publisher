@@ -264,9 +264,19 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.created_by).to eq(user)
     end
 
-    it "assigns the changed note and summary to the edition" do
+    it "assigns the default change_note to the first edition" do
       guide = Guide.new
       edition = guide.editions.build
+      user = User.new
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+      guide_form.save
+
+      expect(edition.change_note).to eq('Guidance first published')
+    end
+
+    it "assigns the change_note and reason_for_change to the edition for later editions" do
+      guide = Guide.new
+      edition = guide.editions.build(version: 2)
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(
@@ -277,16 +287,6 @@ RSpec.describe GuideForm, "#save" do
 
       expect(edition.change_note).to eq("X happened")
       expect(edition.reason_for_change).to eq("This happened because of X.")
-    end
-
-    it "assigns the first edition a change_note if it isn't supplied" do
-      guide = Guide.new
-      edition = guide.editions.build
-      user = User.new
-      guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.save
-
-      expect(edition.change_note).to eq('Guidance first published')
     end
   end
 
