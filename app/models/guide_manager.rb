@@ -72,7 +72,7 @@ class GuideManager
 
   def discard_draft
     catching_gds_api_exceptions do
-      if guide.has_published_edition?
+      if guide.has_any_published_editions?
         guide
           .editions_since_last_published
           .destroy_all
