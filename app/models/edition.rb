@@ -47,33 +47,6 @@ class Edition < ActiveRecord::Base
     end
   end
 
-  def can_request_review?
-    return false if new_record?
-
-    draft?
-  end
-
-  def can_be_approved?(by_user)
-    return false if new_record?
-
-    is_different_author = author != by_user
-    can_approve = is_different_author || allow_self_approval?
-
-    review_requested? && can_approve
-  end
-
-  def can_be_published?
-    return false if new_record?
-
-    ready? && latest_edition?
-  end
-
-  def can_discard_draft?
-    return false if new_record?
-
-    !STATES_THAT_UPDATE_THE_FRONTEND.include?(state)
-  end
-
   def latest_edition?
     self == guide.latest_edition
   end
@@ -98,9 +71,5 @@ private
 
   def first_version?
     (version || 1) == 1
-  end
-
-  def allow_self_approval?
-    ENV['ALLOW_SELF_APPROVAL'].present?
   end
 end
