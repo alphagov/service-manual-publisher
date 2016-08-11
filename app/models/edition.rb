@@ -88,10 +88,4 @@ class Edition < ActiveRecord::Base
   def notification_subscribers
     [author, guide.latest_edition.author].uniq
   end
-
-private
-
-  def ready?
-    state == 'ready'
-  end
 end
