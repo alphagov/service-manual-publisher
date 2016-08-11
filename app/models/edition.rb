@@ -91,10 +91,6 @@ class Edition < ActiveRecord::Base
 
 private
 
-  def assign_publisher_href
-    self.publisher_href = PUBLISHERS[publisher_title] if publisher_title.present?
-  end
-
   def ready?
     state == 'ready'
   end
