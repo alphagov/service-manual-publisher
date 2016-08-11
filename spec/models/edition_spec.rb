@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Edition, type: :model do
+  describe ".unpublished" do
+    it "returns unpublished editions" do
+      create(:edition, state: 'draft')
+      unpublished_edition = create(:edition, state: 'unpublished')
+
+      expect(described_class.unpublished).to match_array([unpublished_edition])
+    end
+  end
+
   describe "#notification_subscribers" do
     let(:joe) { build(:user, name: "Joe") }
     let(:liz) { build(:user, name: "Liz") }

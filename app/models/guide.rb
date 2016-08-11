@@ -88,7 +88,7 @@ class Guide < ActiveRecord::Base
   end
 
   def can_be_unpublished?
-    has_any_published_editions? && !has_unpublished_edition?
+    has_any_published_editions? && !has_any_unpublished_editions?
   end
 
   def editions_since_last_published
@@ -112,8 +112,8 @@ class Guide < ActiveRecord::Base
 
 private
 
-  def has_unpublished_edition?
-    editions.where(state: "unpublished").any?
+  def has_any_unpublished_editions?
+    editions.unpublished.any?
   end
 
   def slug_format

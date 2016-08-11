@@ -14,6 +14,7 @@ class Edition < ActiveRecord::Base
 
   scope :draft, -> { where(state: 'draft') }
   scope :published, -> { where(state: 'published') }
+  scope :unpublished, -> { where(state: 'unpublished') }
   scope :review_requested, -> { where(state: 'review_requested') }
   scope :most_recent_first, -> { order('created_at DESC, id DESC') }
   scope :which_update_the_frontend, -> { where(state: STATES_THAT_UPDATE_THE_FRONTEND) }
