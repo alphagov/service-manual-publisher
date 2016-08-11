@@ -83,12 +83,12 @@ class Guide < ActiveRecord::Base
     topic.present?
   end
 
-  def has_published_edition?
-    editions.where(state: "published").any?
+  def has_any_published_editions?
+    editions.published.any?
   end
 
   def can_be_unpublished?
-    has_published_edition? && !has_unpublished_edition?
+    has_any_published_editions? && !has_any_unpublished_editions?
   end
 
   def editions_since_last_published
@@ -112,8 +112,8 @@ class Guide < ActiveRecord::Base
 
 private
 
-  def has_unpublished_edition?
-    editions.where(state: "unpublished").any?
+  def has_any_unpublished_editions?
+    editions.unpublished.any?
   end
 
   def slug_format
@@ -127,7 +127,7 @@ private
   end
 
   def slug_cant_be_changed_if_an_edition_has_been_published
-    if slug_changed? && has_published_edition?
+    if slug_changed? && has_any_published_editions?
       errors.add(:slug, "can't be changed if guide has a published edition")
     end
   end
