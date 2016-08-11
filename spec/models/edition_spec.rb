@@ -148,127 +148,110 @@ RSpec.describe Edition, type: :model do
     end
   end
 
-  context "review and approval" do
-    let :edition do
-      edition = build(:edition)
-      allow(edition).to receive(:persisted?) { true }
-      edition
+  describe "#can_be_approved?" do
+    it "is true when the edition is persisted, after a review is requested and attempted by a different author" do
+      random_author = build_stubbed(:user)
+      edition = build_stubbed(:edition, state: 'review_requested')
+
+      expect(edition.can_be_approved?(random_author)).to eq(true)
     end
 
-    let :guide do
-      build(:guide, slug: "/service-manual/topic-name/something", editions: [edition])
+    it "is true when the edition is persisted, after a review is requested and the ALLOW_SELF_APPROVAL is set" do
+      author = build_stubbed(:user)
+      edition = build_stubbed(:edition, state: 'review_requested', author: author)
+      allow(ENV).to receive(:[]).with('ALLOW_SELF_APPROVAL').and_return('1')
+
+      expect(edition.can_be_approved?(author)).to eq(true)
     end
 
-    describe "#can_be_approved?" do
-      let :user do
-        build(:user)
-      end
+    it "is false when attempted by the same author" do
+      author = build_stubbed(:user)
+      edition = build_stubbed(:edition, state: 'review_requested', author: author)
 
-      it "returns true when a review has been requested" do
-        edition.state = "review_requested"
-        edition.save!
-        expect(edition.can_be_approved?(user)).to be true
-      end
-
-      it "returns false when the author is also the editor" do
-        edition.state = "review_requested"
-        edition.author = build(:user, name: "anotehr", email: "email@address.org")
-        expect(edition.can_be_approved?(edition.author)).to eq false
-      end
-
-      it "returns true when the user is also the editor but the ALLOW_SELF_APPROVAL flag is set" do
-        edition.state = "review_requested"
-        edition.author = build(:user, name: "anotehr", email: "email@address.org")
-        edition.save!
-        ENV['ALLOW_SELF_APPROVAL'] = '1'
-        expect(edition.can_be_approved?(edition.author)).to eq true
-        ENV.delete('ALLOW_SELF_APPROVAL')
-      end
-
-      it "returns false when latest_edition has not been saved" do
-        allow(edition).to receive(:persisted?) { false }
-        expect(edition.can_be_approved?(user)).to be false
-      end
+      expect(edition.can_be_approved?(author)).to eq(false)
     end
 
-    describe "#can_request_review?" do
-      it "returns true when a review can be requested" do
-        expect(edition.can_request_review?).to be true
-      end
+    it "is false when the edition is a new record" do
+      random_author = build_stubbed(:user)
+      edition = build(:edition, state: 'review_requested')
 
-      it "returns false when latest_edition has not been saved" do
-        allow(edition).to receive(:persisted?) { false }
-        expect(edition.can_request_review?).to be false
-      end
-
-      it "returns false when a review has been requested" do
-        edition.state = "review_requested"
-        expect(edition.can_request_review?).to be false
-      end
-
-      it "returns false when a review has been published" do
-        edition.state = "published"
-        expect(edition.can_request_review?).to be false
-      end
-
-      it "returns false when a review has been ready" do
-        edition.state = "ready"
-        expect(edition.can_request_review?).to be false
-      end
-
-      it "returns false when the edition is unpublished" do
-        edition.state = "unpublished"
-        expect(edition.can_request_review?).to be false
-      end
+      expect(edition.can_be_approved?(random_author)).to eq(false)
     end
 
-    describe "#can_be_published?" do
-      before do
-        guide.save!
+    (Edition::STATES - ['review_requested']).each do |state|
+      it "is false when the edition has a state of #{state}" do
+        random_author = build_stubbed(:user)
+        edition = build_stubbed(:edition, state: state)
+
+        expect(edition.can_be_approved?(random_author)).to eq(false)
       end
+    end
+  end
 
-      it "returns false if it's already published" do
-        edition.state = "published"
-        expect(edition.can_be_published?).to be false
+  describe "#can_request_review?" do
+    it "is true if persisted and in a draft state" do
+      edition = build_stubbed(:edition, state: 'draft')
+
+      expect(edition.can_request_review?).to eq(true)
+    end
+
+    it "is false if a new record" do
+      edition = build(:edition, state: 'draft')
+
+      expect(edition.can_request_review?).to eq(false)
+    end
+
+    (Edition::STATES - ['draft']).each do |state|
+      it "is false when the edition has a state of #{state}" do
+        edition = build_stubbed(:edition, state: state)
+
+        expect(edition.can_request_review?).to eq(false)
       end
+    end
+  end
 
-      it "returns false if it's not ready" do
-        edition.state = "review_requested"
-        expect(edition.can_be_published?).to be false
+  describe "#can_be_published?" do
+    it "is true if persisted, in a ready state and the latest edition" do
+      edition = build(:edition, state: 'ready')
+      create(:guide, editions: [edition])
+
+      expect(edition.can_be_published?).to eq(true)
+    end
+
+    it "is false if not the latest edition" do
+      old_edition = build(:edition, state: 'ready', created_at: 2.days.ago)
+      new_edition = build(:edition, state: 'ready', created_at: 1.days.ago)
+      create(:guide, editions: [old_edition, new_edition])
+
+      expect(old_edition.can_be_published?).to eq(false)
+    end
+
+    (Edition::STATES - ['ready']).each do |state|
+      it "is false when the edition has a state of #{state}" do
+        edition = build(:edition, state: state)
+        create(:guide, editions: [edition])
+
+        expect(edition.can_be_published?).to eq(false)
       end
+    end
+  end
 
-      it "returns false if it's not the latest edition of a guide" do
-        edition.state = "ready"
-        guide.editions << edition.dup
+  describe "#can_discard_draft?" do
+    undiscardable_states = %w(published unpublished)
 
-        edition.guide.reload
-        expect(edition.can_be_published?).to be false
-      end
+    (Edition::STATES - undiscardable_states).each do |state|
+      it "is true when the edition has a state of #{state}" do
+        edition = build_stubbed(:edition, state: state)
 
-      it "returns true if it's the latest edition and is ready" do
-        edition.state = "ready"
-        expect(edition.can_be_published?).to be true
+        expect(edition.can_discard_draft?).to eq(true)
       end
     end
 
-    describe "#can_discard_draft?" do
-      it "returns true" do
-        expect(edition.can_discard_draft?).to be true
-      end
+    undiscardable_states.each do |state|
+      it "is false when the edition has a state of #{state}" do
+        edition = build_stubbed(:edition, state: state)
 
-      it "returns false if not persisted" do
-        expect(edition).to receive(:persisted?).and_return(false)
-        expect(edition.can_discard_draft?).to be false
-      end
-
-      it "returns false if it is published" do
-        edition.state = "published"
-        expect(edition.can_discard_draft?).to be false
-      end
-
-      it "returns false if it is unpublished" do
-        edition.state = "unpublished"
-        expect(edition.can_discard_draft?).to be false
+        expect(edition.can_discard_draft?).to eq(false)
       end
     end
   end
