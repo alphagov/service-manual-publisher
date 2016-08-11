@@ -88,14 +88,4 @@ class Edition < ActiveRecord::Base
   def notification_subscribers
     [author, guide.latest_edition.author].uniq
   end
-
-private
-
-  def assign_publisher_href
-    self.publisher_href = PUBLISHERS[publisher_title] if publisher_title.present?
-  end
-
-  def ready?
-    state == 'ready'
-  end
 end
