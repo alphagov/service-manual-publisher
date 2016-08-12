@@ -28,6 +28,10 @@ class EditionPolicy
     !Edition::STATES_THAT_UPDATE_THE_FRONTEND.include?(edition.state)
   end
 
+  def can_discard_new_draft?
+    edition.new_record?
+  end
+
   def can_preview?
     edition.persisted?
   end

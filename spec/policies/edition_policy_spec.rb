@@ -150,4 +150,22 @@ RSpec.describe EditionPolicy do
       ).to eq(false)
     end
   end
+
+  describe "#can_discard_new_draft?" do
+    it "is false if persisted" do
+      edition = build_stubbed(:edition, state: 'draft', author: author_a)
+
+      expect(
+        described_class.new(author_b, edition).can_discard_new_draft?
+      ).to eq(false)
+    end
+
+    it "is true if not persisted" do
+      edition = build(:edition, state: 'draft', author: author_a)
+
+      expect(
+        described_class.new(author_b, edition).can_discard_new_draft?
+      ).to eq(true)
+    end
+  end
 end

@@ -31,7 +31,7 @@
 
       <% if !publish_controls_only %>
 
-        <% if !edition.persisted? %>
+        <% if edition_policy.can_discard_new_draft? %>
           <%= link_to "Discard new guide", guides_path, class: "btn btn-danger add-right-margin" %>
         <% end %>
 
