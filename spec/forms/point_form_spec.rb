@@ -35,8 +35,7 @@ RSpec.describe PointForm, "#save" do
       content_owner_id: guide_community.id,
       description: "a pleasant description",
       slug: "/service-manual/topic/a-fair-tale",
-      title: "A fair tale",
-      update_type: "minor",
+      title: "A fair tale"
     )
     guide_form.save
 

@@ -54,7 +54,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.content_owner.title).to eq "Technology Community"
     expect(edition.title).to eq "First Edition Title"
     expect(edition.body).to eq "## First Edition Title"
-    expect(edition.update_type).to eq "minor"
+    expect(edition.update_type).to eq "major"
     expect(edition.draft?).to eq true
     expect(edition.published?).to eq false
 
@@ -99,7 +99,7 @@ RSpec.describe "creating guides", type: :feature do
       .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:publish)
       .once
-      .with(an_instance_of(String), 'minor')
+      .with(an_instance_of(String), 'major')
 
     click_first_button "Save"
     guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
@@ -129,22 +129,27 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq true
   end
 
-  context "when creating a new guide" do
-    it 'displays an alert if it fails' do
-      api_error = GdsApi::HTTPClientError.new(
-        422,
-        "An error occurred",
-        "error" => { "message" => "An error occurred" }
-      )
-      expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
+  it "displays an alert if communication with the publishing-api fails" do
+    api_error = GdsApi::HTTPClientError.new(
+      422,
+      "An error occurred",
+      "error" => { "message" => "An error occurred" }
+    )
+    expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
-      fill_in_guide_form
-      click_first_button "Save"
+    fill_in_guide_form
+    click_first_button "Save"
 
-      within ".full-error-list" do
-        expect(page).to have_content("An error occurred")
-      end
+    within ".full-error-list" do
+      expect(page).to have_content("An error occurred")
     end
+  end
+
+  it "does not show the 'About this update' fields for the first version" do
+    expect(page).to_not have_field("Major update")
+    expect(page).to_not have_field("Minor update")
+    expect(page).to_not have_field("Summary of change")
+    expect(page).to_not have_field("Why the change is being made")
   end
 
   describe "action buttons" do

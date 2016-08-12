@@ -126,13 +126,7 @@ RSpec.describe GuideForm, "#initialize" do
 
   context "for an existing published guide" do
     it "defaults to an update_type of major" do
-      title = "A guide to agile"
-      guide = create(:guide, editions: [
-        build(:edition, state: "draft", title: title, update_type: "minor"),
-        build(:edition, state: "review_requested", title: title, update_type: "minor"),
-        build(:edition, state: "ready", title: title, update_type: "minor"),
-        build(:edition, state: "published", title: title, update_type: "minor"),
-      ])
+      guide = create(:guide, :with_published_edition, title: "A guide to agile")
       edition = guide.editions.build(guide.latest_edition.dup.attributes)
       user = User.new
 
@@ -186,6 +180,15 @@ RSpec.describe GuideForm, "#initialize" do
   end
 end
 
+RSpec.describe GuideForm, "#assign_attributes" do
+  it "coerces version to an integer" do
+    guide_form = described_class.new(guide: Guide.new, edition: Edition.new, user: User.new)
+    guide_form.assign_attributes(version: "1")
+
+    expect(guide_form.version).to eq(1)
+  end
+end
+
 RSpec.describe GuideForm, "#save" do
   context "for a brand new guide" do
     it "persists a guide with an edition and puts it in the relevant topic section" do
@@ -201,13 +204,14 @@ RSpec.describe GuideForm, "#save" do
       guide = Guide.new
       edition = guide.editions.build
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.assign_attributes(body: "a fair old body",
+      guide_form.assign_attributes(
+        body: "a fair old body",
         content_owner_id: guide_community.id,
         description: "a pleasant description",
         slug: "/service-manual/topic/a-fair-tale",
         title: "A fair tale",
-        update_type: "minor",
-        topic_section_id: topic_section.id)
+        topic_section_id: topic_section.id
+      )
       guide_form.save
 
       expect(guide).to be_persisted
@@ -260,9 +264,19 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.created_by).to eq(user)
     end
 
-    it "assigns the changed note and summary to the edition" do
+    it "assigns the default change_note to the first edition" do
       guide = Guide.new
       edition = guide.editions.build
+      user = User.new
+      guide_form = described_class.new(guide: guide, edition: edition, user: user)
+      guide_form.save
+
+      expect(edition.change_note).to eq('Guidance first published')
+    end
+
+    it "assigns the change_note and reason_for_change to the edition for later editions" do
+      guide = Guide.new
+      edition = guide.editions.build(version: 2)
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(

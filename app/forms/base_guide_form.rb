@@ -3,9 +3,9 @@ class BaseGuideForm
 
   include ActiveModel::Model
 
-  attr_reader :guide, :edition, :user
+  attr_reader :guide, :edition, :user, :version
   attr_accessor :author_id, :body, :reason_for_change, :change_note, :content_owner_id, :description, :slug,
-    :title, :title_slug, :type, :update_type, :version
+    :title, :title_slug, :type, :update_type
 
   delegate :persisted?, to: :guide
 
@@ -50,7 +50,7 @@ class BaseGuideForm
     edition.author_id = author_id
     edition.body = body
     edition.reason_for_change = reason_for_change
-    edition.change_note = change_note
+    edition.change_note = first_or_supplied_changed_note
     edition.content_owner_id = content_owner_id
     edition.created_by_id = user.id
     edition.description = description
@@ -101,6 +101,22 @@ private
 
   def extracted_title_from_slug
     slug ? slug.split("/").last : nil
+  end
+
+  def first_or_supplied_changed_note
+    if version == 1
+      default_change_note
+    else
+      change_note
+    end
+  end
+
+  def default_change_note
+    'Guidance first published'
+  end
+
+  def version=(number)
+    @version = Integer(number)
   end
 
   def next_edition_version

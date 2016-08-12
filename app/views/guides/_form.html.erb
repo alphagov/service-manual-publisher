@@ -82,9 +82,7 @@
       <% end %>
     </div>
 
-    <% if guide.new_record? %>
-      <%= f.hidden_field :update_type, value: "minor" %>
-    <% else %>
+    <% if guide_form.version > 1 %>
       <div class="well">
         <h2>About this update</h2>
 
@@ -124,13 +122,13 @@
           <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
         </p>
       </div>
-
-      <div class="well">
-        <h2>Assign authorship</h2>
-        <%= f.label :author_id, class: "add-top-margin nav-header" %>
-        <%= f.select :author_id, user_options, {include_blank: "Choose a user"}, {disabled: disable_inputs, class: 'select2 input-md-12 form-control'} %>
-      </div>
     <% end %>
+
+    <div class="well">
+      <h2>Assign authorship</h2>
+      <%= f.label :author_id, class: "add-top-margin nav-header" %>
+      <%= f.select :author_id, user_options, {include_blank: "Choose a user"}, {disabled: disable_inputs, class: 'select2 input-md-12 form-control'} %>
+    </div>
   </div>
 
   <div class="col-md-4">

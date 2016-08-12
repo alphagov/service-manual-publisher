@@ -32,13 +32,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "defaults to a major update and the new change note is empty" do
-      title = "A guide to agile"
-      create(:guide, editions: [
-        build(:edition, state: "draft", title: title, update_type: "minor"),
-        build(:edition, state: "review_requested", title: title, update_type: "minor"),
-        build(:edition, state: "ready", title: title, update_type: "minor"),
-        build(:edition, state: "published", title: title, update_type: "minor"),
-      ])
+      create(:guide, :with_published_edition, title: "A guide to agile")
       visit guides_path
 
       within_guide_index_row("A guide to agile") do
