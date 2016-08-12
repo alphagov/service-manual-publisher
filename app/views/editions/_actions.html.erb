@@ -2,7 +2,9 @@
   <div class="panel-body">
     <div class="btn-toolbar" role="toolbar">
 
-      <% if edition.persisted? %>
+      <% edition_policy = EditionPolicy.new(current_user, edition) %>
+
+      <% if edition_policy.can_preview? %>
         <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
       <% end %>
 
@@ -10,7 +12,6 @@
         <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, disabled: edition.unpublished? %>
       <% end %>
 
-      <% edition_policy = EditionPolicy.new(current_user, edition) %>
       <% if edition.persisted? %>
 
         <% if edition_policy.can_request_review? %>

@@ -132,4 +132,22 @@ RSpec.describe EditionPolicy do
       end
     end
   end
+
+  describe "#can_preview?" do
+    it "is true if persisted" do
+      edition = build_stubbed(:edition, state: 'draft', author: author_a)
+
+      expect(
+        described_class.new(author_b, edition).can_preview?
+      ).to eq(true)
+    end
+
+    it "is false if not persisted" do
+      edition = build(:edition, state: 'draft', author: author_a)
+
+      expect(
+        described_class.new(author_b, edition).can_preview?
+      ).to eq(false)
+    end
+  end
 end
