@@ -98,7 +98,7 @@ FactoryGirl.define do
   # points have summaries.
   factory :point, parent: :guide, class: Point do
     transient do
-      edition_factory :ownerless_edition
+      edition_factory :point_edition
       requires_topic false
       sequence :title do |n|
         "Point #{n}. Point Title"
