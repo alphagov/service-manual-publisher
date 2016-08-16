@@ -34,14 +34,20 @@ RSpec.describe "Commenting", type: :feature do
     it "presents multi line comments correctly" do
       guide = create(:guide, :with_draft_edition)
 
-      comment_text = %{This guide sure could use more cow bell.
-Cow bell makes everything better!
+      comment_text = <<-COMMENT.strip_heredoc
+        This guide sure could use more cow bell.
+        Cow bell makes everything better!
 
-Much better.}
-      formatted_comment = %{<p>This guide sure could use more cow bell.
-<br>Cow bell makes everything better!</p>
+        Much better.
+      COMMENT
 
-<p>Much better.</p>}
+      formatted_comment = <<-COMMENT.strip_heredoc
+        <p>This guide sure could use more cow bell.
+        <br>Cow bell makes everything better!</p>
+
+        <p>Much better.
+        </p>
+      COMMENT
 
       write_a_comment(guide: guide, comment: comment_text)
 
