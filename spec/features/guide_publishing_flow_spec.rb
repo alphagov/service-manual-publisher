@@ -156,23 +156,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
     end
 
-    context "latest edition is published" do
-      # This test hasn't been doing what it says it does.
-      xit "sets the author to the current user" do
-        guide = create(:guide, :with_published_edition)
-        original_editor = create(:user)
-        guide.editions.update_all(author_id: original_editor)
-        guide.reload
-        # TODO: Find out why reload is needed here. latest_edition doesn't work properly because factories.
-
-        visit root_path
-        click_link guide.title
-        click_first_button "Save"
-
-        expect(guide.latest_edition.author).to_not eq original_editor
-      end
-    end
-
     context "latest edition is not published" do
       it "updates the author manually" do
         guide = create(:guide, :with_draft_edition)
