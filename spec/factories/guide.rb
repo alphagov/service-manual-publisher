@@ -29,6 +29,8 @@ FactoryGirl.define do
       edition_factory :edition
       # a guide can't exist without an edition, so by default include one draft
       states [:draft]
+      topic nil
+      requires_topic true
     end
 
     slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
@@ -63,10 +65,9 @@ FactoryGirl.define do
       end
     end
 
-    trait :with_topic_section do
-      after(:create) do |guide, _evaluator|
-        topic = create(:topic)
-        topic_section = create(:topic_section, topic: topic)
+    after(:create) do |guide, evaluator|
+      if evaluator.requires_topic
+        topic_section = create(:topic_section, topic: evaluator.topic || create(:topic))
         topic_section.guides << guide
       end
     end
@@ -97,6 +98,7 @@ FactoryGirl.define do
   # points have summaries.
   factory :point, parent: :guide, class: Point do
     transient do
+      requires_topic false
       sequence :title do |n|
         "Point #{n}. Point Title"
       end
