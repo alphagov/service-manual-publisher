@@ -33,7 +33,7 @@ RSpec.describe Guide do
 
   context "without a topic" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/topic-name/slug")
+      Guide.new(slug: "/service-manual/topic-name/slug")
     end
 
     describe "#included_in_a_topic?" do
@@ -51,7 +51,11 @@ RSpec.describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil)
+      topic_section = create(:topic_section)
+      guide = Guide.new(slug: "/service-manual/topic-name/slug", content_id: nil)
+      guide.topic_section_guides.build(topic_section: topic_section)
+      guide.save!
+
       expect(guide.content_id).to be_present
     end
   end
@@ -138,6 +142,7 @@ end
 
 RSpec.describe Guide, "#latest_edition_per_edition_group" do
   it "returns only the latest edition from editions that share the same edition number" do
+    topic_section = create(:topic_section)
     guide = Guide.new(slug: "/service-manual/topic-name/slug")
     guide.editions << build(:edition, version: 1, created_at: 2.days.ago)
     first_version_second_edition = build(:edition, version: 1, created_at: 1.days.ago)
@@ -145,6 +150,7 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
     guide.editions << build(:edition, version: 2, created_at: 2.days.ago)
     second_version_second_edition = build(:edition, version: 2, created_at: 1.days.ago)
     guide.editions << second_version_second_edition
+    guide.topic_section_guides.build(topic_section: topic_section)
     guide.save!
 
     expect(

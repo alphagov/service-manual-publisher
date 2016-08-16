@@ -81,7 +81,7 @@ RSpec.describe "Topics", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:publish)
       .once
-    topic = create(:topic, :with_some_guides)
+    topic = create(:topic, :with_some_guides, title: "Technology")
 
     # When publishing a topic we also need to update the links for all the relevant
     # guides so that they can display which topic they're in.
@@ -97,7 +97,7 @@ RSpec.describe "Topics", type: :feature do
 
     visit root_path
     click_link "Manage Topics"
-    click_link topic.title
+    click_link "Technology"
 
     click_on 'Publish'
 

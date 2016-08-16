@@ -43,7 +43,7 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
         topic = create(:topic, path: '/service-manual/my-topic')
         topic_section = create(:topic_section, topic: topic)
 
-        guide = create(:guide, :with_draft_edition, slug: '/service-manual/my-topic/my-custom-slug')
+        guide = create(:guide, :with_draft_edition, slug: '/service-manual/my-topic/my-custom-slug', topic: topic)
         topic_section.guides << guide
 
         visit edit_guide_path(guide)
@@ -57,7 +57,7 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
 
   context 'when the guide has been published' do
     it 'does not update the slug or final url when you change the title' do
-      guide = create(:guide, :with_published_edition, :with_topic_section)
+      guide = create(:guide, :with_published_edition)
       visit edit_guide_path(guide)
 
       fill_in 'Title', with: 'My Guide Title'

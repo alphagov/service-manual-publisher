@@ -41,4 +41,6 @@ FactoryGirl.define do
       "#{n} Community"
     end
   end
+
+  factory :ownerless_edition, parent: :community_edition
 end

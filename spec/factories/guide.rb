@@ -65,10 +65,10 @@ FactoryGirl.define do
       end
     end
 
-    after(:create) do |guide, evaluator|
+    after(:build) do |guide, evaluator|
       if evaluator.requires_topic
-        topic_section = create(:topic_section, topic: evaluator.topic || create(:topic))
-        topic_section.guides << guide
+        topic_section = build(:topic_section, topic: evaluator.topic || build(:topic))
+        guide.topic_section_guides.build(topic_section: topic_section)
       end
     end
 
@@ -78,8 +78,8 @@ FactoryGirl.define do
     after(:build) do |guide, evaluator|
       if guide.editions.empty?
         evaluator.states.each do |state|
-          edition = evaluator.edition || { title: evaluator.title, body: evaluator.body }
-          guide.editions << create(evaluator.edition_factory, state, **edition, guide: guide)
+          edition_attributes = evaluator.edition || { title: evaluator.title, body: evaluator.body }
+          guide.editions << create(evaluator.edition_factory, state, **edition_attributes, guide: guide)
         end
       end
     end
@@ -98,6 +98,7 @@ FactoryGirl.define do
   # points have summaries.
   factory :point, parent: :guide, class: Point do
     transient do
+      edition_factory :ownerless_edition
       requires_topic false
       sequence :title do |n|
         "Point #{n}. Point Title"

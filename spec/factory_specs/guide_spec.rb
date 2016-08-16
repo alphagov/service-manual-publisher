@@ -22,9 +22,10 @@ RSpec.describe ":guide" do
 
     expect(guide.topic).to eq(topic)
 
-    # check we haven't produced any extra topics or topic sections
-    expect(Topic.count).to eq(1)
-    expect(TopicSection.count).to eq(1)
+    # Check we haven't produced any extra topics or topic sections.
+    # We should have 2 of each for both the guide and the guide community.
+    expect(Topic.count).to eq(2)
+    expect(TopicSection.count).to eq(2)
   end
 end
 
@@ -34,7 +35,7 @@ RSpec.describe ":point" do
 
     expect(point.topic).to be_blank
 
-    # check we haven't produced any topics or topic sections
+    # Check we haven't produced any topics or topic sections.
     expect(Topic.count).to eq(0)
     expect(TopicSection.count).to eq(0)
   end

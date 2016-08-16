@@ -1,12 +1,7 @@
 class GuideForm < BaseGuideForm
   attr_accessor :topic_section_id
 
-  validates_presence_of :topic_section_id, if: :requires_topic?
   validate :topic_cannot_change
-
-  def requires_topic?
-    true
-  end
 
   def slug_prefix
     "/service-manual"
