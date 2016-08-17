@@ -28,14 +28,20 @@ RSpec.describe NotificationMailer, type: :mailer do
     end
 
     it "presents multi line comments correctly" do
-      comment_text = %{This guide sure could use more cow bell.
-Cow bell makes everything better!
+      comment_text = <<-COMMENT.strip_heredoc
+        This guide sure could use more cow bell.
+        Cow bell makes everything better!
 
-Much better.}
-      formatted_comment = %{<p>This guide sure could use more cow bell.
-<br />Cow bell makes everything better!</p>
+        Much better.
+      COMMENT
 
-<p>Much better.</p>}
+      formatted_comment = <<-COMMENT.strip_heredoc
+        <p>This guide sure could use more cow bell.
+        <br />Cow bell makes everything better!</p>
+
+        <p>Much better.
+        </p>
+      COMMENT
 
       comment = edition.comments.create!(comment: comment_text, user: luke)
 
