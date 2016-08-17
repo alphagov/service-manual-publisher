@@ -4,6 +4,7 @@ class Guide < ActiveRecord::Base
   validate :slug_cant_be_changed_if_an_edition_has_been_published
   validate :new_edition_has_content_owner, if: :requires_content_owner?
   validate :must_have_topic, if: :requires_topic?
+  validate :topic_cannot_change, if: :requires_topic?
 
   has_many :editions, dependent: :destroy
   has_many :topic_section_guides, autosave: true
@@ -148,6 +149,23 @@ private
   def must_have_topic
     if topic_section_guides.empty?
       errors.add(:base, 'must have a topic')
+    end
+  end
+
+  def topic_cannot_change
+    topic_section_guide = topic_section_guides[0]
+
+    return if topic_section_guide.blank?
+
+    from, to = topic_section_guide.topic_section_id_change
+
+    return if from.blank?
+
+    old_section = TopicSection.find(from)
+    new_section = TopicSection.find(to)
+
+    if old_section.topic_id != new_section.topic_id
+      errors.add(:topic_section, "cannot change to a different topic")
     end
   end
 end

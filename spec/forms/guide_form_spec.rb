@@ -310,57 +310,6 @@ RSpec.describe GuideForm, "#save" do
       ).to eq 1
     end
 
-    it "changes to a different topic section within the same topic" do
-      user = create(:user)
-      topic = create(:topic)
-      guide = create(:guide, :with_published_edition, topic: topic)
-      edition = guide.latest_edition
-      original_topic_section = guide.topic_section_guides.first.topic_section
-
-      new_topic_section = create(:topic_section, topic: topic)
-
-      expect(PUBLISHING_API).to receive(:put_content).with(guide.content_id, an_instance_of(Hash))
-      expect(PUBLISHING_API).to receive(:patch_links).with(guide.content_id, an_instance_of(Hash))
-
-      guide_form = described_class.new(
-        guide: guide,
-        edition: edition,
-        user: user
-      )
-      guide_form.assign_attributes(topic_section_id: new_topic_section.id)
-      guide_form.save
-
-      expect(new_topic_section.reload.guides).to include guide
-      expect(original_topic_section.reload.guides).to_not include guide
-    end
-
-    it "isn't possible to change the topic" do
-      original_topic = create(:topic, path: "/service-manual/original-topic")
-      original_topic_section = create(:topic_section, topic: original_topic)
-      different_topic = create(:topic, path: "/service-manual/different-topic")
-      different_topic_section = create(:topic_section, topic: different_topic)
-      user = create(:user)
-      guide = create(:guide, :with_published_edition)
-      edition = guide.latest_edition
-
-      original_topic_section.guides << guide
-
-      guide_form = described_class.new(
-        guide: guide,
-        edition: edition,
-        user: user
-      )
-      guide_form.assign_attributes(topic_section_id: different_topic_section.id)
-      guide_form.save
-
-      expect(
-        guide_form.errors.full_messages_for(:topic_section_id)
-      ).to include("Topic section cannot change to a different topic")
-
-      expect(original_topic_section.reload.guides).to include guide
-      expect(different_topic_section.reload.guides).to_not include guide
-    end
-
     it "does not persist changes if communication with the publishing api fails" do
       gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
                                             'https://some-service.gov.uk',
