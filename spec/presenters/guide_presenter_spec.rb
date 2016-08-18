@@ -42,7 +42,8 @@ RSpec.describe GuidePresenter do
         description: "Description",
         update_type: "major",
         phase: "beta",
-        format: "service_manual_guide",
+        schema_name: "service_manual_guide",
+        document_type: "service_manual_guide",
         base_path: "/service/manual/test"
       )
     end
