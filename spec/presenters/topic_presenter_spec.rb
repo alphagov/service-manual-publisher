@@ -25,7 +25,8 @@ RSpec.describe TopicPresenter, "#content_payload" do
       description: "Topic description",
       update_type: "minor",
       phase: "beta",
-      format: "service_manual_topic",
+      schema_name: "service_manual_topic",
+      document_type: "service_manual_topic",
       base_path: "/service-manual/test-topic"
     )
   end

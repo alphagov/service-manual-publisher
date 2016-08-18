@@ -12,7 +12,8 @@ class GuidePresenter
     {
       publishing_app: "service-manual-publisher",
       rendering_app: "service-manual-frontend",
-      format: "service_manual_guide",
+      schema_name: "service_manual_guide",
+      document_type: "service_manual_guide",
       locale: "en",
       update_type: edition.update_type,
       base_path: guide.slug,
