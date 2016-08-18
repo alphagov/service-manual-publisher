@@ -11,7 +11,7 @@ RSpec.describe "Guide history", type: :feature do
     sally = create(:user, name: "Sally")
     dave = create(:user, name: "Dave")
 
-    create(:topic_section, topic: create(:topic))
+    create(:topic_section, topic: create(:topic), title: "A beautiful section")
     community = create(:guide_community)
 
     GDS::SSO.test_user = john
@@ -20,7 +20,7 @@ RSpec.describe "Guide history", type: :feature do
       visit root_path
       click_on "Create a Guide"
       fill_in_final_url "/service-manual/the/path"
-      select TopicSection.first.title, from: "Topic section"
+      select "A beautiful section", from: "Topic section"
       select community.title, from: "Community"
       fill_in "Description", with: "This guide acts as a test case"
       fill_in "Title", with: "First Edition Title"

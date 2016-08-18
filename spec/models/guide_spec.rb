@@ -33,7 +33,7 @@ RSpec.describe Guide do
 
   context "without a topic" do
     let(:guide) do
-      Guide.create!(slug: "/service-manual/topic-name/slug")
+      Guide.new(slug: "/service-manual/topic-name/slug")
     end
 
     describe "#included_in_a_topic?" do
@@ -51,7 +51,11 @@ RSpec.describe Guide do
 
   describe "on create callbacks" do
     it "generates and sets content_id on create" do
-      guide = Guide.create!(slug: "/service-manual/topic-name/slug", content_id: nil)
+      topic_section = create(:topic_section)
+      guide = Guide.new(slug: "/service-manual/topic-name/slug", content_id: nil)
+      guide.topic_section_guides.build(topic_section: topic_section)
+      guide.save!
+
       expect(guide.content_id).to be_present
     end
   end
@@ -97,6 +101,40 @@ RSpec.describe Guide do
       end
     end
 
+    describe "topic section" do
+      it "changes to a different topic section within the same topic" do
+        topic = create(:topic)
+        guide = create(:guide, :with_published_edition, topic: topic)
+        original_topic_section = guide.topic_section_guides.first.topic_section
+        new_topic_section = create(:topic_section, topic: topic)
+
+        guide.topic_section_guides[0].topic_section_id = new_topic_section.id
+        guide.save
+
+        expect(new_topic_section.reload.guides).to include guide
+        expect(original_topic_section.reload.guides).to_not include guide
+      end
+
+      it "isn't possible to change the topic" do
+        original_topic = create(:topic, path: "/service-manual/original-topic")
+        original_topic_section = create(:topic_section, topic: original_topic)
+        different_topic = create(:topic, path: "/service-manual/different-topic")
+        different_topic_section = create(:topic_section, topic: different_topic)
+        guide = create(:guide, :with_published_edition)
+        original_topic_section.guides << guide
+
+        guide.topic_section_guides[0].topic_section_id = different_topic_section.id
+        guide.save
+
+        expect(
+          guide.errors.full_messages_for(:topic_section)
+        ).to include("Topic section cannot change to a different topic")
+
+        expect(original_topic_section.reload.guides).to include guide
+        expect(different_topic_section.reload.guides).to_not include guide
+      end
+    end
+
     context "has a published edition" do
       it "does not allow changing the slug" do
         guide = create(:guide, :with_published_edition)
@@ -138,6 +176,7 @@ end
 
 RSpec.describe Guide, "#latest_edition_per_edition_group" do
   it "returns only the latest edition from editions that share the same edition number" do
+    topic_section = create(:topic_section)
     guide = Guide.new(slug: "/service-manual/topic-name/slug")
     guide.editions << build(:edition, version: 1, created_at: 2.days.ago)
     first_version_second_edition = build(:edition, version: 1, created_at: 1.days.ago)
@@ -145,6 +184,7 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
     guide.editions << build(:edition, version: 2, created_at: 2.days.ago)
     second_version_second_edition = build(:edition, version: 2, created_at: 1.days.ago)
     guide.editions << second_version_second_edition
+    guide.topic_section_guides.build(topic_section: topic_section)
     guide.save!
 
     expect(
