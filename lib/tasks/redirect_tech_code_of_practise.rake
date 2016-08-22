@@ -7,22 +7,20 @@ task redirect_tech_code_of_practise: :environment do
   new_path = "/government/publications/technology-code-of-practice/technology-code-of-practice"
 
   old_paths.each do |old_path|
-    payload = {
-      format: "redirect",
-      base_path: old_path,
-      publishing_app: "service-manual-publisher",
-      redirects: [
-        {
-          path: old_path,
-          type: "exact",
-          destination: new_path,
-        }
-      ]
-    }
+    # Mark the SlugMigration as migrated
 
-    content_id = SecureRandom.uuid
+    slug_migration = SlugMigration.find_by!(slug: old_path)
+    slug_migration.update!(
+      completed: true,
+      redirect_to: new_path,
+    )
 
-    PUBLISHING_API.put_content(content_id, payload)
-    PUBLISHING_API.publish(content_id, "major")
+    # Publish a redirect to the publishing platform
+
+    RedirectPublisher.new.process(
+      content_id: slug_migration.content_id,
+      old_path:   slug_migration.slug,
+      new_path:   slug_migration.redirect_to,
+    )
   end
 end
