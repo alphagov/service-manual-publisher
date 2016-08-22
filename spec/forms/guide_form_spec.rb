@@ -103,13 +103,15 @@ RSpec.describe GuideForm, "#initialize" do
     end
 
     it "loads the topic_section_id" do
-      guide = create(:guide)
-      edition = guide.latest_edition
-      topic_section_guide = guide.topic_section_guides.first
+      edition = build(:edition)
+      guide = create(:guide, editions: [edition])
+      topic = create(:topic)
+      topic_section = create(:topic_section, topic: topic)
+      TopicSectionGuide.create!(topic_section: topic_section, guide: guide)
 
       guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
 
-      expect(guide_form.topic_section_id).to eq(topic_section_guide.topic_section.id)
+      expect(guide_form.topic_section_id).to eq(topic_section.id)
     end
 
     it "calculates the title_slug" do
@@ -290,17 +292,18 @@ RSpec.describe GuideForm, "#save" do
 
   context "for a published guide" do
     it "doesn't create a duplicate TopicSectionGuide" do
-      topic = create(:topic)
       user = create(:user)
-      guide = create(:guide, :with_published_edition, topic: topic)
-      topic_section_id = guide.topic_section_guides.first.topic_section_id
+      guide = create(:guide, :with_published_edition)
       edition = guide.latest_edition
+      topic = create(:topic)
+      topic_section = create(:topic_section, topic: topic)
+      topic_section.guides << guide
 
       expect(PUBLISHING_API).to receive(:put_content).with(guide.content_id, an_instance_of(Hash))
       expect(PUBLISHING_API).to receive(:patch_links).with(guide.content_id, an_instance_of(Hash))
 
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.assign_attributes(topic_section_id: topic_section_id)
+      guide_form.assign_attributes(topic_section_id: topic_section.id)
       expect(
         guide_form.save
       ).to eq(true)
@@ -308,6 +311,57 @@ RSpec.describe GuideForm, "#save" do
       expect(
         TopicSectionGuide.where(guide: guide).count
       ).to eq 1
+    end
+
+    it "changes to a different topic section within the same topic" do
+      topic = create(:topic)
+      original_topic_section = create(:topic_section, topic: topic)
+      new_topic_section = create(:topic_section, topic: topic)
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+      edition = guide.latest_edition
+      original_topic_section.guides << guide
+
+      expect(PUBLISHING_API).to receive(:put_content).with(guide.content_id, an_instance_of(Hash))
+      expect(PUBLISHING_API).to receive(:patch_links).with(guide.content_id, an_instance_of(Hash))
+
+      guide_form = described_class.new(
+        guide: guide,
+        edition: edition,
+        user: user
+      )
+      guide_form.assign_attributes(topic_section_id: new_topic_section.id)
+      guide_form.save
+
+      expect(new_topic_section.reload.guides).to include guide
+      expect(original_topic_section.reload.guides).to_not include guide
+    end
+
+    it "isn't possible to change the topic" do
+      original_topic = create(:topic, path: "/service-manual/original-topic")
+      original_topic_section = create(:topic_section, topic: original_topic)
+      different_topic = create(:topic, path: "/service-manual/different-topic")
+      different_topic_section = create(:topic_section, topic: different_topic)
+      user = create(:user)
+      guide = create(:guide, :with_published_edition)
+      edition = guide.latest_edition
+
+      original_topic_section.guides << guide
+
+      guide_form = described_class.new(
+        guide: guide,
+        edition: edition,
+        user: user
+      )
+      guide_form.assign_attributes(topic_section_id: different_topic_section.id)
+      guide_form.save
+
+      expect(
+        guide_form.errors.full_messages_for(:topic_section_id)
+      ).to include("Topic section cannot change to a different topic")
+
+      expect(original_topic_section.reload.guides).to include guide
+      expect(different_topic_section.reload.guides).to_not include guide
     end
 
     it "does not persist changes if communication with the publishing api fails" do
@@ -325,7 +379,7 @@ RSpec.describe GuideForm, "#save" do
         edition: edition,
         user: user
       )
-      guide_form.assign_attributes(body: 'Nice new copy')
+      guide_form.assign_attributes(body: 'Nice new copy', topic_section_id: 5)
 
       expect(guide_form.save).to eq(false)
       expect(guide.reload.latest_edition.body).to eq(original_body)
@@ -355,6 +409,15 @@ RSpec.describe GuideForm, "validations" do
       "Title can't be blank",
       "Body can't be blank",
     )
+  end
+
+  it "validates topic_section_id" do
+    guide = Guide.new
+    edition = guide.editions.build
+    guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+    guide_form.save
+
+    expect(guide_form.errors.full_messages).to include("Topic section can't be blank")
   end
 end
 

@@ -34,17 +34,11 @@ FactoryGirl.define do
     end
   end
 
+  # community editions do not have a content owner
   factory :community_edition, parent: :edition do
     content_owner nil
     sequence :title do |n|
-      "Community #{n}"
-    end
-  end
-
-  factory :point_edition, parent: :edition do
-    content_owner nil
-    sequence :title do |n|
-      "Point #{n}"
+      "#{n} Community"
     end
   end
 end

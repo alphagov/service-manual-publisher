@@ -1,9 +1,7 @@
 FactoryGirl.define do
   factory :topic do
     title "Agile Delivery"
-    sequence :path do |n|
-      "/service-manual/topic-#{n}"
-    end
+    path "/service-manual/agile-delivery"
     description "Agile description"
 
     trait :with_some_guides do

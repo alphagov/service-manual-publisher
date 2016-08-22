@@ -43,7 +43,7 @@
         <%= f.text_field :title_slug, {value: guide_form.title_slug, class: 'input-md-12 form-control guide-slug js-title-slug', disabled: guide.has_any_published_editions?} %>
       </div>
 
-      <% if guide.requires_topic? %>
+      <% if guide_form.requires_topic? %>
         <div class='form-group'>
           <%= f.label :topic_section_id, "Topic section" %>
           <%= f.error_list :topic_section_id %>

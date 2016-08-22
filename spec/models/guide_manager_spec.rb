@@ -387,7 +387,7 @@ RSpec.describe GuideManager, '#discard_draft' do
         build(:edition, title: 'Agile amended'),
         build(:edition, title: 'Agile amended', state: 'review_requested'),
       ]
-      create(:guide, editions: editions)
+      create(:guide, :with_topic_section, editions: editions)
     end
   end
 
@@ -396,7 +396,7 @@ RSpec.describe GuideManager, '#discard_draft' do
       publishing_api_isnt_available
 
       user = create(:user)
-      guide = create(:guide)
+      guide = create(:guide, :with_topic_section)
 
       manager = described_class.new(guide: guide, user: user)
       manager.discard_draft
