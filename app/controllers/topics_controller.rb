@@ -37,7 +37,7 @@ class TopicsController < ApplicationController
 private
 
   def find_topic
-    @topic = Topic.find(params[:id])
+    @topic = Topic.includes(topic_sections: [topic_section_guides: :guide]).find(params[:id])
   end
 
   def save_draft(topic)
