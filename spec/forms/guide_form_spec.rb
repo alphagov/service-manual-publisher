@@ -337,17 +337,14 @@ end
 RSpec.describe GuideForm, "validations" do
   it "passes validation errors up from the models" do
     guide = Guide.new
-
-    topic_section = create(:topic_section, topic: create(:topic))
-
     edition = guide.editions.build
     guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
-    guide_form.topic_section_id = topic_section.id
     guide_form.save
 
     expect(
       guide_form.errors.full_messages
     ).to include(
+      "Topic section can't be blank",
       "Slug can only contain letters, numbers and dashes",
       "Slug must be present and start with '/service-manual/[topic]'",
       "Latest edition must have a content owner",

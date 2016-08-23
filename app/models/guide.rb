@@ -148,7 +148,7 @@ private
 
   def must_have_topic
     if topic_section_guides.empty?
-      errors.add(:base, 'must have a topic')
+      errors.add(:topic_section, "can't be blank")
     end
   end
 

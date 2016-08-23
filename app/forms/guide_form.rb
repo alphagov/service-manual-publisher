@@ -12,7 +12,9 @@ private
   end
 
   def set_custom_attributes
-    topic_section_guide.topic_section_id = topic_section_id
+    if topic_section_id.present?
+      topic_section_guide.topic_section_id = topic_section_id
+    end
   end
 
   def topic_section_guide
