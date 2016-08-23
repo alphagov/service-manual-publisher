@@ -5,7 +5,7 @@ RSpec.describe EditionPolicy do
   let(:author_b) { build_stubbed(:user) }
 
   describe "#can_be_approved?" do
-    it "is true when the edition is persisted, after a review is requested and attempted by a different author" do
+    it "is true after a review is requested and attempted by a different author" do
       edition = build_stubbed(:edition, state: 'review_requested', author: author_a)
 
       expect(
@@ -13,7 +13,7 @@ RSpec.describe EditionPolicy do
       ).to eq(true)
     end
 
-    it "is true when the edition is persisted, after a review is requested and the ALLOW_SELF_APPROVAL is set" do
+    it "is true when the edition after a review is requested and the ALLOW_SELF_APPROVAL is set" do
       edition = build_stubbed(:edition, state: 'review_requested', author: author_a)
       allow(ENV).to receive(:[]).with('ALLOW_SELF_APPROVAL').and_return('1')
 
@@ -24,14 +24,6 @@ RSpec.describe EditionPolicy do
 
     it "is false when attempted by the same author" do
       edition = build_stubbed(:edition, state: 'review_requested', author: author_a)
-
-      expect(
-        described_class.new(author_a, edition).can_be_approved?
-      ).to eq(false)
-    end
-
-    it "is false when the edition is a new record" do
-      edition = build(:edition, state: 'review_requested', author: author_b)
 
       expect(
         described_class.new(author_a, edition).can_be_approved?
@@ -78,7 +70,7 @@ RSpec.describe EditionPolicy do
   end
 
   describe "#can_be_published?" do
-    it "is true if persisted, in a ready state and the latest edition" do
+    it "is true if in a ready state and the latest edition" do
       edition = build(:edition, state: 'ready', author: author_a)
       create(:guide, editions: [edition])
 
