@@ -11,7 +11,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   context "latest edition is published" do
     it "creates a new draft version" do
-      guide = create(:guide, :with_published_edition, :with_topic_section, title: "Scrum")
+      guide = create(:guide, :with_published_edition, title: "Scrum")
 
       expect(guide.editions.count).to eq(4)
       expect(guide.editions.order(:created_at).last.version).to eq(1)
@@ -65,7 +65,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "keeps the changes made in form fields" do
-      guide = create(:guide, :with_published_edition, :with_topic_section)
+      guide = create(:guide, :with_published_edition)
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -82,7 +82,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
     end
 
     it "shows api errors in the UI" do
-      create(:guide, :with_published_edition, :with_topic_section, title: "Scrum")
+      create(:guide, :with_published_edition, title: "Scrum")
 
       expect(fake_publishing_api).to receive(:put_content).and_raise api_error
 
@@ -118,7 +118,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   end
 
   it "creates a new edition with the same version number if the latest edition isn't published" do
-    guide = create(:guide, :with_topic_section, :with_draft_edition)
+    guide = create(:guide, :with_draft_edition)
 
     expect(guide.editions.count).to eq(1)
     expect(guide.editions.order(:created_at).last.version).to eq(1)
@@ -140,13 +140,13 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
         create(:guide_community)
 
         topic = create(:topic)
-        topic_section = create(:topic_section, topic: topic)
+        create(:topic_section, topic: topic, title: "A beautiful section")
 
         visit root_path
         click_link "Create a Guide"
         fill_in "Title", with: "Guide Title"
         fill_in_final_url "/service-manual/topic/title"
-        select topic_section.title, from: "Topic section"
+        select "A beautiful section", from: "Topic section"
         fill_in "Description", with: "Description"
         fill_in "Body", with: "Body"
         click_first_button "Save"
@@ -156,25 +156,9 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
       end
     end
 
-    context "latest edition is published" do
-      it "sets the author to the current user" do
-        guide = create(:guide, :with_published_edition)
-        original_editor = create(:user)
-        guide.editions.update_all(author_id: original_editor)
-        guide.reload
-        # TODO: Find out why reload is needed here. latest_edition doesn't work properly because factories.
-
-        visit root_path
-        click_link guide.title
-        click_first_button "Save"
-
-        expect(Guide.last.latest_edition.author).to_not eq original_editor
-      end
-    end
-
     context "latest edition is not published" do
       it "updates the author manually" do
-        guide = create(:guide, :with_topic_section, :with_draft_edition)
+        guide = create(:guide, :with_draft_edition)
         new_author = create(:user, name: "New Editor")
 
         visit edit_guide_path(guide)
@@ -189,7 +173,6 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
   it "should save a draft locally and send it to Publishing API" do
     guide = create(
       :guide,
-      :with_topic_section,
       :with_draft_edition,
       title: "Original Title",
       slug: "/service-manual/topic-name/preview-test",
@@ -248,7 +231,7 @@ RSpec.describe "Taking a guide through the publishing process", type: :feature d
 
   describe "guide edition history" do
     it "allows seeing previous edition changes" do
-      guide = create(:guide, :with_published_edition, :with_topic_section, title: "Original Title")
+      guide = create(:guide, :with_published_edition, title: "Original Title")
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Current Draft Edition"

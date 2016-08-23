@@ -207,13 +207,13 @@ RSpec.describe "Updating guides", type: :feature do
 
   it "shows the summary of validation errors" do
     topic = create(:topic, path: "/service-manual/technology")
-    topic_section = create(:topic_section, topic: topic)
     guide = create(
       :guide,
       slug: "/service-manual/topic-name/something",
       editions: [build(:edition)],
+      topic: topic
     )
-    topic_section.guides << guide
+
     visit edit_guide_path(guide)
     fill_in "Title", with: ""
     click_first_button "Save"
@@ -245,7 +245,6 @@ RSpec.describe "Updating guides", type: :feature do
     guide = create(
       :guide,
       :with_draft_edition,
-      :with_topic_section,
       slug: "/service-manual/topic-name/something"
     )
 
