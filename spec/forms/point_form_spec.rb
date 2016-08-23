@@ -42,7 +42,7 @@ RSpec.describe PointForm, "#save" do
     expect(point).to be_persisted
     expect(edition).to be_persisted
 
-    expect(TopicSectionGuide.count).to eq(0)
+    expect(point.topic_section_guides).to be_empty
   end
 end
 
