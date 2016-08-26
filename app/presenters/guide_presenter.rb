@@ -32,6 +32,10 @@ class GuidePresenter
       organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
     }
 
+    if guide.topic
+      links[:service_manual_topics] = [guide.topic.content_id]
+    end
+
     if edition.content_owner
       links[:content_owners] = [edition.content_owner.content_id]
     end

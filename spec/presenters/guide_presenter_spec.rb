@@ -81,6 +81,17 @@ RSpec.describe GuidePresenter do
       edition.title = "Agile Process"
       expect(presenter.content_payload[:title]).to eq("Agile Process")
     end
+
+    context 'for a point' do
+      it "includes the show_description boolean in the details" do
+        edition = create(:edition)
+        point = create(:point, editions: [edition])
+
+        presenter = described_class.new(point, edition)
+
+        expect(presenter.content_payload[:details][:show_description]).to eq(true)
+      end
+    end
   end
 
   describe '#links_payload' do
@@ -90,9 +101,10 @@ RSpec.describe GuidePresenter do
       ).to match_array([an_instance_of(String)])
     end
 
-    it "doesn't include content owners if there's no content owner" do
-      edition.content_owner = nil
-      expect(presenter.links_payload[:links]).not_to have_key(:content_owners)
+    it 'includes a reference to the service manual topic' do
+      expect(
+        presenter.links_payload[:links][:service_manual_topics]
+      ).to match_array([guide.topic[:content_id]])
     end
 
     it 'returns the content owner if present' do
@@ -101,27 +113,31 @@ RSpec.describe GuidePresenter do
         [edition.content_owner.content_id]
       )
     end
-  end
-end
 
-RSpec.describe GuidePresenter, "for a Point" do
-  it "includes the service standard as a parent in the links" do
-    edition = create(:edition)
-    point = create(:point, editions: [edition])
+    context 'for a guide community' do
+      let(:guide) { create(:guide_community) }
 
-    presenter = described_class.new(point, edition)
+      it "doesn't include content owners" do
+        expect(presenter.links_payload[:links]).not_to have_key(:content_owners)
+      end
+    end
 
-    expect(presenter.links_payload[:links]).to include(
-      parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"]
-    )
-  end
+    context 'for a point' do
+      let(:guide) { create(:point) }
 
-  it "includes the show_description boolean in the details" do
-    edition = create(:edition)
-    point = create(:point, editions: [edition])
+      it "doesn't include a link to a topic" do
+        expect(presenter.links_payload[:links]).not_to have_key(:service_manual_topics)
+      end
 
-    presenter = described_class.new(point, edition)
+      it "doesn't include content owners" do
+        expect(presenter.links_payload[:links]).not_to have_key(:content_owners)
+      end
 
-    expect(presenter.content_payload[:details][:show_description]).to eq(true)
+      it "includes the service standard as a parent in the links" do
+        expect(presenter.links_payload[:links]).to include(
+          parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"]
+        )
+      end
+    end
   end
 end
