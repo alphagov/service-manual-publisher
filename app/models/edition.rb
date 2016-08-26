@@ -47,34 +47,6 @@ class Edition < ActiveRecord::Base
     end
   end
 
-  def can_request_review?
-    return false if !persisted?
-    return false if review_requested?
-    return false if published?
-    return false if ready?
-    return false if unpublished?
-    true
-  end
-
-  def can_be_approved?(by_user)
-    return false if new_record?
-    return false unless review_requested?
-    author != by_user || ENV['ALLOW_SELF_APPROVAL'].present?
-  end
-
-  def can_be_published?
-    return false if published?
-    return false if !latest_edition?
-    ready?
-  end
-
-  def can_discard_draft?
-    return false if !persisted?
-    return false if published?
-    return false if unpublished?
-    true
-  end
-
   def latest_edition?
     self == guide.latest_edition
   end
