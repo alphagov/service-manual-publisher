@@ -47,7 +47,6 @@ private
   def publish(topic)
     TopicPublisher.new(topic: topic).publish.tap do |response|
       if response.success?
-        GuideTaggerJob.batch_perform_later(topic)
         TopicSearchIndexer.new(topic).index
       end
     end
