@@ -58,6 +58,12 @@ RSpec.describe GuidePresenter do
       )
     end
 
+    it "includes the latest change note for email notifications" do
+      expect(presenter.content_payload[:details]).to include(
+        change_note: "Add a new guide 'The Title'"
+      )
+    end
+
     it "omits the content owner if the edition doesn't have one" do
       edition.content_owner = nil
 

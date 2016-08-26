@@ -55,7 +55,8 @@ private
     details_hash = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
-      change_history: ChangeHistoryPresenter.new(guide, edition).change_history
+      change_history: ChangeHistoryPresenter.new(guide, edition).change_history,
+      change_note: latest_change_note_for_email_notification
     }
 
     if guide.is_a?(Point)
@@ -67,6 +68,10 @@ private
 
   def govspeak_body
     Govspeak::Document.new(edition.body)
+  end
+
+  def latest_change_note_for_email_notification
+    edition.change_note
   end
 
   def level_two_headers
