@@ -1,28 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe GuidePresenter do
-  let(:edition) do
-    Edition.new(
-      title: "The Title",
-      state: "draft",
-      phase: "beta",
-      description: "Description",
-      update_type: "major",
-      body: "# Heading",
-      created_at: "2016-06-28T14:16:21Z".to_time,
-      updated_at: "2016-06-28T14:16:21Z".to_time,
-      change_note: "Add a new guide 'The Title'",
-      reason_for_change: "We added this guide so we can test the presenter"
+  let(:guide) do
+    create(:guide,
+      content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
+      edition: {
+        title: "The Title",
+        state: "draft",
+        phase: "beta",
+        description: "Description",
+        update_type: "major",
+        body: "# Heading",
+        created_at: "2016-06-28T14:16:21Z".to_time,
+        updated_at: "2016-06-28T14:16:21Z".to_time,
+        change_note: "Add a new guide 'The Title'",
+        reason_for_change: "We added this guide so we can test the presenter"
+      },
+      slug: '/service-manual/test-topic/the-title'
     )
   end
 
-  let(:guide) do
-    Guide.new(
-      content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
-      editions: [edition],
-      slug: '/service/manual/test'
-    )
-  end
+  let(:edition) { guide.latest_edition }
 
   let(:presenter) { described_class.new(guide, edition) }
 
@@ -44,7 +42,7 @@ RSpec.describe GuidePresenter do
         phase: "beta",
         schema_name: "service_manual_guide",
         document_type: "service_manual_guide",
-        base_path: "/service/manual/test"
+        base_path: "/service-manual/test-topic/the-title"
       )
     end
 
@@ -92,8 +90,9 @@ RSpec.describe GuidePresenter do
       ).to match_array([an_instance_of(String)])
     end
 
-    it 'returns an empty hash without a content owner' do
-      expect(presenter.links_payload[:links][:content_owners]).to be_nil
+    it "doesn't include content owners if there's no content owner" do
+      edition.content_owner = nil
+      expect(presenter.links_payload[:links]).not_to have_key(:content_owners)
     end
 
     it 'returns the content owner if present' do
