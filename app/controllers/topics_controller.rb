@@ -41,7 +41,7 @@ private
   end
 
   def save_draft(topic)
-    TopicPublisher.new(topic: topic).save_draft(TopicPresenter.new(topic))
+    TopicPublisher.new(topic: topic).save_draft
   end
 
   def publish(topic)

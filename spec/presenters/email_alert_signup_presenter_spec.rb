@@ -82,3 +82,12 @@ RSpec.describe EmailAlertSignupPresenter, '#content_payload' do
     )
   end
 end
+
+RSpec.describe EmailAlertSignupPresenter, '#content_id' do
+  it 'uses the email alert signup content id from the topic' do
+    topic = create :topic
+    presenter = described_class.new(topic)
+
+    expect(presenter.content_id).to eq topic.email_alert_signup_content_id
+  end
+end

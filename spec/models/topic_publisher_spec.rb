@@ -14,7 +14,7 @@ RSpec.describe TopicPublisher, '#save_draft' do
 
     publication_response =
       described_class.new(topic: topic, publishing_api: publishing_api)
-        .save_draft(TopicPresenter.new(topic))
+        .save_draft
 
     expect(topic).to be_persisted
     expect(publication_response).to be_success
@@ -26,11 +26,13 @@ RSpec.describe TopicPublisher, '#save_draft' do
 
     expect(publishing_api).to receive(:put_content)
       .with(topic.content_id, a_hash_including(base_path: topic.path))
+    expect(publishing_api).to receive(:put_content)
+      .with(topic.email_alert_signup_content_id, a_kind_of(Hash))
     expect(publishing_api).to receive(:patch_links)
       .with(topic.content_id, a_kind_of(Hash))
 
     described_class.new(topic: topic, publishing_api: publishing_api)
-      .save_draft(TopicPresenter.new(topic))
+      .save_draft
   end
 
   it 'does not send the draft to the publishing api if the content model is not valid'\
@@ -46,7 +48,7 @@ RSpec.describe TopicPublisher, '#save_draft' do
 
     publication_response =
       described_class.new(topic: topic, publishing_api: publishing_api)
-        .save_draft(TopicPresenter.new(topic))
+        .save_draft
 
     expect(publication_response).to_not be_success
   end
@@ -66,7 +68,7 @@ RSpec.describe TopicPublisher, '#save_draft' do
 
       publication_response =
         described_class.new(topic: topic, publishing_api: publishing_api_which_always_fails)
-          .save_draft(TopicPresenter.new(topic))
+          .save_draft
 
       expect(topic).to be_new_record
       expect(publication_response).to_not be_success
@@ -77,7 +79,7 @@ RSpec.describe TopicPublisher, '#save_draft' do
 
       publication_response =
         described_class.new(topic: topic, publishing_api: publishing_api_which_always_fails)
-          .save_draft(TopicPresenter.new(topic))
+          .save_draft
 
       expect(publication_response.error).to include('trouble')
     end
@@ -89,8 +91,12 @@ RSpec.describe TopicPublisher, '#publish' do
     publishing_api = double(:publishing_api)
     topic = create(:topic)
 
+    # expect to publish both the topic and the email alert signup for the topic
     expect(publishing_api).to receive(:publish)
-      .with(topic.content_id, topic.update_type)
+      .once.with(topic.content_id, topic.update_type)
+
+    expect(publishing_api).to receive(:publish)
+      .once.with(topic.email_alert_signup_content_id, topic.update_type)
 
     described_class.new(topic: topic, publishing_api: publishing_api)
       .publish

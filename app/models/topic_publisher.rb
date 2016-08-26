@@ -6,16 +6,22 @@ class TopicPublisher
     @publishing_api = publishing_api
   end
 
-  def save_draft(content_for_publication)
+  def save_draft
+    topic_presenter = TopicPresenter.new(topic)
+    email_alert_signup_presenter = EmailAlertSignupPresenter.new(topic)
+
     save_catching_gds_api_errors do
-      publishing_api.put_content(content_for_publication.content_id, content_for_publication.content_payload)
-      publishing_api.patch_links(content_for_publication.content_id, content_for_publication.links_payload)
+      publishing_api.put_content(topic_presenter.content_id, topic_presenter.content_payload)
+      publishing_api.patch_links(topic_presenter.content_id, topic_presenter.links_payload)
+
+      publishing_api.put_content(email_alert_signup_presenter.content_id, email_alert_signup_presenter.content_payload)
     end
   end
 
   def publish
     save_catching_gds_api_errors do
       publishing_api.publish(topic.content_id, topic.update_type)
+      publishing_api.publish(topic.email_alert_signup_content_id, topic.update_type)
     end
   end
 

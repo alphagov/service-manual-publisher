@@ -3,6 +3,10 @@ class EmailAlertSignupPresenter
     @topic = topic
   end
 
+  def content_id
+    topic.email_alert_signup_content_id
+  end
+
   def content_payload
     {
       base_path: path,
