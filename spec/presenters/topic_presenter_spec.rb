@@ -87,14 +87,16 @@ RSpec.describe TopicPresenter, "#links_payload" do
   end
 
   it "includes a link to the email alert signup" do
-    topic = create(:topic)
+    topic = create(:topic,
+      email_alert_signup_content_id: "3b7ca0f5-3968-4650-a287-20d2c23c25bc"
+    )
     presented_topic = described_class.new(topic)
 
     links = presented_topic.links_payload[:links]
 
     expect(
       links[:email_alert_signup]
-    ).to match_array([topic.email_alert_signup_content_id])
+    ).to match_array(["3b7ca0f5-3968-4650-a287-20d2c23c25bc"])
   end
 
   it "references all content_ids that appear in groups" do

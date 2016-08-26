@@ -7,7 +7,7 @@ module ContentIdentifiable
     validates :content_id, presence: true, uniqueness: true
 
     before_validation on: :create do |object|
-      object.content_id = SecureRandom.uuid
+      object.content_id ||= SecureRandom.uuid
     end
   end
 end

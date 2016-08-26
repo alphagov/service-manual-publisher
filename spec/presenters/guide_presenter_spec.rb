@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe GuidePresenter do
+  let(:topic) do
+    create(:topic,
+      title: "Parent Topic",
+      content_id: "4ac0bacf-0062-47fd-b1ce-852a95c25e20"
+    )
+  end
+
   let(:guide) do
     create(:guide,
       content_id: "220169e2-ae6f-44f5-8459-5a79e0a78537",
@@ -16,7 +23,8 @@ RSpec.describe GuidePresenter do
         change_note: "Add a new guide 'The Title'",
         reason_for_change: "We added this guide so we can test the presenter"
       },
-      slug: '/service-manual/test-topic/the-title'
+      slug: '/service-manual/test-topic/the-title',
+      topic: topic
     )
   end
 
@@ -110,7 +118,7 @@ RSpec.describe GuidePresenter do
     it 'includes a reference to the service manual topic' do
       expect(
         presenter.links_payload[:links][:service_manual_topics]
-      ).to match_array([guide.topic[:content_id]])
+      ).to match_array(["4ac0bacf-0062-47fd-b1ce-852a95c25e20"])
     end
 
     it 'returns the content owner if present' do

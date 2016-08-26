@@ -7,7 +7,7 @@ class Topic < ActiveRecord::Base
   validates :email_alert_signup_content_id, presence: true, uniqueness: true
 
   before_validation on: :create do |topic|
-    topic.email_alert_signup_content_id = SecureRandom.uuid
+    topic.email_alert_signup_content_id ||= SecureRandom.uuid
   end
 
   has_many :topic_sections, -> { order(position: :asc) }
