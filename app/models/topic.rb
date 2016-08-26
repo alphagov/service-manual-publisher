@@ -4,6 +4,11 @@ class Topic < ActiveRecord::Base
   validate :path_format
   validates :path, uniqueness: true
   validates :title, presence: true
+  validates :email_alert_signup_content_id, presence: true, uniqueness: true
+
+  before_validation on: :create do |topic|
+    topic.email_alert_signup_content_id = SecureRandom.uuid
+  end
 
   has_many :topic_sections, -> { order(position: :asc) }
   accepts_nested_attributes_for :topic_sections, allow_destroy: true
