@@ -1,6 +1,6 @@
 class ServiceStandardSearchIndexer
   def initialize
-    @service_standard = ServiceStandardPresenter.new(Point.all).content_payload
+    @service_standard = ServiceStandardPresenter.new.content_payload
   end
 
   def index
