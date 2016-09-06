@@ -1,6 +1,6 @@
 # Service-manual-publisher
 
-Service Manual Publisher is in very early stages and is going to be used for publishing and maintaining https://gov.uk/service-manual. This application will replace the current [service manual application](https://github.com/alphagov/government-service-design-manual).
+Service Manual Publisher is used for publishing and maintaining https://gov.uk/service-manual. This application, together with [service-manual-frontend](https://github.com/alphagov/service-manual-frontend) is gradually replacing the current [service manual application](https://github.com/alphagov/government-service-design-manual).
 
 ## Screenshots
 
@@ -39,8 +39,6 @@ The Service manual's guide pages have a nested URL structure which is unusual fo
 **To index and search published guides**
 
 - [rummager](https://github.com/alphagov/rummager)
-- [designprinciples](https://github.com/alphagov/design-principles)
-- [frontend](https://github.com/alphagov/frontend)
 
 _NB: Every application above may have its own dependencies_
 
