@@ -23,13 +23,13 @@ class TopicsController < ApplicationController
   end
 
   def update
-    @topic.assign_attributes(update_topic_params)
-
     if params[:add_heading]
+      @topic.assign_attributes(update_topic_params)
       add_heading(@topic)
     elsif params[:publish]
       topic_respond_with publish(@topic), notice: "Topic has been published"
     else
+      @topic.assign_attributes(update_topic_params)
       topic_respond_with save_draft(@topic), notice: "Topic has been updated"
     end
   end
