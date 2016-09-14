@@ -345,7 +345,8 @@ CREATE TABLE topics (
     description character varying NOT NULL,
     content_id character varying,
     visually_collapsed boolean DEFAULT false,
-    email_alert_signup_content_id character varying
+    email_alert_signup_content_id character varying,
+    include_on_homepage boolean DEFAULT true
 );
 
 
@@ -840,6 +841,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160630082357');
 INSERT INTO schema_migrations (version) VALUES ('20160729100003');
 
 INSERT INTO schema_migrations (version) VALUES ('20160816150906');
+
+INSERT INTO schema_migrations (version) VALUES ('20160914133843');
 
 INSERT INTO schema_migrations (version) VALUES ('20161208103043');
 

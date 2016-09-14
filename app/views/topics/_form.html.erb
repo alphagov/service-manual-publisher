@@ -32,6 +32,12 @@
             By default the sections of a topic will be expanded. Setting this option will show all the sections collapsed, but expandable, when the user visits the page.
           </div>
         </div>
+        <div class="form-group">
+          <%= f.label :include_on_homepage do %>
+            <%= f.check_box :include_on_homepage %>
+            Include on homepage?
+          <% end %>
+        </div>
       </div>
 
       <div class="well">

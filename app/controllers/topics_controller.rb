@@ -90,6 +90,7 @@ private
       :title,
       :description,
       :visually_collapsed,
+      :include_on_homepage,
       content_owner_ids: [],
       topic_sections_attributes: [
         :id,
