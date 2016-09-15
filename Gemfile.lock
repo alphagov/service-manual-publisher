@@ -129,6 +129,7 @@ GEM
       rails (>= 3.2.0)
     hashdiff (0.3.0)
     hashie (3.4.4)
+    highline (1.7.8)
     htmlentities (4.3.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -363,6 +364,7 @@ DEPENDENCIES
   govuk-content-schema-test-helpers
   govuk-lint
   govuk_admin_template
+  highline
   jasmine
   kaminari
   launchy
