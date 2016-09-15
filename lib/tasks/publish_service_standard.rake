@@ -1,7 +1,6 @@
 desc "Save draft and publish the service standard"
 task publish_service_standard: :environment do
-  service_standard_for_publication =
-    ServiceStandardPresenter.new(Point.all)
+  service_standard_for_publication = ServiceStandardPresenter.new
 
   PUBLISHING_API.put_content(
     service_standard_for_publication.content_id,
