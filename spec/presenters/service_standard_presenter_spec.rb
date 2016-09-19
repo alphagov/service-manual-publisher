@@ -9,10 +9,17 @@ RSpec.describe ServiceStandardPresenter, "#content_id" do
 end
 
 RSpec.describe ServiceStandardPresenter, "#content_payload" do
+  it "returns a payload that validates against the service standard schema" do
+    payload = described_class.new.content_payload
+
+    expect(payload).to be_valid_against_schema 'service_manual_service_standard'
+  end
+
   it "returns a hash suitable for a service standard draft" do
     expected_payload = {
       base_path: '/service-manual/service-standard',
       document_type: 'service_manual_service_standard',
+      locale: 'en',
       phase: 'beta',
       publishing_app: 'service-manual-publisher',
       rendering_app: 'service-manual-frontend',
