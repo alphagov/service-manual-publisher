@@ -10,7 +10,7 @@ class ServiceStandardSearchIndexer
       'service_manual_guide',
       @service_standard[:base_path],
       format:            'service_manual_guide',
-      description:       @service_standard[:details][:introduction],
+      description:       @service_standard[:description],
       indexable_content: @service_standard[:details][:body],
       title:             @service_standard[:title],
       link:              @service_standard[:base_path],
