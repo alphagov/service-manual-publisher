@@ -41,13 +41,12 @@ private
   end
 
   def save_draft(topic)
-    TopicPublisher.new(content_model: topic).save_draft(TopicPresenter.new(topic))
+    TopicPublisher.new(topic: topic).save_draft
   end
 
   def publish(topic)
-    TopicPublisher.new(content_model: topic).publish.tap do |response|
+    TopicPublisher.new(topic: topic).publish.tap do |response|
       if response.success?
-        GuideTaggerJob.batch_perform_later(topic)
         TopicSearchIndexer.new(topic).index
       end
     end

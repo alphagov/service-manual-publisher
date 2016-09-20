@@ -32,6 +32,10 @@ class GuidePresenter
       organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
     }
 
+    if guide.topic
+      links[:service_manual_topics] = [guide.topic.content_id]
+    end
+
     if edition.content_owner
       links[:content_owners] = [edition.content_owner.content_id]
     end
@@ -51,7 +55,8 @@ private
     details_hash = {
       body: govspeak_body.to_html,
       header_links: level_two_headers,
-      change_history: ChangeHistoryPresenter.new(guide, edition).change_history
+      change_history: ChangeHistoryPresenter.new(guide, edition).change_history,
+      change_note: latest_change_note_for_email_notification
     }
 
     if guide.is_a?(Point)
@@ -63,6 +68,10 @@ private
 
   def govspeak_body
     Govspeak::Document.new(edition.body)
+  end
+
+  def latest_change_note_for_email_notification
+    edition.change_note
   end
 
   def level_two_headers

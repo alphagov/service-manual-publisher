@@ -344,7 +344,8 @@ CREATE TABLE topics (
     title character varying NOT NULL,
     description character varying NOT NULL,
     content_id character varying,
-    visually_collapsed boolean DEFAULT false
+    visually_collapsed boolean DEFAULT false,
+    email_alert_signup_content_id character varying
 );
 
 
@@ -675,6 +676,13 @@ CREATE INDEX index_topics_on_content_id ON topics USING btree (content_id);
 
 
 --
+-- Name: index_topics_on_email_alert_signup_content_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_topics_on_email_alert_signup_content_id ON topics USING btree (email_alert_signup_content_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -830,4 +838,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160520134625');
 INSERT INTO schema_migrations (version) VALUES ('20160630082357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160729100003');
+
+INSERT INTO schema_migrations (version) VALUES ('20160816150906');
 

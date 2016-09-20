@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Topic do
+  it "generates a random guid for the email content signup's content id" do
+    topic = Topic.create
+
+    expect(
+      topic.email_alert_signup_content_id
+    ).to match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/)
+  end
+
   it "allows setting the topic path that starts with '/service-manual/'" do
     topic = build(:topic, path: "/service-manual/hello")
     topic.valid?
