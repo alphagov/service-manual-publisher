@@ -24,4 +24,14 @@ class ServiceStandardPresenter
       }
     }
   end
+
+  def links_payload
+    {
+      links: {
+        email_alert_signup: [
+          ServiceStandardEmailAlertSignupPresenter::SERVICE_STANDARD_EMAIL_ALERT_SIGNUP_CONTENT_ID
+        ]
+      }
+    }
+  end
 end
