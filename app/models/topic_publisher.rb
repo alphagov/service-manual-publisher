@@ -8,7 +8,7 @@ class TopicPublisher
 
   def save_draft
     topic_presenter = TopicPresenter.new(topic)
-    email_alert_signup_presenter = EmailAlertSignupPresenter.new(topic)
+    email_alert_signup_presenter = TopicEmailAlertSignupPresenter.new(topic)
 
     save_catching_gds_api_errors do
       publishing_api.put_content(topic_presenter.content_id, topic_presenter.content_payload)

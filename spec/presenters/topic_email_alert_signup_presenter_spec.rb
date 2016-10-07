@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe EmailAlertSignupPresenter, '#content_payload' do
+RSpec.describe TopicEmailAlertSignupPresenter, '#content_payload' do
   it 'conforms to the schema' do
     presenter = described_class.new(create(:topic))
 
@@ -83,7 +83,7 @@ RSpec.describe EmailAlertSignupPresenter, '#content_payload' do
   end
 end
 
-RSpec.describe EmailAlertSignupPresenter, '#content_id' do
+RSpec.describe TopicEmailAlertSignupPresenter, '#content_id' do
   it 'uses the email alert signup content id from the topic' do
     topic = create :topic
     presenter = described_class.new(topic)
