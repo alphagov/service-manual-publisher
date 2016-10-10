@@ -11,10 +11,10 @@ class TopicPublisher
     email_alert_signup_presenter = EmailAlertSignupPresenter.new(topic)
 
     save_catching_gds_api_errors do
+      publishing_api.put_content(email_alert_signup_presenter.content_id, email_alert_signup_presenter.content_payload)
+
       publishing_api.put_content(topic_presenter.content_id, topic_presenter.content_payload)
       publishing_api.patch_links(topic_presenter.content_id, topic_presenter.links_payload)
-
-      publishing_api.put_content(email_alert_signup_presenter.content_id, email_alert_signup_presenter.content_payload)
     end
   end
 
