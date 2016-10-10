@@ -9,7 +9,7 @@ class ServiceStandardEmailAlertSignupPresenter
     {
       base_path: '/service-manual/service-standard/email-signup',
       details: {
-        summary: "You'll receive an email whenever a point is created or updated within the service standard.",
+        summary: "You'll receive an email whenever the Digital Service Standard is updated.",
         subscriber_list: {
           document_type: 'service_manual_guide',
           links: {
