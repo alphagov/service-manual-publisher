@@ -1,4 +1,4 @@
-class EmailAlertSignupPresenter
+class TopicEmailAlertSignupPresenter
   def initialize(topic)
     @topic = topic
   end
