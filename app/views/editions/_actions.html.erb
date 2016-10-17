@@ -4,8 +4,12 @@
 
       <% edition_policy = EditionPolicy.new(current_user, edition) %>
 
-      <% if edition_policy.can_preview? %>
+      <% if edition_policy.can_preview? && edition_policy.can_discard_draft? %>
         <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
+      <% end %>
+
+      <% if guide.can_be_unpublished? %>
+        <%= link_to "View on website", [Plek.new.website_root, guide.slug].join(''), class: 'btn btn-default add-right-margin' %>
       <% end %>
 
       <% if !publish_controls_only %>

@@ -374,3 +374,56 @@ RSpec.describe "Guide publishing action buttons", type: :feature do
     expect(page).to     have_button("Publish")
   end
 end
+
+RSpec.describe "'View' and 'Preview' buttons", type: :feature do
+  describe "a draft guide" do
+    before do
+      guide = create(:guide, :with_draft_edition,
+        slug: "/service-manual/topic-name/new-guide",
+        )
+      visit edit_guide_path(guide)
+    end
+
+    it "has a 'Preview' link" do
+      expect(page).to have_link "Preview", href: "http://draft-origin.dev.gov.uk/service-manual/topic-name/new-guide"
+    end
+
+    it "does not have a 'View on website' button" do
+      expect(page).to_not have_button "View on website"
+    end
+  end
+
+  describe "a published guide" do
+    before do
+      guide = create(:guide, :with_published_edition,
+        slug: "/service-manual/topic-name/just-published",
+        )
+      visit edit_guide_path(guide)
+    end
+
+    it "does not have a 'Preview' link" do
+      expect(page).to_not have_button "Preview"
+    end
+
+    it "has a 'View on website' link" do
+      expect(page).to have_link "View on website", href: "http://www.dev.gov.uk/service-manual/topic-name/just-published"
+    end
+  end
+
+  describe "a draft that was previously published" do
+    before do
+      guide = create(:guide, :with_previously_published_edition,
+        slug: "/service-manual/topic-name/published-guide",
+      )
+      visit edit_guide_path(guide)
+    end
+
+    it "has a 'Preview' link" do
+      expect(page).to have_link "Preview", href: "http://draft-origin.dev.gov.uk/service-manual/topic-name/published-guide"
+    end
+
+    it "has a 'View on website' link" do
+      expect(page).to have_link "View on website", href: "http://www.dev.gov.uk/service-manual/topic-name/published-guide"
+    end
+  end
+end
