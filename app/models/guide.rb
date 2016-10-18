@@ -7,7 +7,7 @@ class Guide < ActiveRecord::Base
   validate :topic_cannot_change, if: :requires_topic?
 
   has_many :editions, dependent: :destroy
-  has_many :topic_section_guides, autosave: true
+  has_many :topic_section_guides, dependent: :destroy, autosave: true
 
   scope :only_latest_edition, -> {
     joins(:editions)
