@@ -373,3 +373,19 @@ RSpec.describe Guide, ".not_unpublished" do
     expect(Guide.not_unpublished).to match_array(relevant_guides + [guide_community])
   end
 end
+
+RSpec.describe Guide, ".destroy" do
+  it "destroys any associated editions" do
+    guide = create(:guide, :with_draft_edition)
+    guide.destroy
+
+    expect(Edition.where(guide_id: guide.id).count).to eq 0
+  end
+
+  it "destroys any associations with topic sections" do
+    guide = create(:guide)
+    guide.destroy
+
+    expect(TopicSectionGuide.where(guide_id: guide.id).count).to eq 0
+  end
+end
