@@ -1,5 +1,5 @@
-desc "Print out guide details"
-task print_guide_details: :environment do
+desc "Print the change history for all published guides"
+task print_change_history_for_published_guides: :environment do
   Guide.live.find_each do |guide|
     editions = guide.editions.published.major
     if editions.any?
@@ -17,5 +17,4 @@ task print_guide_details: :environment do
       puts ""
     end
   end
-
 end
