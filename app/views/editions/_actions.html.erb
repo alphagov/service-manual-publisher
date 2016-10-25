@@ -4,7 +4,7 @@
 
       <% edition_policy = EditionPolicy.new(current_user, edition) %>
 
-      <% if edition_policy.can_preview? && edition_policy.can_discard_draft? %>
+      <% if edition_policy.can_preview? %>
         <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
       <% end %>
 

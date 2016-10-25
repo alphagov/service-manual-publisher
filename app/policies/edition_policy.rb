@@ -17,7 +17,7 @@ class EditionPolicy
   end
 
   def can_discard_draft?
-    !Edition::STATES_THAT_UPDATE_THE_FRONTEND.include?(edition.state)
+    is_being_edited?
   end
 
   def can_discard_new_draft?
@@ -25,7 +25,7 @@ class EditionPolicy
   end
 
   def can_preview?
-    edition.persisted?
+    edition.persisted? && is_being_edited?
   end
 
 private
@@ -42,5 +42,9 @@ private
 
   def allow_self_approval?
     ENV['ALLOW_SELF_APPROVAL'].present?
+  end
+
+  def is_being_edited?
+    !Edition::STATES_THAT_UPDATE_THE_FRONTEND.include?(edition.state)
   end
 end
