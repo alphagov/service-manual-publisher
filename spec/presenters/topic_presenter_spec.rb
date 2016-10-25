@@ -114,9 +114,9 @@ RSpec.describe TopicPresenter, "#links_payload" do
   end
 
   it "contains content_owners content ids" do
-    guide1 = create(:guide, :with_draft_edition)
-    guide2 = create(:guide, :with_draft_edition)
-    guide3 = create(:guide, :with_draft_edition)
+    guide1 = create(:guide, :with_published_edition)
+    guide2 = create(:guide, :with_published_edition)
+    guide3 = create(:guide, :with_published_edition)
     topic = create_topic_in_groups([[guide1], [guide2, guide3]])
     presented_topic = described_class.new(topic)
 
@@ -129,10 +129,24 @@ RSpec.describe TopicPresenter, "#links_payload" do
     expect(content_owner_content_ids).to match_array(guide_community_content_ids)
   end
 
+  it "contains content owners for only published guides" do
+    community1 = create(:guide_community)
+    community2 = create(:guide_community)
+
+    guide1 = create(:guide, :with_published_edition, edition: { content_owner: community1 })
+    guide2 = create(:guide, :with_draft_edition, edition: { content_owner: community2 })
+    topic = create_topic_in_groups([[guide1], [guide2]])
+    presented_topic = described_class.new(topic)
+
+    content_owner_content_ids = presented_topic.links_payload[:links][:content_owners]
+
+    expect(content_owner_content_ids).to eq([community1.content_id])
+  end
+
   it "contains unique content_owners content ids" do
     guide_community = create(:guide_community)
-    guide1 = create(:guide, editions: [build(:edition, content_owner: guide_community)])
-    guide2 = create(:guide, editions: [build(:edition, content_owner: guide_community)])
+    guide1 = create(:guide, :with_published_edition, edition: { content_owner: guide_community })
+    guide2 = create(:guide, :with_published_edition, edition: { content_owner: guide_community })
     topic = create_topic_in_groups([[guide1], [guide2]])
     presented_topic = described_class.new(topic)
 

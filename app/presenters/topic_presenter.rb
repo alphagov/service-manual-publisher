@@ -55,7 +55,7 @@ private
   end
 
   def content_owner_content_ids
-    content_ids = topic.guides.map do |guide|
+    content_ids = topic.guides.live.map do |guide|
       edition = guide.latest_edition
 
       edition.content_owner.content_id if edition.content_owner
