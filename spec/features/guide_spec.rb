@@ -1,37 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "creating guides", type: :feature do
+RSpec.describe "Creating a guide", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
-  before do
-    topic1 = create(:topic, title: "My Topic Number 1", path: "/service-manual/topic-path1")
-    topic2 = create(:topic, title: "My Topic Number 2", path: "/service-manual/topic-path2")
-    create(:topic_section, topic: topic1, title: "My Topic Section Number 1")
-    create(:topic_section, topic: topic2, title: "My Topic Section Number 2")
-
-    edition = build(
-      :edition,
-      content_owner: nil,
-      title: "Technology Community"
-    )
-    create(:guide_community, editions: [edition])
-
-    topic = create(:topic)
-    create(:topic_section, topic: topic)
-    visit root_path
-    click_link "Create a Guide"
-
-    allow_any_instance_of(GuideSearchIndexer).to receive(:index)
-    allow_any_instance_of(Guide).to receive(:topic).and_return topic
-  end
-
-  let(:topic) do
-    create(:topic)
-  end
-
-  it "saves draft guide editions" do
-    fill_in_guide_form
-
+  scenario "Save a new guide" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .twice
@@ -39,6 +11,12 @@ RSpec.describe "creating guides", type: :feature do
     expect(api_double).to receive(:patch_links)
       .twice
       .with(an_instance_of(String), an_instance_of(Hash))
+
+    create(:guide_community, title: 'Technology Community')
+    create(:topic_section, title: 'Relevant topic section')
+    visit root_path
+    click_link "Create a Guide"
+    fill_in_guide_form
 
     click_first_button "Save"
 
@@ -87,9 +65,7 @@ RSpec.describe "creating guides", type: :feature do
     expect(page).to have_select("Community", selected: "Technology Community")
   end
 
-  it "publishes guide editions" do
-    fill_in_guide_form
-
+  scenario "Review and publish a guide" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
@@ -100,11 +76,21 @@ RSpec.describe "creating guides", type: :feature do
     expect(api_double).to receive(:publish)
       .once
       .with(an_instance_of(String), 'major')
+    stub_any_rummager_post
 
+    create(:guide_community, title: 'Technology Community')
+    create(:topic_section, title: 'Relevant topic section')
+    visit root_path
+    click_link "Create a Guide"
+    fill_in_guide_form
     click_first_button "Save"
     guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
     visit edit_guide_path(guide)
     click_first_button "Send for review"
+
+    within ".alert-success" do
+      expect(page).to have_content('A review has been requested')
+    end
 
     guide.latest_edition.tap do |edition|
       # set editor to another user so we can approve this edition
@@ -115,12 +101,18 @@ RSpec.describe "creating guides", type: :feature do
     visit edit_guide_path(guide)
     click_first_button "Approve for publication"
 
+    within ".alert-success" do
+      expect(page).to have_content('Thanks for approving this guide')
+    end
+
     visit edit_guide_path(guide)
     click_first_button "Publish"
 
     within ".alert-success" do
       expect(page).to have_content('published')
     end
+
+    assert_rummager_posted_item(title: 'First Edition Title')
 
     guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
@@ -129,63 +121,46 @@ RSpec.describe "creating guides", type: :feature do
     expect(edition.published?).to eq true
   end
 
-  it "displays an alert if communication with the publishing-api fails" do
-    api_error = GdsApi::HTTPClientError.new(
-      422,
-      "An error occurred",
-      "error" => { "message" => "An error occurred" }
-    )
-    expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
+  context "when the publishing-api returns an error" do
+    it "displays the error to the user" do
+      api_error = GdsApi::HTTPClientError.new(
+        422,
+        "An error occurred",
+        "error" => { "message" => "An error occurred" }
+      )
+      expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
-    fill_in_guide_form
-    click_first_button "Save"
+      create(:guide_community, title: 'Technology Community')
+      create(:topic_section, title: 'Relevant topic section')
+      visit root_path
+      click_link "Create a Guide"
+      fill_in_guide_form
+      click_first_button "Save"
 
-    within ".full-error-list" do
-      expect(page).to have_content("An error occurred")
+      within ".full-error-list" do
+        expect(page).to have_content("An error occurred")
+      end
     end
   end
 
   it "does not show the 'About this update' fields for the first version" do
+    visit root_path
+    click_link "Create a Guide"
+
+    # Prove that we're looking at the form
+    expect(page).to have_field("Title")
+
     expect(page).to_not have_field("Major update")
     expect(page).to_not have_field("Minor update")
     expect(page).to_not have_field("Summary of change")
     expect(page).to_not have_field("Why the change is being made")
   end
 
-  describe "action buttons" do
-    it "a new guide can only be sent for review" do
-      guide = create(:guide, :with_draft_edition)
-      visit edit_guide_path(guide)
-
-      expect(page).to     have_button("Send for review")
-      expect(page).to_not have_button("Approve for publication")
-      expect(page).to_not have_button("Publish")
-    end
-
-    it "a review requested guide can only be approved" do
-      guide = create(:guide, :with_review_requested_edition)
-      visit edit_guide_path(guide)
-
-      expect(page).to_not have_button("Send for review")
-      expect(page).to     have_button("Approve for publication")
-      expect(page).to_not have_button("Publish")
-    end
-
-    it "a ready guide can only be published" do
-      guide = create(:guide, :with_ready_edition)
-      visit edit_guide_path(guide)
-
-      expect(page).to_not have_button("Send for review")
-      expect(page).to_not have_button("Approve for publication")
-      expect(page).to     have_button("Publish")
-    end
-  end
-
 private
 
   def fill_in_guide_form
     fill_in_final_url "/service-manual/the/path"
-    select TopicSection.first.title, from: "Topic section"
+    select 'Relevant topic section', from: "Topic section"
     select "Technology Community", from: "Community"
     fill_in "Description", with: "This guide acts as a test case"
 
@@ -194,8 +169,50 @@ private
   end
 end
 
-RSpec.describe "Updating guides", type: :feature do
-  context "the guide has previously been published" do
+RSpec.describe "Updating a guide", type: :feature do
+  let(:api_double) { double(:publishing_api) }
+
+  context "when the guide has previously been published" do
+    it "creates a new draft version" do
+      allow_any_instance_of(GuideSearchIndexer).to receive(:index)
+      stub_const("PUBLISHING_API", api_double)
+      expect(api_double).to receive(:put_content)
+        .once
+        .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+      expect(api_double).to receive(:patch_links)
+        .once
+        .with(an_instance_of(String), an_instance_of(Hash))
+      guide = create(:guide, :with_published_edition, title: "Scrum")
+
+      expect(guide.editions.count).to eq(4)
+      expect(guide.editions.order(:created_at).last.version).to eq(1)
+
+      visit guides_path
+      within_guide_index_row("Scrum") do
+        click_link "Scrum"
+      end
+
+      fill_in "Title", with: "Agile"
+      fill_in "Summary of change", with: "Updated the title"
+      fill_in "Why the change is being made", with: "Because the user's demand it"
+      click_first_button 'Save'
+
+      expect(guide.editions.count).to eq(5)
+      expect(guide.editions.order(:created_at).last.version).to eq(2)
+    end
+
+    it "the new draft defaults to a major update and the new change note is empty" do
+      create(:guide, :with_published_edition, title: "A guide to agile")
+
+      visit guides_path
+      within_guide_index_row("A guide to agile") do
+        click_link "A guide to agile"
+      end
+
+      expect(find_field("Why the change is being made").value).to be_blank
+      expect(find_field("Major update")).to be_checked
+    end
+
     it "prevents users from editing the url slug" do
       @guide = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/something")
 
@@ -203,6 +220,23 @@ RSpec.describe "Updating guides", type: :feature do
 
       expect(find('input.guide-slug')['disabled']).to be_present
     end
+  end
+
+  scenario "Changing the author" do
+    stub_any_publishing_api_put_content
+    stub_any_publishing_api_patch_links
+
+    guide = create(:guide, :with_draft_edition)
+    new_author = create(:user, name: "New Editor")
+
+    visit edit_guide_path(guide)
+    select "New Editor", from: "Author"
+    click_first_button "Save"
+
+    # reload the page to be sure the data has saved
+    visit edit_guide_path(guide)
+
+    expect(page).to have_select("Author", selected: "New Editor")
   end
 
   it "shows the summary of validation errors" do
@@ -241,25 +275,102 @@ RSpec.describe "Updating guides", type: :feature do
     end
   end
 
-  it 'displays an alert if it fails' do
-    guide = create(
-      :guide,
-      :with_draft_edition,
-      slug: "/service-manual/topic-name/something"
-    )
+  context "when the publishing-api returns an error" do
+    it "displays the error to the user" do
+      guide = create(
+        :guide,
+        :with_draft_edition,
+        slug: "/service-manual/topic-name/something"
+      )
 
-    api_error = GdsApi::HTTPClientError.new(
-      422,
-      "An error occurred",
-      "error" => { "message" => "An error occurred" }
-    )
-    expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
+      api_error = GdsApi::HTTPClientError.new(
+        422,
+        "An error occurred",
+        "error" => { "message" => "An error occurred" }
+      )
+      expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
-    visit edit_guide_path(guide)
-    click_first_button "Save"
+      visit edit_guide_path(guide)
+      click_first_button "Save"
 
-    within ".full-error-list" do
-      expect(page).to have_content("An error occurred")
+      within ".full-error-list" do
+        expect(page).to have_content("An error occurred")
+      end
     end
+
+    it "keeps the changes made in form fields" do
+      guide = create(:guide, :with_published_edition)
+
+      api_error = GdsApi::HTTPClientError.new(
+        422,
+        "An error occurred",
+        "error" => { "message" => "An error occurred" }
+      )
+      expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
+
+      visit edit_guide_path(guide)
+      fill_in "Title", with: "Updated Title"
+      fill_in "Summary of change", with: "Update Title"
+      fill_in "Why the change is being made", with: "It was out of date"
+      click_first_button 'Save'
+
+      within ".full-error-list" do
+        expect(page).to have_content('An error occurred')
+      end
+
+      expect(page).to have_field("Title", with: "Updated Title")
+    end
+
+    it "shows the current state of the guide" do
+      guide = create(:guide, :with_ready_edition)
+
+      visit edit_guide_path(guide)
+
+      api_error = GdsApi::HTTPClientError.new(
+        422,
+        "An error occurred",
+        "error" => { "message" => "An error occurred" }
+      )
+      expect(PUBLISHING_API).to receive(:publish).and_raise(api_error)
+
+      click_first_button "Publish"
+
+      within ".alert" do
+        expect(page).to have_content('An error occurred')
+      end
+
+      within ".label" do
+        expect(page).to have_content('Ready')
+      end
+    end
+  end
+end
+
+RSpec.describe "Guide publishing action buttons", type: :feature do
+  scenario "A new guide can only be sent for review" do
+    guide = create(:guide, :with_draft_edition)
+    visit edit_guide_path(guide)
+
+    expect(page).to     have_button("Send for review")
+    expect(page).to_not have_button("Approve for publication")
+    expect(page).to_not have_button("Publish")
+  end
+
+  scenario "A review requested guide can only be approved" do
+    guide = create(:guide, :with_review_requested_edition)
+    visit edit_guide_path(guide)
+
+    expect(page).to_not have_button("Send for review")
+    expect(page).to     have_button("Approve for publication")
+    expect(page).to_not have_button("Publish")
+  end
+
+  scenario "A ready guide can only be published" do
+    guide = create(:guide, :with_ready_edition)
+    visit edit_guide_path(guide)
+
+    expect(page).to_not have_button("Send for review")
+    expect(page).to_not have_button("Approve for publication")
+    expect(page).to     have_button("Publish")
   end
 end
