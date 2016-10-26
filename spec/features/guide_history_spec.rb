@@ -138,6 +138,8 @@ RSpec.describe "Guide history", type: :feature do
 
     click_link "Edition #1"
 
+    expect(page).to have_css(".alert", text: "You're looking at a past edition of this guide")
+
     within_guide_history_edition(1) do
       expect(page).to have_css(".event", text: "New draft created")
     end

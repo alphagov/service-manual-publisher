@@ -52,4 +52,15 @@ RSpec.describe 'Guide index', type: :feature do
       expect(page).to have_content "Minor update"
     end
   end
+
+  it 'displays the status of a guide' do
+    create(:guide, :with_ready_edition, slug: '/service-manual/topic-name/something', title: 'Something')
+
+    visit root_path
+    within_guide_index_row('Something') do
+      within '.label' do
+        expect(page).to have_content 'Ready'
+      end
+    end
+  end
 end

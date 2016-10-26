@@ -40,13 +40,15 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
         change_note: "Guidance first published",
         reason_for_change: nil,
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z"
+        created_at: "2016-06-25T14:16:21Z",
+        version: 1,
       ),
       *draft_edition(
         change_note: "Big content change",
         reason_for_change: "Needed updating",
         update_type: "major",
-        created_at: "2016-06-28T14:16:21Z"
+        created_at: "2016-06-28T14:16:21Z",
+        version: 2,
       )
     ]
 

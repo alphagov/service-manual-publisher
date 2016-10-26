@@ -120,6 +120,15 @@ RSpec.describe GuideForm, "#initialize" do
 
       expect(guide_form.title_slug).to eq("my-guide")
     end
+
+    it "loads the version" do
+      edition = build(:edition, body: "A great body", version: 3)
+      guide = create(:guide, editions: [edition])
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+
+      expect(guide_form.version).to eq(3)
+    end
   end
 
   context "for an existing published guide" do
