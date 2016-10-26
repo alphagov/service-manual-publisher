@@ -77,9 +77,15 @@ FactoryGirl.define do
     # edition.
     after(:build) do |guide, evaluator|
       if guide.editions.empty?
+        version = 1
+
         evaluator.states.each do |state|
           edition_attributes = evaluator.edition || { title: evaluator.title, body: evaluator.body }
-          guide.editions << create(evaluator.edition_factory, state, **edition_attributes, guide: guide)
+          guide.editions << create(evaluator.edition_factory, state, **edition_attributes, guide: guide, version: version)
+
+          if state == :published
+            version += 1
+          end
         end
       end
     end

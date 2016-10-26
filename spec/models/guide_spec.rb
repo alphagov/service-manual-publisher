@@ -156,8 +156,8 @@ RSpec.describe Guide do
 
     it "does not return duplicates" do
       create(:guide, editions: [
-        create(:edition, :draft, title: "dictionary"),
-        create(:edition, :published, title: "thesaurus")
+        build(:edition, :draft, title: "dictionary"),
+        build(:edition, :published, title: "thesaurus")
       ])
 
       expect(described_class.search("dictionary").count).to eq 0
@@ -196,8 +196,8 @@ end
 RSpec.describe Guide, "#editions_since_last_published" do
   it "returns editions since last published" do
     guide = create(:guide, :with_published_edition)
-    edition1 = build(:edition)
-    edition2 = build(:edition)
+    edition1 = build(:edition, version: 2)
+    edition2 = build(:edition, version: 2)
     guide.editions << edition1
     guide.editions << edition2
 

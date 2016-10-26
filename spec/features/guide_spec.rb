@@ -227,7 +227,7 @@ RSpec.describe "Updating a guide", type: :feature do
     stub_any_publishing_api_patch_links
 
     guide = create(:guide, :with_draft_edition)
-    new_author = create(:user, name: "New Editor")
+    create(:user, name: "New Editor")
 
     visit edit_guide_path(guide)
     select "New Editor", from: "Author"

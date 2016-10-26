@@ -28,6 +28,7 @@ class Edition < ActiveRecord::Base
   validates :change_note, presence: true, if: :major?
   validates :version, presence: true
   validates :created_by, presence: true
+  validate :cannot_make_a_draft_for_a_published_version
 
   auto_strip_attributes(
     :title,
@@ -71,5 +72,15 @@ private
 
   def first_version?
     (version || 1) == 1
+  end
+
+  def cannot_make_a_draft_for_a_published_version
+    return unless state == 'draft'
+
+    scope = self.class.published.where(guide_id: guide_id, version: version)
+
+    if scope.any?
+      errors.add(:version, 'has already been published')
+    end
   end
 end

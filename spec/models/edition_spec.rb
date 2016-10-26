@@ -73,6 +73,14 @@ RSpec.describe Edition, type: :model do
       expect(edition.errors.full_messages_for(:version).size).to eq 1
     end
 
+    it "does not allow a new draft for a version that has been published" do
+      guide = create(:guide, :with_published_edition)
+      edition = Edition.new(guide: guide, state: 'draft', version: 1)
+
+      expect(edition).to be_invalid
+      expect(edition.errors[:version]).to include('has already been published')
+    end
+
     describe "state" do
       it "allows 'published' state" do
         edition = build(:edition, :published)
