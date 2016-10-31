@@ -89,7 +89,7 @@ class Guide < ActiveRecord::Base
     editions.published.any?
   end
 
-  def can_be_unpublished?
+  def has_been_published?
     has_any_published_editions? && !has_any_unpublished_editions?
   end
 

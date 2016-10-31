@@ -205,15 +205,15 @@ RSpec.describe Guide, "#editions_since_last_published" do
   end
 end
 
-RSpec.describe Guide, "#can_be_unpublished?" do
+RSpec.describe Guide, "#has_been_published?" do
   it "returns true if the guide has been published" do
     guide = create(:guide, :with_published_edition)
-    expect(guide.can_be_unpublished?).to be true
+    expect(guide.has_been_published?).to be true
   end
 
   it "returns false if the guide has been unpublished" do
     guide = create(:guide, :has_been_unpublished)
-    expect(guide.can_be_unpublished?).to be false
+    expect(guide.has_been_published?).to be false
   end
 end
 

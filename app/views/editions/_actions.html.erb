@@ -8,6 +8,10 @@
         <%= link_to "Preview", preview_content_model_url(guide), class: 'btn btn-default add-right-margin' %>
       <% end %>
 
+      <% if guide.has_been_published? %>
+        <%= link_to "View on website", [Plek.new.website_root, guide.slug].join(''), class: 'btn btn-default add-right-margin' %>
+      <% end %>
+
       <% if !publish_controls_only %>
         <%= form.submit "Save", class: 'btn btn-default add-right-margin js-ok-to-navigate-away', name: :save, disabled: edition.unpublished? %>
       <% end %>
@@ -44,7 +48,7 @@
             %>
         <% end %>
 
-        <% if guide.can_be_unpublished? %>
+        <% if guide.has_been_published? %>
           <%= link_to "Unpublish", unpublish_guide_path(guide), class: 'btn btn-danger pull-right' %>
         <% end %>
 
