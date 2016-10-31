@@ -20,6 +20,16 @@ RSpec.describe GuideManager, '#request_review!' do
 
     expect(guide.latest_edition.created_by).to eq(user)
   end
+
+  it "is successful" do
+    user = create(:user)
+    guide = create(:guide, :with_draft_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    result = manager.request_review!
+
+    expect(result).to be_success
+  end
 end
 
 RSpec.describe GuideManager, '#approve_for_publication!' do
@@ -53,6 +63,16 @@ RSpec.describe GuideManager, '#approve_for_publication!' do
     expect(
       ActionMailer::Base.deliveries.last.subject
     ).to include("ready for publishing")
+  end
+
+  it "is successful" do
+    user = create(:user)
+    guide = create(:guide, :with_review_requested_edition)
+
+    manager = described_class.new(guide: guide, user: user)
+    result = manager.approve_for_publication!
+
+    expect(result).to be_success
   end
 end
 

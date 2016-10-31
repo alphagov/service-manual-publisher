@@ -120,6 +120,25 @@ RSpec.describe GuideForm, "#initialize" do
 
       expect(guide_form.title_slug).to eq("my-guide")
     end
+
+    it "loads the version" do
+      edition = build(:edition, body: "A great body", version: 3)
+      guide = create(:guide, editions: [edition])
+
+      guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+
+      expect(guide_form.version).to eq(3)
+    end
+
+    it "loads the fingerprint_when_started_editing" do
+      guide_community = create(:guide_community)
+      edition = build(:edition, content_owner: guide_community)
+      guide = create(:guide, editions: [edition])
+
+      expect(
+        described_class.new(guide: guide, edition: edition, user: User.new).fingerprint_when_started_editing
+      ).to eq(edition.id.to_s)
+    end
   end
 
   context "for an existing published guide" do
