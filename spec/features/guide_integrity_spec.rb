@@ -12,7 +12,7 @@ RSpec.describe "Guide integrity", type: :feature do
       click_first_button "Save"
 
       within ".alert" do
-        expect(page).to have_content("The guide has changed since you started editing")
+        expect(page).to have_content("There have been changes since you started editing")
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe "Guide integrity", type: :feature do
       click_first_button 'Approve'
 
       within ".alert" do
-        expect(page).to have_content("The guide has changed since you started editing")
+        expect(page).to have_content("There have been changes since you started editing")
       end
     end
   end

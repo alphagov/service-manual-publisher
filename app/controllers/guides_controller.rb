@@ -82,7 +82,7 @@ private
     )
 
     if guide_has_changed_since_editing?(guide)
-      flash.now[:error] = "The guide has changed since you started editing"
+      flash.now[:error] = guide_has_changed_message
       render 'edit'
       return
     end
@@ -109,7 +109,7 @@ private
     @guide_form.assign_attributes(guide_form_params)
 
     if guide_has_changed_since_editing?(guide)
-      flash.now[:error] = "The guide has changed since you started editing"
+      flash.now[:error] = guide_has_changed_message
       render 'edit'
     elsif @guide_form.save
       redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
@@ -130,5 +130,10 @@ private
     else
       false
     end
+  end
+
+  def guide_has_changed_message
+    "There have been changes since you started editing. Your changes haven't been saved " \
+    "but are still visible in the form below."
   end
 end
