@@ -8,6 +8,8 @@ class GuideManager
     edition = build_clone_of_latest_edition
     edition.state = 'review_requested'
     edition.save!
+
+    ManageResult.new(true, [])
   end
 
   def approve_for_publication!
@@ -17,6 +19,8 @@ class GuideManager
     edition.save!
 
     NotificationMailer.ready_for_publishing(guide).deliver_later
+
+    ManageResult.new(true, [])
   end
 
   def publish

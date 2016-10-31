@@ -4,8 +4,8 @@ class BaseGuideForm
   include ActiveModel::Model
 
   attr_reader :guide, :edition, :user, :version
-  attr_accessor :author_id, :body, :reason_for_change, :change_note, :content_owner_id, :description, :slug,
-    :title, :title_slug, :type, :update_type
+  attr_accessor :author_id, :body, :reason_for_change, :change_note, :content_owner_id, :description,
+    :fingerprint_when_started_editing, :slug, :title, :title_slug, :type, :update_type
 
   delegate :persisted?, to: :guide
 
@@ -36,6 +36,8 @@ class BaseGuideForm
     self.type = guide.type
     self.update_type = next_update_type
     self.version = next_edition_version
+
+    self.fingerprint_when_started_editing = edition.fingerprint
 
     load_custom_attributes
 

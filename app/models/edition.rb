@@ -63,6 +63,10 @@ class Edition < ActiveRecord::Base
     [author, guide.latest_edition.author].uniq
   end
 
+  def fingerprint
+    id.to_s
+  end
+
 private
 
   def major_and_not_first_version?

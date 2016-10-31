@@ -35,9 +35,9 @@ class GuidesController < ApplicationController
     guide = Guide.find(params[:id])
 
     if params[:send_for_review].present?
-      manage!(guide, :request_review, message: "A review has been requested")
+      manage(guide, :request_review!, message: "A review has been requested")
     elsif params[:approve_for_publication].present?
-      manage!(guide, :approve_for_publication, message: "Thanks for approving this guide")
+      manage(guide, :approve_for_publication!, message: "Thanks for approving this guide")
     elsif params[:publish].present?
       manage(guide, :publish, message: "Guide has been published")
     elsif params[:discard].present?
@@ -71,18 +71,21 @@ class GuidesController < ApplicationController
 
 private
 
-  def manage!(guide, action, opts = {})
-    message = opts.fetch(:message, nil)
-
-    guide_manager = GuideManager.new(guide: guide, user: current_user)
-    guide_manager.public_send("#{action}!")
-
-    redirect_to edit_guide_path(guide), notice: message
-  end
-
   def manage(guide, action, opts = {})
     redirect = opts.fetch(:redirect, edit_guide_path(guide))
     message = opts.fetch(:message, nil)
+
+    @guide_form = GuideForm.build(
+      guide: guide,
+      edition: guide.latest_edition,
+      user: current_user
+    )
+
+    if guide_has_changed_since_editing?(guide)
+      flash.now[:error] = "The guide has changed since you started editing"
+      render 'edit'
+      return
+    end
 
     guide_manager = GuideManager.new(guide: guide, user: current_user)
     result = guide_manager.public_send(action)
@@ -90,12 +93,6 @@ private
     if result.success?
       redirect_to redirect, notice: message
     else
-      @guide_form = GuideForm.build(
-        guide: guide,
-        edition: guide.latest_edition,
-        user: current_user
-      )
-
       flash.now[:error] = result.errors
       render 'edit'
     end
@@ -111,7 +108,10 @@ private
     )
     @guide_form.assign_attributes(guide_form_params)
 
-    if @guide_form.save
+    if guide_has_changed_since_editing?(guide)
+      flash.now[:error] = "The guide has changed since you started editing"
+      render 'edit'
+    elsif @guide_form.save
       redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
     else
       render failure_template
@@ -120,5 +120,15 @@ private
 
   def guide_form_params
     params.fetch(:guide, {})
+  end
+
+  def guide_has_changed_since_editing?(guide)
+    edition = guide.latest_edition
+
+    if edition.present?
+      edition.fingerprint != guide_form_params[:fingerprint_when_started_editing]
+    else
+      false
+    end
   end
 end

@@ -15,6 +15,7 @@
 
   <%= f.hidden_field :type %>
   <%= f.hidden_field :version %>
+  <%= f.hidden_field :fingerprint_when_started_editing %>
 
   <div class="col-md-12">
     <%= render 'editions/actions', publish_controls_only: false, form: f, guide: guide, edition: edition %>
