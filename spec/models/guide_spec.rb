@@ -115,13 +115,17 @@ RSpec.describe Guide do
         expect(original_topic_section.reload.guides).to_not include guide
       end
 
-      it "isn't possible to change the topic" do
-        original_topic = create(:topic, path: "/service-manual/original-topic")
-        original_topic_section = create(:topic_section, topic: original_topic)
-        different_topic = create(:topic, path: "/service-manual/different-topic")
-        different_topic_section = create(:topic_section, topic: different_topic)
-        guide = create(:guide, :with_published_edition)
-        original_topic_section.guides << guide
+      it "isn't possible to change the topic for a published guide" do
+        original_topic_section = create(:topic_section, 
+          topic: create(:topic, path: "/service-manual/original-topic")
+        )
+        different_topic_section = create(:topic_section,
+          topic: create(:topic, path: "/service-manual/different-topic")
+        )
+
+        guide = create(:guide, :with_published_edition,
+          topic_section:  original_topic_section
+        )
 
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         guide.save
@@ -132,6 +136,28 @@ RSpec.describe Guide do
 
         expect(original_topic_section.reload.guides).to include guide
         expect(different_topic_section.reload.guides).to_not include guide
+      end
+
+      it "is possible to change the topic for a draft guide" do
+        original_topic_section = create(:topic_section, 
+          topic: create(:topic, path: "/service-manual/original-topic")
+        )
+        different_topic_section = create(:topic_section,
+          topic: create(:topic, path: "/service-manual/different-topic")
+        )
+
+        guide = create(:guide,
+          topic_section:  original_topic_section
+        )
+        guide.topic_section_guides[0].topic_section_id = different_topic_section.id
+        guide.save
+
+        expect(
+          guide.errors.full_messages_for(:topic_section)
+        ).to be_empty
+
+        expect(original_topic_section.reload.guides).not_to include guide
+        expect(different_topic_section.reload.guides).to include guide
       end
     end
 

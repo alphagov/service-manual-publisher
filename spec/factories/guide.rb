@@ -30,6 +30,7 @@ FactoryGirl.define do
       # a guide can't exist without an edition, so by default include one draft
       states [:draft]
       topic nil
+      topic_section nil
       requires_topic true
     end
 
@@ -66,7 +67,9 @@ FactoryGirl.define do
     end
 
     after(:build) do |guide, evaluator|
-      if evaluator.requires_topic
+      if evaluator.topic_section
+        guide.topic_section_guides.build(topic_section: evaluator.topic_section)
+      elsif evaluator.requires_topic
         topic_section = build(:topic_section, topic: evaluator.topic || build(:topic))
         guide.topic_section_guides.build(topic_section: topic_section)
       end

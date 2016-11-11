@@ -169,7 +169,7 @@ private
   end
 end
 
-RSpec.describe "Updating a guide", type: :feature, js: true do
+RSpec.describe "Updating a guide", type: :feature do
   let(:api_double) { double(:publishing_api) }
 
   context "when the guide has previously been published" do
@@ -241,7 +241,7 @@ RSpec.describe "Updating a guide", type: :feature, js: true do
   end
 
   context "when the guide has never previously been published" do
-    it "allows the user to edit the url slug" do
+    it "allows the user to edit the url slug", js: true do
       stub_any_publishing_api_put_content
       stub_any_publishing_api_patch_links
 
@@ -257,6 +257,29 @@ RSpec.describe "Updating a guide", type: :feature, js: true do
 
       expect(page).to have_field("Slug", with: "changed")
       expect(page).to have_field("Final URL", with: "/service-manual/test-topic/changed")
+    end
+
+    it "allows users to change the topic" do
+      stub_any_publishing_api_put_content
+      stub_any_publishing_api_patch_links
+
+      original_topic_section = create(:topic_section,
+        title: "Original Section",
+        topic: create(:topic, title: "Original Topic")
+      )
+      different_topic_section = create(:topic_section,
+        title: "Another Section",
+        topic: create(:topic, title: "Another Topic")
+      )
+      guide = create(:guide, topic_section: original_topic_section)
+
+      visit edit_guide_path(guide)
+      
+      select "Another Topic -> Another Section", from: "Topic section", exact: true
+      click_first_button "Save"
+
+      visit edit_guide_path(guide)
+      expect(page).to have_select("Topic section", selected: "Another Topic -> Another Section")
     end
   end
 
