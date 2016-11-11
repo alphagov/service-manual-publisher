@@ -235,7 +235,9 @@ RSpec.describe "Updating a guide", type: :feature do
       click_first_button "Save"
 
       within(".full-error-list") do
-        expect(page).to have_content("Topic section cannot change to a different topic")
+        expect(page).to have_content(
+          "Topic section can't be changed to a different topic as this guide has been published"
+        )
       end
     end
   end
@@ -267,14 +269,14 @@ RSpec.describe "Updating a guide", type: :feature do
         title: "Original Section",
         topic: create(:topic, title: "Original Topic")
       )
-      different_topic_section = create(:topic_section,
+      create(:topic_section,
         title: "Another Section",
         topic: create(:topic, title: "Another Topic")
       )
       guide = create(:guide, topic_section: original_topic_section)
 
       visit edit_guide_path(guide)
-      
+
       select "Another Topic -> Another Section", from: "Topic section", exact: true
       click_first_button "Save"
 

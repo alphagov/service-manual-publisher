@@ -134,7 +134,7 @@ private
 
   def slug_cant_be_changed
     if slug_changed?
-      errors.add(:slug, "can't be changed if guide has a published edition")
+      errors.add(:slug, "can't be changed as this guide has been published")
     end
   end
 
@@ -165,7 +165,7 @@ private
     new_section = TopicSection.find(to)
 
     if old_section.topic_id != new_section.topic_id
-      errors.add(:topic_section, "cannot change to a different topic")
+      errors.add(:topic_section, "can't be changed to a different topic as this guide has been published")
     end
   end
 end

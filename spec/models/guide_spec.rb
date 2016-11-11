@@ -116,7 +116,7 @@ RSpec.describe Guide do
       end
 
       it "isn't possible to change the topic for a published guide" do
-        original_topic_section = create(:topic_section, 
+        original_topic_section = create(:topic_section,
           topic: create(:topic, path: "/service-manual/original-topic")
         )
         different_topic_section = create(:topic_section,
@@ -132,14 +132,14 @@ RSpec.describe Guide do
 
         expect(
           guide.errors.full_messages_for(:topic_section)
-        ).to include("Topic section cannot change to a different topic")
+        ).to include("Topic section can't be changed to a different topic as this guide has been published")
 
         expect(original_topic_section.reload.guides).to include guide
         expect(different_topic_section.reload.guides).to_not include guide
       end
 
       it "is possible to change the topic for a draft guide" do
-        original_topic_section = create(:topic_section, 
+        original_topic_section = create(:topic_section,
           topic: create(:topic, path: "/service-manual/original-topic")
         )
         different_topic_section = create(:topic_section,
@@ -166,7 +166,9 @@ RSpec.describe Guide do
         guide = create(:guide, :with_published_edition)
         guide.slug = "/service-manual/topic-name/something-else"
         guide.valid?
-        expect(guide.errors.full_messages_for(:slug)).to eq ["Slug can't be changed if guide has a published edition"]
+        expect(guide.errors.full_messages_for(:slug)).to eq [
+          "Slug can't be changed as this guide has been published"
+        ]
       end
     end
   end
