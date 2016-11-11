@@ -1,7 +1,7 @@
 class Guide < ActiveRecord::Base
   include ContentIdentifiable
   validate :slug_format
-  validate :slug_cant_be_changed_if_an_edition_has_been_published
+  validate :slug_cant_be_changed, if: :has_any_published_editions?
   validate :new_edition_has_content_owner, if: :requires_content_owner?
   validate :must_have_topic, if: :requires_topic?
   validate :topic_cannot_change, if: :requires_topic?
@@ -132,8 +132,8 @@ private
     end
   end
 
-  def slug_cant_be_changed_if_an_edition_has_been_published
-    if slug_changed? && has_any_published_editions?
+  def slug_cant_be_changed
+    if slug_changed?
       errors.add(:slug, "can't be changed if guide has a published edition")
     end
   end
