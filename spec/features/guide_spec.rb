@@ -220,6 +220,24 @@ RSpec.describe "Updating a guide", type: :feature, js: true do
 
       expect(find('input.guide-slug')['disabled']).to be_present
     end
+
+    it "prevents users from changing the topic" do
+      create(:topic_section,
+        topic: create(:topic, title: "Another Topic"),
+        title: "Section One"
+      )
+
+      guide = create(:guide, :with_published_edition)
+
+      visit edit_guide_path(guide)
+
+      select "Another Topic -> Section One", from: "Topic section"
+      click_first_button "Save"
+
+      within(".full-error-list") do
+        expect(page).to have_content("Topic section cannot change to a different topic")
+      end
+    end
   end
 
   context "when the guide has never previously been published" do
