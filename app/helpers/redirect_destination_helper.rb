@@ -14,7 +14,7 @@ private
   end
 
   def topic_select_options
-    Topic.order(:path)
+    Topic.includes(:topic_sections).order(:path)
       .flat_map { |topic| paths_for_topic_and_its_sections(topic) }
   end
 
