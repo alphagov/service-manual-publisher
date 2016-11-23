@@ -31,14 +31,21 @@ RSpec.describe RedirectDestinationHelper, '#redirect_destination_select_options'
     create(:topic_section, title: "Working with agile methods", topic: topic)
     create(:topic_section, title: "Governing agile services", topic: topic)
 
-    create(:topic_section, title: "", topic: topic)
-
     expect(helper.redirect_destination_select_options).to include(
       "Topics" => [
         "/service-manual/agile-delivery",
         ["/service-manual/agile-delivery → Governing agile services", "/service-manual/agile-delivery#governing-agile-services"],
         ["/service-manual/agile-delivery → Working with agile methods", "/service-manual/agile-delivery#working-with-agile-methods"],
       ]
+    )
+  end
+
+  it 'should exclude topic sections without titles' do
+    topic = create(:topic, path: "/service-manual/agile-delivery")
+    create(:topic_section, title: "", topic: topic)
+
+    expect(helper.redirect_destination_select_options).to include(
+      "Topics" => ["/service-manual/agile-delivery"]
     )
   end
 end
