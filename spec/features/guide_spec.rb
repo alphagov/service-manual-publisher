@@ -220,26 +220,6 @@ RSpec.describe "Updating a guide", type: :feature do
 
       expect(find('input.guide-slug')['disabled']).to be_present
     end
-
-    it "prevents users from changing the topic" do
-      create(:topic_section,
-        topic: create(:topic, title: "Another Topic"),
-        title: "Section One"
-      )
-
-      guide = create(:guide, :with_published_edition)
-
-      visit edit_guide_path(guide)
-
-      select "Another Topic -> Section One", from: "Topic section"
-      click_first_button "Save"
-
-      within(".full-error-list") do
-        expect(page).to have_content(
-          "Topic section can't be changed to a different topic as this guide has been published"
-        )
-      end
-    end
   end
 
   context "when the guide has never previously been published" do
@@ -252,36 +232,6 @@ RSpec.describe "Updating a guide", type: :feature do
 
       visit edit_guide_path(guide)
       expect(find('input.guide-slug')['disabled']).not_to be_present
-      fill_in "Slug", with: "changed"
-      click_first_button "Save"
-
-      visit edit_guide_path(guide)
-
-      expect(page).to have_field("Slug", with: "changed")
-      expect(page).to have_field("Final URL", with: "/service-manual/test-topic/changed")
-    end
-
-    it "allows users to change the topic" do
-      stub_any_publishing_api_put_content
-      stub_any_publishing_api_patch_links
-
-      original_topic_section = create(:topic_section,
-        title: "Original Section",
-        topic: create(:topic, title: "Original Topic")
-      )
-      create(:topic_section,
-        title: "Another Section",
-        topic: create(:topic, title: "Another Topic")
-      )
-      guide = create(:guide, topic_section: original_topic_section)
-
-      visit edit_guide_path(guide)
-
-      select "Another Topic -> Another Section", from: "Topic section", exact: true
-      click_first_button "Save"
-
-      visit edit_guide_path(guide)
-      expect(page).to have_select("Topic section", selected: "Another Topic -> Another Section")
     end
   end
 

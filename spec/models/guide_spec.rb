@@ -61,84 +61,76 @@ RSpec.describe Guide do
   end
 
   describe "validations" do
-    it "ensures that slugs aren't saved without the topic name in the path" do
-      guide = Guide.new(slug: "/service-manual/guide-path")
-      guide.valid?
-      expect(guide.errors.full_messages_for(:slug)).to eq ["Slug must be present and start with '/service-manual/[topic]'"]
+    describe "the slug" do
+      it "is not valid when it does not include a topic" do
+        guide = build(:guide, slug: "/service-manual/guide-path")
+
+        expect(guide).not_to be_valid
+        expect(guide.errors.full_messages_for(:slug)).to eq [
+          "Slug must be present and start with '/service-manual/[topic]'"
+        ]
+      end
+
+      it "is not valid when it includes non alphanumeric characters" do
+        guide = build(:guide, slug: "/service-manual/topic-name/$")
+
+        expect(guide).not_to be_valid
+        expect(guide.errors.full_messages_for(:slug)).to eq [
+          "Slug can only contain letters, numbers and dashes",
+          "Slug must be present and start with '/service-manual/[topic]'",
+        ]
+      end
+
+      it "is not valid when the topic path includes non alphanumeric characters" do
+        guide = build(:guide, slug: "/service-manual/$$$/title")
+
+        expect(guide).not_to be_valid
+        expect(guide.errors.full_messages_for(:slug)).to eq [
+          "Slug can only contain letters, numbers and dashes",
+          "Slug must be present and start with '/service-manual/[topic]'",
+        ]
+      end
+
+      it "is valid when it contains the topic and is alphanumeric" do
+        guide = build(:guide, slug: "/service-manual/topic-name/guide-name")
+
+        expect(guide).to be_valid
+      end
+
+      it "can be changed if the guide has never been published" do
+        guide = create(:guide, :with_draft_edition)
+
+        guide.slug = "/service-manual/topic-name/something-else"
+
+        expect(guide).to be_valid
+      end
+
+      it "cannot be changed if the guide has been published" do
+        guide = create(:guide, :with_published_edition)
+
+        guide.slug = "/service-manual/topic-name/something-else"
+
+        expect(guide).not_to be_valid
+        expect(guide.errors.full_messages_for(:slug)).to eq [
+          "Slug can't be changed as this guide has been published"
+        ]
+      end
     end
 
-    it "does not allow unsupported characters in slugs" do
-      guide = Guide.new(slug: "/service-manual/topic-name/$")
-      guide.valid?
-      expect(guide.errors.full_messages_for(:slug)).to eq [
-        "Slug can only contain letters, numbers and dashes",
-        "Slug must be present and start with '/service-manual/[topic]'",
-      ]
-
-      guide = Guide.new(slug: "/service-manual/$$$/title")
-      guide.valid?
-      expect(guide.errors.full_messages_for(:slug)).to eq [
-        "Slug can only contain letters, numbers and dashes",
-        "Slug must be present and start with '/service-manual/[topic]'",
-      ]
-    end
-
-    describe "content owner" do
-      it "requires the latest edition to have a content owner" do
+    describe "the content owner of the latest edition" do
+      it "must be set" do
         edition_without_content_owner = build(:edition, content_owner: nil)
         guide = build(:guide, editions: [edition_without_content_owner])
-        guide.valid?
 
-        expect(guide.errors.full_messages_for(:latest_edition)).to include('Latest edition must have a content owner')
-      end
-
-      it "requires the latest edition to have a content owner unless it is a GuideCommunity" do
-        edition = build(:edition, content_owner: nil)
-        guide = build(:guide_community, editions: [edition])
-        guide.valid?
-
-        expect(guide.errors.full_messages_for(:latest_edition)).to be_empty
+        expect(guide).not_to be_valid
+        expect(guide.errors.full_messages_for(:latest_edition)).to eq [
+          'Latest edition must have a content owner'
+        ]
       end
     end
 
-    describe "topic section" do
-      it "changes to a different topic section within the same topic" do
-        topic = create(:topic)
-        guide = create(:guide, :with_published_edition, topic: topic)
-        original_topic_section = guide.topic_section_guides.first.topic_section
-        new_topic_section = create(:topic_section, topic: topic)
-
-        guide.topic_section_guides[0].topic_section_id = new_topic_section.id
-        guide.save
-
-        expect(new_topic_section.reload.guides).to include guide
-        expect(original_topic_section.reload.guides).to_not include guide
-      end
-
-      it "isn't possible to change the topic for a published guide" do
-        original_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/original-topic")
-        )
-        different_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/different-topic")
-        )
-
-        guide = create(:guide, :with_published_edition,
-          topic_section:  original_topic_section
-        )
-
-        guide.topic_section_guides[0].topic_section_id = different_topic_section.id
-        guide.save
-
-        expect(
-          guide.errors.full_messages_for(:topic_section)
-        ).to include("Topic section can't be changed to a different topic as this guide has been published")
-
-        expect(original_topic_section.reload.guides).to include guide
-        expect(different_topic_section.reload.guides).to_not include guide
-      end
-
-      it "is possible to change the topic for a draft guide" do
+    describe "the topic section" do
+      it "can be changed to a section in a different topic if the guide has never been published" do
         original_topic_section = create(:topic_section,
           topic: create(:topic, path: "/service-manual/original-topic")
         )
@@ -152,23 +144,39 @@ RSpec.describe Guide do
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         guide.save
 
-        expect(
-          guide.errors.full_messages_for(:topic_section)
-        ).to be_empty
-
+        expect(guide).to be_valid
         expect(original_topic_section.reload.guides).not_to include guide
         expect(different_topic_section.reload.guides).to include guide
       end
-    end
 
-    context "has a published edition" do
-      it "does not allow changing the slug" do
-        guide = create(:guide, :with_published_edition)
-        guide.slug = "/service-manual/topic-name/something-else"
-        guide.valid?
-        expect(guide.errors.full_messages_for(:slug)).to eq [
-          "Slug can't be changed as this guide has been published"
+      it "cannot be changed to a section in a different topic if the guide has been published" do
+        original_topic_section = create(:topic_section,
+          topic: create(:topic, path: "/service-manual/original-topic")
+        )
+        different_topic_section = create(:topic_section,
+          topic: create(:topic, path: "/service-manual/different-topic")
+        )
+
+        guide = create(:guide, :with_published_edition,
+          topic_section: original_topic_section
+        )
+
+        guide.topic_section_guides[0].topic_section_id = different_topic_section.id
+        expect(guide).not_to be_valid
+
+        expect(guide.errors.full_messages_for(:topic_section)).to eq [
+          "Topic section can't be changed to a different topic as this guide has been published"
         ]
+      end
+
+      it "can be changed to a different section in the same topic even if the guide has been published" do
+        topic = create(:topic)
+        guide = create(:guide, :with_published_edition, topic: topic)
+        new_topic_section = create(:topic_section, topic: topic)
+
+        guide.topic_section_guides[0].topic_section_id = new_topic_section.id
+
+        expect(guide).to be_valid
       end
     end
   end
