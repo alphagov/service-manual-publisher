@@ -27,6 +27,19 @@ RSpec.describe ":guide" do
     expect(Topic.count).to eq(2)
     expect(TopicSection.count).to eq(2)
   end
+
+  it "can be associated with a supplied topic section" do
+    topic_section = create(:topic_section)
+    guide = create(:guide, topic_section: topic_section)
+
+    expect(guide.topic).to eq(topic_section.topic)
+    expect(topic_section.guides).to include(guide)
+
+    # Check we haven't produced any extra topics or topic sections.
+    # We should have 2 of each for both the guide and the guide community.
+    expect(Topic.count).to eq(2)
+    expect(TopicSection.count).to eq(2)
+  end
 end
 
 RSpec.describe ":point" do

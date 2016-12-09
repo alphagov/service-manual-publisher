@@ -1,10 +1,10 @@
 class Guide < ActiveRecord::Base
   include ContentIdentifiable
   validate :slug_format
-  validate :slug_cant_be_changed_if_an_edition_has_been_published
+  validate :slug_cant_be_changed, if: :has_any_published_editions?
   validate :new_edition_has_content_owner, if: :requires_content_owner?
   validate :must_have_topic, if: :requires_topic?
-  validate :topic_cannot_change, if: :requires_topic?
+  validate :topic_cannot_change, if: [:requires_topic?, :has_any_published_editions?]
 
   has_many :editions, dependent: :destroy
   has_many :topic_section_guides, dependent: :destroy, autosave: true
@@ -132,9 +132,9 @@ private
     end
   end
 
-  def slug_cant_be_changed_if_an_edition_has_been_published
-    if slug_changed? && has_any_published_editions?
-      errors.add(:slug, "can't be changed if guide has a published edition")
+  def slug_cant_be_changed
+    if slug_changed?
+      errors.add(:slug, "can't be changed as this guide has been published")
     end
   end
 
@@ -165,7 +165,7 @@ private
     new_section = TopicSection.find(to)
 
     if old_section.topic_id != new_section.topic_id
-      errors.add(:topic_section, "cannot change to a different topic")
+      errors.add(:topic_section, "can't be changed to a different topic as this guide has been published")
     end
   end
 end

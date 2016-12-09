@@ -214,11 +214,24 @@ RSpec.describe "Updating a guide", type: :feature do
     end
 
     it "prevents users from editing the url slug" do
-      @guide = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/something")
+      guide = create(:guide, :with_published_edition, slug: "/service-manual/topic-name/something")
 
-      visit edit_guide_path(@guide)
+      visit edit_guide_path(guide)
 
       expect(find('input.guide-slug')['disabled']).to be_present
+    end
+  end
+
+  context "when the guide has never previously been published" do
+    it "allows the user to edit the url slug", js: true do
+      stub_any_publishing_api_put_content
+      stub_any_publishing_api_patch_links
+
+      topic = create(:topic, path: "/service-manual/test-topic")
+      guide = create(:guide, slug: "/service-manual/test-topic/something", topic: topic)
+
+      visit edit_guide_path(guide)
+      expect(find('input.guide-slug')['disabled']).not_to be_present
     end
   end
 
