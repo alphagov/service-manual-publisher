@@ -166,6 +166,30 @@ RSpec.describe TopicPresenter, "#links_payload" do
     ).to eq([])
   end
 
+  context 'when the topic should be included on the homepage' do
+    it "includes the homepage as a parent" do
+      topic = create(:topic, include_on_homepage: true)
+
+      presented_topic = described_class.new(topic)
+
+      expect(presented_topic.links_payload[:links]).to include(
+        parent: ['6732c01a-39e2-4cec-8ee9-17eb7fded6a0']
+      )
+    end
+  end
+
+  context 'when the topic should not be included on the homepage' do
+    it "explicitly removes any parent" do
+      topic = create(:topic, include_on_homepage: false)
+
+      presented_topic = described_class.new(topic)
+
+      expect(presented_topic.links_payload[:links]).to include(
+        parent: []
+      )
+    end
+  end
+
   def create_topic_in_groups(groups)
     topic = create(:topic)
     groups.each do |group_guides|

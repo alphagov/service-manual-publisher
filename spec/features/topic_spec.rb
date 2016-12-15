@@ -11,6 +11,12 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to_not have_button('Publish')
   end
 
+  it 'allows you to choose whether the topic should appear on the homepage' do
+    visit new_topic_path
+
+    expect(page).to have_checked_field 'Include on homepage?'
+  end
+
   it "saves a draft topic" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
@@ -33,6 +39,7 @@ RSpec.describe "Topics", type: :feature do
     fill_in "Title", with: "The title"
     fill_in "Description", with: "The description"
     check "Collapsed"
+    uncheck "Include on homepage?"
     click_button "Add Heading"
     fill_in "Heading Title", with: "The heading title"
     fill_in "Heading Description", with: "The heading description"
@@ -41,6 +48,7 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to have_field('Title', with: 'The title')
     expect(page).to have_field('Description', with: 'The description')
     expect(page).to have_checked_field('Collapsed')
+    expect(page).to have_unchecked_field('Include on homepage?')
 
     expect(find_field("Heading Title").value).to eq "The heading title"
     expect(find_field("Heading Description").value).to eq "The heading description"

@@ -36,6 +36,7 @@ class TopicPresenter
         linked_items: topic.guides.map(&:content_id),
         content_owners: content_owner_content_ids,
         organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
+        parent: parents
       }
     }
   end
@@ -43,6 +44,15 @@ class TopicPresenter
 private
 
   attr_reader :topic
+
+  def parents
+    if topic.include_on_homepage?
+      [HomepagePresenter::HOMEPAGE_CONTENT_ID]
+    else
+      []
+    end
+  end
+
 
   def groups
     topic.topic_sections.map do |topic_section|
