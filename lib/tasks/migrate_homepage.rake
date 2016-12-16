@@ -1,15 +1,7 @@
 require 'gds_api/publishing_api'
-require 'highline'
 
-desc "Migrate the homepage"
+desc "Migrate the homepage and make the old manual inaccessible"
 task migrate_homepage: :environment do
-  cli = HighLine.new
-  cli.say cli.color(
-    "Publishing the homepage will make the old service manual inaccessible. Continue?",
-    :red
-  )
-  exit unless cli.agree "Are you sure you wish to continue?"
-
   publishing_api_v1 = GdsApi::PublishingApi.new(
     Plek.new.find('publishing-api'),
     bearer_token: ENV['PUBLISHING_API_BEARER_TOKEN'] || 'example'
