@@ -5,7 +5,8 @@ class RedirectPublisher
 
   def process(content_id:, old_path:, new_path:)
     data = {
-      format: "redirect",
+      schema_name: "redirect",
+      document_type: "redirect",
       base_path: old_path,
       publishing_app: "service-manual-publisher",
       redirects: [
