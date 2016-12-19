@@ -1,0 +1,7 @@
+<h2>Upload File</h2>
+
+<%= form_tag uploads_path, multipart: true do %>
+  <%= file_field_tag 'file' %>
+  <hr />
+  <%= submit_tag 'Upload' %>
+<% end %>
