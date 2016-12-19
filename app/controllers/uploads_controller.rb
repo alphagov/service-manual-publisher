@@ -16,6 +16,17 @@ class UploadsController < ApplicationController
           render text: e.message, status: :unprocessable_entity
         end
       end
+
+      format.html do
+        file = params[:file]
+
+        begin
+          response = ASSET_API.create_asset(file: file)
+          redirect_to new_upload_path, notice: "Uploaded successfully to #{response.file_url}"
+        rescue GdsApi::BaseError => e
+          render text: e.message, status: :unprocessable_entity
+        end
+      end
     end
   end
 end
