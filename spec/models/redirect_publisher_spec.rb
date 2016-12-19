@@ -7,7 +7,8 @@ RSpec.describe RedirectPublisher, type: :model do
     new_path   = "/service-manual/something"
 
     expected_redirect = {
-      format: "redirect",
+      schema_name: "redirect",
+      document_type: "redirect",
       publishing_app: "service-manual-publisher",
       base_path: old_path,
       redirects: [
