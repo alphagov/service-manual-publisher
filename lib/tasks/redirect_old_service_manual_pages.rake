@@ -1,7 +1,7 @@
 desc "This is a one off task to redirect pages in the old service manual to GOV.UK"
 task redirect_old_service_manual_pages: :environment do
   redirects = {
-    "/service-manual/feedback" => "/contact/govuk ",
+    "/service-manual/feedback" => "/contact/govuk",
     "/service-manual/feedback/index" => "/contact/govuk",
     "/service-manual/about.html" => "/service-manual",
     "/service-manual/agile/spending-controls.html" => "/service-manual/agile-delivery/spend-controls-check-if-you-need-approval-to-spend-money-on-a-service",
@@ -55,18 +55,25 @@ task redirect_old_service_manual_pages: :environment do
   }
 
   redirects.each do |old_path, new_path|
+    puts "Redirecting #{old_path} to #{new_path}"
+
     # Mark the SlugMigration as migrated
-    slug_migration = SlugMigration.find_by!(slug: old_path)
-    slug_migration.update!(
-      completed: true,
-      redirect_to: new_path,
-    )
+    begin
+      slug_migration = SlugMigration.find_by!(slug: old_path)
+      slug_migration.update!(
+        completed: true,
+        redirect_to: new_path,
+      )
+      content_id = slug_migration.content_id
+    rescue
+      content_id = SecureRandom.uuid
+    end
 
     # Publish a redirect to the publishing platform
     RedirectPublisher.new.process(
-      content_id: slug_migration.content_id,
-      old_path:   slug_migration.slug,
-      new_path:   slug_migration.redirect_to,
+      content_id: content_id,
+      old_path:   old_path,
+      new_path:   new_path
     )
   end
 end
