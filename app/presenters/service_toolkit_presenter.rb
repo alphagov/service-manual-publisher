@@ -74,7 +74,7 @@ class ServiceToolkitPresenter
           {
             "title": "Style guide",
             "url": "https://www.gov.uk/guidance/style-guide",
-            "description": "Style, spelling and grammar conventions for GOV.UK"
+            "description": "Style, spelling and grammar conventions for government"
           }
         ]
       },
