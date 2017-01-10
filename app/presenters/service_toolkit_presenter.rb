@@ -80,32 +80,32 @@ class ServiceToolkitPresenter
       },
       {
         "title": "Components",
-        "description": "Technologies to help you build your service more easily",
+        "description": "Technologies designed to help you build and run government services",
         "links": [
           {
             "title": "GOV.UK Notify",
-            "url": "https://www.gov.uk/notify",
-            "description": "Send secure text messages, emails or letters to users"
+            "url": "https://www.notifications.service.gov.uk/",
+            "description": "Keep your users updated with emails, text messages and letters, cheaply and easily"
           },
           {
             "title": "GOV.UK Pay",
-            "url": "https://www.gov.uk/pay",
-            "description": "Make it simple to make payments online"
+            "url": "https://www.gov.uk/government/publications/govuk-pay/govuk-pay",
+            "description": "Take and process payments - a simple experience for users and easy integration for you"
           },
           {
             "title": "GOV.UK Verify",
-            "url": "https://www.gov.uk/verify",
-            "description": "Let users prove their identity online"
+            "url": "http://alphagov.github.io/identity-assurance-documentation/",
+            "description": "Let users prove their identity to you securely and conveniently"
           },
           {
             "title": "GOV.UK Platform as a Service",
-            "url": "https://gov.uk/paas",
-            "description": "Host your applications on a government Cloud platform"
+            "url": "https://www.gov.uk/government/publications/platform-as-a-service/platform-as-a-service",
+            "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure"
           },
           {
             "title": "Registers",
-            "url": "https://www.gov.uk/registers",
-            "description": "Get up-to-date and accurate common data sets"
+            "url": "https://www.gov.uk/government/publications/registers/registers",
+            "description": "Get authoritative data sets your service can rely on"
           }
         ]
       },
