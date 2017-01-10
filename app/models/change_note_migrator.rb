@@ -43,7 +43,11 @@ private
 
     return if dry_run
     log "  Updating database"
-    edition.update!(changes)
+    edition.assign_attributes(changes)
+    if edition.validate && edition.errors.any? { |e| changes.keys.map(&:to_s).include?(e.first.to_s) }
+      edition.validate!
+    end
+    edition.save!(validate: false)
     log "  Database updated", :bold
   end
 
