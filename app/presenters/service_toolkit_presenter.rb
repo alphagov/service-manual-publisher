@@ -38,12 +38,12 @@ class ServiceToolkitPresenter
           {
             "title": "Service Manual",
             "url": "https://www.gov.uk/service-manual",
-            "description": "How to build a service that meets the standard: agile delivery, technology, user research, accessibility, training options and more"
+            "description": "How to build services to meet the Digital Service Standard, including agile delivery, technology, user research, design and training options"
           },
           {
             "title": "Technology Code of Practice",
             "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice",
-            "description": "Guidelines for designing, building or buying government technology"
+            "description": "Guidelines you must follow to get approval to spend money on a service"
           }
         ]
       },
@@ -52,9 +52,9 @@ class ServiceToolkitPresenter
         "description": "Resources for interface and content design",
         "links": [
           {
-            "title": "Design principles",
+            "title": "Design Principles",
             "url": "https://www.gov.uk/design-principles",
-            "description": "Principles to follow as you design your service"
+            "description": "Principles you must follow as you design your service"
           },
           {
             "title": "Design patterns",
@@ -64,10 +64,10 @@ class ServiceToolkitPresenter
           {
             "title": "Reusable frontend code",
             "url": "https://www.gov.uk/service-manual/design#working-with-frontend",
-            "description": "Build accessible, responsive web interfaces for government"
+            "description": "Use the GOV.UK template, frontend toolkit, elements, header and footer"
           },
           {
-            "title": "GOV.UK Prototype Kit",
+            "title": "GOV.UK prototype kit",
             "url": "https://govuk-prototype-kit.herokuapp.com/docs",
             "description": "Make HTML prototypes for user research and service design"
           },
@@ -105,7 +105,7 @@ class ServiceToolkitPresenter
           {
             "title": "Registers",
             "url": "https://www.gov.uk/government/publications/registers/registers",
-            "description": "Get authoritative data sets your service can rely on"
+            "description": "Get authoritative datasets your service can rely on"
           }
         ]
       },
@@ -114,7 +114,7 @@ class ServiceToolkitPresenter
         "description": "Get the data you need to improve your service",
         "links": [
           {
-            "title": "Performance platform",
+            "title": "Performance Platform",
             "url": "https://www.gov.uk/performance",
             "description": "Create a performance dashboard for your service"
           }
