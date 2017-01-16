@@ -98,7 +98,7 @@ class ServiceToolkitPresenter
             "description": "Let users prove their identity to you securely and conveniently"
           },
           {
-            "title": "GOV.UK Platform as a Service",
+            "title": "Platform as a Service (PaaS) for government",
             "url": "https://www.gov.uk/government/publications/platform-as-a-service/platform-as-a-service",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure"
           },
