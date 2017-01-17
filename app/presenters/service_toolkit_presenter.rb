@@ -43,7 +43,7 @@ class ServiceToolkitPresenter
           {
             "title": "Technology Code of Practice",
             "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice",
-            "description": "Guidelines for designing, building or buying government technology"
+            "description": "The standard you must follow to get approval to spend money on technology or a service"
           }
         ]
       },
