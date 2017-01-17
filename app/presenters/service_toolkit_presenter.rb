@@ -28,17 +28,17 @@ class ServiceToolkitPresenter
     [
       {
         "title": "Standards",
-        "description": "Meet the standards for government services",
+        "description": "Standards for creating and running government services",
         "links": [
           {
-            "title": "The Digital Service Standard",
+            "title": "Digital Service Standard",
             "url": "https://www.gov.uk/service-manual/service-standard",
-            "description": "Learn about the 18 point standard that government services must meet"
+            "description": "The 18-point standard that government services must meet"
           },
           {
             "title": "Service Manual",
             "url": "https://www.gov.uk/service-manual",
-            "description": "How to build services to meet the Digital Service Standard, including agile delivery, technology, user research, design and training options"
+            "description": "Design and build services that meet the Digital Service Standard"
           },
           {
             "title": "Technology Code of Practice",
@@ -49,32 +49,32 @@ class ServiceToolkitPresenter
       },
       {
         "title": "Design and style",
-        "description": "Resources for interface and content design",
+        "description": "Interaction and content design resources",
         "links": [
           {
             "title": "Design Principles",
             "url": "https://www.gov.uk/design-principles",
-            "description": "Principles you must follow as you design your service"
+            "description": "10 principles you must follow as you design your service"
           },
           {
             "title": "Design patterns",
             "url": "https://www.gov.uk/service-manual/user-centred-design/resources/patterns",
-            "description": "Reusable code and standards to solve common design problems"
+            "description": "Evidence-based solutions to common design problems"
           },
           {
-            "title": "Reusable frontend code",
+            "title": "Frontend code",
             "url": "https://www.gov.uk/service-manual/design#working-with-frontend",
-            "description": "Use the GOV.UK template, frontend toolkit, elements, header and footer"
+            "description": "Resources for creating services that look consistent with GOV.UK"
           },
           {
             "title": "GOV.UK prototype kit",
             "url": "https://govuk-prototype-kit.herokuapp.com/docs",
-            "description": "Make HTML prototypes for user research and service design"
+            "description": "Code and templates for building realistic prototypes"
           },
           {
             "title": "Style guide",
             "url": "https://www.gov.uk/guidance/style-guide",
-            "description": "Style, spelling and grammar conventions for government"
+            "description": "Style, spelling and grammar conventions for digital content"
           }
         ]
       },
@@ -98,7 +98,7 @@ class ServiceToolkitPresenter
             "description": "Let users prove their identity to you securely and conveniently"
           },
           {
-            "title": "Platform as a Service (PaaS) for government",
+            "title": "GOV.UK Platform as a Service",
             "url": "https://www.gov.uk/government/publications/platform-as-a-service/platform-as-a-service",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure"
           },
@@ -111,7 +111,7 @@ class ServiceToolkitPresenter
       },
       {
         "title": "Monitoring",
-        "description": "Get the data you need to improve your service",
+        "description": "Data on service performance",
         "links": [
           {
             "title": "Performance Platform",
@@ -122,12 +122,12 @@ class ServiceToolkitPresenter
       },
       {
         "title": "Buying",
-        "description": "Extra skills, people and technology to help build your service",
+        "description": "Skills and technology for building digital services",
         "links": [
           {
             "title": "Digital Marketplace",
             "url": "https://www.gov.uk/digital-marketplace",
-            "description": "Buy cloud technology and specialist services for digital projects"
+            "description": "Source cloud technology and specialist services for digital projects"
           }
         ]
       }
