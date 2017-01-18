@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-REPOSITORY = 'service-maual-frontend'
+REPOSITORY = 'service-manual-publisher'
 
 // @todo Replace with govuk.setupDb when on Rails 5.
 def setupDb() {
