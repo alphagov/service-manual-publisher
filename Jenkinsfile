@@ -3,6 +3,7 @@
 REPOSITORY = 'service-manual-publisher'
 
 // @todo Replace with govuk.setupDb when on Rails 5.
+// (govuk.setupDb runs bundle exec *rails* db:drop etc)
 def setupDb() {
   echo 'Setting up database'
   sh('RAILS_ENV=test bundle exec rake db:drop db:create db:structure:load')
