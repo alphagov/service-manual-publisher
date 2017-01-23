@@ -84,27 +84,27 @@ class ServiceToolkitPresenter
         "links": [
           {
             "title": "GOV.UK Notify",
-            "url": "https://www.notifications.service.gov.uk/",
+            "url": "https://www.notifications.service.gov.uk",
             "description": "Keep your users updated with emails, text messages and letters, cheaply and easily"
           },
           {
             "title": "GOV.UK Pay",
-            "url": "https://www.gov.uk/government/publications/govuk-pay/govuk-pay",
+            "url": "https://www.payments.service.gov.uk",
             "description": "Take and process payments - a simple experience for users and easy integration for you"
           },
           {
             "title": "GOV.UK Verify",
-            "url": "http://alphagov.github.io/identity-assurance-documentation/",
+            "url": "https://govuk-verify.cloudapps.digital",
             "description": "Let users prove their identity to you securely and conveniently"
           },
           {
             "title": "GOV.UK Platform as a Service",
-            "url": "https://www.gov.uk/government/publications/platform-as-a-service/platform-as-a-service",
+            "url": "https://govuk-paas.cloudapps.digital",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure"
           },
           {
             "title": "Registers",
-            "url": "https://www.gov.uk/government/publications/registers/registers",
+            "url": "https://registers.cloudapps.digital",
             "description": "Get authoritative datasets your service can rely on"
           }
         ]
