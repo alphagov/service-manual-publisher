@@ -38,12 +38,12 @@ class ServiceToolkitPresenter
           {
             "title": "Service Manual",
             "url": "https://www.gov.uk/service-manual",
-            "description": "Design and build services that meet the Digital Service Standard"
+            "description": "Guidance on how to research, design and build services that meet the Digital Service Standard"
           },
           {
             "title": "Technology Code of Practice",
             "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice",
-            "description": "The standard you must follow to get approval to spend money on technology or a service"
+            "description": "The standard you must meet to get approval to spend money on technology or a service"
           }
         ]
       },
@@ -54,7 +54,7 @@ class ServiceToolkitPresenter
           {
             "title": "Design Principles",
             "url": "https://www.gov.uk/design-principles",
-            "description": "10 principles you must follow as you design your service"
+            "description": "10 principles to guide you as you design your service"
           },
           {
             "title": "Design patterns",
