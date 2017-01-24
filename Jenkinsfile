@@ -27,9 +27,28 @@ node {
       paramsToUseForLimit: REPOSITORY,
       throttleEnabled: true,
       throttleOption: 'category'],
+    [$class: 'ParametersDefinitionProperty',
+      parameterDefinitions: [
+        [$class: 'BooleanParameterDefinition',
+          name: 'IS_SCHEMA_TEST',
+          defaultValue: false,
+          description: 'Identifies whether this build is being triggered to test a change to the content schemas'],
+        [$class: 'StringParameterDefinition',
+          name: 'SCHEMA_BRANCH',
+          defaultValue: 'deployed-to-production',
+          description: 'The branch of govuk-content-schemas to test against']]],
   ])
 
   try {
+    govuk.initializeParameters([
+      'IS_SCHEMA_TEST': 'false',
+      'SCHEMA_BRANCH': 'deployed-to-production',
+    ])
+
+    if (!govuk.isAllowedBranchBuild(env.BRANCH_NAME)) {
+      return
+    }
+
     stage("Build") {
       checkout scm
 
@@ -40,8 +59,8 @@ node {
       govuk.bundleApp()
 
       setupDb()
-      
-      govuk.contentSchemaDependency()
+
+      govuk.contentSchemaDependency(env.SCHEMA_BRANCH)
       govuk.setEnvar("GOVUK_CONTENT_SCHEMAS_PATH", "tmp/govuk-content-schemas")
 
       govuk.precompileAssets()
