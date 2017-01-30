@@ -8,8 +8,7 @@ class GuidePresenter::ChangeHistoryPresenter
     major_editions.map do |edition|
       {
         public_timestamp: edition.created_at.iso8601,
-        note: edition.change_note,
-        reason_for_change: edition.reason_for_change || ""
+        note: edition.change_note
       }
     end
   end
