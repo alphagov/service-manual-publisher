@@ -85,43 +85,32 @@
 
     <% if guide_form.version > 1 %>
       <div class="well">
-        <h2>About this update</h2>
+        <h2>To save this document please complete the following</h2>
 
         <div class='form-group'>
-          <label>Impact of the update</label>
+          <label>Select an option:</label>
           <%= f.error_list :update_type %>
           <div class="radio">
             <%= label_tag do %>
               <%= f.radio_button :update_type, "minor", {disabled: disable_inputs, class: 'update-type-select'} %>
-              Minor update
-              <span class='text-muted'>e.g. spelling or typographic corrections.</span>
+              <strong>Update the document silently</strong>
+              – For minor changes like fixes to typos, links, GOV.UK style or metadata
             <% end %>
           </div>
           <div class="radio">
             <%= label_tag do %>
               <%= f.radio_button :update_type, "major", {disabled: disable_inputs, class: 'update-type-select'} %>
-              Major update
-              <span class='text-muted'>e.g. updates that change the meaning of the guidance.</span>
+              <strong>Alert the public to what's changed</strong>
+              – For important changes to the content or attached files
             <% end %>
           </div>
         </div>
 
         <div class="form-group change-note-form-group">
-          <%= f.label :change_note, "Summary of change" %>
-          <div class="help-block">What is being changed in this update</div>
-          <%= f.text_field :change_note, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
+          <%= f.label :change_note, "Public change note" %>
+          <div class="help-block">Input text to display publicly on the live site and in email alerts</div>
+          <%= f.text_area :change_note, disabled: disable_inputs, class: 'input-md-12 form-control', rows: 5 %>
         </div>
-
-        <div class="form-group change-note-form-group">
-          <%= f.label :reason_for_change, "Why the change is being made" %>
-          <div class="help-block">Include any evidence from research and links to any related discussions</div>
-          <%= f.text_area :reason_for_change, disabled: disable_inputs, class: 'input-md-12 form-control text-area-auto-size js-text-area-auto-size', rows: 5 %>
-        </div>
-
-        <p class="text-strong change-note-form-group">
-          <span class="glyphicon glyphicon-warning-sign text-warning" aria-hidden="true"></span>
-          <strong>These notes will be made visible to the public and subscribed users will receive an email update when this guide is published.</strong>
-        </p>
       </div>
     <% end %>
 

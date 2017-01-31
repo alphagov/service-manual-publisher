@@ -156,10 +156,9 @@ RSpec.describe 'Once a guide has been unpublished', type: :feature do
     expect(page).to_not have_field("Body")
     expect(page).to_not have_field("Community")
 
-    expect(page).to_not have_field("Minor update")
-    expect(page).to_not have_field("Major update")
-    expect(page).to_not have_field("Summary of change")
-    expect(page).to_not have_field("Why the change is being made")
+    expect(page).to_not have_field("Update the document silently")
+    expect(page).to_not have_field("Alert the public to what's changed")
+    expect(page).to_not have_field("Public change note")
 
     expect(page).to_not have_field("Author")
   end

@@ -10,7 +10,6 @@ task print_change_history_for_published_guides: :environment do
       editions.each do |edition|
         puts "### #{edition.updated_at.to_formatted_s}"
         puts "Change note: '#{edition.change_note}'"
-        puts "Reason for change: '#{edition.reason_for_change}'"
         puts ""
       end
 

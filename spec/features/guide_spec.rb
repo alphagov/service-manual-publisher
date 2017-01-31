@@ -150,10 +150,9 @@ RSpec.describe "Creating a guide", type: :feature do
     # Prove that we're looking at the form
     expect(page).to have_field("Title")
 
-    expect(page).to_not have_field("Major update")
-    expect(page).to_not have_field("Minor update")
-    expect(page).to_not have_field("Summary of change")
-    expect(page).to_not have_field("Why the change is being made")
+    expect(page).to_not have_field("Alert the public to what's changed")
+    expect(page).to_not have_field("Update the document silently")
+    expect(page).to_not have_field("Public change note")
   end
 
 private
@@ -193,8 +192,7 @@ RSpec.describe "Updating a guide", type: :feature do
       end
 
       fill_in "Title", with: "Agile"
-      fill_in "Summary of change", with: "Updated the title"
-      fill_in "Why the change is being made", with: "Because the user's demand it"
+      fill_in "Public change note", with: "Updated the title"
       click_first_button 'Save'
 
       expect(guide.editions.count).to eq(5)
@@ -209,8 +207,7 @@ RSpec.describe "Updating a guide", type: :feature do
         click_link "A guide to agile"
       end
 
-      expect(find_field("Why the change is being made").value).to be_blank
-      expect(find_field("Major update")).to be_checked
+      expect(find_field("Alert the public to what's changed")).to be_checked
     end
 
     it "prevents users from editing the url slug" do
@@ -323,8 +320,7 @@ RSpec.describe "Updating a guide", type: :feature do
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Updated Title"
-      fill_in "Summary of change", with: "Update Title"
-      fill_in "Why the change is being made", with: "It was out of date"
+      fill_in "Public change note", with: "Update Title"
       click_first_button 'Save'
 
       within ".full-error-list" do

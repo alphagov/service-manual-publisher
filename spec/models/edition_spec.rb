@@ -110,29 +110,9 @@ RSpec.describe Edition, type: :model do
       end
     end
 
-    describe "reason_for_change" do
-      it "is allowed to be empty if the update_type is 'major' and it is the first version" do
-        edition = build(:edition, update_type: "major", reason_for_change: "")
-        edition.valid?
-        expect(edition.errors.full_messages_for(:reason_for_change)).to be_empty
-      end
-
-      it "is not allowed to be empty if the update_type is 'major' and it is not the first version" do
-        edition = build(:edition, update_type: "major", reason_for_change: "", version: 2)
-        edition.valid?
-        expect(edition.errors.full_messages_for(:reason_for_change)).to eq ["Reason for change can't be blank"]
-      end
-
-      it "is allowed to be empty if the update_type is 'minor'" do
-        edition = build(:edition, update_type: "minor", reason_for_change: "")
-        edition.valid?
-        expect(edition.errors.full_messages_for(:reason_for_change)).to be_empty
-      end
-    end
-
     describe "update_type" do
       it "cannot be minor for the first edition" do
-        edition = build(:edition, update_type: "minor", reason_for_change: "")
+        edition = build(:edition, update_type: "minor")
         edition.valid?
         expect(edition.errors.full_messages_for(:update_type)).to include 'Update type must be major'
       end

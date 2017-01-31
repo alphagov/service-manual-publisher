@@ -128,7 +128,6 @@ CREATE TABLE editions (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     state text,
-    reason_for_change text,
     change_note text,
     content_owner_id integer,
     version integer,
@@ -845,4 +844,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160816150906');
 INSERT INTO schema_migrations (version) VALUES ('20160914133843');
 
 INSERT INTO schema_migrations (version) VALUES ('20161208103043');
+
+INSERT INTO schema_migrations (version) VALUES ('20170131103912');
 
