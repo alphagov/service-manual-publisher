@@ -93,13 +93,12 @@ RSpec.describe GuideForm, "#initialize" do
     end
 
     it "loads the change note and summary" do
-      edition = build(:edition, change_note: "summary", reason_for_change: "note")
+      edition = build(:edition, change_note: "summary")
       guide = create(:guide, editions: [edition])
 
       guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
 
       expect(guide_form.change_note).to eq("summary")
-      expect(guide_form.reason_for_change).to eq("note")
     end
 
     it "loads the topic_section_id" do
@@ -158,7 +157,7 @@ RSpec.describe GuideForm, "#initialize" do
         build(:edition, state: "draft", title: title, update_type: "major"),
         build(:edition, state: "review_requested", title: title, update_type: "major"),
         build(:edition, state: "ready", title: title, update_type: "major"),
-        build(:edition, state: "published", title: title, update_type: "major", change_note: "summary", reason_for_change: "note"),
+        build(:edition, state: "published", title: title, update_type: "major", change_note: "summary"),
       ])
       edition = guide.editions.build(guide.latest_edition.dup.attributes)
       user = User.new
@@ -166,7 +165,6 @@ RSpec.describe GuideForm, "#initialize" do
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
 
       expect(guide_form.change_note).to eq(nil)
-      expect(guide_form.reason_for_change).to eq(nil)
     end
 
     it "defaults the author_id to represent the current user again" do
@@ -175,7 +173,7 @@ RSpec.describe GuideForm, "#initialize" do
         build(:edition, state: "draft", title: title, update_type: "major"),
         build(:edition, state: "review_requested", title: title, update_type: "major"),
         build(:edition, state: "ready", title: title, update_type: "major"),
-        build(:edition, state: "published", title: title, update_type: "major", change_note: "summary", reason_for_change: "note"),
+        build(:edition, state: "published", title: title, update_type: "major", change_note: "summary"),
       ])
       edition = guide.editions.build(guide.latest_edition.dup.attributes)
       user = User.new(id: 8)
@@ -291,19 +289,17 @@ RSpec.describe GuideForm, "#save" do
       expect(edition.change_note).to eq('Guidance first published')
     end
 
-    it "assigns the change_note and reason_for_change to the edition for later editions" do
+    it "assigns the change_note to the edition for later editions" do
       guide = Guide.new
       edition = guide.editions.build(version: 2)
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(
-        change_note: "X happened",
-        reason_for_change: "This happened because of X.",
+        change_note: "X happened"
       )
       guide_form.save
 
       expect(edition.change_note).to eq("X happened")
-      expect(edition.reason_for_change).to eq("This happened because of X.")
     end
   end
 
