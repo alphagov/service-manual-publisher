@@ -44,8 +44,7 @@ RSpec.describe GuidePresenter do
       guide = create(:guide,
         edition: {
           created_at: "2016-06-28T14:16:21Z".to_time,
-          change_note: "Add a new guide 'The Title'",
-          reason_for_change: "We added this guide so we can test the presenter"
+          change_note: "Add a new guide 'The Title'"
         }
       )
       presenter = described_class.new(guide, guide.latest_edition)
@@ -54,8 +53,7 @@ RSpec.describe GuidePresenter do
         change_history: [
           {
             public_timestamp: "2016-06-28T14:16:21Z",
-            note: "Add a new guide 'The Title'",
-            reason_for_change: "We added this guide so we can test the presenter"
+            note: "Add a new guide 'The Title'"
           }
         ]
       )

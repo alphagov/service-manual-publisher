@@ -5,13 +5,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     editions = [
       *published_edition(
         change_note: "Guidance first published",
-        reason_for_change: nil,
         update_type: "major",
         created_at: "2016-06-25T14:16:21Z"
       ),
       *published_edition(
         change_note: "Big content change",
-        reason_for_change: "Needed updating",
         update_type: "major",
         created_at: "2016-06-28T14:16:21Z"
       )
@@ -23,13 +21,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     expect(presenter.change_history).to eq [
       {
         public_timestamp: "2016-06-28T14:16:21Z",
-        note: "Big content change",
-        reason_for_change: "Needed updating"
+        note: "Big content change"
       },
       {
         public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published",
-        reason_for_change: ""
+        note: "Guidance first published"
       }
     ]
   end
@@ -38,13 +34,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     editions = [
       *published_edition(
         change_note: "Guidance first published",
-        reason_for_change: nil,
         update_type: "major",
         created_at: "2016-06-25T14:16:21Z"
       ),
       *draft_edition(
         change_note: "Big content change",
-        reason_for_change: "Needed updating",
         update_type: "major",
         created_at: "2016-06-28T14:16:21Z"
       )
@@ -56,13 +50,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     expect(presenter.change_history).to eq [
       {
         public_timestamp: "2016-06-28T14:16:21Z",
-        note: "Big content change",
-        reason_for_change: "Needed updating"
+        note: "Big content change"
       },
       {
         public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published",
-        reason_for_change: ""
+        note: "Guidance first published"
       }
     ]
   end
@@ -71,13 +63,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     editions = [
       *published_edition(
         change_note: "Guidance first published",
-        reason_for_change: nil,
         update_type: "major",
         created_at: "2016-06-25T14:16:21Z"
       ),
       *draft_edition(
         change_note: "",
-        reason_for_change: "",
         update_type: "minor",
         created_at: "2016-06-28T14:16:21Z",
         version: 2
@@ -90,29 +80,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     expect(presenter.change_history).to eq [
       {
         public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published",
-        reason_for_change: ""
-      }
-    ]
-  end
-
-  it 'assigns the reason_for_change an empty string if the reason_for_change is nil' \
-    ' because the definition in the content schema requires it' do
-    editions = published_edition(
-      change_note: "Guidance first published",
-      reason_for_change: nil,
-      update_type: "major",
-      created_at: "2016-06-25T14:16:21Z"
-    )
-
-    guide = create(:guide, editions: editions)
-    presenter = described_class.new(guide, guide.latest_edition)
-
-    expect(presenter.change_history).to eq [
-      {
-        public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published",
-        reason_for_change: ""
+        note: "Guidance first published"
       }
     ]
   end
