@@ -52,6 +52,13 @@ bundle exec rake db:setup
 
 ### Development
 
+To run the application in development you will need at least one user in the
+application database. In a rails console do:
+
+```
+User.create!(name: "My Name", email: "my.email@somedomain.com")
+```
+
 You can use [Bowler](https://github.com/JordanHatch/bowler) to automatically run
 the application and all of its dependencies. To do this, you'll need to check
 out the [development repository](https://github.gds/gds/development) where the
