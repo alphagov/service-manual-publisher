@@ -1,4 +1,4 @@
-class TopicSectionGuide < ActiveRecord::Base
+class TopicSectionGuide < ApplicationRecord
   belongs_to :topic_section
   belongs_to :guide
   before_create :default_position_to_next_in_list

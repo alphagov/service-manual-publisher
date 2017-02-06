@@ -4,16 +4,16 @@ class UploadsController < ApplicationController
       format.js do
         file = params[:file]
         unless file.content_type.start_with?("image")
-          render text: "The file that you're trying to upload does not seem "\
+          render body: "The file that you're trying to upload does not seem "\
             "to be an image", status: :unprocessable_entity
           return
         end
 
         begin
           response = ASSET_API.create_asset(file: file)
-          render text: response.file_url, status: 201
+          render body: response.file_url, status: 201
         rescue GdsApi::BaseError => e
-          render text: e.message, status: :unprocessable_entity
+          render body: e.message, status: :unprocessable_entity
         end
       end
 
@@ -24,7 +24,7 @@ class UploadsController < ApplicationController
           response = ASSET_API.create_asset(file: file)
           redirect_to new_upload_path, notice: "Uploaded successfully to #{response.file_url}"
         rescue GdsApi::BaseError => e
-          render text: e.message, status: :unprocessable_entity
+          render body: e.message, status: :unprocessable_entity
         end
       end
     end

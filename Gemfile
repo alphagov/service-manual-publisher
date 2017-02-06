@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.7.1'
+gem 'rails', '5.0.1'
 gem 'pg'
 gem 'sass-rails'
 gem 'uglifier'
@@ -16,17 +16,17 @@ gem 'airbrake', '~> 4.2.1'
 
 gem 'govuk_admin_template'
 
-gem 'gds-sso'
-gem 'gds-api-adapters'
-gem 'govspeak'
-gem 'kaminari'
 gem 'active_link_to'
-gem 'select2-rails'
-gem 'diffy'
-gem 'redcarpet'
 gem 'auto_strip_attributes'
-gem 'rinku', require: "rails_rinku"
+gem 'diffy'
+gem 'gds-api-adapters'
+gem 'gds-sso'
+gem 'govspeak'
 gem 'highline'
+gem 'kaminari'
+gem 'redcarpet'
+gem 'rinku', require: "rails_rinku"
+gem 'select2-rails'
 
 group :development do
   gem 'better_errors'
@@ -36,23 +36,24 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'fuubar'
   gem 'govuk-lint'
   gem 'jasmine'
   gem 'pry'
-  gem 'pry-remote'
   gem 'pry-nav'
-  gem 'rspec-rails'
-  gem 'fuubar'
+  gem 'pry-remote'
+  gem 'rspec-rails', '~> 3.5'
   gem 'simplecov', require: false
   gem 'simplecov-rcov', require: false
 end
 
 group :test do
   gem 'capybara'
-  gem 'launchy'
-  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'govuk-content-schema-test-helpers'
+  gem 'launchy'
+  gem 'poltergeist'
+  gem 'rails-controller-testing'
   gem 'webmock'
 end

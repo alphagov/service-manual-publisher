@@ -18,7 +18,7 @@ class GuideManager
     edition.state = "ready"
     edition.save!
 
-    NotificationMailer.ready_for_publishing(guide).deliver_later
+    NotificationMailer.ready_for_publishing(guide).deliver_now
 
     ManageResult.new(true, [])
   end
@@ -31,7 +31,7 @@ class GuideManager
       PUBLISHING_API.publish(guide.content_id, edition.update_type)
 
       unless edition.notification_subscribers == [user]
-        NotificationMailer.published(guide, user).deliver_later
+        NotificationMailer.published(guide, user).deliver_now
       end
 
       GuideSearchIndexer.new(guide).index
@@ -102,7 +102,7 @@ private
 
   def catching_gds_api_exceptions
     begin
-      ActiveRecord::Base.transaction do
+      ApplicationRecord.transaction do
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e

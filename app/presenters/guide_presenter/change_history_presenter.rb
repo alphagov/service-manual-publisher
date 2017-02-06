@@ -27,6 +27,7 @@ private
     guide.editions
       .published.major
       .order(created_at: :desc)
+      .to_a
   end
 
   attr_reader :guide, :current_edition
