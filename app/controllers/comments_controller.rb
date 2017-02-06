@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       unless @edition.notification_subscribers == [@comment.user]
-        NotificationMailer.comment_added(@comment).deliver_later
+        NotificationMailer.comment_added(@comment).deliver_now
       end
       redirect_to "#{guide_editions_path(@edition.guide)}##{@comment.html_id}"
     else
