@@ -19,10 +19,11 @@ RSpec.describe GuidesController, type: :controller do
         create(:guide, slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
-        put :update,
+        put :update, params: {
           id: edition.guide_id,
           approve_for_publication: true,
           guide: { fingerprint_when_started_editing: edition.id.to_s }
+        }
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
         expect(ActionMailer::Base.deliveries.last.to).to eq ["content.designer@example.com"]
@@ -38,10 +39,11 @@ RSpec.describe GuidesController, type: :controller do
         publisher = build(:user, email: "ms.publisher@example.com")
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([publisher])
 
-        put :update,
+        put :update, params: {
           id: edition.guide_id,
           publish: true,
           guide: { fingerprint_when_started_editing: edition.id.to_s }
+        }
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
         expect(ActionMailer::Base.deliveries.last.to).to eq ["ms.publisher@example.com"]
@@ -54,7 +56,10 @@ RSpec.describe GuidesController, type: :controller do
         create(:guide, slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
-        put :update, id: edition.guide_id, publish: true
+        put :update, params: {
+          id: edition.guide_id,
+          publish: true
+        }
 
         expect(ActionMailer::Base.deliveries.size).to eq 0
       end
@@ -63,7 +68,9 @@ RSpec.describe GuidesController, type: :controller do
 
   describe "a malicious user trying to initialise an unwanted Guide STI constant" do
     it "defaults to a Guide" do
-      get :new, type: 'Module'
+      get :new, params: {
+        type: 'Module'
+      }
 
       expect(assigns[:guide_form].guide.class).to eq(Guide)
     end
