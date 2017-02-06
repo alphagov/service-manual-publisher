@@ -102,7 +102,7 @@ private
 
   def catching_gds_api_exceptions
     begin
-      ActiveRecord::Base.transaction do
+      ApplicationRecord.transaction do
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e

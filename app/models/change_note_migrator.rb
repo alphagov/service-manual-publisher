@@ -77,7 +77,7 @@ private
   end
 
   def transaction
-    ActiveRecord::Base.transaction do
+    ApplicationRecord.transaction do
       yield
     end
   rescue => e

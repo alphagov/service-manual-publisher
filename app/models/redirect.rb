@@ -1,4 +1,4 @@
-class Redirect < ActiveRecord::Base
+class Redirect < ApplicationRecord
   include ContentIdentifiable
 
   validates :old_path, presence: true

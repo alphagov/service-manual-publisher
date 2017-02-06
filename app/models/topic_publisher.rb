@@ -29,7 +29,7 @@ private
 
   def save_catching_gds_api_errors
     begin
-      ActiveRecord::Base.transaction do
+      ApplicationRecord.transaction do
         if topic.save
           yield
 

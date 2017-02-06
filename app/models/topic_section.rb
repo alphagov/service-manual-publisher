@@ -1,4 +1,4 @@
-class TopicSection < ActiveRecord::Base
+class TopicSection < ApplicationRecord
   belongs_to :topic
   has_many :guides, through: :topic_section_guides
 

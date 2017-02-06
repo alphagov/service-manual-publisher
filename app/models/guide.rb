@@ -1,4 +1,4 @@
-class Guide < ActiveRecord::Base
+class Guide < ApplicationRecord
   include ContentIdentifiable
   validate :slug_format
   validate :slug_cant_be_changed, if: :has_any_published_editions?

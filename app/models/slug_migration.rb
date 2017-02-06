@@ -1,4 +1,4 @@
-class SlugMigration < ActiveRecord::Base
+class SlugMigration < ApplicationRecord
   validates :slug, uniqueness: true
   validates :redirect_to, presence: true
   validate :is_not_already_completed
