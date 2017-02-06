@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.7.1'
+gem 'rails', '5.0.1'
 gem 'pg'
 gem 'sass-rails'
 gem 'uglifier'
@@ -41,7 +41,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.5'
   gem 'fuubar'
   gem 'simplecov', require: false
   gem 'simplecov-rcov', require: false
