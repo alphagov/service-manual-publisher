@@ -11,6 +11,7 @@ class TopicSearchIndexer
       type,
       id,
       format:            "service_manual_topic",
+      content_store_document_type: "service_manual_topic",
       description:       topic.description,
       indexable_content: topic.title + "\n\n" + topic.description,
       title:             topic.title,

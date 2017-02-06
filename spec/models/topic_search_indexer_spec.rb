@@ -16,6 +16,7 @@ RSpec.describe TopicSearchIndexer do
       _type:              "service_manual_topic",
       _id:                "/service-manual/topic1",
       format:             "service_manual_topic",
+      content_store_document_type: "service_manual_topic",
       description:        "The Topic Description",
       indexable_content:  "The Topic Title\n\nThe Topic Description",
       title:              "The Topic Title",

@@ -14,6 +14,7 @@ class GuideSearchIndexer
         type,
         id,
         format:            "service_manual_guide",
+        content_store_document_type: "service_manual_guide",
         description:       live_edition.description,
         indexable_content: live_edition.body,
         title:             live_edition.title,
