@@ -19,6 +19,7 @@ RSpec.describe GuideSearchIndexer, '#index' do
       _type:             'service_manual_guide',
       _id:               '/service-manual/topic/some-slug',
       format:            'service_manual_guide',
+      content_store_document_type: "service_manual_guide",
       description:       'Description',
       indexable_content: "It's my published guide content",
       title:             'My guide',
