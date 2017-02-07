@@ -99,7 +99,7 @@ class ServiceToolkitPresenter
           },
           {
             "title": "GOV.UK Platform as a Service",
-            "url": "https://govuk-paas.cloudapps.digital",
+            "url": "https://www.cloud.service.gov.uk",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure"
           },
           {
