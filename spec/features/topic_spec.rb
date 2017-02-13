@@ -49,8 +49,8 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to have_checked_field('Collapsed')
     expect(page).to have_unchecked_field('Include on homepage?')
 
-    expect(find_field("Heading Title").value).to eq "The heading title"
-    expect(find_field("Heading Description").value).to eq "The heading description"
+    expect(page).to have_field "Heading Title", with: "The heading title"
+    expect(page).to have_field "Heading Description", with: "The heading description"
   end
 
   it "links to a preview from a saved draft" do
