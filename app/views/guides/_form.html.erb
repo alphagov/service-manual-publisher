@@ -36,11 +36,9 @@
       <div class='form-group'>
         <%= f.label :title_slug, "Slug" %>
         <%= f.error_list :title_slug %>
-        <div class="help-block">
-          <p>
-            Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>writing-user-stories</code>.
-          </p>
-        </div>
+        <span class="help-block">
+          Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>writing-user-stories</code>.
+        </span>
         <%= f.text_field :title_slug, {value: guide_form.title_slug, class: 'input-md-12 form-control guide-slug js-title-slug', disabled: guide.has_any_published_editions?} %>
       </div>
 
