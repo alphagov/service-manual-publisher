@@ -1,5 +1,13 @@
 <div class="row">
-  <%= form_for topic do |f| %>
+  <%= form_for(
+    topic,
+    html: {
+      class: 'js-autogenerate-slug',
+      data: {
+        "slug-prefix": "/service-manual",
+        "has-been-published": topic.persisted?
+      }
+  }) do |f| %>
     <div class="col-md-8">
 
       <% if topic.new_record? %>
@@ -13,14 +21,18 @@
       <div class="well">
         <div class="form-group">
           <%= f.label :title %>
-          <%= f.text_field :title, class: "form-control" %>
+          <%= f.text_field :title, class: "form-control js-title" %>
         </div>
         <div class="form-group">
-          <%= f.label :path %>
+          <%= f.label :title_slug, "Slug" %>
           <span class="help-block">
             Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>writing-user-stories</code>.
           </span>
-          <%= f.text_field :path, class: "form-control", disabled: topic.persisted? %>
+          <%= f.text_field :title_slug, class: "form-control js-title-slug", disabled: topic.persisted? %>
+        </div>
+        <div class="form-group">
+          <%= f.label :path, "Final URL" %>
+          <%= f.text_field :path, class: "input-md-12 form-control js-slug", readonly: true, disabled: topic.persisted? %>
         </div>
         <div class="form-group">
           <%= f.label :description %>
