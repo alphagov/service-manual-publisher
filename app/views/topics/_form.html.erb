@@ -37,7 +37,7 @@
         <div class="form-group">
           <%= f.label :description %>
           <span class="help-block">To be used for displaying search results, linking content etc.</span>
-          <%= f.text_field :description, class: "form-control" %>
+          <%= f.text_area :description, rows: 5, class: "form-control text-area-auto-size js-text-area-auto-size" %>
         </div>
         <div class="form-group">
           <%= f.label :visually_collapsed do %>
