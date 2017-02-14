@@ -57,54 +57,61 @@
       </div>
 
       <div class="well">
-        <h3>Grouping</h3>
+        <h3>Sections</h3>
+        <p>Use the drag handles <span class="text-muted">(<span class="glyphicon glyphicon-move js-guide-handle"></span>)</span> to drag sections and guides into the required order.</p>
         <ul class="list-group topic-section-list js-topic-section-list">
           <%= f.fields_for :topic_sections, f.object.topic_sections.sort_by(&:position) do |topic_section_form| %>
             <% section_is_deletable = topic_section_form.object.topic_section_guides.empty? %>
-            <li class="list-group-item">
+            <li class="list-group-item topic-section">
               <%= topic_section_form.hidden_field :position, class: 'js-section-position' %>
             <% if section_is_deletable %>
               <%= topic_section_form.hidden_field :_destroy, value: "0", class: "js-destroy" %>
             <% end %>
-              <div class="left">
+              <div class="section-handle">
                 <span class="glyphicon glyphicon-move js-topic-section-handle"></span>
-              <% if section_is_deletable %>
-                <span class="glyphicon glyphicon-trash js-delete-list-group-item"></span>
-              <% end %>
               </div>
 
-              <div class="right">
+              <div class="section-body">
                 <div class="form-group">
-                  <%= topic_section_form.text_field :title, class: "form-control", placeholder: "Heading Title" %>
+                  <%= topic_section_form.label :title, "Section title" %>
+                  <%= topic_section_form.text_field :title, class: "form-control" %>
                 </div>
-                <%= topic_section_form.text_field :description, class: "form-control", placeholder: "Heading Description" %>
-              </div>
+                <div class="form-group">
+                  <%= topic_section_form.label :description, "Section description" %>
+                  <%= topic_section_form.text_field :description, class: "form-control" %>
+                </div>
 
-              <h3> Guides: </h3>
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  Drag and drop headings and guides into the required order.
-                </div>
-                <div class="panel-body">
-                  <ul class="list-group js-guide-list">
-                    <%= topic_section_form.fields_for(
-                      :topic_section_guides,
-                      topic_section_form.object.topic_section_guides.sort_by(&:position)
-                    ) do |topic_section_guide_form| %>
-                      <li class="list-group-item">
-                        <%= topic_section_guide_form.hidden_field :position, class: 'js-guide-position' %>
-                          <div class="left">
-                            <span class="glyphicon glyphicon-move js-guide-handle"></span>
-                          </div>
-                          <div class="right">
-                            <%= topic_section_guide_form.object.guide.title %>
-                          </div>
-                      </li>
-                    <% end %>
-                  </ul>
-                </div>
+                <% if topic_section_form.object.topic_section_guides.any? %>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">Guides</h4>
+                    </div>
+                    <div class="panel-body">
+                      <ul class="list-group guide-list js-guide-list">
+                        <%= topic_section_form.fields_for(
+                          :topic_section_guides,
+                          topic_section_form.object.topic_section_guides.sort_by(&:position)
+                        ) do |topic_section_guide_form| %>
+                          <li class="list-group-item guide">
+                            <%= topic_section_guide_form.hidden_field :position, class: 'js-guide-position' %>
+                              <div class="guide-handle">
+                                <span class="glyphicon glyphicon-move js-guide-handle"></span>
+                              </div>
+                              <div class="guide-body">
+                                <%= topic_section_guide_form.object.guide.title %>
+                              </div>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                <% end %>
+                <% if section_is_deletable %>
+                  <a href="#" class="link-muted js-delete-list-group-item">
+                    Remove Empty Section
+                  </button>
+                <% end %>
               </div>
-
             </li>
           <% end %>
         </ul>

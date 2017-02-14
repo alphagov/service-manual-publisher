@@ -1,10 +1,11 @@
 $(function() {
   var $topics = $(".js-topic-section-list");
 
-  $topics.on("click", ".js-delete-list-group-item", function() {
+  $topics.on("click", ".js-delete-list-group-item", function(e) {
     $item = $(this).parents(".list-group-item");
     $item.find(".js-destroy").val("1");
     $item.hide();
+    e.preventDefault();
   });
 
   // Set up dragula on the overall section list
