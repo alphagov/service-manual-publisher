@@ -61,7 +61,6 @@ node {
       setupDb()
 
       govuk.contentSchemaDependency(env.SCHEMA_BRANCH)
-      govuk.setEnvar("GOVUK_CONTENT_SCHEMAS_PATH", "tmp/govuk-content-schemas")
 
       govuk.precompileAssets()
     }
