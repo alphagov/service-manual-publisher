@@ -17,8 +17,8 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
         fill_in 'Title', with: title
         select topic_section_label, from: 'Topic section', exact: true
 
-        expect(find_field('Slug').value).to eq expected_slug
-        expect(find_field('Final URL').value).to eq "#{topic_section.topic.path}/#{expected_slug}"
+        expect(page).to have_field 'Slug', with: expected_slug
+        expect(page).to have_field 'Final URL', with: "#{topic_section.topic.path}/#{expected_slug}"
       end
     end
 
@@ -35,8 +35,8 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
 
         select topic_section_label, from: 'Topic section', exact: true
 
-        expect(find_field('Slug').value).to eq 'something'
-        expect(find_field('Final URL').value).to eq '/service-manual/my-topic/something'
+        expect(page).to have_field 'Slug', with: 'something'
+        expect(page).to have_field 'Final URL', with: '/service-manual/my-topic/something'
       end
 
       it 'remembers that the slug was edited when coming back to edit it' do
@@ -49,8 +49,8 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
         visit edit_guide_path(guide)
 
         fill_in 'Title', with: 'A New Title'
-        expect(find_field('Slug').value).to eq 'my-custom-slug'
-        expect(find_field('Final URL').value).to eq '/service-manual/my-topic/my-custom-slug'
+        expect(page).to have_field 'Slug', with: 'my-custom-slug'
+        expect(page).to have_field 'Final URL', with: '/service-manual/my-topic/my-custom-slug'
       end
     end
   end
@@ -62,8 +62,10 @@ RSpec.describe 'Generating slugs', type: :feature, js: true do
 
       fill_in 'Title', with: 'My Guide Title'
 
-      expect(find_field('Slug', disabled: true).value).to eq guide.slug.split('/').last
-      expect(find_field('Final URL', disabled: true).value).to eq guide.slug
+      title_slug = guide.slug.split('/').last
+
+      expect(page).to have_field 'Slug', with: title_slug, disabled: true
+      expect(page).to have_field 'Final URL', with: guide.slug, disabled: true
     end
   end
 end

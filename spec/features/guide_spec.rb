@@ -207,7 +207,7 @@ RSpec.describe "Updating a guide", type: :feature do
         click_link "A guide to agile"
       end
 
-      expect(find_field("Alert the public to what's changed")).to be_checked
+      expect(page).to have_checked_field "Alert the public to what's changed"
     end
 
     it "prevents users from editing the url slug" do

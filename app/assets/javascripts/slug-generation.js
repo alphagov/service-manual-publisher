@@ -1,11 +1,11 @@
 $(function() {
-  var $form = $(".js-guide-form");
+  var $form = $(".js-autogenerate-slug");
 
   if (!$form.length) {
     return;
   }
 
-  var $title = $(".js-guide-title");
+  var $title = $(".js-title");
   var $slug = $(".js-slug");
   var $titleSlug = $(".js-title-slug");
   var $topicSection = $(".js-topic-section");
@@ -18,18 +18,18 @@ $(function() {
     generateSlug();
   });
 
-  $(document).on("input", ".js-guide-title", generateSlug);
-  $(document).on("change", ".js-topic-section", generateSlug);
+  $title.on("input", generateSlug);
+  $topicSection.on("change", generateSlug);
 
   function generateSlug() {
-    // Slug can't be changed if the guide has ever been published.
+    // Slug can't be changed if the thing has ever been published.
     if (hasBeenPublished) {
       return;
     }
 
     // Update the title slug field as long as it hasn't been manually edited yet
     if (!titleSlugManuallyChanged) {
-      $titleSlug.val(slugifiedGuideTitle());
+      $titleSlug.val(slugifiedTitle());
     }
 
     var slug = "";
@@ -58,7 +58,7 @@ $(function() {
     return $form.data("slug-prefix");
   }
 
-  function slugifiedGuideTitle() {
+  function slugifiedTitle() {
     return slugify($title.val());
   }
 
@@ -67,7 +67,7 @@ $(function() {
   }
 
   function titleSlugPreviouslyChanged() {
-    return $titleSlug.val() != slugifiedGuideTitle();
+    return $titleSlug.val() != slugifiedTitle();
   }
 
   function slugify(text) {

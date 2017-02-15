@@ -17,7 +17,7 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to have_checked_field 'Include on homepage?'
   end
 
-  it "saves a draft topic" do
+  it "saves a draft topic", js: true do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
@@ -35,7 +35,6 @@ RSpec.describe "Topics", type: :feature do
     click_link "Manage Topics"
     click_link "Create a Topic"
 
-    fill_in "Path", with: "/service-manual/something"
     fill_in "Title", with: "The title"
     fill_in "Description", with: "The description"
     check "Collapsed"
@@ -50,8 +49,8 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to have_checked_field('Collapsed')
     expect(page).to have_unchecked_field('Include on homepage?')
 
-    expect(find_field("Heading Title").value).to eq "The heading title"
-    expect(find_field("Heading Description").value).to eq "The heading description"
+    expect(page).to have_field "Heading Title", with: "The heading title"
+    expect(page).to have_field "Heading Description", with: "The heading description"
   end
 
   it "links to a preview from a saved draft" do

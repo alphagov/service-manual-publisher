@@ -4,7 +4,7 @@
 <%= form_for(
       guide_form,
       html: {
-        class: "js-guide-form js-protect-data",
+        class: "js-autogenerate-slug js-protect-data",
         data: {
           "has-been-published": guide.has_any_published_editions?,
           "slug-prefix": guide_form.slug_prefix
@@ -30,17 +30,15 @@
       <div class="form-group">
         <%= f.label :title %>
         <%= f.error_list :title %>
-        <%= f.text_field :title, disabled: disable_inputs, class: 'input-md-12 form-control js-guide-title' %>
+        <%= f.text_field :title, disabled: disable_inputs, class: 'input-md-12 form-control js-title' %>
       </div>
 
       <div class='form-group'>
         <%= f.label :title_slug, "Slug" %>
         <%= f.error_list :title_slug %>
-        <div class="help-block">
-          <p>
-            Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>writing-user-stories</code>.
-          </p>
-        </div>
+        <span class="help-block">
+          Only use lowercase letters (not numbers or symbols) and separate words with a hyphen, eg <code>writing-user-stories</code>.
+        </span>
         <%= f.text_field :title_slug, {value: guide_form.title_slug, class: 'input-md-12 form-control guide-slug js-title-slug', disabled: guide.has_any_published_editions?} %>
       </div>
 

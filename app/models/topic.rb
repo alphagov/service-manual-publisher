@@ -33,6 +33,10 @@ class Topic < ApplicationRecord
     path
   end
 
+  def title_slug
+    slug ? slug.split("/").last : nil
+  end
+
   def guide_content_ids
     guides.pluck(:content_id).uniq
   end
