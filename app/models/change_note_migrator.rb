@@ -28,12 +28,19 @@ class ChangeNoteMigrator
     end
   end
 
+  def revise_version(edition_id, version)
+    edition = load_edition(edition_id, only_published_editions: false)
+    update_edition(edition, version: version)
+  end
+
 private
 
   attr_reader :dry_run, :publishing_api
 
-  def load_edition(edition_id)
-    Edition.published.find(edition_id).tap do |e|
+  def load_edition(edition_id, only_published_editions: true)
+    scope = only_published_editions ? Edition.published : Edition
+
+    scope.find(edition_id).tap do |e|
       log "Loaded edition with ID #{e.id} (version #{e.version} of #{e.guide.slug})", :green
     end
   end

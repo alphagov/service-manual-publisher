@@ -5,7 +5,7 @@ RSpec.describe ChangeNoteMigrator do
   let(:guide) { create(:guide) }
   let(:major_edition) { create(:edition, :published, update_type: "major", version: 2, guide: guide) }
   let(:minor_edition) { create(:edition, :published, update_type: "minor", version: 2, guide: guide) }
-  let(:unpublished_edition) { create(:edition, :draft, guide: guide) }
+  let(:unpublished_edition) { create(:edition, :draft, guide: guide, version: 1) }
   let(:change_note) { "I am a change note" }
 
   context "with dry_run mode enabled" do
@@ -98,6 +98,15 @@ RSpec.describe ChangeNoteMigrator do
         end
 
         subject.make_minor(major_edition.id)
+      end
+    end
+
+    describe "#revise_version" do
+      it "updates any edition, even unpublished ones" do
+        subject.revise_version(unpublished_edition.id, 2)
+
+        unpublished_edition.reload
+        expect(unpublished_edition.version).to eq(2)
       end
     end
   end
