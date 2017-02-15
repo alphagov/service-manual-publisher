@@ -40,8 +40,8 @@ RSpec.describe "Topics", type: :feature do
     check "Collapsed"
     uncheck "Include on homepage?"
     click_button "Add Heading"
-    fill_in "Heading Title", with: "The heading title"
-    fill_in "Heading Description", with: "The heading description"
+    fill_in "Section title", with: "The section title"
+    fill_in "Section description", with: "The section description"
     click_button "Save"
 
     expect(page).to have_field('Title', with: 'The title')
@@ -49,8 +49,8 @@ RSpec.describe "Topics", type: :feature do
     expect(page).to have_checked_field('Collapsed')
     expect(page).to have_unchecked_field('Include on homepage?')
 
-    expect(page).to have_field "Heading Title", with: "The heading title"
-    expect(page).to have_field "Heading Description", with: "The heading description"
+    expect(page).to have_field "Section title", with: "The section title"
+    expect(page).to have_field "Section description", with: "The section description"
   end
 
   it "links to a preview from a saved draft" do

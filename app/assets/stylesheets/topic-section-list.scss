@@ -1,26 +1,29 @@
 .topic-section-list {
-  .list-group {
-    min-height: 30px;
-  }
-
   .list-group-item {
     margin-bottom: 10px;
   }
+}
 
-  .left {
-    display: inline;
-  }
+.guide-list {
+  margin-bottom: 0;
+}
 
-  .right {
-    display: inline;
-  }
-
-  .glyphicon {
+.topic-section {
+  .section-handle {
+    float: left;
     cursor: pointer;
   }
 
-  .glyphicon-trash {
-    color: $brand-danger;
+  .section-body {
+    margin-left: 22px;
   }
 }
 
+.guide {
+  .guide-handle {
+    display: inline-block;
+    float: left;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+}
