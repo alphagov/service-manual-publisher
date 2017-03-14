@@ -28,13 +28,13 @@ RSpec.describe HomepagePresenter, "#content_payload" do
       description: 'Helping government teams create and run great digital services that meet the Digital Service Standard.'
   end
 
-  it 'includes a base path and prefix route for the service manual' do
+  it 'includes a base path and exact route for the service manual' do
     payload = described_class.new.content_payload
 
     expect(payload).to include \
       base_path: '/service-manual',
       routes: [
-        { type: 'prefix', path: '/service-manual' }
+        { type: 'exact', path: '/service-manual' }
       ]
   end
 
