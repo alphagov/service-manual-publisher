@@ -47,7 +47,7 @@ RSpec.describe ChangeNoteMigrator do
         aggregate_failures do
           expect(publishing_api).to receive(:put_content)
           expect(publishing_api).to receive(:patch_links)
-          expect(publishing_api).to receive(:publish).with(guide.content_id, "minor")
+          expect(publishing_api).to receive(:publish).with(guide.content_id)
         end
 
         subject.update_change_note(major_edition.id, change_note)
@@ -72,7 +72,7 @@ RSpec.describe ChangeNoteMigrator do
         aggregate_failures do
           expect(publishing_api).to receive(:put_content)
           expect(publishing_api).to receive(:patch_links)
-          expect(publishing_api).to receive(:publish).with(guide.content_id, "minor")
+          expect(publishing_api).to receive(:publish).with(guide.content_id)
         end
 
         subject.make_major(minor_edition.id, change_note)
@@ -94,7 +94,7 @@ RSpec.describe ChangeNoteMigrator do
         aggregate_failures do
           expect(publishing_api).to receive(:put_content)
           expect(publishing_api).to receive(:patch_links)
-          expect(publishing_api).to receive(:publish).with(guide.content_id, "minor")
+          expect(publishing_api).to receive(:publish).with(guide.content_id)
         end
 
         subject.make_minor(major_edition.id)

@@ -8,6 +8,7 @@ class ServiceStandardEmailAlertSignupPresenter
   def content_payload
     {
       base_path: '/service-manual/service-standard/email-signup',
+      update_type: 'major',
       details: {
         summary: "You'll receive an email whenever the Digital Service Standard is updated.",
         subscriber_list: {

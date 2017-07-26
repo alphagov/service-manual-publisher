@@ -14,7 +14,7 @@ class TopicPresenter
       schema_name: "service_manual_topic",
       document_type: "service_manual_topic",
       locale: "en",
-      update_type: "minor",
+      update_type: "major",
       base_path: topic.path,
       title: topic.title,
       description: topic.description,
