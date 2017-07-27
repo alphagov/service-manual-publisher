@@ -20,8 +20,8 @@ class TopicPublisher
 
   def publish
     save_catching_gds_api_errors do
-      publishing_api.publish(topic.content_id, topic.update_type)
-      publishing_api.publish(topic.email_alert_signup_content_id, topic.update_type)
+      publishing_api.publish(topic.content_id)
+      publishing_api.publish(topic.email_alert_signup_content_id)
     end
   end
 

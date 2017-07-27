@@ -10,6 +10,7 @@ class TopicEmailAlertSignupPresenter
   def content_payload
     {
       base_path: path,
+      update_type: 'major',
       details: {
         summary: summary,
         subscriber_list: subscriber_list_definition

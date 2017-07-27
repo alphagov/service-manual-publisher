@@ -8,6 +8,7 @@ class RedirectPublisher
       schema_name: "redirect",
       document_type: "redirect",
       base_path: old_path,
+      update_type: "major",
       publishing_app: "service-manual-publisher",
       redirects: [
         {
@@ -18,6 +19,6 @@ class RedirectPublisher
       ]
     }
     @publishing_api.put_content(content_id, data)
-    @publishing_api.publish(content_id, "major")
+    @publishing_api.publish(content_id)
   end
 end
