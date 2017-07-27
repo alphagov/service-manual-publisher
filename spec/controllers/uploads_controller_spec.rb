@@ -21,7 +21,7 @@ RSpec.describe UploadsController, type: :controller do
         test_png = fixture_file_upload('fake.file', 'image/png')
 
         expect(ASSET_API).to receive(:create_asset)
-          .and_return(file_url: 'http://uploaded.file/1.png')
+          .and_return("file_url" => "http://uploaded.file/1.png")
 
         post :create, params: {
           format: :js,
