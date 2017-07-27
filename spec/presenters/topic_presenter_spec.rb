@@ -19,11 +19,12 @@ RSpec.describe TopicPresenter, "#content_payload" do
       description: "Topic description",
       path: "/service-manual/test-topic"
     )
+
     topic_presenter = described_class.new(topic)
 
     expect(topic_presenter.content_payload).to include(
       description: "Topic description",
-      update_type: "minor",
+      update_type: "major",
       phase: "beta",
       schema_name: "service_manual_topic",
       document_type: "service_manual_topic",

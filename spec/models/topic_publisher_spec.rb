@@ -93,10 +93,10 @@ RSpec.describe TopicPublisher, '#publish' do
 
     # expect to publish both the topic and the email alert signup for the topic
     expect(publishing_api).to receive(:publish)
-      .once.with(topic.content_id, topic.update_type)
+      .once.with(topic.content_id)
 
     expect(publishing_api).to receive(:publish)
-      .once.with(topic.email_alert_signup_content_id, topic.update_type)
+      .once.with(topic.email_alert_signup_content_id)
 
     described_class.new(topic: topic, publishing_api: publishing_api)
       .publish

@@ -48,7 +48,7 @@ RSpec.describe ServiceStandardPublisher, '#publish' do
 
     described_class.new.publish
 
-    assert_publishing_api_publish('4a94ae54-5a47-40c1-b9aa-ff47dcaace85', "update_type" => "major")
+    assert_publishing_api_publish('4a94ae54-5a47-40c1-b9aa-ff47dcaace85')
   end
 
   it 'publishes the service standard' do
@@ -56,6 +56,6 @@ RSpec.describe ServiceStandardPublisher, '#publish' do
 
     described_class.new.publish
 
-    assert_publishing_api_publish('00f693d4-866a-4fe6-a8d6-09cd7db8980b', "update_type" => "major")
+    assert_publishing_api_publish('00f693d4-866a-4fe6-a8d6-09cd7db8980b')
   end
 end

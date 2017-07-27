@@ -26,7 +26,7 @@ class GuideSearchIndexer
   end
 
   def delete
-    RUMMAGER_API.delete_content!(guide.slug)
+    RUMMAGER_API.delete_content(guide.slug)
   end
 
 private
