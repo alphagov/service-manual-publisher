@@ -28,7 +28,7 @@ class GuideManager
       edition = build_clone_of_latest_edition
       edition.state = 'published'
       edition.save!
-      PUBLISHING_API.publish(guide.content_id)
+      PUBLISHING_API.publish(guide.content_id, edition.update_type)
 
       unless edition.notification_subscribers == [user]
         NotificationMailer.published(guide, user).deliver_now

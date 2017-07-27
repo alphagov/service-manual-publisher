@@ -9,7 +9,7 @@ RSpec.describe GuideRepublisher, "#republish" do
       .with(guide.content_id, hash_including(base_path: "/service-manual/topic/guide"))
     expect(publishing_api).to receive(:patch_links)
       .with(guide.content_id, hash_including(links: kind_of(Hash)))
-    expect(publishing_api).to receive(:publish).with(guide.content_id, "republish")
+    expect(publishing_api).to receive(:publish).with(guide.content_id, "minor")
 
     described_class.new(guide, publishing_api: publishing_api).republish
   end
@@ -34,6 +34,6 @@ RSpec.describe GuideRepublisher, "#republish" do
 
     described_class.new(guide).republish
 
-    assert_publishing_api_publish(guide.content_id)
+    assert_publishing_api_publish(guide.content_id, update_type: "minor")
   end
 end

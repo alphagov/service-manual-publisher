@@ -96,10 +96,10 @@ RSpec.describe "Topics", type: :feature do
 
     # expect to publish both the topic and the email alert signup for the topic
     expect(api_double).to receive(:publish)
-      .once.with(topic.content_id)
+      .once.with(topic.content_id, 'major')
 
     expect(api_double).to receive(:publish)
-      .once.with(topic.email_alert_signup_content_id)
+      .once.with(topic.email_alert_signup_content_id, 'major')
 
     # Expect that the topic is attempted to be indexed for search
     topic_search_indexer = double(:topic_search_indexer)

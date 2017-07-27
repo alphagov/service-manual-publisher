@@ -75,7 +75,7 @@ RSpec.describe "Creating a guide", type: :feature do
       .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:publish)
       .once
-      .with(an_instance_of(String))
+      .with(an_instance_of(String), 'major')
     stub_any_rummager_post
 
     create(:guide_community, title: 'Technology Community')

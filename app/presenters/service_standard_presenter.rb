@@ -9,7 +9,6 @@ class ServiceStandardPresenter
     {
       base_path: '/service-manual/service-standard',
       document_type: 'service_manual_service_standard',
-      update_type: 'major',
       locale: 'en',
       phase: 'beta',
       publishing_app: 'service-manual-publisher',
