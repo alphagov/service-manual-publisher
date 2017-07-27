@@ -8,6 +8,7 @@ RSpec.describe RedirectPublisher, type: :model do
 
     expected_redirect = {
       schema_name: "redirect",
+      update_type: "major",
       document_type: "redirect",
       publishing_app: "service-manual-publisher",
       base_path: old_path,
@@ -24,7 +25,7 @@ RSpec.describe RedirectPublisher, type: :model do
     expect(api).to receive(:put_content)
       .with(content_id, expected_redirect)
     expect(api).to receive(:publish)
-      .once.with(content_id, 'major')
+      .once.with(content_id)
 
     RedirectPublisher.new(api).process(
       content_id: content_id,
@@ -42,7 +43,7 @@ RSpec.describe RedirectPublisher, type: :model do
     expect(api).to receive(:put_content)
       .with(an_instance_of(String), be_valid_against_schema('redirect'))
     expect(api).to receive(:publish)
-      .once.with(content_id, 'major')
+      .once.with(content_id)
 
     RedirectPublisher.new(api).process(
       content_id: content_id,
