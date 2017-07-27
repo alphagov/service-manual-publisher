@@ -160,7 +160,7 @@ RSpec.describe "Guide history", type: :feature do
     allow(publishing_api).to receive(:patch_links)
       .with(an_instance_of(String), an_instance_of(Hash))
     allow(publishing_api).to receive(:publish)
-      .with(an_instance_of(String))
+      .with(an_instance_of(String), an_instance_of(String))
   end
 
   def stub_rummager

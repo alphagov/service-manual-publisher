@@ -20,6 +20,6 @@ class ServiceStandardSearchIndexer
   end
 
   def delete
-    RUMMAGER_API.delete_content(@service_standard[:base_path])
+    RUMMAGER_API.delete_content!(@service_standard[:base_path])
   end
 end

@@ -38,10 +38,10 @@ private
   end
 
   def publish_email_alert_signup
-    PUBLISHING_API.publish(email_alert_signup.content_id)
+    PUBLISHING_API.publish(email_alert_signup.content_id, 'major')
   end
 
   def publish_service_standard
-    PUBLISHING_API.publish(service_standard.content_id)
+    PUBLISHING_API.publish(service_standard.content_id, 'major')
   end
 end
