@@ -60,7 +60,7 @@ class GuideManager
         begin
           GuideSearchIndexer.new(guide).delete
         rescue GdsApi::HTTPNotFound => exception
-          Airbrake.notify(exception)
+          GovukError.notify(exception)
         end
 
         ManageResult.new(true, [])
@@ -106,7 +106,7 @@ private
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e
-      Airbrake.notify(e)
+      GovukError.notify(e)
       error_message = e.error_details['error']['message'] rescue "Could not communicate with upstream API"
       ManageResult.new(false, [error_message])
     end
