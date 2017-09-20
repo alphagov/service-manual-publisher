@@ -256,11 +256,11 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       expect(guide.latest_edition.state).to eq('published')
     end
 
-    it 'sends a notification to Airbrake' do
+    it 'sends a notification to Sentry' do
       user = create(:user)
       guide = create(:guide, :with_published_edition)
 
-      expect(Airbrake).to receive(:notify)
+      expect(GovukError).to receive(:notify)
 
       manager = described_class.new(guide: guide, user: user)
       manager.unpublish_with_redirect('/service-manual/suitable-redirect')
@@ -284,11 +284,11 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       stub_any_rummager_delete_content.to_return(status: [404, "Not Found"])
     end
 
-    it 'sends a notification to Airbrake' do
+    it 'sends a notification to Sentry' do
       user = create(:user)
       guide = create(:guide, :with_published_edition)
 
-      expect(Airbrake).to receive(:notify)
+      expect(GovukError).to receive(:notify)
 
       manager = described_class.new(guide: guide, user: user)
       manager.unpublish_with_redirect('/service-manual/suitable-redirect')
