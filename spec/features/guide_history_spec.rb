@@ -5,7 +5,6 @@ RSpec.describe "Guide history", type: :feature do
 
   it "shows a history of the latest edition" do
     stub_publisher
-    stub_rummager
 
     john = create(:user, name: "John")
     sally = create(:user, name: "Sally")
@@ -161,11 +160,5 @@ RSpec.describe "Guide history", type: :feature do
       .with(an_instance_of(String), an_instance_of(Hash))
     allow(publishing_api).to receive(:publish)
       .with(an_instance_of(String))
-  end
-
-  def stub_rummager
-    rummager_api = double(:rummager_api)
-    stub_const("RUMMAGER_API", rummager_api)
-    allow(rummager_api).to receive(:add_document)
   end
 end

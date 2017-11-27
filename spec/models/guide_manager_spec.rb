@@ -79,7 +79,6 @@ end
 RSpec.describe GuideManager, '#publish' do
   before do
     stub_any_publishing_api_publish
-    stub_any_rummager_post
   end
 
   it "creates a new edition with a state of 'published'" do
@@ -110,16 +109,6 @@ RSpec.describe GuideManager, '#publish' do
     manager.publish
 
     assert_publishing_api_publish(guide.content_id)
-  end
-
-  it 'indexes the document with rummager' do
-    user = create(:user)
-    guide = create(:guide, :with_ready_edition)
-
-    manager = described_class.new(guide: guide, user: user)
-    manager.publish
-
-    assert_rummager_posted_item({ link: guide.slug }.as_json)
   end
 
   it "delivers a notification" do
@@ -185,7 +174,6 @@ end
 RSpec.describe GuideManager, '#unpublish_with_redirect' do
   before do
     stub_any_publishing_api_call
-    stub_any_rummager_delete_content
   end
 
   it "creates a new edition with a state of 'unpublished'" do
@@ -219,16 +207,6 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
       type: 'redirect',
       alternative_path: '/service-manual/suitable-redirect'
     )
-  end
-
-  it 'deletes the document from rummager' do
-    user = create(:user)
-    guide = create(:guide, :with_ready_edition)
-
-    manager = described_class.new(guide: guide, user: user)
-    manager.unpublish_with_redirect('/service-manual/suitable-redirect')
-
-    assert_rummager_deleted_content(guide.slug)
   end
 
   it "is successful" do
@@ -275,33 +253,6 @@ RSpec.describe GuideManager, '#unpublish_with_redirect' do
 
       expect(result).to_not be_success
       expect(result.errors).to include('Could not communicate with upstream API')
-    end
-  end
-
-  context 'when rummager returns a 404 trying to delete the content' do
-    before do
-      stub_any_publishing_api_call
-      stub_any_rummager_delete_content.to_return(status: [404, "Not Found"])
-    end
-
-    it 'sends a notification to Sentry' do
-      user = create(:user)
-      guide = create(:guide, :with_published_edition)
-
-      expect(GovukError).to receive(:notify)
-
-      manager = described_class.new(guide: guide, user: user)
-      manager.unpublish_with_redirect('/service-manual/suitable-redirect')
-    end
-
-    it 'is successful' do
-      user = create(:user)
-      guide = create(:guide, :with_published_edition)
-
-      manager = described_class.new(guide: guide, user: user)
-      result = manager.unpublish_with_redirect('/service-manual/suitable-redirect')
-
-      expect(result).to be_success
     end
   end
 end

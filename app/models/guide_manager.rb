@@ -34,8 +34,6 @@ class GuideManager
         NotificationMailer.published(guide, user).deliver_now
       end
 
-      GuideSearchIndexer.new(guide).index
-
       ManageResult.new(true, [])
     end
   end
@@ -56,12 +54,6 @@ class GuideManager
           type: 'redirect',
           alternative_path: redirect.new_path
         )
-
-        begin
-          GuideSearchIndexer.new(guide).delete
-        rescue GdsApi::HTTPNotFound => exception
-          GovukError.notify(exception)
-        end
 
         ManageResult.new(true, [])
       else
