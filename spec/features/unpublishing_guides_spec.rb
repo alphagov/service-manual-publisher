@@ -11,7 +11,6 @@ RSpec.describe "unpublishing guides", type: :feature do
   context 'when the publishing api is available' do
     before do
       stub_any_publishing_api_call
-      stub_any_rummager_delete_content
     end
 
     it 'requires you to choose a redirect destination' do
@@ -44,14 +43,6 @@ RSpec.describe "unpublishing guides", type: :feature do
         type: 'redirect',
         alternative_path: '/service-manual/suitable-redirect'
       )
-    end
-
-    it 'removes the guide from the search index' do
-      visit unpublish_guide_path(guide)
-      select topic.path, from: "Redirect to"
-      click_button "Unpublish"
-
-      assert_rummager_deleted_content guide.slug
     end
 
     it 'redirects to the edit page and displays a success message' do

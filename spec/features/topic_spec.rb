@@ -101,11 +101,6 @@ RSpec.describe "Topics", type: :feature do
     expect(api_double).to receive(:publish)
       .once.with(topic.email_alert_signup_content_id)
 
-    # Expect that the topic is attempted to be indexed for search
-    topic_search_indexer = double(:topic_search_indexer)
-    expect(topic_search_indexer).to receive(:index)
-    expect(TopicSearchIndexer).to receive(:new) { topic_search_indexer }
-
     visit root_path
     click_link "Manage Topics"
     click_link "Technology"

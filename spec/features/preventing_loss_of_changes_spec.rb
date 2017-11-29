@@ -5,7 +5,6 @@ RSpec.describe "Preventing users from losing unsaved changes in the form", type:
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
     stub_const('PUBLISHING_API', publishing_api)
-    allow_any_instance_of(GuideSearchIndexer).to receive(:index)
   end
 
   it "asks the user for confirmation when navigating away via 'Request review'", js: true do

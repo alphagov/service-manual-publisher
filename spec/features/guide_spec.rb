@@ -76,7 +76,6 @@ RSpec.describe "Creating a guide", type: :feature do
     expect(api_double).to receive(:publish)
       .once
       .with(an_instance_of(String))
-    stub_any_rummager_post
 
     create(:guide_community, title: 'Technology Community')
     create(:topic_section, title: 'Relevant topic section')
@@ -111,8 +110,6 @@ RSpec.describe "Creating a guide", type: :feature do
     within ".alert-success" do
       expect(page).to have_content('published')
     end
-
-    assert_rummager_posted_item(title: 'First Edition Title')
 
     guide = Guide.find_by_slug("/service-manual/the/path")
     edition = guide.latest_edition
@@ -173,7 +170,6 @@ RSpec.describe "Updating a guide", type: :feature do
 
   context "when the guide has previously been published" do
     it "creates a new draft version" do
-      allow_any_instance_of(GuideSearchIndexer).to receive(:index)
       stub_const("PUBLISHING_API", api_double)
       expect(api_double).to receive(:put_content)
         .once

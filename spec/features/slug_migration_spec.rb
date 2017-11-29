@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Slug migration", type: :feature do
-  before do
-    @rummager_double = double(:rummager)
-    allow(GdsApi::Rummager).to receive(:new).and_return @rummager_double
-    allow(@rummager_double).to receive(:get_content!).and_return(true)
-  end
-
   def expect_table_to_match_migrations migrations
     within ".slug-migrations .table" do
       table_data = page.all("tr").map do |row|

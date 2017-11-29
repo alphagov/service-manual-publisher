@@ -45,11 +45,7 @@ private
   end
 
   def publish(topic)
-    TopicPublisher.new(topic: topic).publish.tap do |response|
-      if response.success?
-        TopicSearchIndexer.new(topic).index
-      end
-    end
+    TopicPublisher.new(topic: topic).publish
   end
 
   def add_heading(topic)

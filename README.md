@@ -50,10 +50,6 @@ for GOV.UK. The pros and cons to the nested URL structure are
 - [content-store](https://github.com/alphagov/content-store)
 - [service-manual-frontend](https://github.com/alphagov/service-manual-frontend)
 
-**To index and search published guides**
-
-- [rummager](https://github.com/alphagov/rummager)
-
 _NB: Every application above may have its own dependencies_
 
 You will need to clone down all these repositories, and run the following commands
