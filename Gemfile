@@ -5,8 +5,6 @@ gem 'pg'
 gem 'sass-rails'
 gem 'uglifier'
 
-gem 'unicorn'
-gem 'logstasher'
 gem 'plek'
 
 gem 'govuk_admin_template'
@@ -17,7 +15,7 @@ gem 'diffy'
 gem 'gds-api-adapters'
 gem 'gds-sso'
 gem 'govspeak'
-gem "govuk_app_config", "~> 0.2.0"
+gem "govuk_app_config", "~> 1.3.0"
 gem 'highline'
 gem 'kaminari'
 gem 'redcarpet'

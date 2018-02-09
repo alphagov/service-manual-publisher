@@ -1,8 +1,4 @@
 Rails.application.configure do
-  config.logstasher.enabled = true
-  config.logstasher.logger = Logger.new(Rails.root.join("log/production.json.log"))
-  config.logstasher.suppress_app_log = true
-
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -52,7 +48,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
