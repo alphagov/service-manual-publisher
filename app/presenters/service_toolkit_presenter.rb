@@ -103,7 +103,7 @@ class ServiceToolkitPresenter
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure"
           },
           {
-            "title": "Registers",
+            "title": "GOV.UK Registers",
             "url": "https://registers.cloudapps.digital",
             "description": "Get authoritative datasets your service can rely on"
           }
