@@ -15,6 +15,6 @@ module ServiceManualPublisher
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_record.schema_format = :sql
-    config.action_mailer.default_url_options = { host: Plek.current.find("service-manual-publisher") }
+    config.action_mailer.default_url_options = { host: Plek.new.external_url_for("service-manual-publisher") }
   end
 end

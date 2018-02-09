@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :set_authenticated_user_header
 
   def preview_content_model_url(content_model)
-    [Plek.find('draft-origin'), content_model.slug].join('')
+    [Plek.new.external_url_for('draft-origin'), content_model.slug].join('')
   end
   helper_method :preview_content_model_url
 
