@@ -47,7 +47,7 @@ GEM
     ast (2.4.0)
     auto_strip_attributes (2.3.0)
       activerecord (>= 3.0)
-    autoprefixer-rails (7.1.6)
+    autoprefixer-rails (8.0.0)
       execjs
     better_errors (2.4.0)
       coderay (>= 1.0.0)
@@ -132,7 +132,7 @@ GEM
       rubocop (~> 0.51.0)
       rubocop-rspec (~> 1.19.0)
       scss_lint
-    govuk_admin_template (6.2.0)
+    govuk_admin_template (6.5.0)
       bootstrap-sass (= 3.3.5.1)
       jquery-rails (~> 4.3.1)
       rails (>= 3.2.0)
@@ -185,7 +185,7 @@ GEM
       activesupport (>= 4.0)
       logstash-event (~> 1.2.0)
       request_store
-    loofah (2.1.1)
+    loofah (2.2.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lrucache (0.1.4)
