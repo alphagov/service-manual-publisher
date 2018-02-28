@@ -44,7 +44,7 @@ end
 group :test do
   gem 'capybara'
   gem 'database_cleaner'
-  gem 'factory_girl_rails', '~> 4.7.0'
+  gem 'factory_girl_rails', '~> 4.9.0'
   gem 'govuk-content-schema-test-helpers'
   gem 'launchy'
   gem 'poltergeist'
