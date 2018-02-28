@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   # Example Usage
   #
   # Create a topic section with the title Hello World

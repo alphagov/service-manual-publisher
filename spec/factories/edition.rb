@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   # Example Usage
   #
   # Create a draft with the title "A Draft Edition"

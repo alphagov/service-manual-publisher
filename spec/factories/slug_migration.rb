@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :slug_migration do
     slug "/something"
 
