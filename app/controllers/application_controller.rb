@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include GDS::SSO::ControllerMethods
-  before_action :require_signin_permission!
+  before_action :authenticate_user!
   before_action :set_authenticated_user_header
 
   def preview_content_model_url(content_model)
