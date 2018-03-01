@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :topic_section_guide do
     topic_section
     guide

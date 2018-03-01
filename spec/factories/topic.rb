@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :topic do
     title "Agile Delivery"
     sequence :path do |n|

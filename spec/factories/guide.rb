@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   # Example Usage
   #
   # Create a guide with a single draft edition, with title "Hello World"
