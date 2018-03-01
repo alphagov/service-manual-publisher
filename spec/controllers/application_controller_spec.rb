@@ -9,7 +9,7 @@ RSpec.describe ApplicationController do
 
   describe "authentication" do
     it "should authenticate users before every request served by a controller that inherits from ApplicationController" do
-      expect(controller).to receive(:require_signin_permission!).and_return(true)
+      expect(controller).to receive(:authenticate_user!).and_return(true)
       get :index
     end
 
