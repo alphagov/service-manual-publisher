@@ -104,7 +104,7 @@ class ServiceToolkitPresenter
           },
           {
             "title": "GOV.UK Registers",
-            "url": "https://registers.cloudapps.digital",
+            "url": "https://www.registers.service.gov.uk",
             "description": "Get authoritative datasets your service can rely on"
           }
         ]
