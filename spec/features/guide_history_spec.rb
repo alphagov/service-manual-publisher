@@ -72,13 +72,13 @@ RSpec.describe "Guide history", type: :feature do
 
     click_on "Comments and history"
 
-    expect(events[0].text).to eq "28 November 2004 Published by Dave"
-    expect(events[1].text).to eq "27 November 2004 Approved by John"
-    expect(events[2].text).to eq "26 November 2004 Review requested by Sally"
-    expect(events[3].text).to eq "25 November 2004 Assigned to Sally by John"
-    expect(events[4].text).to include "25 November 2004 Sally What a great piece of writing"
-    expect(events[5].text).to eq "24 November 2004 Assigned to John"
-    expect(events[6].text).to eq "24 November 2004 New draft created by John"
+    expect(events[0].text).to eq "28 November 2004\nPublished by Dave"
+    expect(events[1].text).to eq "27 November 2004\nApproved by John"
+    expect(events[2].text).to eq "26 November 2004\nReview requested by Sally"
+    expect(events[3].text).to eq "25 November 2004\nAssigned to Sally by John"
+    expect(events[4].text).to include "25 November 2004\nSally\nWhat a great piece of writing"
+    expect(events[5].text).to eq "24 November 2004\nAssigned to John"
+    expect(events[6].text).to eq "24 November 2004\nNew draft created by John"
   end
 
   it "shows a header with pertinent edition information" do
