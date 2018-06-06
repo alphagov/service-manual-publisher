@@ -138,6 +138,14 @@ RSpec.describe GuidePresenter do
         expect(presenter.links_payload[:links][:content_owners])
           .to eq(['c5eb647c-7943-49dd-8362-1920d330696f'])
       end
+
+      it 'includes the GDS Organisation ID as the primary publishing organisation' do
+        guide = create(:guide)
+        presenter = described_class.new(guide, guide.latest_edition)
+
+        expect(presenter.links_payload[:links][:primary_publishing_organisation])
+          .to eq ['af07d5a5-df63-4ddc-9383-6a666845ebe9']
+      end
     end
 
     context 'for a guide community' do
