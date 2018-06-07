@@ -30,6 +30,7 @@ class GuidePresenter
   def links_payload
     links = {
       organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
+      primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID]
     }
 
     if guide.topic
