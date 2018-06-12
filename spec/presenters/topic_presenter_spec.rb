@@ -167,6 +167,15 @@ RSpec.describe TopicPresenter, "#links_payload" do
     ).to eq([])
   end
 
+  it 'includes the GDS Organisation ID as the primary publishing organisation' do
+    guide_community = create(:guide_community)
+    topic = create_topic_in_groups([[guide_community]])
+    presenter = described_class.new(topic)
+
+    expect(presenter.links_payload[:links][:primary_publishing_organisation])
+      .to eq ['af07d5a5-df63-4ddc-9383-6a666845ebe9']
+  end
+
   context 'when the topic should be included on the homepage' do
     it "includes the homepage as a parent" do
       topic = create(:topic, include_on_homepage: true)
