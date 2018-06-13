@@ -23,6 +23,11 @@ task migrate_homepage: :environment do
     homepage.content_payload
   )
 
+  PUBLISHING_API.patch_links(
+    homepage.content_id,
+    homepage.links_payload
+  )
+
   # Republish all topics (as children of the homepage)
   Topic.find_each do |topic|
     puts "Republishing #{topic.title}..."

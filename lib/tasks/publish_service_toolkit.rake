@@ -6,6 +6,8 @@ namespace :publish do
     puts "Creating service toolkit..."
     PUBLISHING_API.put_content(toolkit.content_id, toolkit.content_payload)
 
+    PUBLISHING_API.patch_links(toolkit.content_id, toolkit.links_payload)
+
     puts "Publishing the service toolkit..."
     PUBLISHING_API.publish(toolkit.content_id, "major")
 

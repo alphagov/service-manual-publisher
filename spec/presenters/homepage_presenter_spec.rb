@@ -8,6 +8,15 @@ RSpec.describe HomepagePresenter, "#content_id" do
   end
 end
 
+RSpec.describe HomepagePresenter, "#links_payload" do
+  it "includes the GDS Organisation ID as the primary publishing organisation" do
+    homepage_presenter = described_class.new
+
+    expect(homepage_presenter.links_payload).to include \
+      primary_publishing_organisation: ['af07d5a5-df63-4ddc-9383-6a666845ebe9']
+  end
+end
+
 RSpec.describe HomepagePresenter, "#content_payload" do
   it "conforms to the schema" do
     homepage_presenter = described_class.new

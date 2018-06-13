@@ -8,6 +8,13 @@ RSpec.describe ServiceToolkitPresenter, "#content_id" do
   end
 end
 
+RSpec.describe ServiceToolkitPresenter, "#links_payload" do
+  let(:payload) { described_class.new.links_payload }
+  it "includes the GDS Organisation ID as the primary publishing organisation" do
+    expect(payload[:primary_publishing_organisation]).to eq ['af07d5a5-df63-4ddc-9383-6a666845ebe9']
+  end
+end
+
 RSpec.describe ServiceToolkitPresenter, "#content_payload" do
   let(:payload) { described_class.new.content_payload }
 

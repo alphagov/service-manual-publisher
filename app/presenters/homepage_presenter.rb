@@ -21,4 +21,10 @@ class HomepagePresenter
       locale: 'en'
     }
   end
+
+  def links_payload
+    {
+      primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID]
+    }
+  end
 end
