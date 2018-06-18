@@ -36,6 +36,7 @@ class TopicPresenter
         linked_items: topic.guides.map(&:content_id),
         content_owners: content_owner_content_ids,
         organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
+        primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
         parent: parents
       }
     }
