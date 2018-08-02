@@ -3,5 +3,5 @@
 library("govuk")
 
 node("postgresql-9.3") {
-  govuk.buildProject()
+  govuk.buildProject(brakeman: true)
 }
