@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
       unless @edition.notification_subscribers == [@comment.user]
         NotificationMailer.comment_added(@comment).deliver_now
       end
-      redirect_to "#{guide_editions_path(@edition.guide)}##{@comment.html_id}"
+      redirect_to guide_editions_path(@edition.guide, anchor: @comment.html_id)
     else
       @guide = @edition.guide
       @editions = @guide.editions.order(created_at: :desc)
