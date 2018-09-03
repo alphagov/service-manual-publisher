@@ -31,14 +31,14 @@ class ServiceToolkitPresenter
         "description": "Standards for creating and running government services",
         "links": [
           {
-            "title": "Digital Service Standard",
+            "title": "Service Standard",
             "url": "https://www.gov.uk/service-manual/service-standard",
-            "description": "The 18-point standard that government services must meet"
+            "description": "The 14-point standard that government services must meet"
           },
           {
             "title": "Service Manual",
             "url": "https://www.gov.uk/service-manual",
-            "description": "Guidance on how to research, design and build services that meet the Digital Service Standard"
+            "description": "Guidance on how to research, design and build services that meet the Service Standard"
           },
           {
             "title": "API technical and data standards",

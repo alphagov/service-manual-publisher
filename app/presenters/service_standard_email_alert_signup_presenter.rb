@@ -10,7 +10,7 @@ class ServiceStandardEmailAlertSignupPresenter
       base_path: '/service-manual/service-standard/email-signup',
       update_type: 'major',
       details: {
-        summary: "You'll receive an email whenever the Digital Service Standard is updated.",
+        summary: "You'll receive an email whenever the Service Standard is updated.",
         subscriber_list: {
           document_type: 'service_manual_guide',
           links: {
