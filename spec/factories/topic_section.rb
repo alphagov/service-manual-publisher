@@ -9,13 +9,13 @@ FactoryBot.define do
 
   factory :topic_section do
     transient do
-      guides []
+      guides { [] }
     end
 
     topic
-    title "Topic Section Title"
-    description "Topic Section Description"
-    position 0
+    title { "Topic Section Title" }
+    description { "Topic Section Description" }
+    position { 0 }
 
     after(:build) do |topic_section, evaluator|
       evaluator.guides.each do |guide|

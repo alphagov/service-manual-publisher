@@ -23,46 +23,46 @@ FactoryBot.define do
 
   factory :guide do
     transient do
-      title "Example Guide"
-      body "The quick brown fox jumped over the lazy dog."
-      edition nil
-      edition_factory :edition
+      title { "Example Guide" }
+      body { "The quick brown fox jumped over the lazy dog." }
+      edition { nil }
+      edition_factory { :edition }
       # a guide can't exist without an edition, so by default include one draft
-      states [:draft]
-      topic nil
-      topic_section nil
-      requires_topic true
+      states { [:draft] }
+      topic { nil }
+      topic_section { nil }
+      requires_topic { true }
     end
 
-    slug "/service-manual/topic-name/test-guide#{SecureRandom.hex}"
+    slug { "/service-manual/topic-name/test-guide#{SecureRandom.hex}" }
 
     trait :with_draft_edition do
       # noop
     end
 
     trait :with_review_requested_edition do
-      states [:draft, :review_requested]
+      states { %i(draft review_requested) }
     end
 
     trait :with_ready_edition do
-      states [:draft, :review_requested, :ready]
+      states { %i(draft review_requested ready) }
     end
 
     trait :with_published_edition do
       transient do
-        states [:draft, :review_requested, :ready, :published]
+        states { %i(draft review_requested ready published) }
       end
     end
 
     trait :with_previously_published_edition do
       transient do
-        states [:draft, :review_requested, :ready, :published, :draft]
+        states { %i(draft review_requested ready published draft) }
       end
     end
 
     trait :has_been_unpublished do
       transient do
-        states [:draft, :review_requested, :ready, :published, :unpublished]
+        states { %i(draft review_requested ready published unpublished) }
       end
     end
 
@@ -92,8 +92,8 @@ FactoryBot.define do
   # editions, as guide community editions don't have content owners.
   factory :guide_community, parent: :guide, class: GuideCommunity do
     transient do
-      title "Example Guide Community"
-      edition_factory :community_edition
+      title { "Example Guide Community" }
+      edition_factory { :community_edition }
     end
   end
 
@@ -101,12 +101,12 @@ FactoryBot.define do
   # points have summaries.
   factory :point, parent: :guide, class: Point do
     transient do
-      edition_factory :point_edition
-      requires_topic false
+      edition_factory { :point_edition }
+      requires_topic { false }
       sequence :title do |n|
         "Point #{n}. Point Title"
       end
     end
-    slug "/service-manual/service-standard/#{SecureRandom.hex}"
+    slug { "/service-manual/service-standard/#{SecureRandom.hex}" }
   end
 end
