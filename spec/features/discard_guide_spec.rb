@@ -4,8 +4,16 @@ RSpec.describe "discarding guides", type: :feature do
   it "makes the user confirm discarding the draft", js: true do
     guide = create(:guide, :with_draft_edition)
     visit edit_guide_path(guide)
-    click_first_button "Discard draft"
-    expect(page.driver.browser.modal_message).to include "Are you sure you want to discard this draft?"
+    accept_confirm do
+      click_first_button "Discard draft"
+      expect(page.driver.browser.switch_to.alert.text).to include "Are you sure you want to discard this draft?"
+    end
+    # It's necessary in this test to return to the edit page
+    # otherwise the spec will complete regardless of the js
+    # confirmation. This means the database will be truncated and
+    # the subsequent #find! in the controller will raise an error
+    # as all records have already been deleted.
+    visit edit_guide_path(guide)
   end
 
   context "when the latest edition is published" do
