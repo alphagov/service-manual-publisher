@@ -47,7 +47,7 @@ GEM
       io-like (~> 0.3.0)
     arel (7.1.4)
     ast (2.4.0)
-    auto_strip_attributes (2.4.0)
+    auto_strip_attributes (2.5.0)
       activerecord (>= 4.0)
     autoprefixer-rails (8.3.0)
       execjs
