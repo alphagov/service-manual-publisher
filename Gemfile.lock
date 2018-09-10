@@ -94,10 +94,10 @@ GEM
     erubi (1.7.1)
     erubis (2.7.0)
     execjs (2.7.0)
-    factory_bot (4.11.0)
+    factory_bot (4.11.1)
       activesupport (>= 3.0.0)
-    factory_bot_rails (4.11.0)
-      factory_bot (~> 4.11.0)
+    factory_bot_rails (4.11.1)
+      factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
@@ -415,7 +415,7 @@ DEPENDENCIES
   capybara
   database_cleaner
   diffy
-  factory_bot_rails (~> 4.11.0)
+  factory_bot_rails (~> 4.11.1)
   fuubar
   gds-api-adapters
   gds-sso
