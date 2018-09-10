@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :topic do
-    title "Agile Delivery"
+    title { "Agile Delivery" }
     sequence :path do |n|
       "/service-manual/topic-#{n}"
     end
-    description "Agile description"
+    description { "Agile description" }
 
     trait :with_some_guides do
       after(:create) do |topic, _evaluator|
