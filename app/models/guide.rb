@@ -49,7 +49,7 @@ class Guide < ApplicationRecord
   end
 
   def self.search(search_terms)
-    words = sanitize(search_terms.scan(/\w+/) * "|")
+    words = connection.quote(search_terms.scan(/\w+/) * "|")
     where("tsv @@ to_tsquery('pg_catalog.english', #{words})")
       .order("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC")
   end
