@@ -42,7 +42,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_bot_rails', '~> 4.11.1'
   gem 'govuk-content-schema-test-helpers'
