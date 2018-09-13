@@ -419,7 +419,6 @@ DEPENDENCIES
   binding_of_caller
   bullet
   byebug
-  capybara
   database_cleaner
   diffy
   factory_bot_rails (~> 4.11.1)
