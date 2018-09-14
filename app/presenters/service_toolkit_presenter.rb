@@ -38,7 +38,7 @@ class ServiceToolkitPresenter
           {
             "title": "Service Manual",
             "url": "https://www.gov.uk/service-manual",
-            "description": "Guidance on how to research, design and build services that meet the Digital Service Standard"
+            "description": "Guidance on how to research, design and build services that meet the Government Service Standard"
           },
           {
             "title": "API technical and data standards",
