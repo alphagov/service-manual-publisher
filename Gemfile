@@ -38,7 +38,6 @@ group :development, :test do
   gem 'pry-remote'
   gem 'rspec-rails', '~> 3.8'
   gem 'simplecov', require: false
-  gem 'simplecov-rcov', require: false
 end
 
 group :test do
