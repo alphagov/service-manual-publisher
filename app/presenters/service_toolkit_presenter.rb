@@ -47,7 +47,7 @@ class ServiceToolkitPresenter
           },
           {
             "title": "Open Standards",
-            "url": "https://www.gov.uk/government/collections/open-standards-for-government-data-and-technology",
+            "url": "https://www.gov.uk/search/advanced?group=guidance_and_regulation&topic=%2Fgovernment%2Ftechnology-guidance-technology-guidance-open-standards",
             "description": "Open Standards mandated by government"
           },
           {
@@ -58,9 +58,14 @@ class ServiceToolkitPresenter
         ]
       },
       {
-        "title": "Technology and digital guidance",
+        "title": "Guidance on specific technology and digital topics",
         "description": "Guidance for creating and running government services",
         "links": [
+          {
+            "title": "Accessibility and assisted digital",
+            "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service",
+            "description": "Guidance to help you make sure your service is accessible"
+          },
           {
             "title": "Agile delivery",
             "url": "https://www.gov.uk/service-manual/agile-delivery",
@@ -83,18 +88,18 @@ class ServiceToolkitPresenter
           },
           {
             "title": "Working in the open",
-            "url": "https://www.gov.uk/government/publications/open-source-guidance",
+            "url": "https://www.gov.uk/search/advanced?group=guidance_and_regulation&topic=%2Fgovernment%2Ftechnology-guidance-technology-guidance-open-source",
             "description": "Guidance to help you work in the open"
           },
           {
-            "title": "Technology guidance collection",
+            "title": "Looking for more technology topics",
             "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice-related-guidance",
-            "description": "A collection of technology guidance from government websites and independent bodies to help you design, buy and build services"
+            "description": "A full alphabetised list of technology and digital topics from government websites and independent bodies to help you design, buy and build services"
           }
         ]
       },
       {
-        "title": "Design and style",
+        "title": "Design and style guidance",
         "description": "Interaction and content design resources",
         "links": [
           {
@@ -120,8 +125,8 @@ class ServiceToolkitPresenter
         ]
       },
       {
-        "title": "Components",
-        "description": "Technologies designed to help you build and run government services",
+        "title": "GOV.UK services",
+        "description": "Technologies you can use when building and running government services",
         "links": [
           {
             "title": "GOV.UK Notify",
@@ -151,7 +156,7 @@ class ServiceToolkitPresenter
         ]
       },
       {
-        "title": "Monitoring",
+        "title": "Monitoring services",
         "description": "Data on service performance",
         "links": [
           {
@@ -162,7 +167,7 @@ class ServiceToolkitPresenter
         ]
       },
       {
-        "title": "Buying",
+        "title": "Buying technology",
         "description": "Skills and technology for building digital services",
         "links": [
           {
