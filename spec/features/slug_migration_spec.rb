@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Slug migration", type: :feature do
   def expect_table_to_match_migrations migrations
     within ".slug-migrations .table" do
-      table_data = page.all("tr").map do |row|
+      table_data = page.all("tbody tr").map do |row|
         row.all("td").map(&:text)
       end
 
