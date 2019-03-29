@@ -160,7 +160,7 @@ GEM
       selenium-webdriver
     hashdiff (0.3.7)
     hashie (3.6.0)
-    highline (2.0.0)
+    highline (2.0.1)
     htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
