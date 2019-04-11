@@ -147,7 +147,7 @@ GEM
       jquery-rails (~> 4.3.1)
       plek (>= 2.1.0)
       rails (>= 3.2.0)
-    govuk_app_config (1.13.1)
+    govuk_app_config (1.14.0)
       aws-xray-sdk (~> 0.10.0)
       logstasher (~> 1.2.2)
       sentry-raven (~> 2.7.1)
@@ -265,7 +265,7 @@ GEM
       slop (~> 3.0)
     public_suffix (3.0.3)
     puma (3.12.0)
-    rack (2.0.6)
+    rack (2.0.7)
     rack-cache (1.9.0)
       rack (>= 0.4)
     rack-test (1.1.0)
@@ -434,7 +434,7 @@ DEPENDENCIES
   govuk-content-schema-test-helpers
   govuk-lint
   govuk_admin_template
-  govuk_app_config (~> 1.13.1)
+  govuk_app_config (~> 1.14.0)
   govuk_test
   highline
   jasmine
