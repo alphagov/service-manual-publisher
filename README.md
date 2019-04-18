@@ -21,7 +21,7 @@ replaced the previous Jekyll-based
 
 ## Technical documentation
 
-PostgreSQL-backed Rails 4 "Publishing 2.0" application for internal use, with no
+PostgreSQL-backed Rails publishing application for internal use, with no
 public facing aspect.
 
 There is some [disparity between the content as it appears in the database, and
