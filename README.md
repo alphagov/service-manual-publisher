@@ -1,7 +1,6 @@
 # Service-manual-publisher
 
-Service Manual Publisher is used for publishing and maintaining https://gov.uk
-/service-manual. This application, together with
+Service Manual Publisher is used for publishing and maintaining https://gov.uk/service-manual. This application, together with
 [service-manual-frontend](https://github.com/alphagov/service-manual-frontend)
 replaced the previous Jekyll-based
 [service manual](https://github.com/alphagov/government-service-design-manual).
