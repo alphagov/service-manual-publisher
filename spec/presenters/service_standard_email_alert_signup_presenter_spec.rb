@@ -62,7 +62,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, '#content_payload' do
     presenter = described_class.new
 
     expect(presenter.content_payload[:details]).to include(
-      summary: "You'll receive an email whenever the Government Service Standard is updated."
+      summary: "You'll receive an email whenever the Service Standard is updated."
     )
   end
 

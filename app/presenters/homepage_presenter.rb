@@ -9,7 +9,7 @@ class HomepagePresenter
     {
       base_path: '/service-manual',
       title: 'Service Manual',
-      description: 'Helping government teams create and run great digital services that meet the Government Service Standard.',
+      description: 'Helping government teams create and run great digital services that meet the Service Standard.',
       details: {},
       routes: [
         { type: 'exact', path: '/service-manual' }

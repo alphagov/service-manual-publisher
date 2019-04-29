@@ -27,9 +27,9 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
         { type: 'exact', path: '/service-manual/service-standard' }
       ],
       schema_name: 'service_manual_service_standard',
-      title: 'Government Service Standard',
+      title: 'Service Standard',
       update_type: 'major',
-      description: "The Government Service Standard is a set of 14 criteria to help government create and run good digital services.",
+      description: "The Service Standard is a set of 14 criteria to help government create and run good digital services.",
       details: {
         body: "All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.",
       }

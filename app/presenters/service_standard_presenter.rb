@@ -18,10 +18,10 @@ class ServiceStandardPresenter
         { type: 'exact', path: '/service-manual/service-standard' }
       ],
       schema_name: 'service_manual_service_standard',
-      title: 'Government Service Standard',
-      description: "The Government Service Standard is a set of 14 criteria to help government create and run good digital services.",
+      title: 'Service Standard',
+      description: "The Service Standard is a set of 14 criteria to help government create and run good digital services.",
       details: {
-        body: "All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.",
+        body: "<p>All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.</p><p>Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>",
       }
     }
   end
