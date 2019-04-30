@@ -21,7 +21,7 @@ class ServiceStandardPresenter
       title: 'Service Standard',
       description: "The Service Standard is a set of 14 criteria to help government create and run good digital services.",
       details: {
-        body: "All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.",
+        body: "<p>All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.</p>"
       }
     }
   end
