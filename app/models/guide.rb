@@ -51,7 +51,7 @@ class Guide < ApplicationRecord
   def self.search(search_terms)
     words = connection.quote(search_terms.scan(/\w+/) * "|")
     where("tsv @@ to_tsquery('pg_catalog.english', #{words})")
-      .order("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC")
+      .order(Arel.sql("ts_rank_cd(tsv, to_tsquery('pg_catalog.english', #{words})) DESC"))
   end
 
   def latest_edition_per_edition_group
