@@ -4,6 +4,7 @@ RSpec.describe "Preventing users from losing unsaved changes in the form", type:
   before do
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
+    allow(publishing_api).to receive(:patch_links)
     stub_const('PUBLISHING_API', publishing_api)
   end
 
@@ -32,8 +33,7 @@ RSpec.describe "Preventing users from losing unsaved changes in the form", type:
     visit edit_guide_path(guide)
     fill_in "Body", with: "This has changed"
     click_first_button "Save"
-    expect {
-      page.driver.browser.switch_to.alert
-    }.to raise_error(Selenium::WebDriver::Error::NoAlertPresentError)
+    expect { page.driver.browser.switch_to.alert }
+      .to raise_error(Selenium::WebDriver::Error::NoSuchAlertError)
   end
 end
