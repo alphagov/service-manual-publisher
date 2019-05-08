@@ -31,7 +31,7 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
       update_type: 'major',
       description: "The Service Standard helps teams to create and run great public services.",
       details: {
-        body: '<p>All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.</p><p>Check whether you need to use <a href="/service-manual/service-assessments/pre-2019-digital-service-standard"> the previous version of the Service Standard</a>.</p>'
+        body: '<p>All public facing transactional services must meet the standard. It’s used by departments and the Government Digital Service to check whether a service is good enough for public use.</p><p>Check whether you need to use <a href="/service-manual/service-assessments/pre-july-2019-digital-service-standard"> the previous version of the Service Standard</a>.</p>'
       }
     }
 
