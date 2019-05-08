@@ -25,7 +25,7 @@ RSpec.describe HomepagePresenter, "#content_payload" do
     payload = described_class.new.content_payload
 
     expect(payload).to include \
-      description: 'Helping government teams create and run great digital services that meet the Digital Service Standard.'
+      description: 'Helping government teams create and run great digital services that meet the Service Standard.'
   end
 
   it 'includes a base path and exact route for the service manual' do
