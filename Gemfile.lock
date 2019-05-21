@@ -104,7 +104,7 @@ GEM
     fuubar (2.3.2)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
-    gds-api-adapters (59.2.1)
+    gds-api-adapters (59.3.0)
       addressable
       link_header
       null_logger
