@@ -15,7 +15,7 @@ gem 'diffy'
 gem 'gds-api-adapters'
 gem 'gds-sso'
 gem 'govspeak'
-gem "govuk_app_config", "~> 1.19.0"
+gem "govuk_app_config", "~> 1.20.0"
 gem 'highline'
 gem 'kaminari'
 gem 'redcarpet'
