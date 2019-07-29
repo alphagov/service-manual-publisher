@@ -140,7 +140,7 @@ class ServiceToolkitPresenter
           },
           {
             "title": "GOV.UK Verify",
-            "url": "https://govuk-verify.cloudapps.digital",
+            "url": "https://www.verify.service.gov.uk",
             "description": "Let users prove their identity to you securely and conveniently"
           },
           {
