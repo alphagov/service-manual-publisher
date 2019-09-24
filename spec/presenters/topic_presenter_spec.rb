@@ -43,9 +43,9 @@ RSpec.describe TopicPresenter, "#content_payload" do
 
   describe "with topic sections" do
     it "transforms nested guides into the groups format" do
-      guide_1 = create(:guide)
-      guide_2 = create(:guide)
-      guide_3 = create(:guide)
+      guide1 = create(:guide)
+      guide2 = create(:guide)
+      guide3 = create(:guide)
 
       topic = create(:topic)
       create(
@@ -53,21 +53,21 @@ RSpec.describe TopicPresenter, "#content_payload" do
         title: "Group 1",
         description: "Fruits",
         topic: topic,
-        guides: [guide_1, guide_2],
+        guides: [guide1, guide2],
       )
       create(
         :topic_section,
         topic: topic,
         title: "Group 2",
         description: "Berries",
-        guides: [guide_3],
+        guides: [guide3],
       )
 
       topic_presenter = described_class.new(topic)
       expect(topic_presenter.content_payload[:details][:groups]).to match_array(
         [
-          { name: "Group 1", description: "Fruits", content_ids: match_array([guide_1.content_id, guide_2.content_id]) },
-          { name: "Group 2", description: "Berries", content_ids: [guide_3.content_id] },
+          { name: "Group 1", description: "Fruits", content_ids: match_array([guide1.content_id, guide2.content_id]) },
+          { name: "Group 2", description: "Berries", content_ids: [guide3.content_id] },
         ],
       )
     end
