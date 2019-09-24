@@ -21,7 +21,6 @@ redirects = {
   "/service-manual/design/usernames" => "https://design-system.service.gov.uk/patterns/create-a-username/",
 }
 
-# rubocop:disable Metrics/BlockLength
 desc "Migrate design patterns to the design system"
 task migrate_design_system: :environment do
   unless ENV.key?("USER_ID")
@@ -60,4 +59,3 @@ task migrate_design_system: :environment do
     puts "Done."
   end
 end
-# rubocop:enable Metrics/BlockLength
