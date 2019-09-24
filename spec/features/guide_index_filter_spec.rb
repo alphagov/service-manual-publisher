@@ -135,7 +135,7 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by #{guide_community.title}"
   end
 
-  [:author, :state, :community, :page_type].each do |n|
+  %i[author state community page_type].each do |n|
     define_method("filter_by_#{n}") do |value|
       visit root_path
       within ".filters" do

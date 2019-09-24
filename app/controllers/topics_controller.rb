@@ -1,5 +1,5 @@
 class TopicsController < ApplicationController
-  before_action :find_topic, only: [:edit, :update]
+  before_action :find_topic, only: %i[edit update]
 
   def index
     @topics = Topic.all.order(updated_at: :desc)
@@ -94,9 +94,9 @@ private
         :title,
         :description,
         :position,
-        topic_section_guides_attributes: [
-          :id,
-          :position,
+        topic_section_guides_attributes: %i[
+          id
+          position
         ],
       ],
     ]

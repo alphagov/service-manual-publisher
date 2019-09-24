@@ -386,12 +386,12 @@ RSpec.describe Guide, ".not_unpublished" do
   it "returns guides that are currently published" do
     guide_community = create(:guide_community)
 
-    relevant_traits = [
-      :with_draft_edition,
-      :with_review_requested_edition,
-      :with_ready_edition,
-      :with_published_edition,
-      :with_previously_published_edition,
+    relevant_traits = %i[
+      with_draft_edition
+      with_review_requested_edition
+      with_ready_edition
+      with_published_edition
+      with_previously_published_edition
     ]
 
     relevant_guides = relevant_traits.map do |trait|

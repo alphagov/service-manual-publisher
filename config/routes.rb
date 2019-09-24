@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   end
 
   resources :comments
-  resources :uploads, only: [:create, :new]
+  resources :uploads, only: %i[create new]
   resources :topics
 
   resources :slug_migrations

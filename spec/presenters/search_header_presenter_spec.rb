@@ -7,7 +7,7 @@ RSpec.describe SearchHeaderPresenter do
       expect(subject.search?).to be false
     end
 
-    [:author, :state, :content_owner, :q].each do |search_param|
+    %i[author state content_owner q].each do |search_param|
       it "is true if at least :#{search_param} param is present" do
         subject = described_class.new({ search_param.to_sym => :test }, User.new)
         expect(subject.search?).to be true

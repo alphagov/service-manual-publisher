@@ -4,7 +4,7 @@ class Guide < ApplicationRecord
   validate :slug_cant_be_changed, if: :has_any_published_editions?
   validate :new_edition_has_content_owner, if: :requires_content_owner?
   validate :must_have_topic, if: :requires_topic?
-  validate :topic_cannot_change, if: [:requires_topic?, :has_any_published_editions?]
+  validate :topic_cannot_change, if: %i[requires_topic? has_any_published_editions?]
 
   has_many :editions, dependent: :destroy
   has_many :topic_section_guides, dependent: :destroy, autosave: true

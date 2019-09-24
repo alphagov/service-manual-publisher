@@ -11,7 +11,7 @@ class SearchHeaderPresenter
   end
 
   def search?
-    [:author, :state, :content_owner, :q].any? { |field| params[field].present? }
+    %i[author state content_owner q].any? { |field| params[field].present? }
   end
 
   def ownership

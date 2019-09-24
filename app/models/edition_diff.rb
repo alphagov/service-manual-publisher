@@ -1,5 +1,5 @@
 class EditionDiff
-  TRACKABLE_FIELDS = [:title, :content_owner_title, :description, :body].freeze
+  TRACKABLE_FIELDS = %i[title content_owner_title description body].freeze
 
   attr_reader :old_edition, :new_edition
 

@@ -8,7 +8,7 @@ RSpec.describe "Guide compare changes", type: :feature do
     allow(publishing_api).to receive(:patch_links)
   end
 
-  [:guide, :guide_community].each do |guide_type|
+  %i[guide guide_community].each do |guide_type|
     it "shows exact changes in any fields" do
       guide = create(guide_type, :with_published_edition, title: "First version", body: "### Hello")
 
@@ -37,7 +37,7 @@ RSpec.describe "Guide compare changes", type: :feature do
     end
   end
 
-  [:guide, :guide_community].each do |_guide_type|
+  %i[guide guide_community].each do |_guide_type|
     it "shows all fields as additions if there are no previous editions" do
       guide = create(:guide, :with_draft_edition)
       visit edition_changes_path(new_edition_id: guide.latest_edition.id)

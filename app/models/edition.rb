@@ -21,7 +21,7 @@ class Edition < ApplicationRecord
 
   scope :major, -> { where(update_type: "major") }
 
-  validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
+  validates_presence_of %i[state phase description title update_type body author]
   validates_inclusion_of :state, in: STATES
   validates_inclusion_of :update_type, in: %w[major], if: :first_version?, message: "must be major"
   validates :change_note, presence: true, if: :major?
