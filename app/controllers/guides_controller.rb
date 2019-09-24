@@ -27,7 +27,7 @@ class GuidesController < ApplicationController
     @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.latest_edition,
-      user: current_user
+      user: current_user,
     )
   end
 
@@ -78,7 +78,7 @@ private
     @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.latest_edition,
-      user: current_user
+      user: current_user,
     )
 
     if guide_has_changed_since_editing?(guide)
@@ -104,7 +104,7 @@ private
     @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.editions.build(created_by: current_user),
-      user: current_user
+      user: current_user,
     )
     @guide_form.assign_attributes(guide_form_params)
 

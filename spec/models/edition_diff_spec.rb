@@ -5,7 +5,7 @@ RSpec.describe EditionDiff, type: :model do
     it "returns the original text without markup if no change detected" do
       diff = described_class.new(
         new_edition: Edition.new(title: "Hello"),
-        old_edition: Edition.new(title: "Hello")
+        old_edition: Edition.new(title: "Hello"),
       )
 
       expect(diff.changes[:title].diff).to eq "Hello"
@@ -14,7 +14,7 @@ RSpec.describe EditionDiff, type: :model do
     it "returns a marked up text difference" do
       edition_diff = described_class.new(
         new_edition: Edition.new(title: "Bye"),
-        old_edition: Edition.new(title: "Hello")
+        old_edition: Edition.new(title: "Hello"),
       )
 
       diff_markup = edition_diff.changes[:title].diff

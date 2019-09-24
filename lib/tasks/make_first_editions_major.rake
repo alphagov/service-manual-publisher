@@ -1,6 +1,6 @@
 task make_first_editions_major: :environment do
   migrator = ChangeNoteMigrator.new(
-    dry_run: !ENV.key?("PERFORM_AGAINST_DATABASE_AND_PUBLISHING_API")
+    dry_run: !ENV.key?("PERFORM_AGAINST_DATABASE_AND_PUBLISHING_API"),
   )
 
   cli = HighLine.new

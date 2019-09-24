@@ -5,7 +5,7 @@ RSpec.describe Topic do
     topic = Topic.create
 
     expect(
-      topic.email_alert_signup_content_id
+      topic.email_alert_signup_content_id,
     ).to match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/)
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Topic do
     topic.valid?
 
     expect(
-      topic.errors.full_messages_for(:path)
+      topic.errors.full_messages_for(:path),
     ).to include("Path has already been taken")
   end
 

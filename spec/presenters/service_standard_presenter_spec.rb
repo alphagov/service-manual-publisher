@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe ServiceStandardPresenter, "#content_id" do
   it "returns a preassigned UUID" do
     expect(
-      described_class.new.content_id
+      described_class.new.content_id,
     ).to eq("00f693d4-866a-4fe6-a8d6-09cd7db8980b")
   end
 end
@@ -36,7 +36,7 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
     }
 
     expect(
-      described_class.new.content_payload
+      described_class.new.content_payload,
     ).to eq(expected_payload)
   end
 end
@@ -48,7 +48,7 @@ RSpec.describe ServiceStandardPresenter, "#links_payload" do
     links = presented_service_standard.links_payload[:links]
 
     expect(links).to include(
-      email_alert_signup: ["4a94ae54-5a47-40c1-b9aa-ff47dcaace85"]
+      email_alert_signup: ["4a94ae54-5a47-40c1-b9aa-ff47dcaace85"],
     )
   end
 
@@ -58,7 +58,7 @@ RSpec.describe ServiceStandardPresenter, "#links_payload" do
     links = presented_service_standard.links_payload[:links]
 
     expect(links).to include(
-      primary_publishing_organisation: ["af07d5a5-df63-4ddc-9383-6a666845ebe9"]
+      primary_publishing_organisation: ["af07d5a5-df63-4ddc-9383-6a666845ebe9"],
     )
   end
 end

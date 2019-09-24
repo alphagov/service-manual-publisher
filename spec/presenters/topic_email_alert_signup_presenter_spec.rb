@@ -11,7 +11,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new(create(:topic))
 
     expect(presenter.content_payload).to include(
-      publishing_app: "service-manual-publisher"
+      publishing_app: "service-manual-publisher",
     )
   end
 
@@ -19,7 +19,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new(create(:topic))
 
     expect(presenter.content_payload).to include(
-      rendering_app: "email-alert-frontend"
+      rendering_app: "email-alert-frontend",
     )
   end
 
@@ -34,7 +34,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new(topic)
 
     expect(presenter.content_payload).to include(
-      base_path: "/service-manual/agile-delivery/email-signup"
+      base_path: "/service-manual/agile-delivery/email-signup",
     )
   end
 
@@ -48,7 +48,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
           path: "/service-manual/agile-delivery/email-signup",
           type: "exact"
         }
-      ]
+      ],
     )
   end
 
@@ -56,7 +56,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new(create(:topic, title: "Agile Delivery"))
 
     expect(presenter.content_payload).to include(
-      title: "Service Manual – Agile Delivery"
+      title: "Service Manual – Agile Delivery",
     )
   end
 
@@ -64,7 +64,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new(create(:topic, title: "Agile Delivery"))
 
     expect(presenter.content_payload[:details]).to include(
-      summary: "You'll receive an email whenever a guide is created or updated within this topic."
+      summary: "You'll receive an email whenever a guide is created or updated within this topic.",
     )
   end
 
@@ -78,7 +78,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
         links: {
           service_manual_topics: [topic.content_id]
         }
-      }
+      },
     )
   end
 end

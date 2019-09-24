@@ -11,7 +11,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new
 
     expect(presenter.content_payload).to include(
-      publishing_app: "service-manual-publisher"
+      publishing_app: "service-manual-publisher",
     )
   end
 
@@ -19,7 +19,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new
 
     expect(presenter.content_payload).to include(
-      rendering_app: "email-alert-frontend"
+      rendering_app: "email-alert-frontend",
     )
   end
 
@@ -33,7 +33,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new
 
     expect(presenter.content_payload).to include(
-      base_path: "/service-manual/service-standard/email-signup"
+      base_path: "/service-manual/service-standard/email-signup",
     )
   end
 
@@ -46,7 +46,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
           path: "/service-manual/service-standard/email-signup",
           type: "exact"
         }
-      ]
+      ],
     )
   end
 
@@ -54,7 +54,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new
 
     expect(presenter.content_payload).to include(
-      title: "Service Manual – Service Standard"
+      title: "Service Manual – Service Standard",
     )
   end
 
@@ -62,7 +62,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
     presenter = described_class.new
 
     expect(presenter.content_payload[:details]).to include(
-      summary: "You'll receive an email whenever the Service Standard is updated."
+      summary: "You'll receive an email whenever the Service Standard is updated.",
     )
   end
 
@@ -75,7 +75,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
         links: {
           parent: [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID]
         }
-      }
+      },
     )
   end
 end

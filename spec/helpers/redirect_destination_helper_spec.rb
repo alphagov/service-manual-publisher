@@ -16,7 +16,7 @@ RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options"
       "Guides" => [
         "/service-manual/agile-delivery/core-principles-agile",
         "/service-manual/agile-delivery/team-wall"
-      ]
+      ],
     )
   end
 
@@ -36,7 +36,7 @@ RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options"
         "/service-manual/agile-delivery",
         ["/service-manual/agile-delivery → Governing agile services", "/service-manual/agile-delivery#governing-agile-services"],
         ["/service-manual/agile-delivery → Working with agile methods", "/service-manual/agile-delivery#working-with-agile-methods"],
-      ]
+      ],
     )
   end
 
@@ -45,7 +45,7 @@ RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options"
     create(:topic_section, title: "", topic: topic)
 
     expect(helper.redirect_destination_select_options).to include(
-      "Topics" => ["/service-manual/agile-delivery"]
+      "Topics" => ["/service-manual/agile-delivery"],
     )
   end
 end

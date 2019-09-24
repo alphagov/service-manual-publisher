@@ -6,12 +6,12 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       *published_edition(
         change_note: "Guidance first published",
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z"
+        created_at: "2016-06-25T14:16:21Z",
       ),
       *published_edition(
         change_note: "Big content change",
         update_type: "major",
-        created_at: "2016-06-28T14:16:21Z"
+        created_at: "2016-06-28T14:16:21Z",
       )
     ]
 
@@ -35,12 +35,12 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       *published_edition(
         change_note: "Guidance first published",
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z"
+        created_at: "2016-06-25T14:16:21Z",
       ),
       *draft_edition(
         change_note: "Big content change",
         update_type: "major",
-        created_at: "2016-06-28T14:16:21Z"
+        created_at: "2016-06-28T14:16:21Z",
       )
     ]
 
@@ -64,13 +64,13 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       *published_edition(
         change_note: "Guidance first published",
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z"
+        created_at: "2016-06-25T14:16:21Z",
       ),
       *draft_edition(
         change_note: "",
         update_type: "minor",
         created_at: "2016-06-28T14:16:21Z",
-        version: 2
+        version: 2,
       )
     ]
 

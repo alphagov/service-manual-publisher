@@ -12,7 +12,7 @@ RSpec.describe Guide do
         :topic_section,
         "title"       => "Title",
         "description" => "Description",
-        topic: topic
+        topic: topic,
       )
       topic_section.guides << guide
       topic
@@ -132,14 +132,14 @@ RSpec.describe Guide do
     describe "the topic section" do
       it "can be changed to a section in a different topic if the guide has never been published" do
         original_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/original-topic")
+          topic: create(:topic, path: "/service-manual/original-topic"),
         )
         different_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/different-topic")
+          topic: create(:topic, path: "/service-manual/different-topic"),
         )
 
         guide = create(:guide,
-          topic_section:  original_topic_section
+          topic_section:  original_topic_section,
         )
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         guide.save
@@ -151,10 +151,10 @@ RSpec.describe Guide do
 
       it "cannot be changed to a section in a different topic if the guide has been published" do
         original_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/original-topic")
+          topic: create(:topic, path: "/service-manual/original-topic"),
         )
         different_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/different-topic")
+          topic: create(:topic, path: "/service-manual/different-topic"),
         )
 
         guide = create(:guide, :with_published_edition,
@@ -224,7 +224,7 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
     guide.save!
 
     expect(
-      guide.latest_edition_per_edition_group
+      guide.latest_edition_per_edition_group,
     ).to eq([second_version_second_edition, first_version_second_edition])
   end
 end

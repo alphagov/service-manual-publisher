@@ -92,7 +92,7 @@ private
 
   def drag_topic_section_above(dragged_section_title, destination_section_title)
     handle_for_topic_section(dragged_section_title).drag_to(
-      handle_for_topic_section(destination_section_title)
+      handle_for_topic_section(destination_section_title),
     )
   end
 

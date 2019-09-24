@@ -11,7 +11,7 @@ RSpec.describe GuideHelper, "#guide_community_options_for_select", type: :helper
         [first.title,  first.id],
         [second.title, second.id],
         [third.title, third.id],
-      ]
+      ],
     )
   end
 
@@ -22,7 +22,7 @@ RSpec.describe GuideHelper, "#guide_community_options_for_select", type: :helper
     expect(helper.guide_community_options_for_select).to eq(
       [
         [guide.title, guide.id]
-      ]
+      ],
     )
   end
 end
@@ -44,7 +44,7 @@ RSpec.describe GuideHelper, "#guide_types_for_select", type: :helper do
         %w(All All),
         %w(Guide Guide),
         ["Guide Community", "GuideCommunity"],
-      ]
+      ],
     )
   end
 end
@@ -61,7 +61,7 @@ RSpec.describe GuideHelper, "#topic_section_options_for_select", type: :helper d
           [["Agile -> Scrum", topic_section.id]],
           { "data-path" => "/agile" }
         ]
-      ]
+      ],
     )
   end
 end

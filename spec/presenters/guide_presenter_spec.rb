@@ -26,7 +26,7 @@ RSpec.describe GuidePresenter do
           update_type: "major",
           description: "Description"
         },
-        slug: "/service-manual/test-topic/the-title"
+        slug: "/service-manual/test-topic/the-title",
       )
       presenter = described_class.new(guide, guide.latest_edition)
 
@@ -36,7 +36,7 @@ RSpec.describe GuidePresenter do
         phase: "beta",
         schema_name: "service_manual_guide",
         document_type: "service_manual_guide",
-        base_path: "/service-manual/test-topic/the-title"
+        base_path: "/service-manual/test-topic/the-title",
       )
     end
 
@@ -45,7 +45,7 @@ RSpec.describe GuidePresenter do
         edition: {
           created_at: "2016-06-28T14:16:21Z".to_time,
           change_note: "Add a new guide 'The Title'"
-        }
+        },
       )
       presenter = described_class.new(guide, guide.latest_edition)
 
@@ -55,7 +55,7 @@ RSpec.describe GuidePresenter do
             public_timestamp: "2016-06-28T14:16:21Z",
             note: "Add a new guide 'The Title'"
           }
-        ]
+        ],
       )
     end
 
@@ -64,7 +64,7 @@ RSpec.describe GuidePresenter do
       presenter = described_class.new(guide, guide.latest_edition)
 
       expect(presenter.content_payload[:details]).to include(
-        change_note: "Add a new guide"
+        change_note: "Add a new guide",
       )
     end
 
@@ -177,7 +177,7 @@ RSpec.describe GuidePresenter do
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links]).to include(
-          parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"]
+          parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"],
         )
       end
     end

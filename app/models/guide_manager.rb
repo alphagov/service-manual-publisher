@@ -41,7 +41,7 @@ class GuideManager
   def unpublish_with_redirect(destination)
     redirect = Redirect.new(
       old_path: guide.slug,
-      new_path: destination
+      new_path: destination,
     )
 
     catching_gds_api_exceptions do
@@ -52,7 +52,7 @@ class GuideManager
 
         PUBLISHING_API.unpublish(guide.content_id,
           type: "redirect",
-          alternative_path: redirect.new_path
+          alternative_path: redirect.new_path,
         )
 
         ManageResult.new(true, [])

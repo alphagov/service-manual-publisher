@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe HomepagePresenter, "#content_id" do
   it "returns a preassigned UUID" do
     expect(
-      described_class.new.content_id
+      described_class.new.content_id,
     ).to eq("6732c01a-39e2-4cec-8ee9-17eb7fded6a0")
   end
 end

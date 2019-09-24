@@ -9,7 +9,7 @@ RSpec.describe EditionPolicy do
       edition = build_stubbed(:edition, state: "review_requested", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_be_approved?
+        described_class.new(author_b, edition).can_be_approved?,
       ).to eq(true)
     end
 
@@ -18,7 +18,7 @@ RSpec.describe EditionPolicy do
       allow(ENV).to receive(:[]).with("ALLOW_SELF_APPROVAL").and_return("1")
 
       expect(
-        described_class.new(author_a, edition).can_be_approved?
+        described_class.new(author_a, edition).can_be_approved?,
       ).to eq(true)
     end
 
@@ -26,7 +26,7 @@ RSpec.describe EditionPolicy do
       edition = build_stubbed(:edition, state: "review_requested", author: author_a)
 
       expect(
-        described_class.new(author_a, edition).can_be_approved?
+        described_class.new(author_a, edition).can_be_approved?,
       ).to eq(false)
     end
 
@@ -35,7 +35,7 @@ RSpec.describe EditionPolicy do
         edition = build_stubbed(:edition, state: state, author: author_a)
 
         expect(
-          described_class.new(author_b, edition).can_be_approved?
+          described_class.new(author_b, edition).can_be_approved?,
         ).to eq(false)
       end
     end
@@ -46,7 +46,7 @@ RSpec.describe EditionPolicy do
       edition = build_stubbed(:edition, state: "draft", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_request_review?
+        described_class.new(author_b, edition).can_request_review?,
       ).to eq(true)
     end
 
@@ -54,7 +54,7 @@ RSpec.describe EditionPolicy do
       edition = build(:edition, state: "draft", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_request_review?
+        described_class.new(author_b, edition).can_request_review?,
       ).to eq(false)
     end
 
@@ -63,7 +63,7 @@ RSpec.describe EditionPolicy do
         edition = build_stubbed(:edition, state: state, author: author_a)
 
         expect(
-          described_class.new(author_b, edition).can_request_review?
+          described_class.new(author_b, edition).can_request_review?,
         ).to eq(false)
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe EditionPolicy do
       create(:guide, editions: [edition])
 
       expect(
-        described_class.new(author_b, edition).can_be_published?
+        described_class.new(author_b, edition).can_be_published?,
       ).to eq(true)
     end
 
@@ -85,7 +85,7 @@ RSpec.describe EditionPolicy do
       create(:guide, editions: [old_edition, new_edition])
 
       expect(
-        described_class.new(author_b, old_edition).can_be_published?
+        described_class.new(author_b, old_edition).can_be_published?,
       ).to eq(false)
     end
 
@@ -95,7 +95,7 @@ RSpec.describe EditionPolicy do
         create(:guide, editions: [edition])
 
         expect(
-          described_class.new(author_b, edition).can_be_published?
+          described_class.new(author_b, edition).can_be_published?,
         ).to eq(false)
       end
     end
@@ -109,7 +109,7 @@ RSpec.describe EditionPolicy do
         edition = build_stubbed(:edition, state: state, author: author_a)
 
         expect(
-          described_class.new(author_b, edition).can_discard_draft?
+          described_class.new(author_b, edition).can_discard_draft?,
         ).to eq(true)
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe EditionPolicy do
         edition = build_stubbed(:edition, state: state, author: author_a)
 
         expect(
-          described_class.new(author_b, edition).can_discard_draft?
+          described_class.new(author_b, edition).can_discard_draft?,
         ).to eq(false)
       end
     end
@@ -130,7 +130,7 @@ RSpec.describe EditionPolicy do
       edition = build_stubbed(:edition, state: "draft", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_preview?
+        described_class.new(author_b, edition).can_preview?,
       ).to eq(true)
     end
 
@@ -138,7 +138,7 @@ RSpec.describe EditionPolicy do
       edition = build(:edition, state: "draft", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_preview?
+        described_class.new(author_b, edition).can_preview?,
       ).to eq(false)
     end
   end
@@ -148,7 +148,7 @@ RSpec.describe EditionPolicy do
       edition = build_stubbed(:edition, state: "draft", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_discard_new_draft?
+        described_class.new(author_b, edition).can_discard_new_draft?,
       ).to eq(false)
     end
 
@@ -156,7 +156,7 @@ RSpec.describe EditionPolicy do
       edition = build(:edition, state: "draft", author: author_a)
 
       expect(
-        described_class.new(author_b, edition).can_discard_new_draft?
+        described_class.new(author_b, edition).can_discard_new_draft?,
       ).to eq(true)
     end
   end

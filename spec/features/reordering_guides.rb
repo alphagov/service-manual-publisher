@@ -81,7 +81,7 @@ private
 
   def drag_guide_above(dragged_guide_title, destination_guide_title)
     handle_for_guide(dragged_guide_title).drag_to(
-      handle_for_guide(destination_guide_title)
+      handle_for_guide(destination_guide_title),
     )
   end
 

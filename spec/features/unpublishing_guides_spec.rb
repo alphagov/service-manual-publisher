@@ -30,7 +30,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       # table but we aren't displaying in the browser yet. Therefore
       # we are testing it here.
       expect(
-        Redirect.find_by(old_path: guide.slug, new_path: topic.path)
+        Redirect.find_by(old_path: guide.slug, new_path: topic.path),
       ).to be_present
     end
 
@@ -41,7 +41,7 @@ RSpec.describe "unpublishing guides", type: :feature do
 
       assert_publishing_api_unpublish(guide.content_id,
         type: "redirect",
-        alternative_path: "/service-manual/suitable-redirect"
+        alternative_path: "/service-manual/suitable-redirect",
       )
     end
 

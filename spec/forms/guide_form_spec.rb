@@ -3,13 +3,13 @@ require "rails_helper"
 RSpec.describe GuideForm, ".build" do
   it "returns a GuideForm for a Guide" do
     expect(
-      described_class.build(guide: Guide.new, edition: Edition.new, user: User.new)
+      described_class.build(guide: Guide.new, edition: Edition.new, user: User.new),
     ).to be_instance_of GuideForm
   end
 
   it "returns a PointForm for a Point" do
     expect(
-      described_class.build(guide: Point.new, edition: Edition.new, user: User.new)
+      described_class.build(guide: Point.new, edition: Edition.new, user: User.new),
     ).to be_instance_of PointForm
   end
 end
@@ -18,19 +18,19 @@ RSpec.describe GuideForm, "#initialize" do
   context "for a brand new guide" do
     it "assigns a default update_type of major" do
       expect(
-        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new).update_type
+        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new).update_type,
       ).to eq("major")
     end
 
     it "assigns author_id to be the current user" do
       expect(
-        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).author_id
+        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).author_id,
       ).to eq(5)
     end
 
     it "assigns title_slug to be nil" do
       expect(
-        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).title_slug
+        described_class.new(guide: Guide.new, edition: Edition.new, user: User.new(id: 5)).title_slug,
       ).to eq(nil)
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe GuideForm, "#initialize" do
       author = edition.author
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).author_id
+        described_class.new(guide: guide, edition: edition, user: User.new).author_id,
       ).to eq(author.id)
     end
 
@@ -51,7 +51,7 @@ RSpec.describe GuideForm, "#initialize" do
       guide = create(:guide, editions: [edition])
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).body
+        described_class.new(guide: guide, edition: edition, user: User.new).body,
       ).to eq("A great body")
     end
 
@@ -61,7 +61,7 @@ RSpec.describe GuideForm, "#initialize" do
       guide = create(:guide, editions: [edition])
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).content_owner_id
+        described_class.new(guide: guide, edition: edition, user: User.new).content_owner_id,
       ).to eq(guide_community.id)
     end
 
@@ -70,7 +70,7 @@ RSpec.describe GuideForm, "#initialize" do
       guide = create(:guide, editions: [edition])
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).description
+        described_class.new(guide: guide, edition: edition, user: User.new).description,
       ).to eq("Whales should live in Wales")
     end
 
@@ -79,7 +79,7 @@ RSpec.describe GuideForm, "#initialize" do
       guide = create(:guide, editions: [edition])
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).title
+        described_class.new(guide: guide, edition: edition, user: User.new).title,
       ).to eq("U wot")
     end
 
@@ -88,7 +88,7 @@ RSpec.describe GuideForm, "#initialize" do
       guide = create(:guide_community, editions: [edition])
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).type
+        described_class.new(guide: guide, edition: edition, user: User.new).type,
       ).to eq("GuideCommunity")
     end
 
@@ -135,7 +135,7 @@ RSpec.describe GuideForm, "#initialize" do
       guide = create(:guide, editions: [edition])
 
       expect(
-        described_class.new(guide: guide, edition: edition, user: User.new).fingerprint_when_started_editing
+        described_class.new(guide: guide, edition: edition, user: User.new).fingerprint_when_started_editing,
       ).to eq(edition.id.to_s)
     end
   end
@@ -225,7 +225,7 @@ RSpec.describe GuideForm, "#save" do
         description: "a pleasant description",
         slug: "/service-manual/topic/a-fair-tale",
         title: "A fair tale",
-        topic_section_id: topic_section.id
+        topic_section_id: topic_section.id,
       )
       guide_form.save
 
@@ -233,7 +233,7 @@ RSpec.describe GuideForm, "#save" do
       expect(edition).to be_persisted
 
       expect(
-        TopicSectionGuide.find_by(topic_section: topic_section, guide: guide)
+        TopicSectionGuide.find_by(topic_section: topic_section, guide: guide),
       ).to be_present
     end
 
@@ -295,7 +295,7 @@ RSpec.describe GuideForm, "#save" do
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(
-        change_note: "X happened"
+        change_note: "X happened",
       )
       guide_form.save
 
@@ -317,11 +317,11 @@ RSpec.describe GuideForm, "#save" do
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(topic_section_id: topic_section_id)
       expect(
-        guide_form.save
+        guide_form.save,
       ).to eq(true)
 
       expect(
-        TopicSectionGuide.where(guide: guide).count
+        TopicSectionGuide.where(guide: guide).count,
       ).to eq 1
     end
 
@@ -338,7 +338,7 @@ RSpec.describe GuideForm, "#save" do
       guide_form = described_class.new(
         guide: guide,
         edition: edition,
-        user: user
+        user: user,
       )
       guide_form.assign_attributes(body: "Nice new copy")
 
@@ -357,7 +357,7 @@ RSpec.describe GuideForm, "validations" do
     guide_form.save
 
     expect(
-      guide_form.errors.full_messages
+      guide_form.errors.full_messages,
     ).to include(
       "Topic section can't be blank",
       "Slug can only contain letters, numbers and dashes",

@@ -16,7 +16,7 @@ class EditionDiff
         memo[field] = FieldChange.new(
           old_text: old_text,
           new_text: new_text,
-          field: field
+          field: field,
         )
         memo
       end

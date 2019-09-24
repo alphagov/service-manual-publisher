@@ -15,7 +15,7 @@ namespace :republish do
     cli = HighLine.new
     cli.say cli.color(
       "This will publish the latest revision of all topics, even if they have not previously been published.",
-      :red
+      :red,
     )
     exit unless cli.agree "Are you sure you wish to continue?"
 

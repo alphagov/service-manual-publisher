@@ -17,7 +17,7 @@ RSpec.describe TopicPresenter, "#content_payload" do
     topic = build(
       :topic,
       description: "Topic description",
-      path: "/service-manual/test-topic"
+      path: "/service-manual/test-topic",
     )
 
     topic_presenter = described_class.new(topic)
@@ -28,7 +28,7 @@ RSpec.describe TopicPresenter, "#content_payload" do
       phase: "beta",
       schema_name: "service_manual_topic",
       document_type: "service_manual_topic",
-      base_path: "/service-manual/test-topic"
+      base_path: "/service-manual/test-topic",
     )
   end
 
@@ -37,7 +37,7 @@ RSpec.describe TopicPresenter, "#content_payload" do
     topic_presenter = described_class.new(topic)
 
     expect(
-      topic_presenter.content_payload[:details][:visually_collapsed]
+      topic_presenter.content_payload[:details][:visually_collapsed],
     ).to eq(true)
   end
 
@@ -53,14 +53,14 @@ RSpec.describe TopicPresenter, "#content_payload" do
         title: "Group 1",
         description: "Fruits",
         topic: topic,
-        guides: [guide_1, guide_2]
+        guides: [guide_1, guide_2],
       )
       create(
         :topic_section,
         topic: topic,
         title: "Group 2",
         description: "Berries",
-        guides: [guide_3]
+        guides: [guide_3],
       )
 
       topic_presenter = described_class.new(topic)
@@ -68,7 +68,7 @@ RSpec.describe TopicPresenter, "#content_payload" do
         [
           { name: "Group 1", description: "Fruits", content_ids: match_array([guide_1.content_id, guide_2.content_id]) },
           { name: "Group 2", description: "Berries", content_ids: [guide_3.content_id] },
-        ]
+        ],
       )
     end
   end
@@ -83,20 +83,20 @@ RSpec.describe TopicPresenter, "#links_payload" do
     links = presented_topic.links_payload[:links]
 
     expect(
-      links[:organisations]
+      links[:organisations],
     ).to match_array([an_instance_of(String)])
   end
 
   it "includes a link to the email alert signup" do
     topic = create(:topic,
-      email_alert_signup_content_id: "3b7ca0f5-3968-4650-a287-20d2c23c25bc"
+      email_alert_signup_content_id: "3b7ca0f5-3968-4650-a287-20d2c23c25bc",
     )
     presented_topic = described_class.new(topic)
 
     links = presented_topic.links_payload[:links]
 
     expect(
-      links[:email_alert_signup]
+      links[:email_alert_signup],
     ).to match_array(["3b7ca0f5-3968-4650-a287-20d2c23c25bc"])
   end
 
@@ -163,7 +163,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
     presented_topic = described_class.new(topic)
 
     expect(
-      presented_topic.links_payload[:links][:content_owners]
+      presented_topic.links_payload[:links][:content_owners],
     ).to eq([])
   end
 
@@ -183,7 +183,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
       presented_topic = described_class.new(topic)
 
       expect(presented_topic.links_payload[:links]).to include(
-        parent: ["6732c01a-39e2-4cec-8ee9-17eb7fded6a0"]
+        parent: ["6732c01a-39e2-4cec-8ee9-17eb7fded6a0"],
       )
     end
   end
@@ -195,7 +195,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
       presented_topic = described_class.new(topic)
 
       expect(presented_topic.links_payload[:links]).to include(
-        parent: []
+        parent: [],
       )
     end
   end
@@ -206,7 +206,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
       create(
         :topic_section,
         topic: topic,
-        guides: group_guides
+        guides: group_guides,
       )
     end
     topic

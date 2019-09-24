@@ -4,7 +4,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
   context "when draft" do
     it "describes the action" do
       expect(
-        helper.event_action_for_changed_state("draft")
+        helper.event_action_for_changed_state("draft"),
       ).to eq("Draft")
     end
   end
@@ -12,7 +12,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
   context "when requesting a review" do
     it "describes the action" do
       expect(
-        helper.event_action_for_changed_state("review_requested")
+        helper.event_action_for_changed_state("review_requested"),
       ).to eq("Review requested")
     end
   end
@@ -20,7 +20,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
   context "when ready" do
     it "describes the action" do
       expect(
-        helper.event_action_for_changed_state("ready")
+        helper.event_action_for_changed_state("ready"),
       ).to eq("Approved")
     end
   end
@@ -28,7 +28,7 @@ RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper 
   context "when published" do
     it "describes the action" do
       expect(
-        helper.event_action_for_changed_state("published")
+        helper.event_action_for_changed_state("published"),
       ).to eq("Published")
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe EditionsHelper, "#edition_created_by_name", type: :helper do
     edition = build(:edition, created_by: user)
 
     expect(
-      helper.edition_created_by_name(edition)
+      helper.edition_created_by_name(edition),
     ).to eq("Henry")
   end
 
@@ -48,7 +48,7 @@ RSpec.describe EditionsHelper, "#edition_created_by_name", type: :helper do
     edition = build(:edition, created_by: nil)
 
     expect(
-      helper.edition_created_by_name(edition)
+      helper.edition_created_by_name(edition),
     ).to eq("Unknown")
   end
 end

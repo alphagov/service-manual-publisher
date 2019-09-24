@@ -123,7 +123,7 @@ RSpec.describe Edition, type: :model do
       edition.valid?
 
       expect(
-        edition.errors.full_messages_for(:created_by)
+        edition.errors.full_messages_for(:created_by),
       ).to include("Created by can't be blank")
     end
   end

@@ -10,8 +10,8 @@ RSpec.describe ServiceStandardPublisher, "#save_draft" do
     assert_publishing_api_put_content(
       "4a94ae54-5a47-40c1-b9aa-ff47dcaace85",
       request_json_includes(
-        "base_path" => "/service-manual/service-standard/email-signup"
-      )
+        "base_path" => "/service-manual/service-standard/email-signup",
+      ),
     )
   end
 
@@ -24,8 +24,8 @@ RSpec.describe ServiceStandardPublisher, "#save_draft" do
     assert_publishing_api_put_content(
       "00f693d4-866a-4fe6-a8d6-09cd7db8980b",
       request_json_includes(
-        "base_path" => "/service-manual/service-standard"
-      )
+        "base_path" => "/service-manual/service-standard",
+      ),
     )
   end
 
@@ -40,7 +40,7 @@ RSpec.describe ServiceStandardPublisher, "#save_draft" do
       links: {
         email_alert_signup: ["4a94ae54-5a47-40c1-b9aa-ff47dcaace85"],
         primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID]
-      }
+      },
     )
   end
 end

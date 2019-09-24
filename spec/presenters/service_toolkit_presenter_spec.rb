@@ -31,7 +31,7 @@ RSpec.describe ServiceToolkitPresenter, "#content_payload" do
 
   it "includes in the payload a suitable description" do
     expect(payload[:description]).to eq(
-      "All you need to design, build and run services that meet government standards."
+      "All you need to design, build and run services that meet government standards.",
     )
   end
 
@@ -41,7 +41,7 @@ RSpec.describe ServiceToolkitPresenter, "#content_payload" do
       schema_name: "service_manual_service_toolkit",
       publishing_app: "service-manual-publisher",
       rendering_app: "service-manual-frontend",
-      locale: "en"
+      locale: "en",
     )
   end
 

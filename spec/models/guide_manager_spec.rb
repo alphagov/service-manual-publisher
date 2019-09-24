@@ -61,7 +61,7 @@ RSpec.describe GuideManager, "#approve_for_publication!" do
     manager.approve_for_publication!
 
     expect(
-      ActionMailer::Base.deliveries.last.subject
+      ActionMailer::Base.deliveries.last.subject,
     ).to include("ready for publishing")
   end
 
@@ -119,7 +119,7 @@ RSpec.describe GuideManager, "#publish" do
     manager.publish
 
     expect(
-      ActionMailer::Base.deliveries.last.subject
+      ActionMailer::Base.deliveries.last.subject,
     ).to include("has been published")
   end
 
@@ -164,7 +164,7 @@ RSpec.describe GuideManager, "#publish" do
       gds_api_exception = GdsApi::HTTPErrorResponse.new(
         422,
                             "https://some-service.gov.uk",
-                            "error" => { "message" => "trouble" }
+                            "error" => { "message" => "trouble" },
       )
       expect(PUBLISHING_API).to receive(:publish).and_raise(gds_api_exception)
     end
@@ -205,7 +205,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
 
     assert_publishing_api_unpublish(guide.content_id,
       type: "redirect",
-      alternative_path: "/service-manual/suitable-redirect"
+      alternative_path: "/service-manual/suitable-redirect",
     )
   end
 

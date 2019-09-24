@@ -123,7 +123,7 @@ RSpec.describe "Creating a guide", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
@@ -251,7 +251,7 @@ RSpec.describe "Updating a guide", type: :feature do
       :guide,
       slug: "/service-manual/topic-name/something",
       editions: [build(:edition)],
-      topic: topic
+      topic: topic,
     )
 
     visit edit_guide_path(guide)
@@ -286,13 +286,13 @@ RSpec.describe "Updating a guide", type: :feature do
       guide = create(
         :guide,
         :with_draft_edition,
-        slug: "/service-manual/topic-name/something"
+        slug: "/service-manual/topic-name/something",
       )
 
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
@@ -310,7 +310,7 @@ RSpec.describe "Updating a guide", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
@@ -334,7 +334,7 @@ RSpec.describe "Updating a guide", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:publish).and_raise(api_error)
 
@@ -384,7 +384,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a draft guide" do
     before do
       guide = create(:guide, :with_draft_edition,
-        slug: "/service-manual/topic-name/new-guide",
+        slug: "/service-manual/topic-name/new-guide"
         )
       visit edit_guide_path(guide)
     end
@@ -401,7 +401,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a published guide" do
     before do
       guide = create(:guide, :with_published_edition,
-        slug: "/service-manual/topic-name/just-published",
+        slug: "/service-manual/topic-name/just-published"
         )
       visit edit_guide_path(guide)
     end
@@ -418,7 +418,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a draft that was previously published" do
     before do
       guide = create(:guide, :with_previously_published_edition,
-        slug: "/service-manual/topic-name/published-guide",
+        slug: "/service-manual/topic-name/published-guide"
       )
       visit edit_guide_path(guide)
     end
