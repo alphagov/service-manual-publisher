@@ -3,10 +3,10 @@ require "rails_helper"
 RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options", type: :helper do
   it "should include all published guides ordered by slug" do
     create(:guide, :with_published_edition,
-      slug: "/service-manual/agile-delivery/team-wall"
+           slug: "/service-manual/agile-delivery/team-wall"
     )
     create(:guide, :with_published_edition,
-      slug: "/service-manual/agile-delivery/core-principles-agile"
+           slug: "/service-manual/agile-delivery/core-principles-agile"
     )
 
     create(:guide, :has_been_unpublished)

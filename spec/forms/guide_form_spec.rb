@@ -327,8 +327,8 @@ RSpec.describe GuideForm, "#save" do
 
     it "does not persist changes if communication with the publishing api fails" do
       gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
-                                            "https://some-service.gov.uk",
-                                            "error" => { "message" => "trouble" })
+                                                        "https://some-service.gov.uk",
+                                                        "error" => { "message" => "trouble" })
       expect(PUBLISHING_API).to receive(:put_content).and_raise(gds_api_exception)
 
       user = create(:user)

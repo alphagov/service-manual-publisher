@@ -384,7 +384,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a draft guide" do
     before do
       guide = create(:guide, :with_draft_edition,
-        slug: "/service-manual/topic-name/new-guide"
+                     slug: "/service-manual/topic-name/new-guide"
         )
       visit edit_guide_path(guide)
     end
@@ -401,7 +401,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a published guide" do
     before do
       guide = create(:guide, :with_published_edition,
-        slug: "/service-manual/topic-name/just-published"
+                     slug: "/service-manual/topic-name/just-published"
         )
       visit edit_guide_path(guide)
     end
@@ -418,7 +418,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a draft that was previously published" do
     before do
       guide = create(:guide, :with_previously_published_edition,
-        slug: "/service-manual/topic-name/published-guide"
+                     slug: "/service-manual/topic-name/published-guide"
       )
       visit edit_guide_path(guide)
     end

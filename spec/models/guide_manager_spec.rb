@@ -163,8 +163,8 @@ RSpec.describe GuideManager, "#publish" do
     def stub_publishing_api_to_fail
       gds_api_exception = GdsApi::HTTPErrorResponse.new(
         422,
-                            "https://some-service.gov.uk",
-                            "error" => { "message" => "trouble" },
+        "https://some-service.gov.uk",
+        "error" => { "message" => "trouble" },
       )
       expect(PUBLISHING_API).to receive(:publish).and_raise(gds_api_exception)
     end
@@ -204,8 +204,8 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
     manager.unpublish_with_redirect("/service-manual/suitable-redirect")
 
     assert_publishing_api_unpublish(guide.content_id,
-      type: "redirect",
-      alternative_path: "/service-manual/suitable-redirect",
+                                    type: "redirect",
+                                    alternative_path: "/service-manual/suitable-redirect",
     )
   end
 
