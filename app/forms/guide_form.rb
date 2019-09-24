@@ -18,7 +18,7 @@ private
   end
 
   def topic_section_guide
-    @_topic_section_guide ||=
+    @topic_section_guide ||=
       guide.topic_section_guides[0] || guide.topic_section_guides.build
   end
 
