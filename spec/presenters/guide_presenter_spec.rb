@@ -74,7 +74,7 @@ RSpec.describe GuidePresenter do
     end
 
     it "includes h2 links for the sidebar" do
-      guide = create(:guide, body:  "## Header 1 \n\n### Subheader \n\n## Header 2\n\ntext")
+      guide = create(:guide, body: "## Header 1 \n\n### Subheader \n\n## Header 2\n\ntext")
       presenter = described_class.new(guide, guide.latest_edition)
 
       expect(presenter.content_payload[:details][:header_links]).to match_array([
