@@ -4,7 +4,7 @@ task print_change_history_for_published_guides: :environment do
     editions = guide.editions.published.major
     if editions.any?
       puts "## #{guide.title}"
-      puts "#{guide.slug}"
+      puts (guide.slug).to_s
       puts ""
 
       editions.each do |edition|
