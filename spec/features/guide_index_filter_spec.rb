@@ -146,10 +146,10 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
 
-  def search_for(q)
+  def search_for(query)
     visit root_path
     within ".filters" do
-      fill_in "Title or slug", with: q
+      fill_in "Title or slug", with: query
       click_button "Filter guides"
     end
   end
