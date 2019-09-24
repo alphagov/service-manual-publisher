@@ -27,12 +27,10 @@ RSpec.describe "filtering guides", type: :feature do
 
     create(:guide,
            slug: "/service-manual/topic-name/a",
-           editions: [build(:edition, author: dave)],
-          )
+           editions: [build(:edition, author: dave)],)
     create(:guide,
            slug: "/service-manual/topic-name/b",
-           editions: [build(:edition, author: linda)],
-          )
+           editions: [build(:edition, author: linda)],)
 
     filter_by_author "Dave"
     expect(page).to have_text "/service-manual/topic-name/a"
@@ -51,8 +49,7 @@ RSpec.describe "filtering guides", type: :feature do
       edition = build(:edition,
                       state: "review_requested",
                       title: "Guide #{i}",
-                      content_owner_id: guide_community.id,
-                     )
+                      content_owner_id: guide_community.id,)
       create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [edition])
     end
 

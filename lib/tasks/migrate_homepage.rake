@@ -11,8 +11,7 @@ task migrate_homepage: :environment do
   puts "Taking ownership of the path..."
   publishing_api_v1.put_path("/service-manual",
                              publishing_app: "service-manual-publisher",
-                             override_existing: true,
-  )
+                             override_existing: true,)
 
   homepage = HomepagePresenter.new
 

@@ -32,15 +32,13 @@ RSpec.describe "Guide index", type: :feature do
     major_update_guide = create(:guide, :with_published_edition)
     major_update_guide.editions << create(:edition, :draft,
                                           update_type: "major",
-                                          title: "First Update Guide"
-    )
+                                          title: "First Update Guide")
 
     minor_update_guide = create(:guide, :with_published_edition)
     minor_update_guide.editions << create(:edition, :draft,
                                           update_type: "minor",
                                           title: "Second Update Guide",
-                                          version: 2
-    )
+                                          version: 2)
 
     visit root_path
 
