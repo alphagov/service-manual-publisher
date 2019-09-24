@@ -5,7 +5,8 @@ class GuidesFilter
     page
     page_type
     q
-    state).freeze
+    state
+).freeze
 
   def initialize(scope)
     @scope = scope
