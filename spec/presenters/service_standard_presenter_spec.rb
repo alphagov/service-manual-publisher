@@ -48,7 +48,7 @@ RSpec.describe ServiceStandardPresenter, "#links_payload" do
     links = presented_service_standard.links_payload[:links]
 
     expect(links).to include(
-      email_alert_signup: ["4a94ae54-5a47-40c1-b9aa-ff47dcaace85"],
+      email_alert_signup: %w[4a94ae54-5a47-40c1-b9aa-ff47dcaace85],
     )
   end
 
@@ -58,7 +58,7 @@ RSpec.describe ServiceStandardPresenter, "#links_payload" do
     links = presented_service_standard.links_payload[:links]
 
     expect(links).to include(
-      primary_publishing_organisation: ["af07d5a5-df63-4ddc-9383-6a666845ebe9"],
+      primary_publishing_organisation: %w[af07d5a5-df63-4ddc-9383-6a666845ebe9],
     )
   end
 end

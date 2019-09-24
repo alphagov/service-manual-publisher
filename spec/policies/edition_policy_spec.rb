@@ -30,7 +30,7 @@ RSpec.describe EditionPolicy do
       ).to eq(false)
     end
 
-    (Edition::STATES - ["review_requested"]).each do |state|
+    (Edition::STATES - %w[review_requested]).each do |state|
       it "is false when the edition has a state of #{state}" do
         edition = build_stubbed(:edition, state: state, author: author_a)
 
@@ -58,7 +58,7 @@ RSpec.describe EditionPolicy do
       ).to eq(false)
     end
 
-    (Edition::STATES - ["draft"]).each do |state|
+    (Edition::STATES - %w[draft]).each do |state|
       it "is false when the edition has a state of #{state}" do
         edition = build_stubbed(:edition, state: state, author: author_a)
 
@@ -89,7 +89,7 @@ RSpec.describe EditionPolicy do
       ).to eq(false)
     end
 
-    (Edition::STATES - ["ready"]).each do |state|
+    (Edition::STATES - %w[ready]).each do |state|
       it "is false when the edition has a state of #{state}" do
         edition = build(:edition, state: state, author: author_a)
         create(:guide, editions: [edition])

@@ -38,7 +38,7 @@ RSpec.describe ServiceStandardPublisher, "#save_draft" do
     assert_publishing_api_patch_links(
       "00f693d4-866a-4fe6-a8d6-09cd7db8980b",
       links: {
-        email_alert_signup: ["4a94ae54-5a47-40c1-b9aa-ff47dcaace85"],
+        email_alert_signup: %w[4a94ae54-5a47-40c1-b9aa-ff47dcaace85],
         primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
       },
     )

@@ -96,7 +96,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
 
     expect(
       links[:email_alert_signup],
-    ).to match_array(["3b7ca0f5-3968-4650-a287-20d2c23c25bc"])
+    ).to match_array(%w[3b7ca0f5-3968-4650-a287-20d2c23c25bc])
   end
 
   it "references all content_ids that appear in groups" do
@@ -172,7 +172,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
     presenter = described_class.new(topic)
 
     expect(presenter.links_payload[:links][:primary_publishing_organisation])
-      .to eq ["af07d5a5-df63-4ddc-9383-6a666845ebe9"]
+      .to eq %w[af07d5a5-df63-4ddc-9383-6a666845ebe9]
   end
 
   context "when the topic should be included on the homepage" do
@@ -182,7 +182,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
       presented_topic = described_class.new(topic)
 
       expect(presented_topic.links_payload[:links]).to include(
-        parent: ["6732c01a-39e2-4cec-8ee9-17eb7fded6a0"],
+        parent: %w[6732c01a-39e2-4cec-8ee9-17eb7fded6a0],
       )
     end
   end

@@ -116,7 +116,7 @@ RSpec.describe GuidePresenter do
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links][:organisations])
-          .to eq ["af07d5a5-df63-4ddc-9383-6a666845ebe9"]
+          .to eq %w[af07d5a5-df63-4ddc-9383-6a666845ebe9]
       end
 
       it "includes a reference to the service manual topic" do
@@ -125,7 +125,7 @@ RSpec.describe GuidePresenter do
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links][:service_manual_topics])
-          .to eq ["4ac0bacf-0062-47fd-b1ce-852a95c25e20"]
+          .to eq %w[4ac0bacf-0062-47fd-b1ce-852a95c25e20]
       end
 
       it "returns the content owner if present" do
@@ -134,7 +134,7 @@ RSpec.describe GuidePresenter do
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links][:content_owners])
-          .to eq(["c5eb647c-7943-49dd-8362-1920d330696f"])
+          .to eq(%w[c5eb647c-7943-49dd-8362-1920d330696f])
       end
 
       it "includes the GDS Organisation ID as the primary publishing organisation" do
@@ -142,7 +142,7 @@ RSpec.describe GuidePresenter do
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links][:primary_publishing_organisation])
-          .to eq ["af07d5a5-df63-4ddc-9383-6a666845ebe9"]
+          .to eq %w[af07d5a5-df63-4ddc-9383-6a666845ebe9]
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe GuidePresenter do
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links]).to include(
-          parent: ["00f693d4-866a-4fe6-a8d6-09cd7db8980b"],
+          parent: %w[00f693d4-866a-4fe6-a8d6-09cd7db8980b],
         )
       end
     end

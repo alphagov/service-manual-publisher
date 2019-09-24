@@ -8,7 +8,7 @@ module AuthenticationHelpers
       uid: SecureRandom.hex,
       email: "stub.user@example.com",
       name: name,
-      permissions: ["signin"],
+      permissions: %w[signin],
     )
   end
 

@@ -23,7 +23,7 @@ class Edition < ApplicationRecord
 
   validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
   validates_inclusion_of :state, in: STATES
-  validates_inclusion_of :update_type, in: ["major"], if: :first_version?, message: "must be major"
+  validates_inclusion_of :update_type, in: %w[major], if: :first_version?, message: "must be major"
   validates :change_note, presence: true, if: :major?
   validates :version, presence: true
   validates :created_by, presence: true
