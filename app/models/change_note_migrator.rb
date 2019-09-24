@@ -64,7 +64,7 @@ private
     no_changes = edition
                   .attributes
                   .select { |k, _| changes.keys.map(&:to_s).include?(k) }
-                  .select { |k, v| changes.with_indifferent_access[k] != v }
+                  .reject { |k, v| changes.with_indifferent_access[k] == v }
                   .each { |k, v| log "  Old value of #{k} is #{v}, new value is #{changes.with_indifferent_access[k]}", :yellow }
                   .empty?
 
