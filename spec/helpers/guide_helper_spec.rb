@@ -21,7 +21,7 @@ RSpec.describe GuideHelper, "#guide_community_options_for_select", type: :helper
 
     expect(helper.guide_community_options_for_select).to eq(
       [
-        [guide.title, guide.id]
+        [guide.title, guide.id],
       ],
     )
   end
@@ -59,8 +59,8 @@ RSpec.describe GuideHelper, "#topic_section_options_for_select", type: :helper d
         [
           "Agile",
           [["Agile -> Scrum", topic_section.id]],
-          { "data-path" => "/agile" }
-        ]
+          { "data-path" => "/agile" },
+        ],
       ],
     )
   end

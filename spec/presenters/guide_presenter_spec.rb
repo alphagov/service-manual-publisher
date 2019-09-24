@@ -54,7 +54,7 @@ RSpec.describe GuidePresenter do
           {
             public_timestamp: "2016-06-28T14:16:21Z",
             note: "Add a new guide 'The Title'",
-          }
+          },
         ],
       )
     end
@@ -81,7 +81,7 @@ RSpec.describe GuidePresenter do
 
       expect(presenter.content_payload[:details][:header_links]).to match_array([
         { title: "Header 1", href: "#header-1" },
-        { title: "Header 2", href: "#header-2" }
+        { title: "Header 2", href: "#header-2" },
       ])
     end
 

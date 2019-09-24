@@ -67,7 +67,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:slug)).to eq [
-          "Slug must be present and start with '/service-manual/[topic]'"
+          "Slug must be present and start with '/service-manual/[topic]'",
         ]
       end
 
@@ -112,7 +112,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:slug)).to eq [
-          "Slug can't be changed as this guide has been published"
+          "Slug can't be changed as this guide has been published",
         ]
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:latest_edition)).to eq [
-          "Latest edition must have a content owner"
+          "Latest edition must have a content owner",
         ]
       end
     end
@@ -165,7 +165,7 @@ RSpec.describe Guide do
         expect(guide).not_to be_valid
 
         expect(guide.errors.full_messages_for(:topic_section)).to eq [
-          "Topic section can't be changed to a different topic as this guide has been published"
+          "Topic section can't be changed to a different topic as this guide has been published",
         ]
       end
 
@@ -193,7 +193,7 @@ RSpec.describe Guide do
     it "does not return duplicates" do
       create(:guide, editions: [
         create(:edition, :draft, title: "dictionary"),
-        create(:edition, :published, title: "thesaurus")
+        create(:edition, :published, title: "thesaurus"),
       ])
 
       expect(described_class.search("dictionary").count).to eq 0
@@ -320,7 +320,7 @@ RSpec.describe Guide, ".by_author" do
     ])
 
     expect(Guide.where(type: nil).by_author(expected_author.id).to_a).to eq [
-      expected_guide
+      expected_guide,
     ]
   end
 end
@@ -346,7 +346,7 @@ RSpec.describe Guide, ".owned_by" do
     )
 
     expect(Guide.where(type: nil).owned_by(expected_content_owner.id).to_a).to eq [
-      expected_guide
+      expected_guide,
     ]
   end
 end
@@ -397,7 +397,7 @@ RSpec.describe Guide, ".not_unpublished" do
       :with_review_requested_edition,
       :with_ready_edition,
       :with_published_edition,
-      :with_previously_published_edition
+      :with_previously_published_edition,
     ]
 
     relevant_guides = relevant_traits.map do |trait|

@@ -47,7 +47,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
         {
           path: "/service-manual/agile-delivery/email-signup",
           type: "exact",
-        }
+        },
       ],
     )
   end

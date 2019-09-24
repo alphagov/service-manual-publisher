@@ -20,7 +20,7 @@ class TopicPresenter
       description: topic.description,
       phase: "beta",
       routes: [
-        { type: "exact", path: topic.path }
+        { type: "exact", path: topic.path },
       ],
       details: {
         visually_collapsed: topic.visually_collapsed,

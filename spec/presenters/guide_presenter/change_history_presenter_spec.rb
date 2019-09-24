@@ -12,7 +12,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
         change_note: "Big content change",
         update_type: "major",
         created_at: "2016-06-28T14:16:21Z",
-      )
+      ),
     ]
 
     guide = create(:guide, editions: editions)
@@ -26,7 +26,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       {
         public_timestamp: "2016-06-25T14:16:21Z",
         note: "Guidance first published",
-      }
+      },
     ]
   end
 
@@ -41,7 +41,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
         change_note: "Big content change",
         update_type: "major",
         created_at: "2016-06-28T14:16:21Z",
-      )
+      ),
     ]
 
     guide = create(:guide, editions: editions)
@@ -55,7 +55,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       {
         public_timestamp: "2016-06-25T14:16:21Z",
         note: "Guidance first published",
-      }
+      },
     ]
   end
 
@@ -71,7 +71,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
         update_type: "minor",
         created_at: "2016-06-28T14:16:21Z",
         version: 2,
-      )
+      ),
     ]
 
     guide = create(:guide, editions: editions)
@@ -81,7 +81,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       {
         public_timestamp: "2016-06-25T14:16:21Z",
         note: "Guidance first published",
-      }
+      },
     ]
   end
 
@@ -92,13 +92,13 @@ private
       build(:edition, :draft, **attributes),
       build(:edition, :review_requested, **attributes),
       build(:edition, :ready, **attributes),
-      build(:edition, :published, **attributes)
+      build(:edition, :published, **attributes),
     ]
   end
 
   def draft_edition(attributes)
     [
-      build(:edition, :draft, **attributes)
+      build(:edition, :draft, **attributes),
     ]
   end
 end

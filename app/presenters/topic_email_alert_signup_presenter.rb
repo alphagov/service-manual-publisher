@@ -24,7 +24,7 @@ class TopicEmailAlertSignupPresenter
         {
           path: path,
           type: "exact",
-        }
+        },
       ],
       title: title,
     }

@@ -96,9 +96,9 @@ private
         :position,
         topic_section_guides_attributes: [
           :id,
-          :position
-        ]
-      ]
+          :position,
+        ],
+      ],
     ]
   end
 end

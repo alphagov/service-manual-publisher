@@ -45,7 +45,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
         {
           path: "/service-manual/service-standard/email-signup",
           type: "exact",
-        }
+        },
       ],
     )
   end

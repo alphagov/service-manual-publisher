@@ -15,7 +15,7 @@ class RedirectPublisher
           path: old_path,
           type: "exact",
           destination: new_path,
-        }
+        },
       ],
     }
     @publishing_api.put_content(content_id, data)

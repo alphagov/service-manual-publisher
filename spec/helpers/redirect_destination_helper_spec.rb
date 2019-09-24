@@ -15,7 +15,7 @@ RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options"
     expect(helper.redirect_destination_select_options).to include(
       "Guides" => [
         "/service-manual/agile-delivery/core-principles-agile",
-        "/service-manual/agile-delivery/team-wall"
+        "/service-manual/agile-delivery/team-wall",
       ],
     )
   end

@@ -34,7 +34,7 @@ RSpec.describe HomepagePresenter, "#content_payload" do
     expect(payload).to include \
       base_path: "/service-manual",
       routes: [
-        { type: "exact", path: "/service-manual" }
+        { type: "exact", path: "/service-manual" },
       ]
   end
 

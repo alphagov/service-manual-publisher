@@ -17,7 +17,7 @@ RSpec.describe RedirectPublisher, type: :model do
           path: old_path,
           type: "exact",
           destination: new_path,
-        }
+        },
       ],
     }
 

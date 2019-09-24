@@ -41,7 +41,7 @@ module GuideHelper
       [
         topic.title,
         topic.topic_sections.map { |ts| ["#{topic.title} -> #{ts.title}", ts.id] },
-        { "data-path" => relative_path }
+        { "data-path" => relative_path },
       ]
     end
   end

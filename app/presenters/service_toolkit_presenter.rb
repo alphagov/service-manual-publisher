@@ -14,7 +14,7 @@ class ServiceToolkitPresenter
         collections: collections,
       },
       routes: [
-        { type: "exact", path: "/service-toolkit" }
+        { type: "exact", path: "/service-toolkit" },
       ],
       document_type: "service_manual_service_toolkit",
       schema_name: "service_manual_service_toolkit",
@@ -54,7 +54,7 @@ class ServiceToolkitPresenter
             "title": "Technology Code of Practice",
             "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice",
             "description": "The standard you must meet to get approval to spend money on technology or a service",
-          }
+          },
         ],
       },
       {
@@ -95,7 +95,7 @@ class ServiceToolkitPresenter
             "title": "Looking for more technology topics",
             "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice-related-guidance",
             "description": "A full alphabetised list of technology and digital topics from government websites and independent bodies to help you design, buy and build services",
-          }
+          },
         ],
       },
       {
@@ -121,7 +121,7 @@ class ServiceToolkitPresenter
             "title": "Style guide",
             "url": "https://www.gov.uk/guidance/style-guide",
             "description": "Style, spelling and grammar conventions for digital content",
-          }
+          },
         ],
       },
       {
@@ -152,7 +152,7 @@ class ServiceToolkitPresenter
             "title": "GOV.UK Registers",
             "url": "https://www.registers.service.gov.uk/",
             "description": "Get authoritative datasets your service can rely on",
-          }
+          },
         ],
       },
       {
@@ -163,7 +163,7 @@ class ServiceToolkitPresenter
             "title": "Performance Platform",
             "url": "https://www.gov.uk/performance",
             "description": "Create a performance dashboard for your service",
-          }
+          },
         ],
       },
       {
@@ -174,9 +174,9 @@ class ServiceToolkitPresenter
             "title": "Digital Marketplace",
             "url": "https://www.gov.uk/digital-marketplace",
             "description": "Source cloud technology and specialist services for digital projects",
-          }
+          },
         ],
-      }
+      },
     ]
   end
 end

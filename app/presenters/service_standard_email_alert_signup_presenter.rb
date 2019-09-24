@@ -27,7 +27,7 @@ class ServiceStandardEmailAlertSignupPresenter
         {
           path: "/service-manual/service-standard/email-signup",
           type: "exact",
-        }
+        },
       ],
       title: "Service Manual – Service Standard",
     }

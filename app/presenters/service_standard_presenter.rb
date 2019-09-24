@@ -15,7 +15,7 @@ class ServiceStandardPresenter
       publishing_app: "service-manual-publisher",
       rendering_app: "service-manual-frontend",
       routes: [
-        { type: "exact", path: "/service-manual/service-standard" }
+        { type: "exact", path: "/service-manual/service-standard" },
       ],
       schema_name: "service_manual_service_standard",
       title: "Service Standard",

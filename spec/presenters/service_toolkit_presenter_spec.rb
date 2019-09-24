@@ -21,7 +21,7 @@ RSpec.describe ServiceToolkitPresenter, "#content_payload" do
 
   it "includes in the payload an exact route for /service-toolkit" do
     expect(payload[:routes]).to eq [
-      { type: "exact", path: "/service-toolkit" }
+      { type: "exact", path: "/service-toolkit" },
     ]
   end
 

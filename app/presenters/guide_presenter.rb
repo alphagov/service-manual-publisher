@@ -21,7 +21,7 @@ class GuidePresenter
       description: edition.description,
       phase: edition.phase,
       routes: [
-        { type: "exact", path: guide.slug }
+        { type: "exact", path: guide.slug },
       ],
       details: details,
     }

@@ -12,7 +12,7 @@ class HomepagePresenter
       description: "Helping government teams create and run great digital services that meet the Service Standard.",
       details: {},
       routes: [
-        { type: "exact", path: "/service-manual" }
+        { type: "exact", path: "/service-manual" },
       ],
       document_type: "service_manual_homepage",
       schema_name: "service_manual_homepage",
