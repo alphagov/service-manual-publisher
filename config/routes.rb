@@ -1,25 +1,25 @@
 Rails.application.routes.draw do
-  get '/healthcheck', to: proc { [200, {}, ['OK']] }
+  get "/healthcheck", to: proc { [200, {}, %w[OK]] }
   mount GovukAdminTemplate::Engine, at: "/style-guide"
 
-  root 'guides#index'
+  root "guides#index"
 
   resources :guides do
     resources :editions, only: [:index]
 
     member do
-      get 'unpublish'
-      post 'unpublish' => 'guides#confirm_unpublish'
+      get "unpublish"
+      post "unpublish" => "guides#confirm_unpublish"
     end
   end
 
   resources :comments
-  resources :uploads, only: [:create, :new]
+  resources :uploads, only: %i[create new]
   resources :topics
 
   resources :slug_migrations
 
-  get '/edition_changes(/:old_edition_id)/:new_edition_id' => 'edition_changes#show', as: :edition_changes
+  get "/edition_changes(/:old_edition_id)/:new_edition_id" => "edition_changes#show", as: :edition_changes
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Guide do
   context "with a topic" do
@@ -12,7 +12,7 @@ RSpec.describe Guide do
         :topic_section,
         "title"       => "Title",
         "description" => "Description",
-        topic: topic
+        topic: topic,
       )
       topic_section.guides << guide
       topic
@@ -67,7 +67,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:slug)).to eq [
-          "Slug must be present and start with '/service-manual/[topic]'"
+          "Slug must be present and start with '/service-manual/[topic]'",
         ]
       end
 
@@ -112,7 +112,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:slug)).to eq [
-          "Slug can't be changed as this guide has been published"
+          "Slug can't be changed as this guide has been published",
         ]
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:latest_edition)).to eq [
-          'Latest edition must have a content owner'
+          "Latest edition must have a content owner",
         ]
       end
     end
@@ -132,15 +132,12 @@ RSpec.describe Guide do
     describe "the topic section" do
       it "can be changed to a section in a different topic if the guide has never been published" do
         original_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/original-topic")
-        )
+                                        topic: create(:topic, path: "/service-manual/original-topic"))
         different_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/different-topic")
-        )
+                                         topic: create(:topic, path: "/service-manual/different-topic"))
 
         guide = create(:guide,
-          topic_section:  original_topic_section
-        )
+                       topic_section:  original_topic_section)
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         guide.save
 
@@ -151,21 +148,18 @@ RSpec.describe Guide do
 
       it "cannot be changed to a section in a different topic if the guide has been published" do
         original_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/original-topic")
-        )
+                                        topic: create(:topic, path: "/service-manual/original-topic"))
         different_topic_section = create(:topic_section,
-          topic: create(:topic, path: "/service-manual/different-topic")
-        )
+                                         topic: create(:topic, path: "/service-manual/different-topic"))
 
         guide = create(:guide, :with_published_edition,
-          topic_section: original_topic_section
-        )
+                       topic_section: original_topic_section)
 
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         expect(guide).not_to be_valid
 
         expect(guide.errors.full_messages_for(:topic_section)).to eq [
-          "Topic section can't be changed to a different topic as this guide has been published"
+          "Topic section can't be changed to a different topic as this guide has been published",
         ]
       end
 
@@ -193,7 +187,7 @@ RSpec.describe Guide do
     it "does not return duplicates" do
       create(:guide, editions: [
         create(:edition, :draft, title: "dictionary"),
-        create(:edition, :published, title: "thesaurus")
+        create(:edition, :published, title: "thesaurus"),
       ])
 
       expect(described_class.search("dictionary").count).to eq 0
@@ -224,7 +218,7 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
     guide.save!
 
     expect(
-      guide.latest_edition_per_edition_group
+      guide.latest_edition_per_edition_group,
     ).to eq([second_version_second_edition, first_version_second_edition])
   end
 end
@@ -320,7 +314,7 @@ RSpec.describe Guide, ".by_author" do
     ])
 
     expect(Guide.where(type: nil).by_author(expected_author.id).to_a).to eq [
-      expected_guide
+      expected_guide,
     ]
   end
 end
@@ -346,7 +340,7 @@ RSpec.describe Guide, ".owned_by" do
     )
 
     expect(Guide.where(type: nil).owned_by(expected_content_owner.id).to_a).to eq [
-      expected_guide
+      expected_guide,
     ]
   end
 end
@@ -392,12 +386,12 @@ RSpec.describe Guide, ".not_unpublished" do
   it "returns guides that are currently published" do
     guide_community = create(:guide_community)
 
-    relevant_traits = [
-      :with_draft_edition,
-      :with_review_requested_edition,
-      :with_ready_edition,
-      :with_published_edition,
-      :with_previously_published_edition
+    relevant_traits = %i[
+      with_draft_edition
+      with_review_requested_edition
+      with_ready_edition
+      with_published_edition
+      with_previously_published_edition
     ]
 
     relevant_guides = relevant_traits.map do |trait|

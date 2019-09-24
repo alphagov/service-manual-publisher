@@ -35,7 +35,7 @@ RSpec.describe PointForm, "#save" do
       content_owner_id: guide_community.id,
       description: "a pleasant description",
       slug: "/service-manual/topic/a-fair-tale",
-      title: "A fair tale"
+      title: "A fair tale",
     )
     guide_form.save
 
@@ -55,7 +55,7 @@ RSpec.describe PointForm, "validations" do
     guide_form.save
 
     expect(
-      guide_form.errors.full_messages
+      guide_form.errors.full_messages,
     ).to include(
       "Slug can only contain letters, numbers and dashes",
       "Slug must be present and start with '/service-manual/[topic]'",

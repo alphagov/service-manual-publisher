@@ -1,8 +1,8 @@
-require 'capybara/rspec'
-require 'webmock/rspec'
+require "capybara/rspec"
+require "webmock/rspec"
 
-require 'plek'
-require 'gds_api/test_helpers/publishing_api_v2'
+require "plek"
+require "gds_api/test_helpers/publishing_api_v2"
 
 WebMock.disable_net_connect!(allow_localhost: true)
 

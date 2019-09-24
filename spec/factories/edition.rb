@@ -8,7 +8,7 @@ FactoryBot.define do
   # the title "A Published Community Edition"
   # -> create(:community_edition, :published, title: "A Published Community Edition")
 
-  states = [:draft, :ready, :review_requested, :published, :unpublished].freeze
+  states = %i[draft ready review_requested published unpublished].freeze
 
   factory :edition do
     sequence :title do |n|

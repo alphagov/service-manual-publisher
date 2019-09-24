@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe GuidesController, type: :controller do
   let(:content_designer) { build(:user, name: "Content Designer", email: "content.designer@example.com") }
@@ -8,21 +8,21 @@ RSpec.describe GuidesController, type: :controller do
     login_as content_designer
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:publish)
-    stub_const('PUBLISHING_API', publishing_api)
+    stub_const("PUBLISHING_API", publishing_api)
     allow_any_instance_of(Guide).to receive(:topic).and_return build(:topic)
   end
 
   describe "#update" do
     describe "#approve_for_publication" do
       it "sends an email notification" do
-        edition = build(:edition, state: 'review_requested')
+        edition = build(:edition, state: "review_requested")
         create(:guide, slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
         put :update, params: {
           id: edition.guide_id,
           approve_for_publication: true,
-          guide: { fingerprint_when_started_editing: edition.id.to_s }
+          guide: { fingerprint_when_started_editing: edition.id.to_s },
         }
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
@@ -33,7 +33,7 @@ RSpec.describe GuidesController, type: :controller do
 
     describe "#publish" do
       it "sends an email notification when published by another user" do
-        edition = build(:edition, state: 'published')
+        edition = build(:edition, state: "published")
         create(:guide, slug: "/service-manual/topic-name/test", editions: [edition])
         publisher = build(:user, email: "ms.publisher@example.com")
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([publisher])
@@ -41,7 +41,7 @@ RSpec.describe GuidesController, type: :controller do
         put :update, params: {
           id: edition.guide_id,
           publish: true,
-          guide: { fingerprint_when_started_editing: edition.id.to_s }
+          guide: { fingerprint_when_started_editing: edition.id.to_s },
         }
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
@@ -50,13 +50,13 @@ RSpec.describe GuidesController, type: :controller do
       end
 
       it "avoids email notification when published by the author" do
-        edition = build(:edition, state: 'published')
+        edition = build(:edition, state: "published")
         create(:guide, slug: "/service-manual/topic-name/test", editions: [edition])
         allow_any_instance_of(Edition).to receive(:notification_subscribers).and_return([content_designer])
 
         put :update, params: {
           id: edition.guide_id,
-          publish: true
+          publish: true,
         }
 
         expect(ActionMailer::Base.deliveries.size).to eq 0
@@ -67,7 +67,7 @@ RSpec.describe GuidesController, type: :controller do
   describe "a malicious user trying to initialise an unwanted Guide STI constant" do
     it "defaults to a Guide" do
       get :new, params: {
-        type: 'Module'
+        type: "Module",
       }
 
       expect(assigns[:guide_form].guide.class).to eq(Guide)

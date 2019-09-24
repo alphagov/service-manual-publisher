@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe GuideRepublisher, "#republish" do
   it "saves the content, links and publishes" do
@@ -25,7 +25,7 @@ RSpec.describe GuideRepublisher, "#republish" do
     described_class.new(guide, publishing_api: publishing_api).republish
   end
 
-  it 'always republishes as a minor edition' do
+  it "always republishes as a minor edition" do
     stub_any_publishing_api_put_content
     stub_any_publishing_api_patch_links
     stub_any_publishing_api_publish

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe SearchHeaderPresenter do
   describe "#search" do
@@ -7,7 +7,7 @@ RSpec.describe SearchHeaderPresenter do
       expect(subject.search?).to be false
     end
 
-    [:author, :state, :content_owner, :q].each do |search_param|
+    %i[author state content_owner q].each do |search_param|
       it "is true if at least :#{search_param} param is present" do
         subject = described_class.new({ search_param.to_sym => :test }, User.new)
         expect(subject.search?).to be true
@@ -34,12 +34,12 @@ RSpec.describe SearchHeaderPresenter do
     end
 
     it "humanizes the state parameter" do
-      header = described_class.new({ state: 'review_requested' }, User.new).to_s
+      header = described_class.new({ state: "review_requested" }, User.new).to_s
       expect(header).to include "review requested guides"
     end
 
     it "displays the free-text query" do
-      header = described_class.new({ q: 'Agile Development' }, User.new).to_s
+      header = described_class.new({ q: "Agile Development" }, User.new).to_s
       expect(header).to include "matching \"Agile Development\""
     end
 

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe EditionThread, "#events" do
   describe "new draft event" do
@@ -95,7 +95,7 @@ RSpec.describe EditionThread, "#events" do
   describe "state change event" do
     it "is a 'state change' event" do
       create(:edition, version: 1, created_at: 1.day.ago)
-      most_recent_edition = create(:edition, version: 1, state: 'review_requested')
+      most_recent_edition = create(:edition, version: 1, state: "review_requested")
 
       event = described_class.new(most_recent_edition).events.third
 
@@ -104,7 +104,7 @@ RSpec.describe EditionThread, "#events" do
 
     it "has a reference to the edition in which the state changed" do
       create(:edition, version: 1, created_at: 1.day.ago)
-      most_recent_edition = create(:edition, version: 1, state: 'review_requested')
+      most_recent_edition = create(:edition, version: 1, state: "review_requested")
 
       event = described_class.new(most_recent_edition).events.third
 
@@ -113,8 +113,8 @@ RSpec.describe EditionThread, "#events" do
 
     it "adds a state change event if the state changes back" do
       create(:edition, version: 1, created_at: 1.day.ago)
-      review_requested_edition = create(:edition, version: 1, state: 'review_requested')
-      next_draft_edition = create(:edition, version: 1, state: 'draft')
+      review_requested_edition = create(:edition, version: 1, state: "review_requested")
+      next_draft_edition = create(:edition, version: 1, state: "draft")
 
       events = described_class.new(next_draft_edition).events
 

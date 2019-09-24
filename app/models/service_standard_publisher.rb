@@ -21,19 +21,19 @@ private
   def save_email_alert_signup_draft
     PUBLISHING_API.put_content(
       email_alert_signup.content_id,
-      email_alert_signup.content_payload
+      email_alert_signup.content_payload,
     )
   end
 
   def save_service_standard_draft
     PUBLISHING_API.put_content(
       service_standard.content_id,
-      service_standard.content_payload
+      service_standard.content_payload,
     )
 
     PUBLISHING_API.patch_links(
       service_standard.content_id,
-      service_standard.links_payload
+      service_standard.links_payload,
     )
   end
 

@@ -4,14 +4,14 @@ class Guide < ApplicationRecord
   validate :slug_cant_be_changed, if: :has_any_published_editions?
   validate :new_edition_has_content_owner, if: :requires_content_owner?
   validate :must_have_topic, if: :requires_topic?
-  validate :topic_cannot_change, if: [:requires_topic?, :has_any_published_editions?]
+  validate :topic_cannot_change, if: %i[requires_topic? has_any_published_editions?]
 
   has_many :editions, dependent: :destroy
   has_many :topic_section_guides, dependent: :destroy, autosave: true
 
   scope :only_latest_edition, -> {
     joins(:editions)
-      .where('editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)')
+      .where("editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)")
   }
 
   scope :in_state, ->(state) {
@@ -96,6 +96,7 @@ class Guide < ApplicationRecord
   def editions_since_last_published
     latest_published_edition = editions.published.last
     return [] unless latest_published_edition.present?
+
     editions
       .where("created_at > ?", latest_published_edition.created_at)
   end
@@ -142,7 +143,7 @@ private
     new_edition = editions.detect(&:new_record?)
 
     if new_edition && new_edition.content_owner.nil?
-      errors.add(:latest_edition, 'must have a content owner')
+      errors.add(:latest_edition, "must have a content owner")
     end
   end
 

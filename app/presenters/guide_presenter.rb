@@ -21,16 +21,16 @@ class GuidePresenter
       description: edition.description,
       phase: edition.phase,
       routes: [
-        { type: "exact", path: guide.slug }
+        { type: "exact", path: guide.slug },
       ],
-      details: details
+      details: details,
     }
   end
 
   def links_payload
     links = {
       organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
-      primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID]
+      primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
     }
 
     if guide.topic
@@ -57,7 +57,7 @@ private
       body: govspeak_body.to_html,
       header_links: level_two_headers,
       change_history: ChangeHistoryPresenter.new(guide, edition).change_history,
-      change_note: latest_change_note_for_email_notification
+      change_note: latest_change_note_for_email_notification,
     }
 
     if guide.is_a?(Point)

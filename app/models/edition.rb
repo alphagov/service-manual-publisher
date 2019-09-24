@@ -10,20 +10,20 @@ class Edition < ApplicationRecord
 
   has_one :approval
 
-  belongs_to :content_owner, class_name: 'GuideCommunity'
+  belongs_to :content_owner, class_name: "GuideCommunity"
 
-  scope :draft, -> { where(state: 'draft') }
-  scope :published, -> { where(state: 'published') }
-  scope :unpublished, -> { where(state: 'unpublished') }
-  scope :review_requested, -> { where(state: 'review_requested') }
-  scope :most_recent_first, -> { order('created_at DESC, id DESC') }
+  scope :draft, -> { where(state: "draft") }
+  scope :published, -> { where(state: "published") }
+  scope :unpublished, -> { where(state: "unpublished") }
+  scope :review_requested, -> { where(state: "review_requested") }
+  scope :most_recent_first, -> { order("created_at DESC, id DESC") }
   scope :which_update_the_frontend, -> { where(state: STATES_THAT_UPDATE_THE_FRONTEND) }
 
-  scope :major, -> { where(update_type: 'major') }
+  scope :major, -> { where(update_type: "major") }
 
-  validates_presence_of [:state, :phase, :description, :title, :update_type, :body, :author]
+  validates_presence_of %i[state phase description title update_type body author]
   validates_inclusion_of :state, in: STATES
-  validates_inclusion_of :update_type, in: ['major'], if: :first_version?, message: 'must be major'
+  validates_inclusion_of :update_type, in: %w[major], if: :first_version?, message: "must be major"
   validates :change_note, presence: true, if: :major?
   validates :version, presence: true
   validates :created_by, presence: true

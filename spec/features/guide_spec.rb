@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Creating a guide", type: :feature do
   let(:api_double) { double(:publishing_api) }
@@ -7,13 +7,13 @@ RSpec.describe "Creating a guide", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .twice
-      .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+      .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
     expect(api_double).to receive(:patch_links)
       .twice
       .with(an_instance_of(String), an_instance_of(Hash))
 
-    create(:guide_community, title: 'Technology Community')
-    create(:topic_section, title: 'Relevant topic section')
+    create(:guide_community, title: "Technology Community")
+    create(:topic_section, title: "Relevant topic section")
     visit root_path
     click_link "Create a Guide"
     fill_in_guide_form
@@ -21,7 +21,7 @@ RSpec.describe "Creating a guide", type: :feature do
     click_first_button "Save"
 
     within ".alert" do
-      expect(page).to have_content('saved')
+      expect(page).to have_content("saved")
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
@@ -48,7 +48,7 @@ RSpec.describe "Creating a guide", type: :feature do
     click_first_button "Save"
 
     within ".alert" do
-      expect(page).to have_content('saved')
+      expect(page).to have_content("saved")
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
@@ -69,7 +69,7 @@ RSpec.describe "Creating a guide", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+      .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
@@ -77,18 +77,18 @@ RSpec.describe "Creating a guide", type: :feature do
       .once
       .with(an_instance_of(String))
 
-    create(:guide_community, title: 'Technology Community')
-    create(:topic_section, title: 'Relevant topic section')
+    create(:guide_community, title: "Technology Community")
+    create(:topic_section, title: "Relevant topic section")
     visit root_path
     click_link "Create a Guide"
     fill_in_guide_form
     click_first_button "Save"
-    guide = Guide.joins(:editions).merge(Edition.where(title: 'First Edition Title')).first
+    guide = Guide.joins(:editions).merge(Edition.where(title: "First Edition Title")).first
     visit edit_guide_path(guide)
     click_first_button "Send for review"
 
     within ".alert-success" do
-      expect(page).to have_content('A review has been requested')
+      expect(page).to have_content("A review has been requested")
     end
 
     guide.latest_edition.tap do |edition|
@@ -101,14 +101,14 @@ RSpec.describe "Creating a guide", type: :feature do
     click_first_button "Approve for publication"
 
     within ".alert-success" do
-      expect(page).to have_content('Thanks for approving this guide')
+      expect(page).to have_content("Thanks for approving this guide")
     end
 
     visit edit_guide_path(guide)
     click_first_button "Publish"
 
     within ".alert-success" do
-      expect(page).to have_content('published')
+      expect(page).to have_content("published")
     end
 
     guide = Guide.find_by_slug("/service-manual/the/path")
@@ -123,12 +123,12 @@ RSpec.describe "Creating a guide", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
-      create(:guide_community, title: 'Technology Community')
-      create(:topic_section, title: 'Relevant topic section')
+      create(:guide_community, title: "Technology Community")
+      create(:topic_section, title: "Relevant topic section")
       visit root_path
       click_link "Create a Guide"
       fill_in_guide_form
@@ -156,7 +156,7 @@ private
 
   def fill_in_guide_form
     fill_in_final_url "/service-manual/the/path"
-    select 'Relevant topic section', from: "Topic section"
+    select "Relevant topic section", from: "Topic section"
     select "Technology Community", from: "Community"
     fill_in "Description", with: "This guide acts as a test case"
 
@@ -173,7 +173,7 @@ RSpec.describe "Updating a guide", type: :feature do
       stub_const("PUBLISHING_API", api_double)
       expect(api_double).to receive(:put_content)
         .once
-        .with(an_instance_of(String), be_valid_against_schema('service_manual_guide'))
+        .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
       expect(api_double).to receive(:patch_links)
         .once
         .with(an_instance_of(String), an_instance_of(Hash))
@@ -189,7 +189,7 @@ RSpec.describe "Updating a guide", type: :feature do
 
       fill_in "Title", with: "Agile"
       fill_in "Public change note", with: "Updated the title"
-      click_first_button 'Save'
+      click_first_button "Save"
 
       expect(guide.editions.count).to eq(5)
       expect(guide.editions.order(:created_at).last.version).to eq(2)
@@ -211,7 +211,7 @@ RSpec.describe "Updating a guide", type: :feature do
 
       visit edit_guide_path(guide)
 
-      expect(find('input.guide-slug')['disabled']).to be_present
+      expect(find("input.guide-slug")["disabled"]).to be_present
     end
   end
 
@@ -224,7 +224,7 @@ RSpec.describe "Updating a guide", type: :feature do
       guide = create(:guide, slug: "/service-manual/test-topic/something", topic: topic)
 
       visit edit_guide_path(guide)
-      expect(find('input.guide-slug')['disabled']).not_to be_present
+      expect(find("input.guide-slug")["disabled"]).not_to be_present
     end
   end
 
@@ -251,7 +251,7 @@ RSpec.describe "Updating a guide", type: :feature do
       :guide,
       slug: "/service-manual/topic-name/something",
       editions: [build(:edition)],
-      topic: topic
+      topic: topic,
     )
 
     visit edit_guide_path(guide)
@@ -286,13 +286,13 @@ RSpec.describe "Updating a guide", type: :feature do
       guide = create(
         :guide,
         :with_draft_edition,
-        slug: "/service-manual/topic-name/something"
+        slug: "/service-manual/topic-name/something",
       )
 
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
@@ -310,17 +310,17 @@ RSpec.describe "Updating a guide", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(api_error)
 
       visit edit_guide_path(guide)
       fill_in "Title", with: "Updated Title"
       fill_in "Public change note", with: "Update Title"
-      click_first_button 'Save'
+      click_first_button "Save"
 
       within ".full-error-list" do
-        expect(page).to have_content('An error occurred')
+        expect(page).to have_content("An error occurred")
       end
 
       expect(page).to have_field("Title", with: "Updated Title")
@@ -334,18 +334,18 @@ RSpec.describe "Updating a guide", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:publish).and_raise(api_error)
 
       click_first_button "Publish"
 
       within ".alert" do
-        expect(page).to have_content('An error occurred')
+        expect(page).to have_content("An error occurred")
       end
 
       within ".label" do
-        expect(page).to have_content('Ready')
+        expect(page).to have_content("Ready")
       end
     end
   end
@@ -384,8 +384,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a draft guide" do
     before do
       guide = create(:guide, :with_draft_edition,
-        slug: "/service-manual/topic-name/new-guide",
-        )
+                     slug: "/service-manual/topic-name/new-guide")
       visit edit_guide_path(guide)
     end
 
@@ -401,8 +400,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a published guide" do
     before do
       guide = create(:guide, :with_published_edition,
-        slug: "/service-manual/topic-name/just-published",
-        )
+                     slug: "/service-manual/topic-name/just-published")
       visit edit_guide_path(guide)
     end
 
@@ -418,8 +416,7 @@ RSpec.describe "'View' and 'Preview' buttons", type: :feature do
   describe "a draft that was previously published" do
     before do
       guide = create(:guide, :with_previously_published_edition,
-        slug: "/service-manual/topic-name/published-guide",
-      )
+                     slug: "/service-manual/topic-name/published-guide")
       visit edit_guide_path(guide)
     end
 

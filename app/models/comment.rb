@@ -3,7 +3,7 @@ class Comment < ApplicationRecord
   belongs_to :user
 
   scope :for_rendering, -> { order(created_at: :desc).includes(:user) }
-  scope :oldest_first, -> { order('created_at, id') }
+  scope :oldest_first, -> { order("created_at, id") }
 
   validates :comment, presence: true
 

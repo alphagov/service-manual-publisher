@@ -5,7 +5,7 @@ class GuidesController < ApplicationController
   end
 
   def new
-    type = params[:type].presence_in(%w{ GuideCommunity Point })
+    type = params[:type].presence_in(%w{GuideCommunity Point})
     guide = Guide.new(type: type)
 
     @guide_form = GuideForm.build(
@@ -27,7 +27,7 @@ class GuidesController < ApplicationController
     @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.latest_edition,
-      user: current_user
+      user: current_user,
     )
   end
 
@@ -65,7 +65,7 @@ class GuidesController < ApplicationController
       redirect_to edit_guide_path(@guide), notice: "Guide has been unpublished"
     else
       @errors = result.errors
-      render 'unpublish'
+      render "unpublish"
     end
   end
 
@@ -78,12 +78,12 @@ private
     @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.latest_edition,
-      user: current_user
+      user: current_user,
     )
 
     if guide_has_changed_since_editing?(guide)
       flash.now[:error] = guide_has_changed_message
-      render 'edit'
+      render "edit"
       return
     end
 
@@ -94,23 +94,23 @@ private
       redirect_to redirect, notice: message
     else
       flash.now[:error] = result.errors
-      render 'edit'
+      render "edit"
     end
   end
 
   def save(guide)
-    failure_template = guide.persisted? ? 'edit' : 'new'
+    failure_template = guide.persisted? ? "edit" : "new"
 
     @guide_form = GuideForm.build(
       guide: guide,
       edition: guide.editions.build(created_by: current_user),
-      user: current_user
+      user: current_user,
     )
     @guide_form.assign_attributes(guide_form_params)
 
     if guide_has_changed_since_editing?(guide)
       flash.now[:error] = guide_has_changed_message
-      render 'edit'
+      render "edit"
     elsif @guide_form.save
       redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
     else

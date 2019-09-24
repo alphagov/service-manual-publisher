@@ -41,7 +41,7 @@ private
   end
 
   def allow_self_approval?
-    ENV['ALLOW_SELF_APPROVAL'].present?
+    ENV["ALLOW_SELF_APPROVAL"].present?
   end
 
   def is_being_edited?

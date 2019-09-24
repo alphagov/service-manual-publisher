@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "discarding guides", type: :feature do
   it "makes the user confirm discarding the draft", js: true do
@@ -43,7 +43,7 @@ RSpec.describe "discarding guides", type: :feature do
       api_error = GdsApi::HTTPClientError.new(
         422,
         "An error occurred",
-        "error" => { "message" => "An error occurred" }
+        "error" => { "message" => "An error occurred" },
       )
       expect(PUBLISHING_API).to receive(:discard_draft).and_raise(api_error)
 

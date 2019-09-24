@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Guide integrity", type: :feature do
   context "when saving a draft if the guide has changed since the user started editing" do
@@ -31,9 +31,9 @@ RSpec.describe "Guide integrity", type: :feature do
     def change_something_about_the_guide(guide)
       other_user = create(:user)
       extra_edition = guide.latest_edition.dup
-      extra_edition.assign_attributes(created_by: other_user, state: 'review_requested')
+      extra_edition.assign_attributes(created_by: other_user, state: "review_requested")
       guide.editions << extra_edition
-      expect(guide.reload.latest_edition.state).to eq('review_requested')
+      expect(guide.reload.latest_edition.state).to eq("review_requested")
     end
   end
 
@@ -44,11 +44,11 @@ RSpec.describe "Guide integrity", type: :feature do
 
       other_user = create(:user)
       extra_edition = guide.latest_edition.dup
-      extra_edition.assign_attributes(created_by: other_user, state: 'ready')
+      extra_edition.assign_attributes(created_by: other_user, state: "ready")
       guide.editions << extra_edition
-      expect(guide.reload.latest_edition.state).to eq('ready')
+      expect(guide.reload.latest_edition.state).to eq("ready")
 
-      click_first_button 'Approve'
+      click_first_button "Approve"
 
       within ".alert" do
         expect(page).to have_content("There have been changes since you started editing")

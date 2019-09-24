@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "unpublishing guides", type: :feature do
   before do
@@ -8,12 +8,12 @@ RSpec.describe "unpublishing guides", type: :feature do
   let(:guide) { create(:guide, :with_published_edition, title: "Outdated guide") }
   let!(:topic) { create(:topic, path: "/service-manual/suitable-redirect") }
 
-  context 'when the publishing api is available' do
+  context "when the publishing api is available" do
     before do
       stub_any_publishing_api_call
     end
 
-    it 'requires you to choose a redirect destination' do
+    it "requires you to choose a redirect destination" do
       visit unpublish_guide_path(guide)
       click_button "Unpublish"
 
@@ -21,7 +21,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(page).to have_content "Redirect destination can't be blank"
     end
 
-    it 'creates a record of the redirect' do
+    it "creates a record of the redirect" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -30,22 +30,21 @@ RSpec.describe "unpublishing guides", type: :feature do
       # table but we aren't displaying in the browser yet. Therefore
       # we are testing it here.
       expect(
-        Redirect.find_by(old_path: guide.slug, new_path: topic.path)
+        Redirect.find_by(old_path: guide.slug, new_path: topic.path),
       ).to be_present
     end
 
-    it 'unpublishes the content, creating a redirect' do
+    it "unpublishes the content, creating a redirect" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
 
       assert_publishing_api_unpublish(guide.content_id,
-        type: 'redirect',
-        alternative_path: '/service-manual/suitable-redirect'
-      )
+                                      type: "redirect",
+                                      alternative_path: "/service-manual/suitable-redirect")
     end
 
-    it 'redirects to the edit page and displays a success message' do
+    it "redirects to the edit page and displays a success message" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -54,7 +53,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(page).to have_content "Guide has been unpublished"
     end
 
-    it 'records the guide as unpublished' do
+    it "records the guide as unpublished" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -63,7 +62,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(page).to have_content "Unpublished"
     end
 
-    it 'records who unpublished the guide in the history' do
+    it "records who unpublished the guide in the history" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -74,7 +73,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       end
     end
 
-    context 'unpublishing guides created before we stored who created an edition' do
+    context "unpublishing guides created before we stored who created an edition" do
       it "does not error and sets the guide state to Unpublished" do
         # Fake the situation we have in production where the
         # `editions.created_by_id` field is NULL
@@ -92,12 +91,12 @@ RSpec.describe "unpublishing guides", type: :feature do
     end
   end
 
-  context 'when the publishing api is not available' do
+  context "when the publishing api is not available" do
     before do
       publishing_api_isnt_available
     end
 
-    it 'does not redirect you to the edit screen' do
+    it "does not redirect you to the edit screen" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -105,15 +104,15 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(page.current_path).to eq unpublish_guide_path(guide)
     end
 
-    it 'displays an error message' do
+    it "displays an error message" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
 
-      expect(page).to have_content 'Could not communicate with upstream API'
+      expect(page).to have_content "Could not communicate with upstream API"
     end
 
-    it 'does not record a redirect' do
+    it "does not record a redirect" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -124,7 +123,7 @@ RSpec.describe "unpublishing guides", type: :feature do
       expect(Redirect.find_by(old_path: guide.slug)).not_to be_present
     end
 
-    it 'does not record the guide as unpublished' do
+    it "does not record the guide as unpublished" do
       visit unpublish_guide_path(guide)
       select topic.path, from: "Redirect to"
       click_button "Unpublish"
@@ -136,8 +135,8 @@ RSpec.describe "unpublishing guides", type: :feature do
   end
 end
 
-RSpec.describe 'Once a guide has been unpublished', type: :feature do
-  it 'can no longer be edited' do
+RSpec.describe "Once a guide has been unpublished", type: :feature do
+  it "can no longer be edited" do
     guide = create(:guide, :has_been_unpublished)
 
     visit edit_guide_path(guide)
@@ -154,35 +153,35 @@ RSpec.describe 'Once a guide has been unpublished', type: :feature do
     expect(page).to_not have_field("Author")
   end
 
-  it 'can no longer be saved' do
+  it "can no longer be saved" do
     guide = create(:guide, :has_been_unpublished)
     visit edit_guide_path(guide)
 
     expect(page).to_not have_button "Save"
   end
 
-  it 'can no longer be sent for review' do
+  it "can no longer be sent for review" do
     guide = create(:guide, :has_been_unpublished)
     visit edit_guide_path(guide)
 
     expect(page).to_not have_button "Send for review"
   end
 
-  it 'can no longer be discarded as a new guide' do
+  it "can no longer be discarded as a new guide" do
     guide = create(:guide, :has_been_unpublished)
     visit edit_guide_path(guide)
 
     expect(page).to_not have_button "Discard new guide"
   end
 
-  it 'can no longer be discarded as a draft' do
+  it "can no longer be discarded as a draft" do
     guide = create(:guide, :has_been_unpublished)
     visit edit_guide_path(guide)
 
     expect(page).to_not have_button "Discard draft"
   end
 
-  it 'can no longer be unpublished' do
+  it "can no longer be unpublished" do
     guide = create(:guide, :has_been_unpublished)
     visit edit_guide_path(guide)
 

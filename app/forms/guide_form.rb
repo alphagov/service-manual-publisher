@@ -18,13 +18,13 @@ private
   end
 
   def topic_section_guide
-    @_topic_section_guide ||=
+    @topic_section_guide ||=
       guide.topic_section_guides[0] || guide.topic_section_guides.build
   end
 
   def topic_section
     TopicSection
       .joins(:topic_section_guides)
-      .find_by('topic_section_guides.guide_id = ?', guide.id)
+      .find_by("topic_section_guides.guide_id = ?", guide.id)
   end
 end

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "filtering guides", type: :feature do
   it "filters by latest edition state" do
@@ -27,12 +27,10 @@ RSpec.describe "filtering guides", type: :feature do
 
     create(:guide,
            slug: "/service-manual/topic-name/a",
-           editions: [build(:edition, author: dave)],
-          )
+           editions: [build(:edition, author: dave)])
     create(:guide,
            slug: "/service-manual/topic-name/b",
-           editions: [build(:edition, author: linda)],
-          )
+           editions: [build(:edition, author: linda)])
 
     filter_by_author "Dave"
     expect(page).to have_text "/service-manual/topic-name/a"
@@ -51,8 +49,7 @@ RSpec.describe "filtering guides", type: :feature do
       edition = build(:edition,
                       state: "review_requested",
                       title: "Guide #{i}",
-                      content_owner_id: guide_community.id,
-                     )
+                      content_owner_id: guide_community.id)
       create(:guide, slug: "/service-manual/topic-name/#{i}", editions: [edition])
     end
 
@@ -138,7 +135,7 @@ RSpec.describe "filtering guides", type: :feature do
     expect(page).to have_text "Ronan's draft guides matching \"Form Design\" published by #{guide_community.title}"
   end
 
-  [:author, :state, :community, :page_type].each do |n|
+  %i[author state community page_type].each do |n|
     define_method("filter_by_#{n}") do |value|
       visit root_path
       within ".filters" do
@@ -149,10 +146,10 @@ RSpec.describe "filtering guides", type: :feature do
   end
 
 
-  def search_for(q)
+  def search_for(query)
     visit root_path
     within ".filters" do
-      fill_in "Title or slug", with: q
+      fill_in "Title or slug", with: query
       click_button "Filter guides"
     end
   end

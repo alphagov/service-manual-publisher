@@ -3,5 +3,8 @@
 library("govuk")
 
 node("postgresql-9.3") {
-  govuk.buildProject(brakeman: true)
+  govuk.buildProject(
+    rubyLintDiff: false,
+    brakeman: true
+  )
 }

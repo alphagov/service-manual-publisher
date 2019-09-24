@@ -6,7 +6,7 @@ class GuideManager
 
   def request_review!
     edition = build_clone_of_latest_edition
-    edition.state = 'review_requested'
+    edition.state = "review_requested"
     edition.save!
 
     ManageResult.new(true, [])
@@ -26,7 +26,7 @@ class GuideManager
   def publish
     catching_gds_api_exceptions do
       edition = build_clone_of_latest_edition
-      edition.state = 'published'
+      edition.state = "published"
       edition.save!
       PUBLISHING_API.publish(guide.content_id)
 
@@ -41,7 +41,7 @@ class GuideManager
   def unpublish_with_redirect(destination)
     redirect = Redirect.new(
       old_path: guide.slug,
-      new_path: destination
+      new_path: destination,
     )
 
     catching_gds_api_exceptions do
@@ -51,9 +51,8 @@ class GuideManager
         edition.save!
 
         PUBLISHING_API.unpublish(guide.content_id,
-          type: 'redirect',
-          alternative_path: redirect.new_path
-        )
+                                 type: "redirect",
+                                 alternative_path: redirect.new_path)
 
         ManageResult.new(true, [])
       else
@@ -99,7 +98,7 @@ private
       end
     rescue GdsApi::HTTPErrorResponse => e
       GovukError.notify(e)
-      error_message = e.error_details['error']['message'] rescue "Could not communicate with upstream API"
+      error_message = e.error_details["error"]["message"] rescue "Could not communicate with upstream API"
       ManageResult.new(false, [error_message])
     end
   end

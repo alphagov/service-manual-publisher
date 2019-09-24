@@ -11,7 +11,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   default from: no_reply_email_address
-  layout 'mailer'
+  layout "mailer"
 
 private
 

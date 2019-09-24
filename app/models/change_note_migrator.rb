@@ -15,7 +15,7 @@ class ChangeNoteMigrator
   def make_minor(edition_id)
     transaction do
       edition = load_edition(edition_id)
-      update_edition(edition, update_type: 'minor')
+      update_edition(edition, update_type: "minor")
       publish!(edition)
     end
   end
@@ -23,7 +23,7 @@ class ChangeNoteMigrator
   def make_major(edition_id, change_note)
     transaction do
       edition = load_edition(edition_id)
-      update_edition(edition, update_type: 'major', change_note: change_note)
+      update_edition(edition, update_type: "major", change_note: change_note)
       publish!(edition)
     end
   end
@@ -49,6 +49,7 @@ private
     log_changes(edition, changes)
 
     return if dry_run
+
     log "  Updating database"
     edition.assign_attributes(changes)
     if edition.validate && edition.errors.any? { |e| changes.keys.map(&:to_s).include?(e.first.to_s) }
@@ -63,7 +64,7 @@ private
     no_changes = edition
                   .attributes
                   .select { |k, _| changes.keys.map(&:to_s).include?(k) }
-                  .select { |k, v| changes.with_indifferent_access[k] != v }
+                  .reject { |k, v| changes.with_indifferent_access[k] == v }
                   .each { |k, v| log "  Old value of #{k} is #{v}, new value is #{changes.with_indifferent_access[k]}", :yellow }
                   .empty?
 
@@ -72,6 +73,7 @@ private
 
   def publish!(edition)
     return if dry_run
+
     log "  Updating Publishing API"
     GuideRepublisher.new(edition.guide, publishing_api: publishing_api).republish
     log "  Publishing API updated", :bold
@@ -79,6 +81,7 @@ private
 
   def log(line, *colors)
     return if Rails.env.test?
+
     @_cli ||= HighLine.new
     @_cli.say(@_cli.color(line, *colors))
   end
@@ -87,7 +90,7 @@ private
     ApplicationRecord.transaction do
       yield
     end
-  rescue => e
+  rescue StandardError => e
     log "  #{e.class}: #{e.message}", :red
     log "  No database changes made, check state of Publishing API", :bold unless dry_run
     raise

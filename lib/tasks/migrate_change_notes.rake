@@ -1,5 +1,5 @@
 task migrate_change_notes: :environment do
-  migrator = ChangeNoteMigrator.new(dry_run: !ENV.key?('PERFORM_AGAINST_DATABASE_AND_PUBLISHING_API'))
+  migrator = ChangeNoteMigrator.new(dry_run: !ENV.key?("PERFORM_AGAINST_DATABASE_AND_PUBLISHING_API"))
 
   # Agile methods: an introduction
   migrator.make_minor(1403)

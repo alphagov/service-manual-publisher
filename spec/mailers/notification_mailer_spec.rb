@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe NotificationMailer, type: :mailer do
   let(:gary) { build(:user, name: "Gary", email: "gary@example.com") }
   let(:luke) { build(:user, name: "Luke") }
-  let(:guide) { create(:guide, slug: '/service-manual/topic-name/agile-delivery', editions: [edition]) }
+  let(:guide) { create(:guide, slug: "/service-manual/topic-name/agile-delivery", editions: [edition]) }
   let(:edition) { build(:edition, title: "Agile", author: gary) }
 
   before do
@@ -60,7 +60,7 @@ RSpec.describe NotificationMailer, type: :mailer do
   describe "#ready_for_publishing" do
     before do
       edition.create_approval(user: luke)
-      edition.update_attribute(:state, 'ready')
+      edition.update_attribute(:state, "ready")
     end
 
     it "contains the edition title, approver's name and a link" do

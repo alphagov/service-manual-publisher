@@ -8,7 +8,7 @@ module AuthenticationHelpers
       uid: SecureRandom.hex,
       email: "stub.user@example.com",
       name: name,
-      permissions: ["signin"],
+      permissions: %w[signin],
     )
   end
 
@@ -32,10 +32,10 @@ module AuthenticationControllerHelpers
   include AuthenticationHelpers
 
   def login_as(user)
-    request.env['warden'] = double(
+    request.env["warden"] = double(
       authenticate!: true,
       authenticated?: true,
-      user: user
+      user: user,
     )
   end
 end
@@ -46,7 +46,7 @@ RSpec.configure do |config|
     login_as_stub_user
   end
 
-  [:request, :feature].each do |spec_type|
+  %i[request feature].each do |spec_type|
     config.include AuthenticationHelpers, type: spec_type
     config.before(:each, type: spec_type) do
       login_as_stub_user

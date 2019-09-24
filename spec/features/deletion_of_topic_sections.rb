@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Deletion of topic sections", type: :feature, js: true do
   before do
@@ -13,12 +13,12 @@ RSpec.describe "Deletion of topic sections", type: :feature, js: true do
     visit edit_topic_path(topic)
 
     within_topic_section(section_without_guides.title) do
-      find('.js-delete-list-group-item').click
+      find(".js-delete-list-group-item").click
     end
 
-    click_button 'Save'
+    click_button "Save"
 
-    expect(page).not_to have_css '.topic-section-list .list-group-item'
+    expect(page).not_to have_css ".topic-section-list .list-group-item"
   end
 
   it "does not display the delete icon for sections that contain guides" do
@@ -28,7 +28,7 @@ RSpec.describe "Deletion of topic sections", type: :feature, js: true do
     visit edit_topic_path(topic)
 
     within_topic_section(section_with_guides.title) do
-      expect(page).not_to have_css '.js-delete-list-group-item'
+      expect(page).not_to have_css ".js-delete-list-group-item"
     end
   end
 end

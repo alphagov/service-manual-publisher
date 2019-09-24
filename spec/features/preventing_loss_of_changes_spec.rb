@@ -1,11 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Preventing users from losing unsaved changes in the form", type: :feature do
   before do
     publishing_api = double(:publishing_api)
     allow(publishing_api).to receive(:put_content)
     allow(publishing_api).to receive(:patch_links)
-    stub_const('PUBLISHING_API', publishing_api)
+    stub_const("PUBLISHING_API", publishing_api)
   end
 
   it "asks the user for confirmation when navigating away via 'Request review'", js: true do

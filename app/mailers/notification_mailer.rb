@@ -6,7 +6,7 @@ class NotificationMailer < ApplicationMailer
     @edition = comment.commentable
     mail(
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
-      subject: "New comment on \"#{@edition.title}\""
+      subject: "New comment on \"#{@edition.title}\"",
     )
   end
 
@@ -16,7 +16,7 @@ class NotificationMailer < ApplicationMailer
     @approval = @edition.approval
     mail(
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
-      subject: "\"#{@edition.title}\" ready for publishing"
+      subject: "\"#{@edition.title}\" ready for publishing",
     )
   end
 
@@ -26,7 +26,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     mail(
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
-      subject: "\"#{@edition.title}\" has been published"
+      subject: "\"#{@edition.title}\" has been published",
     )
   end
 end
