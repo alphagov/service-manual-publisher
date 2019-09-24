@@ -11,7 +11,7 @@ module GuideHelper
     state     = guide.latest_edition.try(:state)
     title     = state.titleize
     css_class = STATE_CSS_CLASSES[state]
-    content_tag :span, title, title: 'State', class: "label label-#{css_class}"
+    content_tag :span, title, title: "State", class: "label label-#{css_class}"
   end
 
   def latest_author_name(guide)

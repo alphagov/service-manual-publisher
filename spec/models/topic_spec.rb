@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Topic do
   it "generates a random guid for the email content signup's content id" do

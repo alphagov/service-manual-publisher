@@ -1,10 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe TopicPresenter, "#content_payload" do
   it "conforms to the schema" do
     topic_presenter = described_class.new(build(:topic))
 
-    expect(topic_presenter.content_payload).to be_valid_against_schema('service_manual_topic')
+    expect(topic_presenter.content_payload).to be_valid_against_schema("service_manual_topic")
   end
 
   describe "common service manual draft payload" do
@@ -167,28 +167,28 @@ RSpec.describe TopicPresenter, "#links_payload" do
     ).to eq([])
   end
 
-  it 'includes the GDS Organisation ID as the primary publishing organisation' do
+  it "includes the GDS Organisation ID as the primary publishing organisation" do
     guide_community = create(:guide_community)
     topic = create_topic_in_groups([[guide_community]])
     presenter = described_class.new(topic)
 
     expect(presenter.links_payload[:links][:primary_publishing_organisation])
-      .to eq ['af07d5a5-df63-4ddc-9383-6a666845ebe9']
+      .to eq ["af07d5a5-df63-4ddc-9383-6a666845ebe9"]
   end
 
-  context 'when the topic should be included on the homepage' do
+  context "when the topic should be included on the homepage" do
     it "includes the homepage as a parent" do
       topic = create(:topic, include_on_homepage: true)
 
       presented_topic = described_class.new(topic)
 
       expect(presented_topic.links_payload[:links]).to include(
-        parent: ['6732c01a-39e2-4cec-8ee9-17eb7fded6a0']
+        parent: ["6732c01a-39e2-4cec-8ee9-17eb7fded6a0"]
       )
     end
   end
 
-  context 'when the topic should not be included on the homepage' do
+  context "when the topic should not be included on the homepage" do
     it "explicitly removes any parent" do
       topic = create(:topic, include_on_homepage: false)
 

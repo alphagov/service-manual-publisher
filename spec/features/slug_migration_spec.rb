@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Slug migration", type: :feature do
   def expect_table_to_match_migrations migrations

@@ -1,5 +1,5 @@
-require 'rails_helper'
-require 'capybara/rails'
+require "rails_helper"
+require "capybara/rails"
 
 RSpec.describe "Commenting", type: :feature do
   let(:guide) do
@@ -10,8 +10,8 @@ RSpec.describe "Commenting", type: :feature do
     )
   end
 
-  describe 'for a normal guide' do
-    it 'write a comment successfully' do
+  describe "for a normal guide" do
+    it "write a comment successfully" do
       comment = "This is a guide comment"
       write_a_comment(guide: guide, comment: comment)
 
@@ -51,13 +51,13 @@ RSpec.describe "Commenting", type: :feature do
 
       write_a_comment(guide: guide, comment: comment_text)
 
-      comment_html = find('.comment').native.inner_html
+      comment_html = find(".comment").native.inner_html
       expect(comment_html).to include formatted_comment
     end
   end
 
-  describe 'for a guide community' do
-    it 'write a comment successfully' do
+  describe "for a guide community" do
+    it "write a comment successfully" do
       guide = create(:guide_community)
       comment = "This is a guide community comment"
       write_a_comment(guide: guide, comment: comment)

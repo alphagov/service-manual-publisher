@@ -111,7 +111,7 @@ private
   end
 
   def default_change_note
-    'Guidance first published'
+    "Guidance first published"
   end
 
   def version=(number)
@@ -155,7 +155,7 @@ private
         yield
       end
     rescue GdsApi::HTTPErrorResponse => e
-      errors.add(:base, e.error_details['error']['message'])
+      errors.add(:base, e.error_details["error"]["message"])
 
       false
     end

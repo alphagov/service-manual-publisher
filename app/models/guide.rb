@@ -11,7 +11,7 @@ class Guide < ApplicationRecord
 
   scope :only_latest_edition, -> {
     joins(:editions)
-      .where('editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)')
+      .where("editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)")
   }
 
   scope :in_state, ->(state) {
@@ -142,7 +142,7 @@ private
     new_edition = editions.detect(&:new_record?)
 
     if new_edition && new_edition.content_owner.nil?
-      errors.add(:latest_edition, 'must have a content owner')
+      errors.add(:latest_edition, "must have a content owner")
     end
   end
 

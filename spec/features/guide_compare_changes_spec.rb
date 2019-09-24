@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Guide compare changes", type: :feature do
   before do
@@ -16,7 +16,7 @@ RSpec.describe "Guide compare changes", type: :feature do
       fill_in "Title", with: "Second version"
       fill_in "Body", with: "## Hi"
       fill_in "Public change note", with: "Better greeting"
-      click_first_button 'Save'
+      click_first_button "Save"
       click_link "Compare changes"
 
       within ".title del" do

@@ -25,6 +25,6 @@ private
   def topic_section
     TopicSection
       .joins(:topic_section_guides)
-      .find_by('topic_section_guides.guide_id = ?', guide.id)
+      .find_by("topic_section_guides.guide_id = ?", guide.id)
   end
 end

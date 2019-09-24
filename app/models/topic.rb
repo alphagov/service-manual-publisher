@@ -24,7 +24,7 @@ class Topic < ApplicationRecord
   end
 
   def update_type
-    'major'
+    "major"
   end
 
   # TODO: We have topics.path and guides.slug. We should standardise with

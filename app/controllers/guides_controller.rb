@@ -65,7 +65,7 @@ class GuidesController < ApplicationController
       redirect_to edit_guide_path(@guide), notice: "Guide has been unpublished"
     else
       @errors = result.errors
-      render 'unpublish'
+      render "unpublish"
     end
   end
 
@@ -83,7 +83,7 @@ private
 
     if guide_has_changed_since_editing?(guide)
       flash.now[:error] = guide_has_changed_message
-      render 'edit'
+      render "edit"
       return
     end
 
@@ -94,12 +94,12 @@ private
       redirect_to redirect, notice: message
     else
       flash.now[:error] = result.errors
-      render 'edit'
+      render "edit"
     end
   end
 
   def save(guide)
-    failure_template = guide.persisted? ? 'edit' : 'new'
+    failure_template = guide.persisted? ? "edit" : "new"
 
     @guide_form = GuideForm.build(
       guide: guide,
@@ -110,7 +110,7 @@ private
 
     if guide_has_changed_since_editing?(guide)
       flash.now[:error] = guide_has_changed_message
-      render 'edit'
+      render "edit"
     elsif @guide_form.save
       redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
     else

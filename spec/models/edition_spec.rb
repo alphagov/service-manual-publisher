@@ -1,10 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Edition, type: :model do
   describe ".unpublished" do
     it "returns unpublished editions" do
-      create(:edition, state: 'draft')
-      unpublished_edition = create(:edition, state: 'unpublished')
+      create(:edition, state: "draft")
+      unpublished_edition = create(:edition, state: "unpublished")
 
       expect(described_class.unpublished).to match_array([unpublished_edition])
     end
@@ -37,7 +37,7 @@ RSpec.describe Edition, type: :model do
 
   describe "#phase" do
     it "defaults to 'beta'" do
-      expect(Edition.new.phase).to eq 'beta'
+      expect(Edition.new.phase).to eq "beta"
     end
   end
 
@@ -96,7 +96,7 @@ RSpec.describe Edition, type: :model do
       end
     end
 
-    describe 'change_note' do
+    describe "change_note" do
       it "is not allowed to be empty when the update_type is 'major'" do
         edition = build(:edition, update_type: "major", change_note: "")
         edition.valid?
@@ -114,7 +114,7 @@ RSpec.describe Edition, type: :model do
       it "cannot be minor for the first edition" do
         edition = build(:edition, update_type: "minor")
         edition.valid?
-        expect(edition.errors.full_messages_for(:update_type)).to include 'Update type must be major'
+        expect(edition.errors.full_messages_for(:update_type)).to include "Update type must be major"
       end
     end
 

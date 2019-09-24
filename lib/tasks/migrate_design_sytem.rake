@@ -24,12 +24,12 @@ redirects = {
 # rubocop:disable Metrics/BlockLength
 desc "Migrate design patterns to the design system"
 task migrate_design_system: :environment do
-  unless ENV.key?('USER_ID')
+  unless ENV.key?("USER_ID")
     puts "Must specify a USER_ID"
     exit 1
   end
 
-  user = User.find(ENV['USER_ID'])
+  user = User.find(ENV["USER_ID"])
   unless user
     puts "Invalid user #{ENV['USER_ID']}"
     exit 1

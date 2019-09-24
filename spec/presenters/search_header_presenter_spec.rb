@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe SearchHeaderPresenter do
   describe "#search" do
@@ -34,12 +34,12 @@ RSpec.describe SearchHeaderPresenter do
     end
 
     it "humanizes the state parameter" do
-      header = described_class.new({ state: 'review_requested' }, User.new).to_s
+      header = described_class.new({ state: "review_requested" }, User.new).to_s
       expect(header).to include "review requested guides"
     end
 
     it "displays the free-text query" do
-      header = described_class.new({ q: 'Agile Development' }, User.new).to_s
+      header = described_class.new({ q: "Agile Development" }, User.new).to_s
       expect(header).to include "matching \"Agile Development\""
     end
 

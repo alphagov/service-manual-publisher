@@ -10,20 +10,20 @@ class TopicEmailAlertSignupPresenter
   def content_payload
     {
       base_path: path,
-      update_type: 'major',
+      update_type: "major",
       details: {
         summary: summary,
         subscriber_list: subscriber_list_definition
       },
-      schema_name: 'email_alert_signup',
-      document_type: 'email_alert_signup',
-      locale: 'en',
-      publishing_app: 'service-manual-publisher',
-      rendering_app: 'email-alert-frontend',
+      schema_name: "email_alert_signup",
+      document_type: "email_alert_signup",
+      locale: "en",
+      publishing_app: "service-manual-publisher",
+      rendering_app: "email-alert-frontend",
       routes: [
         {
           path: path,
-          type: 'exact'
+          type: "exact"
         }
       ],
       title: title,
@@ -35,7 +35,7 @@ private
   attr_reader :topic
 
   def path
-    [topic.path.chomp("/"), 'email-signup'].join('/')
+    [topic.path.chomp("/"), "email-signup"].join("/")
   end
 
   def title
@@ -48,7 +48,7 @@ private
 
   def subscriber_list_definition
     {
-      document_type: 'service_manual_guide',
+      document_type: "service_manual_guide",
       links: {
         service_manual_topics: [topic.content_id]
       }

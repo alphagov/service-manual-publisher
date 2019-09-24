@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe GuidePresenter::ChangeHistoryPresenter do
-  it 'includes all major editions in reverse chronological order' do
+  it "includes all major editions in reverse chronological order" do
     editions = [
       *published_edition(
         change_note: "Guidance first published",
@@ -30,7 +30,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     ]
   end
 
-  it 'includes the change note of the current draft if it is major' do
+  it "includes the change note of the current draft if it is major" do
     editions = [
       *published_edition(
         change_note: "Guidance first published",
@@ -59,7 +59,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     ]
   end
 
-  it 'does not include the current draft if it is a minor' do
+  it "does not include the current draft if it is a minor" do
     editions = [
       *published_edition(
         change_note: "Guidance first published",

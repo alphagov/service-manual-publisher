@@ -51,7 +51,7 @@ private
   def add_heading(topic)
     topic.topic_sections.build(position: next_position_in_list(@topic))
 
-    render 'edit'
+    render "edit"
   end
 
   def topic_respond_with(response, opts = {})
@@ -61,7 +61,7 @@ private
       redirect_to edit_topic_path(@topic), notice: success_notice
     else
       flash.now[:error] = response.error
-      render @topic.persisted? ? 'edit' : 'new'
+      render @topic.persisted? ? "edit" : "new"
     end
   end
 

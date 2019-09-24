@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe EditionsHelper, "#event_action_for_changed_state", type: :helper do
   context "when draft" do

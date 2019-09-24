@@ -15,7 +15,7 @@ class ChangeNoteMigrator
   def make_minor(edition_id)
     transaction do
       edition = load_edition(edition_id)
-      update_edition(edition, update_type: 'minor')
+      update_edition(edition, update_type: "minor")
       publish!(edition)
     end
   end
@@ -23,7 +23,7 @@ class ChangeNoteMigrator
   def make_major(edition_id, change_note)
     transaction do
       edition = load_edition(edition_id)
-      update_edition(edition, update_type: 'major', change_note: change_note)
+      update_edition(edition, update_type: "major", change_note: change_note)
       publish!(edition)
     end
   end

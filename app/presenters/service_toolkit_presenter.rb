@@ -7,20 +7,20 @@ class ServiceToolkitPresenter
 
   def content_payload
     {
-      base_path: '/service-toolkit',
-      title: 'Service Toolkit',
-      description: 'All you need to design, build and run services that meet government standards.',
+      base_path: "/service-toolkit",
+      title: "Service Toolkit",
+      description: "All you need to design, build and run services that meet government standards.",
       details: {
         collections: collections
       },
       routes: [
-        { type: 'exact', path: '/service-toolkit' }
+        { type: "exact", path: "/service-toolkit" }
       ],
-      document_type: 'service_manual_service_toolkit',
-      schema_name: 'service_manual_service_toolkit',
-      publishing_app: 'service-manual-publisher',
-      rendering_app: 'service-manual-frontend',
-      locale: 'en'
+      document_type: "service_manual_service_toolkit",
+      schema_name: "service_manual_service_toolkit",
+      publishing_app: "service-manual-publisher",
+      rendering_app: "service-manual-frontend",
+      locale: "en"
     }
   end
 

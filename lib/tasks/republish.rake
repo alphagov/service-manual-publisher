@@ -1,4 +1,4 @@
-require 'highline'
+require "highline"
 
 namespace :republish do
   desc "republish all guides"

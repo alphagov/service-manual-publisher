@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe CommentsController, type: :controller do
   let(:commenter) do
@@ -15,7 +15,7 @@ RSpec.describe CommentsController, type: :controller do
   end
 
   describe "#create" do
-    it 'redirects to a url with a unique anchor tag pointing to a comment' do
+    it "redirects to a url with a unique anchor tag pointing to a comment" do
       post :create, params: {
         comment: { edition_id: edition.id, comment: "LGMT!" }
       }
@@ -23,7 +23,7 @@ RSpec.describe CommentsController, type: :controller do
       expect(response).to redirect_to(guide_editions_path(edition.guide, anchor: "comment-#{Comment.last.id}"))
     end
 
-    it 'sends a notification email' do
+    it "sends a notification email" do
       post :create, params: {
         comment: { edition_id: edition.id, comment: "LGMT!" }
       }
@@ -31,7 +31,7 @@ RSpec.describe CommentsController, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq 1
     end
 
-    it 'does not send a notification email if edition author is the commenter' do
+    it "does not send a notification email if edition author is the commenter" do
       edition.update_attribute(:author, commenter)
 
       post :create, params: {

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "filtering guides", type: :feature do
   it "filters by latest edition state" do

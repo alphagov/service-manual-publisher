@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Topics", type: :feature do
   let(:api_double) { double(:publishing_api) }
@@ -8,28 +8,28 @@ RSpec.describe "Topics", type: :feature do
     click_link "Manage Topics"
     click_link "Create a Topic"
 
-    expect(page).to_not have_button('Publish')
+    expect(page).to_not have_button("Publish")
   end
 
-  it 'allows you to choose whether the topic should appear on the homepage' do
+  it "allows you to choose whether the topic should appear on the homepage" do
     visit new_topic_path
 
-    expect(page).to have_checked_field 'Include on homepage?'
+    expect(page).to have_checked_field "Include on homepage?"
   end
 
   it "saves a draft topic", js: true do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
+      .with(an_instance_of(String), be_valid_against_schema("service_manual_topic"))
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema('email_alert_signup'))
-    create(:guide, editions: [build(:edition, title: 'Guide 1')])
-    create(:guide, editions: [build(:edition, title: 'Guide 2')])
+      .with(an_instance_of(String), be_valid_against_schema("email_alert_signup"))
+    create(:guide, editions: [build(:edition, title: "Guide 1")])
+    create(:guide, editions: [build(:edition, title: "Guide 2")])
 
     visit root_path
     click_link "Manage Topics"
@@ -44,50 +44,50 @@ RSpec.describe "Topics", type: :feature do
     fill_in "Section description", with: "The section description"
     click_button "Save"
 
-    expect(page).to have_field('Title', with: 'The title')
-    expect(page).to have_field('Description', with: 'The description')
-    expect(page).to have_checked_field('Collapsed')
-    expect(page).to have_unchecked_field('Include on homepage?')
+    expect(page).to have_field("Title", with: "The title")
+    expect(page).to have_field("Description", with: "The description")
+    expect(page).to have_checked_field("Collapsed")
+    expect(page).to have_unchecked_field("Include on homepage?")
 
     expect(page).to have_field "Section title", with: "The section title"
     expect(page).to have_field "Section description", with: "The section description"
   end
 
   it "links to a preview from a saved draft" do
-    create(:topic, title: 'Agile Delivery', path: '/service-manual/agile-delivery-topic')
+    create(:topic, title: "Agile Delivery", path: "/service-manual/agile-delivery-topic")
 
     visit root_path
     click_link "Manage Topics"
     click_link "Agile Delivery"
 
-    expect(page).to have_link('Preview', href: %r{/service-manual/agile-delivery-topic})
+    expect(page).to have_link("Preview", href: %r{/service-manual/agile-delivery-topic})
   end
 
   it "update a topic to save another draft" do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema('service_manual_topic'))
+      .with(an_instance_of(String), be_valid_against_schema("service_manual_topic"))
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema('email_alert_signup'))
-    create(:topic, title: 'Agile Delivery')
+      .with(an_instance_of(String), be_valid_against_schema("email_alert_signup"))
+    create(:topic, title: "Agile Delivery")
 
     visit root_path
     click_link "Manage Topics"
     click_link "Agile Delivery"
 
-    fill_in 'Description', with: 'Updated description'
+    fill_in "Description", with: "Updated description"
 
-    click_button 'Save'
+    click_button "Save"
 
-    within('.alert') do
-      expect(page).to have_content('Topic has been updated')
+    within(".alert") do
+      expect(page).to have_content("Topic has been updated")
     end
-    expect(page).to have_field('Description', with: 'Updated description')
+    expect(page).to have_field("Description", with: "Updated description")
   end
 
   it "publish a topic" do
@@ -105,18 +105,18 @@ RSpec.describe "Topics", type: :feature do
     click_link "Manage Topics"
     click_link "Technology"
 
-    click_on 'Publish'
+    click_on "Publish"
 
-    within('.alert') do
-      expect(page).to have_content('Topic has been published')
+    within(".alert") do
+      expect(page).to have_content("Topic has been published")
     end
   end
 
-  it 'displays validation messages when validation fails' do
+  it "displays validation messages when validation fails" do
     visit new_topic_path
-    click_button 'Save'
+    click_button "Save"
 
-    within '.full-error-list' do
+    within ".full-error-list" do
       expect(page).to have_content "Path must be present and start with '/service-manual/'"
       expect(page).to have_content "Title can't be blank"
     end

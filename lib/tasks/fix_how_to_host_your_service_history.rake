@@ -1,5 +1,5 @@
 task fix_how_to_host_your_service_history: :environment do
-  dry_run = !ENV.key?('PERFORM_AGAINST_DATABASE_AND_PUBLISHING_API')
+  dry_run = !ENV.key?("PERFORM_AGAINST_DATABASE_AND_PUBLISHING_API")
   migrator = ChangeNoteMigrator.new(dry_run: dry_run)
 
   # This guide has a funny history - we need to make it make sense

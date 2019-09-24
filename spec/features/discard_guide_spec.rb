@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "discarding guides", type: :feature do
   it "makes the user confirm discarding the draft", js: true do

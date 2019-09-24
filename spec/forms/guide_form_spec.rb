@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe GuideForm, ".build" do
   it "returns a GuideForm for a Guide" do
@@ -286,7 +286,7 @@ RSpec.describe GuideForm, "#save" do
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.save
 
-      expect(edition.change_note).to eq('Guidance first published')
+      expect(edition.change_note).to eq("Guidance first published")
     end
 
     it "assigns the change_note to the edition for later editions" do
@@ -327,8 +327,8 @@ RSpec.describe GuideForm, "#save" do
 
     it "does not persist changes if communication with the publishing api fails" do
       gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
-                                            'https://some-service.gov.uk',
-                                            'error' => { 'message' => 'trouble' })
+                                            "https://some-service.gov.uk",
+                                            "error" => { "message" => "trouble" })
       expect(PUBLISHING_API).to receive(:put_content).and_raise(gds_api_exception)
 
       user = create(:user)
@@ -340,11 +340,11 @@ RSpec.describe GuideForm, "#save" do
         edition: edition,
         user: user
       )
-      guide_form.assign_attributes(body: 'Nice new copy')
+      guide_form.assign_attributes(body: "Nice new copy")
 
       expect(guide_form.save).to eq(false)
       expect(guide.reload.latest_edition.body).to eq(original_body)
-      expect(guide_form.errors.full_messages).to include('trouble')
+      expect(guide_form.errors.full_messages).to include("trouble")
     end
   end
 end

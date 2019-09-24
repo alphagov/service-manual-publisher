@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe RedirectDestinationHelper, '#redirect_destination_select_options', type: :helper do
-  it 'should include all published guides ordered by slug' do
+RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options", type: :helper do
+  it "should include all published guides ordered by slug" do
     create(:guide, :with_published_edition,
       slug: "/service-manual/agile-delivery/team-wall"
     )
@@ -20,13 +20,13 @@ RSpec.describe RedirectDestinationHelper, '#redirect_destination_select_options'
     )
   end
 
-  it 'should include the homepage and the service standard' do
+  it "should include the homepage and the service standard" do
     expect(helper.redirect_destination_select_options).to include(
       "Other" => ["/service-manual", "/service-manual/service-standard"],
     )
   end
 
-  it 'should include all topics with sub sections' do
+  it "should include all topics with sub sections" do
     topic = create(:topic, path: "/service-manual/agile-delivery")
     create(:topic_section, title: "Working with agile methods", topic: topic)
     create(:topic_section, title: "Governing agile services", topic: topic)
@@ -40,7 +40,7 @@ RSpec.describe RedirectDestinationHelper, '#redirect_destination_select_options'
     )
   end
 
-  it 'should exclude topic sections without titles' do
+  it "should exclude topic sections without titles" do
     topic = create(:topic, path: "/service-manual/agile-delivery")
     create(:topic_section, title: "", topic: topic)
 

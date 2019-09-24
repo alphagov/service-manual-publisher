@@ -20,17 +20,17 @@ class GuidesFilter
       next if param.blank?
 
       case key
-      when 'author'
+      when "author"
         @scope = @scope.by_author(param)
-      when 'content_owner'
+      when "content_owner"
         @scope = @scope.owned_by(param)
-      when 'page'
+      when "page"
         @scope = @scope.page(param)
-      when 'page_type'
+      when "page_type"
         apply_type_scope(param)
-      when 'q'
+      when "q"
         @scope = @scope.search(param)
-      when 'state'
+      when "state"
         @scope = @scope.in_state(param)
       end
     end
@@ -42,9 +42,9 @@ private
 
   def apply_type_scope(type)
     @scope = case type
-             when 'All'
+             when "All"
                @scope
-             when 'Guide'
+             when "Guide"
                @scope.by_type(nil)
              else
                @scope.by_type(type)

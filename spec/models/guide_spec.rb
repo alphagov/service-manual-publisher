@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Guide do
   context "with a topic" do
@@ -124,7 +124,7 @@ RSpec.describe Guide do
 
         expect(guide).not_to be_valid
         expect(guide.errors.full_messages_for(:latest_edition)).to eq [
-          'Latest edition must have a content owner'
+          "Latest edition must have a content owner"
         ]
       end
     end
