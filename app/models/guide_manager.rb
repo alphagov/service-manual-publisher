@@ -52,7 +52,7 @@ class GuideManager
 
         PUBLISHING_API.unpublish(guide.content_id,
                                  type: "redirect",
-                                 alternative_path: redirect.new_path,)
+                                 alternative_path: redirect.new_path)
 
         ManageResult.new(true, [])
       else

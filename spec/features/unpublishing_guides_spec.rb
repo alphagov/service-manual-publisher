@@ -41,7 +41,7 @@ RSpec.describe "unpublishing guides", type: :feature do
 
       assert_publishing_api_unpublish(guide.content_id,
                                       type: "redirect",
-                                      alternative_path: "/service-manual/suitable-redirect",)
+                                      alternative_path: "/service-manual/suitable-redirect")
     end
 
     it "redirects to the edit page and displays a success message" do

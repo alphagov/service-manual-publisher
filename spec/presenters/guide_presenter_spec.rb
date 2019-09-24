@@ -26,7 +26,7 @@ RSpec.describe GuidePresenter do
                        update_type: "major",
                        description: "Description",
                      },
-                     slug: "/service-manual/test-topic/the-title",)
+                     slug: "/service-manual/test-topic/the-title")
       presenter = described_class.new(guide, guide.latest_edition)
 
       expect(presenter.content_payload).to include(
@@ -44,7 +44,7 @@ RSpec.describe GuidePresenter do
                      edition: {
                        created_at: "2016-06-28T14:16:21Z".to_time,
                        change_note: "Add a new guide 'The Title'",
-                     },)
+                     })
       presenter = described_class.new(guide, guide.latest_edition)
 
       expect(presenter.content_payload[:details]).to include(
