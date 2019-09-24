@@ -5,7 +5,7 @@ class GuidesController < ApplicationController
   end
 
   def new
-    type = params[:type].presence_in(%w{ GuideCommunity Point })
+    type = params[:type].presence_in(%w{GuideCommunity Point})
     guide = Guide.new(type: type)
 
     @guide_form = GuideForm.build(
