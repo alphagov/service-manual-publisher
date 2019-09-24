@@ -49,6 +49,7 @@ private
     log_changes(edition, changes)
 
     return if dry_run
+
     log "  Updating database"
     edition.assign_attributes(changes)
     if edition.validate && edition.errors.any? { |e| changes.keys.map(&:to_s).include?(e.first.to_s) }
@@ -72,6 +73,7 @@ private
 
   def publish!(edition)
     return if dry_run
+
     log "  Updating Publishing API"
     GuideRepublisher.new(edition.guide, publishing_api: publishing_api).republish
     log "  Publishing API updated", :bold
@@ -79,6 +81,7 @@ private
 
   def log(line, *colors)
     return if Rails.env.test?
+
     @_cli ||= HighLine.new
     @_cli.say(@_cli.color(line, *colors))
   end
