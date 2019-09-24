@@ -90,7 +90,7 @@ private
     ApplicationRecord.transaction do
       yield
     end
-  rescue => e
+  rescue StandardError => e
     log "  #{e.class}: #{e.message}", :red
     log "  No database changes made, check state of Publishing API", :bold unless dry_run
     raise
