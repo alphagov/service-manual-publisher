@@ -44,7 +44,7 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
       routes: [
         {
           path: "/service-manual/service-standard/email-signup",
-          type: "exact"
+          type: "exact",
         }
       ],
     )
@@ -73,8 +73,8 @@ RSpec.describe ServiceStandardEmailAlertSignupPresenter, "#content_payload" do
       subscriber_list: {
         document_type: "service_manual_guide",
         links: {
-          parent: [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID]
-        }
+          parent: [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID],
+        },
       },
     )
   end

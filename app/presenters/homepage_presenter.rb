@@ -18,7 +18,7 @@ class HomepagePresenter
       schema_name: "service_manual_homepage",
       publishing_app: "service-manual-publisher",
       rendering_app: "service-manual-frontend",
-      locale: "en"
+      locale: "en",
     }
   end
 end

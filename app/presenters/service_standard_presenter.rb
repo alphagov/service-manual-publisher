@@ -21,8 +21,8 @@ class ServiceStandardPresenter
       title: "Service Standard",
       description: "The Service Standard helps teams to create and run great public services.",
       details: {
-        body: '<p>Check whether you need to use <a href="/service-manual/service-assessments/pre-july-2019-digital-service-standard"> the previous version of the Service Standard</a>.</p>'
-      }
+        body: '<p>Check whether you need to use <a href="/service-manual/service-assessments/pre-july-2019-digital-service-standard"> the previous version of the Service Standard</a>.</p>',
+      },
     }
   end
 
@@ -32,8 +32,8 @@ class ServiceStandardPresenter
         email_alert_signup: [
           ServiceStandardEmailAlertSignupPresenter::SERVICE_STANDARD_EMAIL_ALERT_SIGNUP_CONTENT_ID,
         ],
-        primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID]
-      }
+        primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
+      },
     }
   end
 end

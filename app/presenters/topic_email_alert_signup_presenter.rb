@@ -13,7 +13,7 @@ class TopicEmailAlertSignupPresenter
       update_type: "major",
       details: {
         summary: summary,
-        subscriber_list: subscriber_list_definition
+        subscriber_list: subscriber_list_definition,
       },
       schema_name: "email_alert_signup",
       document_type: "email_alert_signup",
@@ -23,7 +23,7 @@ class TopicEmailAlertSignupPresenter
       routes: [
         {
           path: path,
-          type: "exact"
+          type: "exact",
         }
       ],
       title: title,
@@ -50,8 +50,8 @@ private
     {
       document_type: "service_manual_guide",
       links: {
-        service_manual_topics: [topic.content_id]
-      }
+        service_manual_topics: [topic.content_id],
+      },
     }
   end
 end

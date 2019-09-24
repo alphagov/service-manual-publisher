@@ -21,11 +21,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     expect(presenter.change_history).to eq [
       {
         public_timestamp: "2016-06-28T14:16:21Z",
-        note: "Big content change"
+        note: "Big content change",
       },
       {
         public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published"
+        note: "Guidance first published",
       }
     ]
   end
@@ -50,11 +50,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     expect(presenter.change_history).to eq [
       {
         public_timestamp: "2016-06-28T14:16:21Z",
-        note: "Big content change"
+        note: "Big content change",
       },
       {
         public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published"
+        note: "Guidance first published",
       }
     ]
   end
@@ -80,7 +80,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
     expect(presenter.change_history).to eq [
       {
         public_timestamp: "2016-06-25T14:16:21Z",
-        note: "Guidance first published"
+        note: "Guidance first published",
       }
     ]
   end

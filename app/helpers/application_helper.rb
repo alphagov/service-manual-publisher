@@ -3,7 +3,7 @@ module ApplicationHelper
     {
       notice: "alert-success",
       alert: "alert-warning",
-      error: "alert-danger"
+      error: "alert-danger",
     }[flash_type.to_sym]
   end
 

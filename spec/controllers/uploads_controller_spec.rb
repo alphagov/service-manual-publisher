@@ -10,7 +10,7 @@ RSpec.describe UploadsController, type: :controller do
 
         post :create, params: {
           format: :js,
-          file: test_pdf
+          file: test_pdf,
         }
 
         expect(response.status).to eq 422
@@ -25,7 +25,7 @@ RSpec.describe UploadsController, type: :controller do
 
         post :create, params: {
           format: :js,
-          file: test_png
+          file: test_png,
         }
 
         expect(response.status).to eq 201

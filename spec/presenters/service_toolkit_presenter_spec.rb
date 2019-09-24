@@ -55,13 +55,13 @@ RSpec.describe ServiceToolkitPresenter, "#content_payload" do
     a_valid_link = {
       title: an_instance_of(String),
       description: an_instance_of(String),
-      url: an_instance_of(String)
+      url: an_instance_of(String),
     }
 
     a_valid_collection = {
       title: an_instance_of(String),
       description: an_instance_of(String),
-      links: (all include a_valid_link)
+      links: (all include a_valid_link),
     }
 
     expect(collections).to all include a_valid_collection

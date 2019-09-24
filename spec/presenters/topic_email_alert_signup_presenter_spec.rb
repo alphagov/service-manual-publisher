@@ -46,7 +46,7 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
       routes: [
         {
           path: "/service-manual/agile-delivery/email-signup",
-          type: "exact"
+          type: "exact",
         }
       ],
     )
@@ -76,8 +76,8 @@ RSpec.describe TopicEmailAlertSignupPresenter, "#content_payload" do
       subscriber_list: {
         document_type: "service_manual_guide",
         links: {
-          service_manual_topics: [topic.content_id]
-        }
+          service_manual_topics: [topic.content_id],
+        },
       },
     )
   end

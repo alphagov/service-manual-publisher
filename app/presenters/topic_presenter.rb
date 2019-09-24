@@ -24,8 +24,8 @@ class TopicPresenter
       ],
       details: {
         visually_collapsed: topic.visually_collapsed,
-        groups: groups
-      }
+        groups: groups,
+      },
     }
   end
 
@@ -37,8 +37,8 @@ class TopicPresenter
         content_owners: content_owner_content_ids,
         organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
         primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
-        parent: parents
-      }
+        parent: parents,
+      },
     }
   end
 

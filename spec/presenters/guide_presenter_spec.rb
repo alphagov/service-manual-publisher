@@ -24,7 +24,7 @@ RSpec.describe GuidePresenter do
         edition: {
           phase: "beta",
           update_type: "major",
-          description: "Description"
+          description: "Description",
         },
         slug: "/service-manual/test-topic/the-title",
       )
@@ -44,7 +44,7 @@ RSpec.describe GuidePresenter do
       guide = create(:guide,
         edition: {
           created_at: "2016-06-28T14:16:21Z".to_time,
-          change_note: "Add a new guide 'The Title'"
+          change_note: "Add a new guide 'The Title'",
         },
       )
       presenter = described_class.new(guide, guide.latest_edition)
@@ -53,7 +53,7 @@ RSpec.describe GuidePresenter do
         change_history: [
           {
             public_timestamp: "2016-06-28T14:16:21Z",
-            note: "Add a new guide 'The Title'"
+            note: "Add a new guide 'The Title'",
           }
         ],
       )

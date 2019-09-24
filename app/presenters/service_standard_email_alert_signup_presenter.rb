@@ -14,9 +14,9 @@ class ServiceStandardEmailAlertSignupPresenter
         subscriber_list: {
           document_type: "service_manual_guide",
           links: {
-            parent: [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID]
-          }
-        }
+            parent: [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID],
+          },
+        },
       },
       schema_name: "email_alert_signup",
       document_type: "email_alert_signup",
@@ -26,7 +26,7 @@ class ServiceStandardEmailAlertSignupPresenter
       routes: [
         {
           path: "/service-manual/service-standard/email-signup",
-          type: "exact"
+          type: "exact",
         }
       ],
       title: "Service Manual – Service Standard",

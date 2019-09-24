@@ -13,7 +13,7 @@ RSpec.describe TopicsController, type: :controller do
 
         put :update, params: {
           id: topic.id,
-          publish: true
+          publish: true,
         }
 
         assert_publishing_api_publish(topic.content_id)
