@@ -54,7 +54,6 @@ private
     end
   end
 
-
   def groups
     topic.topic_sections.map do |topic_section|
       {
