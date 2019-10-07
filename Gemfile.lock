@@ -142,7 +142,7 @@ GEM
       jquery-rails (~> 4.3.1)
       plek (>= 2.1.0)
       rails (>= 3.2.0)
-    govuk_app_config (2.0.0)
+    govuk_app_config (2.0.1)
       logstasher (>= 1.2.2, < 1.4.0)
       sentry-raven (>= 2.7.1, < 2.12.0)
       statsd-ruby (~> 1.4.0)
@@ -376,7 +376,7 @@ GEM
     selenium-webdriver (3.142.3)
       childprocess (>= 0.5, < 2.0)
       rubyzip (~> 1.2, >= 1.2.2)
-    sentry-raven (2.11.0)
+    sentry-raven (2.11.3)
       faraday (>= 0.7.6, < 1.0)
     simplecov (0.17.1)
       docile (~> 1.1)
@@ -445,7 +445,7 @@ DEPENDENCIES
   govuk-content-schema-test-helpers
   govuk-lint
   govuk_admin_template
-  govuk_app_config (~> 2.0.0)
+  govuk_app_config (~> 2.0.1)
   govuk_test
   highline
   jasmine
