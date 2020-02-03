@@ -93,7 +93,7 @@ RSpec.describe "unpublishing guides", type: :feature do
 
   context "when the publishing api is not available" do
     before do
-      publishing_api_isnt_available
+      stub_publishing_api_isnt_available
     end
 
     it "does not redirect you to the edit screen" do
