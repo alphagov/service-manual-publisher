@@ -220,7 +220,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
 
   context "when communication with the publishing api fails" do
     before do
-      publishing_api_isnt_available
+      stub_publishing_api_isnt_available
     end
 
     it "does not create a new edition" do
@@ -327,7 +327,7 @@ RSpec.describe GuideManager, "#discard_draft" do
 
   context "when communication with the publishing api fails" do
     it "doesn't destroy anything if communication with the publishing api fails" do
-      publishing_api_isnt_available
+      stub_publishing_api_isnt_available
 
       user = create(:user)
       guide = create(:guide)
