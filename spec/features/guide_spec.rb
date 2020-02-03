@@ -211,7 +211,7 @@ RSpec.describe "Updating a guide", type: :feature do
 
       visit edit_guide_path(guide)
 
-      expect(find("input.guide-slug")["disabled"]).to be_present
+      expect(find("input.guide-slug")["disabled"]).to eq("disabled")
     end
   end
 
@@ -224,7 +224,7 @@ RSpec.describe "Updating a guide", type: :feature do
       guide = create(:guide, slug: "/service-manual/test-topic/something", topic: topic)
 
       visit edit_guide_path(guide)
-      expect(find("input.guide-slug")["disabled"]).not_to be_present
+      expect(find("input.guide-slug")["disabled"]).to eq("false")
     end
   end
 
