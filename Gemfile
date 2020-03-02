@@ -35,8 +35,8 @@ group :development, :test do
   gem "pry"
   gem "pry-nav"
   gem "pry-remote"
-  gem "rubocop-govuk"
   gem "rspec-rails", "~> 3.9"
+  gem "rubocop-govuk"
   gem "simplecov", require: false
 end
 
