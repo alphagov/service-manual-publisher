@@ -31,12 +31,12 @@ end
 group :development, :test do
   gem "byebug"
   gem "fuubar"
-  gem "govuk-lint"
   gem "jasmine"
   gem "pry"
   gem "pry-nav"
   gem "pry-remote"
   gem "rspec-rails", "~> 3.9"
+  gem "rubocop-govuk"
   gem "simplecov", require: false
 end
 

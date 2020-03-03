@@ -1,5 +1,6 @@
-AllCops:
-  TargetRubyVersion: 2.6
+inherit_gem:
+  rubocop-govuk:
+    - config/default.yml
 
 Metrics/BlockLength:
   Exclude:
