@@ -11,6 +11,6 @@ class InsertMissedSlugMigrations < ActiveRecord::Migration
     "/service-manual/user-centred-design/resources/patterns/question-pages.html",
     "/service-manual/user-centred-design/resources/patterns/question-pages",
     "/service-manual/user-centred-design/resources/patterns/check-your-answers-pages.html",
-    "/service-manual/user-centred-design/resources/patterns/check-your-answers-pages"
-  ]
+    "/service-manual/user-centred-design/resources/patterns/check-your-answers-pages",
+  ].freeze
 end

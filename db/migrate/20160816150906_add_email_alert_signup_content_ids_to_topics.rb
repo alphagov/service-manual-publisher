@@ -1,7 +1,6 @@
 class AddEmailAlertSignupContentIdsToTopics < ActiveRecord::Migration
-
   class FakeTopic < ActiveRecord::Base
-    self.table_name = 'topics'
+    self.table_name = "topics"
   end
 
   def change
