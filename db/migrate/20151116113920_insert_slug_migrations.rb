@@ -211,5 +211,5 @@ class InsertSlugMigrations < ActiveRecord::Migration
     "/service-manual/content-designers/privacy-note-template-for-services.html",
     "/service-manual/content-designers.html",
     "/service-manual/technical-architects.html",
-  ]
+  ].freeze
 end

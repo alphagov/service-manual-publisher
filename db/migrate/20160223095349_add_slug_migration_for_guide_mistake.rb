@@ -9,5 +9,5 @@ class AddSlugMigrationForGuideMistake < ActiveRecord::Migration
 
   SLUGS = [
     "/service-manual/service-manual/digital-foundation-day-training",
-  ]
+  ].freeze
 end

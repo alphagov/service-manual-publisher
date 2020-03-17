@@ -77,5 +77,5 @@ class AddMissingSlugMigrations < ActiveRecord::Migration
     "/service-manual/service-managers/index",
     "/service-manual/content-designers/index",
     "/service-manual/technical-architects/index",
-  ]
+  ].freeze
 end

@@ -1,11 +1,11 @@
 class PopulateEditionVersions < ActiveRecord::Migration
   class FakeGuide < ActiveRecord::Base
-    self.table_name = 'guides'
-    has_many :editions, class_name: 'FakeEdition', foreign_key: 'guide_id'
+    self.table_name = "guides"
+    has_many :editions, class_name: "FakeEdition", foreign_key: "guide_id"
   end
 
   class FakeEdition < ActiveRecord::Base
-    self.table_name = 'editions'
+    self.table_name = "editions"
   end
 
   def change

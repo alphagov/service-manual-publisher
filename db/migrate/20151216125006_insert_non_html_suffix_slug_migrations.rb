@@ -211,5 +211,5 @@ class InsertNonHtmlSuffixSlugMigrations < ActiveRecord::Migration
     "/service-manual/content-designers/privacy-note-template-for-services",
     "/service-manual/content-designers",
     "/service-manual/technical-architects",
-  ]
+  ].freeze
 end
