@@ -4,7 +4,8 @@ class NotificationMailer < ApplicationMailer
   def comment_added(comment)
     @comment = comment
     @edition = comment.commentable
-    mail(
+    view_mail(
+      template_id,
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
       subject: "New comment on \"#{@edition.title}\"",
     )
@@ -14,7 +15,8 @@ class NotificationMailer < ApplicationMailer
     @guide = guide
     @edition = @guide.latest_edition
     @approval = @edition.approval
-    mail(
+    view_mail(
+      template_id,
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
       subject: "\"#{@edition.title}\" ready for publishing",
     )
@@ -24,7 +26,8 @@ class NotificationMailer < ApplicationMailer
     @guide = guide
     @edition = @guide.latest_edition
     @user = user
-    mail(
+    view_mail(
+      template_id,
       to: @edition.notification_subscribers.map { |recipient| user_email(recipient) },
       subject: "\"#{@edition.title}\" has been published",
     )
