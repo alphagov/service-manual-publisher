@@ -35,25 +35,13 @@ RSpec.describe NotificationMailer, type: :mailer do
         Much better.
       COMMENT
 
-      formatted_comment = <<-COMMENT.strip_heredoc
-        <p>This guide sure could use more cow bell.
-        <br />Cow bell makes everything better!</p>
-
-        <p>Much better.
-        </p>
-      COMMENT
-
       comment = edition.comments.create!(comment: comment_text, user: luke)
 
       email = NotificationMailer.comment_added(comment).deliver_now
 
-      # The HTML part of the email should include the comment wrapped in
-      # paragraph tags and using line breaks
-      expect(email.html_part.body.to_s).to include formatted_comment
-
-      # The text part of the email should include the comment with normal
-      # whitespace.
-      expect(email.text_part.body.to_s).to include comment_text
+      # The body of the email (as we send it to Notify) should be plain text,
+      # Notify handles the formatting from there.
+      expect(email.body.to_s).to include comment_text
     end
   end
 
