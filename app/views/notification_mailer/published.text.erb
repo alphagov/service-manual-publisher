@@ -1,9 +1,6 @@
-<p>Hello,</p>
+Hello,
 
-<p>
-  <b><%= @user.name %></b> has published "<%= @edition.title %>".
-</p>
+<%= @user.name %> has published "<%= @edition.title %>".
 
-<p>
-  <%= link_to "See published \"#{@edition.title}\"", guide_frontend_published_url(@guide) %>.
-</p>
+See published "<%= @edition.title %>" via <%= guide_frontend_published_url(@guide) %>.
+
