@@ -1,9 +1,13 @@
-Hello,
+<p>Hello,</p>
 
-<%= @comment.user.name %> left a comment on "<%= @edition.title %>" Service Manual Guide:
+<p>
+  <b><%= @comment.user.name %></b> left a comment on "<%= @edition.title %>" Service Manual Guide.
+</p>
 
+<blockquote>
+  <%= auto_link(simple_format(@comment.comment), :all) %>
+</blockquote>
 
-<%= @comment.comment %>
-
-
-To see the comment in context or to reply visit comments and history <%= guide_editions_url(@edition.guide, anchor: "comment-#{@comment.id}") %>.
+<p>
+  To see the comment in context or to reply visit <%= link_to "comments and history", guide_editions_url(@edition.guide, anchor: "comment-#{@comment.id}") %>.
+</p>

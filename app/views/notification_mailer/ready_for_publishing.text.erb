@@ -1,8 +1,13 @@
-Hello,
+<p>Hello,</p>
 
-<%= @approval.user.name %> approved "<%= @edition.title %>" Service Manual Guide for publishing.
+<p>
+  <b><%= @approval.user.name %></b> has approved "<%= @edition.title %>" Service Manual Guide for publishing.
+</p>
 
-In order for the changes to be visible publically the guide needs to be published.
+<p>
+  In order for the changes to be visible publically the guide needs to be published.
+</p>
 
-See "<%= @edition.title %>" in Service Manual Publisher on <%= edit_guide_url(@guide) %>
-
+<p>
+  <%= link_to "See \"#{@edition.title}\" in Service Manual Publisher", edit_guide_url(@guide) %>
+</p>
