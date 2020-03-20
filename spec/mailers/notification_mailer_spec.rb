@@ -49,11 +49,7 @@ RSpec.describe NotificationMailer, type: :mailer do
 
       # The HTML part of the email should include the comment wrapped in
       # paragraph tags and using line breaks
-      expect(email.html_part.body.to_s).to include formatted_comment
-
-      # The text part of the email should include the comment with normal
-      # whitespace.
-      expect(email.text_part.body.to_s).to include comment_text
+      expect(email.body.to_s).to include formatted_comment
     end
   end
 
