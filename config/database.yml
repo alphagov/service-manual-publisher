@@ -11,10 +11,12 @@ default: &default
 development:
   <<: *default
   database: service-manual-publisher_development
+  url: <%= ENV["DATABASE_URL"]%>
 
 test: &test
   <<: *default
   database: service-manual-publisher_test
+  url: <%= ENV["TEST_DATABASE_URL"]%>
 
 production:
   <<: *default
