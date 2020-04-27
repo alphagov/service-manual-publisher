@@ -43,7 +43,7 @@ end
 
 group :test do
   gem "database_cleaner"
-  gem "factory_bot_rails", "~> 5.1.1"
+  gem "factory_bot_rails", "~> 5.2.0"
   gem "govuk-content-schema-test-helpers"
   gem "govuk_test"
   gem "launchy"
