@@ -7,7 +7,6 @@ RSpec.describe TopicHelper, "#topic_view_url" do
   end
 end
 
-
 RSpec.describe TopicHelper, "#all_guides_container_for_select" do
   it "returns the container of pairs for all guides suitable for options_for_select" do
     agile_community = create(:guide_community,

@@ -145,7 +145,6 @@ RSpec.describe "filtering guides", type: :feature do
     end
   end
 
-
   def search_for(query)
     visit root_path
     within ".filters" do
