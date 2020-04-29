@@ -368,7 +368,6 @@ RSpec.describe Guide, ".by_type" do
   end
 end
 
-
 RSpec.describe Guide, ".live" do
   it "returns guides that are currently published" do
     create(:guide, :with_draft_edition)
