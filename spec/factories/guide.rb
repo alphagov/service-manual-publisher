@@ -41,28 +41,28 @@ FactoryBot.define do
     end
 
     trait :with_review_requested_edition do
-      states { %i(draft review_requested) }
+      states { %i[draft review_requested] }
     end
 
     trait :with_ready_edition do
-      states { %i(draft review_requested ready) }
+      states { %i[draft review_requested ready] }
     end
 
     trait :with_published_edition do
       transient do
-        states { %i(draft review_requested ready published) }
+        states { %i[draft review_requested ready published] }
       end
     end
 
     trait :with_previously_published_edition do
       transient do
-        states { %i(draft review_requested ready published draft) }
+        states { %i[draft review_requested ready published draft] }
       end
     end
 
     trait :has_been_unpublished do
       transient do
-        states { %i(draft review_requested ready published unpublished) }
+        states { %i[draft review_requested ready published unpublished] }
       end
     end
 

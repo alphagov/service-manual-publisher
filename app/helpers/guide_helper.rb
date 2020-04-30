@@ -1,10 +1,10 @@
 module GuideHelper
   STATE_CSS_CLASSES = {
-    "draft"            => "danger",
+    "draft" => "danger",
     "review_requested" => "warning",
-    "ready"            => "success",
-    "published"        => "info",
-    "unpublished"      => "default",
+    "ready" => "success",
+    "published" => "info",
+    "unpublished" => "default",
   }.freeze
 
   def state_label(guide)
@@ -24,7 +24,7 @@ module GuideHelper
       [type.underscore.humanize.titleize, type]
     end
 
-    [%w(All All), %w(Guide Guide)] + options
+    [%w[All All], %w[Guide Guide]] + options
   end
 
   def guide_community_options_for_select

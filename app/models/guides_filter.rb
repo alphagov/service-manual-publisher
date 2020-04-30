@@ -1,12 +1,12 @@
 class GuidesFilter
-  VALID_FILTERS = %w(
+  VALID_FILTERS = %w[
     author
     content_owner
     page
     page_type
     q
     state
-).freeze
+].freeze
 
   def initialize(scope)
     @scope = scope

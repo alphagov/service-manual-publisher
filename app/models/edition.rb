@@ -1,6 +1,6 @@
 class Edition < ApplicationRecord
-  STATES = %w(draft published review_requested ready unpublished).freeze
-  STATES_THAT_UPDATE_THE_FRONTEND = %w(published unpublished).freeze
+  STATES = %w[draft published review_requested ready unpublished].freeze
+  STATES_THAT_UPDATE_THE_FRONTEND = %w[published unpublished].freeze
 
   belongs_to :guide, touch: true
   belongs_to :author, class_name: "User"
@@ -34,7 +34,7 @@ class Edition < ApplicationRecord
     :body,
   )
 
-  %w{minor major}.each do |s|
+  %w[minor major].each do |s|
     define_method "#{s}?" do
       update_type == s
     end

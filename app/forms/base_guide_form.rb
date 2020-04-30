@@ -150,15 +150,13 @@ private
   end
 
   def catching_gds_api_exceptions
-    begin
-      ActiveRecord::Base.transaction do
-        yield
-      end
-    rescue GdsApi::HTTPErrorResponse => e
-      errors.add(:base, e.error_details["error"]["message"])
-
-      false
+    ActiveRecord::Base.transaction do
+      yield
     end
+  rescue GdsApi::HTTPErrorResponse => e
+    errors.add(:base, e.error_details["error"]["message"])
+
+    false
   end
 
   def save_draft_to_publishing_api

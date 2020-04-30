@@ -80,7 +80,7 @@ RSpec.describe Edition, type: :model do
         expect(edition.errors.full_messages_for(:state).size).to eq 0
       end
 
-      valid_states = %w(draft review_requested ready)
+      valid_states = %w[draft review_requested ready]
       valid_states.each do |valid_state|
         it "allows '#{valid_state}' state" do
           edition = build(:edition, state: valid_state)

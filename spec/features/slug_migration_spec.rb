@@ -98,8 +98,8 @@ RSpec.describe "Slug migration", type: :feature do
     )
     expect_any_instance_of(RedirectPublisher).to receive(:process).with(
       content_id: anything,
-      old_path:   slug_migration.slug,
-      new_path:   "/service-manual",
+      old_path: slug_migration.slug,
+      new_path: "/service-manual",
     )
 
     manage_first_migration
@@ -121,8 +121,8 @@ RSpec.describe "Slug migration", type: :feature do
 
     expect_any_instance_of(RedirectPublisher).to receive(:process).with(
       content_id: anything,
-      old_path:   slug_migration.slug,
-      new_path:   guide.slug,
+      old_path: slug_migration.slug,
+      new_path: guide.slug,
     )
 
     manage_first_migration
@@ -154,8 +154,8 @@ RSpec.describe "Slug migration", type: :feature do
     )
     expect_any_instance_of(RedirectPublisher).to receive(:process).with(
       content_id: anything,
-      old_path:   slug_migration.slug,
-      new_path:   "/service-manual/topic-1",
+      old_path: slug_migration.slug,
+      new_path: "/service-manual/topic-1",
     )
 
     manage_first_migration

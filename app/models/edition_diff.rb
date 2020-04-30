@@ -10,7 +10,7 @@ class EditionDiff
 
   def changes
     field_changes =
-      TRACKABLE_FIELDS.inject({}) do |memo, field|
+      TRACKABLE_FIELDS.each_with_object({}) do |field, memo|
         old_text = old_edition.public_send(field).to_s
         new_text = new_edition.public_send(field).to_s
         memo[field] = FieldChange.new(
@@ -18,7 +18,6 @@ class EditionDiff
           new_text: new_text,
           field: field,
         )
-        memo
       end
     field_changes.with_indifferent_access
   end
