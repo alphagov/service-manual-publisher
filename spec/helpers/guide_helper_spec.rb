@@ -41,8 +41,8 @@ RSpec.describe GuideHelper, "#guide_types_for_select", type: :helper do
 
     expect(helper.guide_types_for_select).to match_array(
       [
-        %w(All All),
-        %w(Guide Guide),
+        %w[All All],
+        %w[Guide Guide],
         ["Guide Community", "GuideCommunity"],
       ],
     )

@@ -28,21 +28,23 @@ class TopicPublisher
 private
 
   def save_catching_gds_api_errors
-    begin
-      ApplicationRecord.transaction do
-        if topic.save
-          yield
+    ApplicationRecord.transaction do
+      if topic.save
+        yield
 
-          Response.new(success: true)
-        else
-          Response.new(success: false)
-        end
+        Response.new(success: true)
+      else
+        Response.new(success: false)
       end
-    rescue GdsApi::HTTPErrorResponse => e
-      GovukError.notify(e)
-      error_message = e.error_details["error"]["message"] rescue "Could not communicate with upstream API"
-      Response.new(success: false, error: error_message)
     end
+  rescue GdsApi::HTTPErrorResponse => e
+    GovukError.notify(e)
+    error_message = begin
+                      e.error_details["error"]["message"]
+                    rescue StandardError
+                      "Could not communicate with upstream API"
+                    end
+    Response.new(success: false, error: error_message)
   end
 
   class Response

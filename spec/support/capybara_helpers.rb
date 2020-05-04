@@ -8,7 +8,7 @@ module CapybaraHelpers
   end
 
   def within_guide_index_row(title, &block)
-    within(:xpath, %{//a[.="#{title}"]/ancestor::tr}, &block)
+    within(:xpath, %(//a[.="#{title}"]/ancestor::tr), &block)
   end
 
   def within_topic_section(title, &block)

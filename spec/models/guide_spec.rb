@@ -10,7 +10,7 @@ RSpec.describe Guide do
       topic = create(:topic)
       topic_section = create(
         :topic_section,
-        "title"       => "Title",
+        "title" => "Title",
         "description" => "Description",
         topic: topic,
       )

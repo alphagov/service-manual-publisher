@@ -102,7 +102,7 @@ RSpec.describe EditionPolicy do
   end
 
   describe "#can_discard_draft?" do
-    undiscardable_states = %w(published unpublished)
+    undiscardable_states = %w[published unpublished]
 
     (Edition::STATES - undiscardable_states).each do |state|
       it "is true when the edition has a state of #{state}" do

@@ -22,6 +22,6 @@ private
   end
 
   def highest_position_in_list
-    TopicSectionGuide.within_topic_section(self.topic_section_id).maximum(:position) || 0
+    TopicSectionGuide.within_topic_section(topic_section_id).maximum(:position) || 0
   end
 end
