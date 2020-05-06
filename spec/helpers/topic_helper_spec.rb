@@ -17,7 +17,7 @@ RSpec.describe TopicHelper, "#all_guides_container_for_select" do
                    editions: [
                      build(:edition, title: "Agile", content_owner: agile_community, created_at: 1.week.ago),
                      build(:edition, title: "Agile old", content_owner: agile_community, created_at: 1.month.ago),
-                     ])
+                   ])
 
     expected = [
       ["Agile", agile.id],
