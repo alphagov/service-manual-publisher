@@ -76,7 +76,7 @@ RSpec.describe "Re-ordering guides", type: :feature, js: true do
 private
 
   def handle_for_guide(title)
-    find(:xpath, %{//ul[contains(@class, "js-guide-list")]/li[.//*[contains(text(), "%<title>s")]]//span[contains(@class, "js-guide-handle")]} % { title: title })
+    find(:xpath, format(%{//ul[contains(@class, "js-guide-list")]/li[.//*[contains(text(), "%<title>s")]]//span[contains(@class, "js-guide-handle")]}, title: title))
   end
 
   def drag_guide_above(dragged_guide_title, destination_guide_title)

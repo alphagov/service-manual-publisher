@@ -9,21 +9,21 @@ class Guide < ApplicationRecord
   has_many :editions, dependent: :destroy
   has_many :topic_section_guides, dependent: :destroy, autosave: true
 
-  scope :only_latest_edition, -> {
+  scope :only_latest_edition, lambda {
     joins(:editions)
       .where("editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)")
   }
 
-  scope :in_state, ->(state) {
+  scope :in_state, lambda { |state|
     only_latest_edition.where("editions.state = ?", state)
   }
-  scope :by_author, ->(author_id) {
+  scope :by_author, lambda { |author_id|
     only_latest_edition.where("editions.author_id = ?", author_id)
   }
-  scope :owned_by, ->(content_owner_id) {
+  scope :owned_by, lambda { |content_owner_id|
     only_latest_edition.where("editions.content_owner_id = ?", content_owner_id)
   }
-  scope :by_type, ->(type) {
+  scope :by_type, lambda { |type|
     if type.blank?
       where("type = '' OR type IS NULL")
     else

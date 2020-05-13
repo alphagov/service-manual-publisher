@@ -10,11 +10,11 @@ RSpec.describe GuidePresenter do
     end
 
     describe "common service manual draft payload" do
-      let(:payload) {
+      let(:payload) do
         guide = create(:guide)
         presenter = described_class.new(guide, guide.latest_edition)
         presenter.content_payload
-      }
+      end
 
       include_examples "common service manual draft payload"
     end

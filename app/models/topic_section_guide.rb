@@ -7,7 +7,7 @@ class TopicSectionGuide < ApplicationRecord
                           scope: :topic_section_id,
                           message: "can only be in one topic section"
 
-  scope :within_topic_section, ->(topic_section_id) {
+  scope :within_topic_section, lambda { |topic_section_id|
     where(topic_section_id: topic_section_id)
   }
 
