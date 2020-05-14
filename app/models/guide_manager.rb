@@ -50,9 +50,11 @@ class GuideManager
         edition.state = "unpublished"
         edition.save!
 
-        PUBLISHING_API.unpublish(guide.content_id,
-                                 type: "redirect",
-                                 alternative_path: redirect.new_path)
+        PUBLISHING_API.unpublish(
+          guide.content_id,
+          type: "redirect",
+          alternative_path: redirect.new_path,
+        )
 
         ManageResult.new(true, [])
       else

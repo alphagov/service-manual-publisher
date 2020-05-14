@@ -18,10 +18,13 @@ RSpec.describe Edition, type: :model do
       first_edition = build(:edition, author: joe, created_at: 1.week.ago)
       last_edition = build(:edition, author: liz, created_at: 1.day.ago)
 
-      create(:guide, editions: [
-        first_edition,
-        last_edition,
-      ])
+      create(
+        :guide,
+        editions: [
+          first_edition,
+          last_edition,
+        ],
+      )
 
       expect(first_edition.reload.notification_subscribers).to match_array [joe, liz]
     end

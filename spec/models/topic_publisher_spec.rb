@@ -56,9 +56,11 @@ RSpec.describe TopicPublisher, "#save_draft" do
   context "when the publishing api call fails" do
     let(:publishing_api_which_always_fails) do
       api = double(:publishing_api)
-      gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
-                                                        "https://some-service.gov.uk",
-                                                        "error" => { "message" => "trouble" })
+      gds_api_exception = GdsApi::HTTPErrorResponse.new(
+        422,
+        "https://some-service.gov.uk",
+        "error" => { "message" => "trouble" },
+      )
       allow(api).to receive(:put_content).and_raise(gds_api_exception)
       api
     end

@@ -3,7 +3,7 @@ module AuthenticationHelpers
     @stub_user ||= create_stub_user "Stub User"
   end
 
-  def create_stub_user name
+  def create_stub_user(name)
     User.create!(
       uid: SecureRandom.hex,
       email: "stub.user@example.com",

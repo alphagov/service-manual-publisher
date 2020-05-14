@@ -11,10 +11,11 @@ RSpec.describe TopicsController, type: :controller do
         stub_any_publishing_api_publish
         topic = create(:topic)
 
-        put :update, params: {
-          id: topic.id,
-          publish: true,
-        }
+        put :update,
+            params: {
+              id: topic.id,
+              publish: true,
+            }
 
         assert_publishing_api_publish(topic.content_id)
       end
