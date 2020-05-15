@@ -38,12 +38,16 @@ module CapybaraHelpers
   end
 
   def within_guide_history_edition(number, &block)
-    within(:xpath, "//div
+    within(
+      :xpath,
+      "//div
                         [contains(@class, 'panel')]
                         [div
                           [contains(@class, 'panel-heading')]
                           [contains(., 'Edition ##{number}')]
-                        ]", &block)
+                        ]",
+      &block
+    )
   end
 end
 

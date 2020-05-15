@@ -9,27 +9,32 @@ class Guide < ApplicationRecord
   has_many :editions, dependent: :destroy
   has_many :topic_section_guides, dependent: :destroy, autosave: true
 
-  scope :only_latest_edition, lambda {
-    joins(:editions)
-      .where("editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)")
-  }
+  scope :only_latest_edition,
+        lambda {
+          joins(:editions)
+            .where("editions.created_at = (SELECT MAX(editions.created_at) FROM editions WHERE editions.guide_id = guides.id)")
+        }
 
-  scope :in_state, lambda { |state|
-    only_latest_edition.where("editions.state = ?", state)
-  }
-  scope :by_author, lambda { |author_id|
-    only_latest_edition.where("editions.author_id = ?", author_id)
-  }
-  scope :owned_by, lambda { |content_owner_id|
-    only_latest_edition.where("editions.content_owner_id = ?", content_owner_id)
-  }
-  scope :by_type, lambda { |type|
-    if type.blank?
-      where("type = '' OR type IS NULL")
-    else
-      where(type: type)
-    end
-  }
+  scope :in_state,
+        lambda { |state|
+          only_latest_edition.where("editions.state = ?", state)
+        }
+  scope :by_author,
+        lambda { |author_id|
+          only_latest_edition.where("editions.author_id = ?", author_id)
+        }
+  scope :owned_by,
+        lambda { |content_owner_id|
+          only_latest_edition.where("editions.content_owner_id = ?", content_owner_id)
+        }
+  scope :by_type,
+        lambda { |type|
+          if type.blank?
+            where("type = '' OR type IS NULL")
+          else
+            where(type: type)
+          end
+        }
 
   delegate :title, to: :latest_edition
 
@@ -124,11 +129,11 @@ private
   end
 
   def slug_format
-    if !slug.to_s.match(/\A\/service-manual\/[a-z0-9\-\/]+$/i)
+    unless slug.to_s.match(/\A\/service-manual\/[a-z0-9\-\/]+$/i)
       errors.add(:slug, "can only contain letters, numbers and dashes")
     end
 
-    if !slug.to_s.match(/\A\/service-manual\/[a-z0-9-]+\/[a-z0-9-]+/)
+    unless slug.to_s.match(/\A\/service-manual\/[a-z0-9-]+\/[a-z0-9-]+/)
       errors.add(:slug, "must be present and start with '/service-manual/[topic]'")
     end
   end

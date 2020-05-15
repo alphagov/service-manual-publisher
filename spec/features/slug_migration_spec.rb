@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Slug migration", type: :feature do
-  def expect_table_to_match_migrations migrations
+  def expect_table_to_match_migrations(migrations)
     within ".slug-migrations .table" do
       table_data = page.all("tbody tr").map do |row|
         row.all("td").map(&:text)
@@ -39,7 +39,7 @@ RSpec.describe "Slug migration", type: :feature do
     end
   end
 
-  def create_slug_migration_without_redirect_to slug
+  def create_slug_migration_without_redirect_to(slug)
     slug_migration = SlugMigration.new(slug: slug, completed: false)
     slug_migration.save!(validate: false)
     slug_migration

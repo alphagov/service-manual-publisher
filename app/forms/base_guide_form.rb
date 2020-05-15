@@ -4,8 +4,17 @@ class BaseGuideForm
   include ActiveModel::Model
 
   attr_reader :guide, :edition, :user, :version
-  attr_accessor :author_id, :body, :change_note, :content_owner_id, :description,
-                :fingerprint_when_started_editing, :slug, :title, :title_slug, :type, :update_type
+  attr_accessor :author_id,
+                :body,
+                :change_note,
+                :content_owner_id,
+                :description,
+                :fingerprint_when_started_editing,
+                :slug,
+                :title,
+                :title_slug,
+                :type,
+                :update_type
 
   delegate :persisted?, to: :guide
 

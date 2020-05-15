@@ -203,9 +203,11 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
     manager = described_class.new(guide: guide, user: user)
     manager.unpublish_with_redirect("/service-manual/suitable-redirect")
 
-    assert_publishing_api_unpublish(guide.content_id,
-                                    type: "redirect",
-                                    alternative_path: "/service-manual/suitable-redirect")
+    assert_publishing_api_unpublish(
+      guide.content_id,
+      type: "redirect",
+      alternative_path: "/service-manual/suitable-redirect",
+    )
   end
 
   it "is successful" do

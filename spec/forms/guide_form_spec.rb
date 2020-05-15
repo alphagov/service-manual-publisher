@@ -153,12 +153,15 @@ RSpec.describe GuideForm, "#initialize" do
 
     it "clears the change note and summary" do
       title = "A guide to agile"
-      guide = create(:guide, editions: [
-        build(:edition, state: "draft", title: title, update_type: "major"),
-        build(:edition, state: "review_requested", title: title, update_type: "major"),
-        build(:edition, state: "ready", title: title, update_type: "major"),
-        build(:edition, state: "published", title: title, update_type: "major", change_note: "summary"),
-      ])
+      guide = create(
+        :guide,
+        editions: [
+          build(:edition, state: "draft", title: title, update_type: "major"),
+          build(:edition, state: "review_requested", title: title, update_type: "major"),
+          build(:edition, state: "ready", title: title, update_type: "major"),
+          build(:edition, state: "published", title: title, update_type: "major", change_note: "summary"),
+        ],
+      )
       edition = guide.editions.build(guide.latest_edition.dup.attributes)
       user = User.new
 
@@ -169,12 +172,15 @@ RSpec.describe GuideForm, "#initialize" do
 
     it "defaults the author_id to represent the current user again" do
       title = "A guide to agile"
-      guide = create(:guide, editions: [
-        build(:edition, state: "draft", title: title, update_type: "major"),
-        build(:edition, state: "review_requested", title: title, update_type: "major"),
-        build(:edition, state: "ready", title: title, update_type: "major"),
-        build(:edition, state: "published", title: title, update_type: "major", change_note: "summary"),
-      ])
+      guide = create(
+        :guide,
+        editions: [
+          build(:edition, state: "draft", title: title, update_type: "major"),
+          build(:edition, state: "review_requested", title: title, update_type: "major"),
+          build(:edition, state: "ready", title: title, update_type: "major"),
+          build(:edition, state: "published", title: title, update_type: "major", change_note: "summary"),
+        ],
+      )
       edition = guide.editions.build(guide.latest_edition.dup.attributes)
       user = User.new(id: 8)
 
@@ -326,9 +332,11 @@ RSpec.describe GuideForm, "#save" do
     end
 
     it "does not persist changes if communication with the publishing api fails" do
-      gds_api_exception = GdsApi::HTTPErrorResponse.new(422,
-                                                        "https://some-service.gov.uk",
-                                                        "error" => { "message" => "trouble" })
+      gds_api_exception = GdsApi::HTTPErrorResponse.new(
+        422,
+        "https://some-service.gov.uk",
+        "error" => { "message" => "trouble" },
+      )
       expect(PUBLISHING_API).to receive(:put_content).and_raise(gds_api_exception)
 
       user = create(:user)

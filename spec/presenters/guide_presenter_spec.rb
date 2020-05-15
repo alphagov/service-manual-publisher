@@ -20,13 +20,15 @@ RSpec.describe GuidePresenter do
     end
 
     it "exports all necessary metadata" do
-      guide = create(:guide,
-                     edition: {
-                       phase: "beta",
-                       update_type: "major",
-                       description: "Description",
-                     },
-                     slug: "/service-manual/test-topic/the-title")
+      guide = create(
+        :guide,
+        edition: {
+          phase: "beta",
+          update_type: "major",
+          description: "Description",
+        },
+        slug: "/service-manual/test-topic/the-title",
+      )
       presenter = described_class.new(guide, guide.latest_edition)
 
       expect(presenter.content_payload).to include(
@@ -40,11 +42,13 @@ RSpec.describe GuidePresenter do
     end
 
     it "includes the change history for the edition" do
-      guide = create(:guide,
-                     edition: {
-                       created_at: "2016-06-28T14:16:21Z".to_time,
-                       change_note: "Add a new guide 'The Title'",
-                     })
+      guide = create(
+        :guide,
+        edition: {
+          created_at: "2016-06-28T14:16:21Z".to_time,
+          change_note: "Add a new guide 'The Title'",
+        },
+      )
       presenter = described_class.new(guide, guide.latest_edition)
 
       expect(presenter.content_payload[:details]).to include(

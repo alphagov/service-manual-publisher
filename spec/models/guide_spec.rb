@@ -131,13 +131,19 @@ RSpec.describe Guide do
 
     describe "the topic section" do
       it "can be changed to a section in a different topic if the guide has never been published" do
-        original_topic_section = create(:topic_section,
-                                        topic: create(:topic, path: "/service-manual/original-topic"))
-        different_topic_section = create(:topic_section,
-                                         topic: create(:topic, path: "/service-manual/different-topic"))
+        original_topic_section = create(
+          :topic_section,
+          topic: create(:topic, path: "/service-manual/original-topic"),
+        )
+        different_topic_section = create(
+          :topic_section,
+          topic: create(:topic, path: "/service-manual/different-topic"),
+        )
 
-        guide = create(:guide,
-                       topic_section:  original_topic_section)
+        guide = create(
+          :guide,
+          topic_section: original_topic_section,
+        )
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         guide.save
 
@@ -147,13 +153,20 @@ RSpec.describe Guide do
       end
 
       it "cannot be changed to a section in a different topic if the guide has been published" do
-        original_topic_section = create(:topic_section,
-                                        topic: create(:topic, path: "/service-manual/original-topic"))
-        different_topic_section = create(:topic_section,
-                                         topic: create(:topic, path: "/service-manual/different-topic"))
+        original_topic_section = create(
+          :topic_section,
+          topic: create(:topic, path: "/service-manual/original-topic"),
+        )
+        different_topic_section = create(
+          :topic_section,
+          topic: create(:topic, path: "/service-manual/different-topic"),
+        )
 
-        guide = create(:guide, :with_published_edition,
-                       topic_section: original_topic_section)
+        guide = create(
+          :guide,
+          :with_published_edition,
+          topic_section: original_topic_section,
+        )
 
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
         expect(guide).not_to be_valid
@@ -185,10 +198,13 @@ RSpec.describe Guide do
     end
 
     it "does not return duplicates" do
-      create(:guide, editions: [
-        create(:edition, :draft, title: "dictionary"),
-        create(:edition, :published, title: "thesaurus"),
-      ])
+      create(
+        :guide,
+        editions: [
+          create(:edition, :draft, title: "dictionary"),
+          create(:edition, :published, title: "thesaurus"),
+        ],
+      )
 
       expect(described_class.search("dictionary").count).to eq 0
       expect(described_class.search("thesaurus").count).to eq 1
@@ -304,14 +320,20 @@ RSpec.describe Guide, ".by_author" do
     expected_author = create(:user)
     another_author = create(:user)
 
-    create(:guide, editions: [
-      build(:edition, author: expected_author),
-      build(:edition, author: another_author),
-    ])
-    expected_guide = create(:guide, editions: [
-      build(:edition, author: another_author),
-      build(:edition, author: expected_author),
-    ])
+    create(
+      :guide,
+      editions: [
+        build(:edition, author: expected_author),
+        build(:edition, author: another_author),
+      ],
+    )
+    expected_guide = create(
+      :guide,
+      editions: [
+        build(:edition, author: another_author),
+        build(:edition, author: expected_author),
+      ],
+    )
 
     expect(Guide.where(type: nil).by_author(expected_author.id).to_a).to eq [
       expected_guide,

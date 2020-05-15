@@ -5,7 +5,8 @@ class UploadsController < ApplicationController
         file = params[:file]
         unless file.content_type.start_with?("image")
           render body: "The file that you're trying to upload does not seem "\
-            "to be an image", status: :unprocessable_entity
+            "to be an image",
+                 status: :unprocessable_entity
           return
         end
 
