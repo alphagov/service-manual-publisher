@@ -4,9 +4,7 @@ class GuidePresenter
     @edition = edition
   end
 
-  def content_id
-    guide.content_id
-  end
+  delegate :content_id, to: :guide
 
   def content_payload
     {

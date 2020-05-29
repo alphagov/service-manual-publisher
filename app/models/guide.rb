@@ -82,8 +82,7 @@ class Guide < ApplicationRecord
   def topic
     Topic.includes(topic_sections: :guides)
       .references(:guides)
-      .where("guides.id = ?", id)
-      .first
+      .find_by("guides.id = ?", id)
   end
 
   def included_in_a_topic?
@@ -100,7 +99,7 @@ class Guide < ApplicationRecord
 
   def editions_since_last_published
     latest_published_edition = editions.published.last
-    return [] unless latest_published_edition.present?
+    return [] if latest_published_edition.blank?
 
     editions
       .where("created_at > ?", latest_published_edition.created_at)

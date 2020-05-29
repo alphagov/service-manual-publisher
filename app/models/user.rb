@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include GDS::SSO::User
 
-  validates_presence_of :email, on: :create, message: "can't be blank"
+  validates :email, presence: { on: :create, message: "can't be blank" }
 
   has_many :editions, foreign_key: :author_id
 

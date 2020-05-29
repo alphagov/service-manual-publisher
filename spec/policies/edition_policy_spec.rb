@@ -81,7 +81,7 @@ RSpec.describe EditionPolicy do
 
     it "is false if not the latest edition" do
       old_edition = build(:edition, state: "ready", created_at: 2.days.ago, author: author_a)
-      new_edition = build(:edition, state: "ready", created_at: 1.days.ago, author: author_a)
+      new_edition = build(:edition, state: "ready", created_at: 1.day.ago, author: author_a)
       create(:guide, editions: [old_edition, new_edition])
 
       expect(

@@ -270,7 +270,7 @@ RSpec.describe GuideManager, "#discard_draft" do
       manager.discard_draft
 
       guide_id = guide.id
-      expect(Guide.find_by_id(guide_id)).to eq(nil)
+      expect(Guide.find_by(id: guide_id)).to eq(nil)
       expect(Edition.where(guide_id: guide_id).count).to eq(0)
     end
 
@@ -337,7 +337,7 @@ RSpec.describe GuideManager, "#discard_draft" do
       manager = described_class.new(guide: guide, user: user)
       manager.discard_draft
 
-      expect(Guide.find_by_id(guide.id)).to be_present
+      expect(Guide.find_by(id: guide.id)).to be_present
     end
   end
 end

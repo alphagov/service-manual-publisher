@@ -83,7 +83,7 @@ RSpec.describe EditionThread, "#events" do
     it "returns them chronologically" do
       most_recent_edition = create(:edition, version: 1)
       most_recent_edition.comments.create!(comment: "My words are gold", created_at: 1.day.ago)
-      most_recent_edition.comments.create!(comment: "Are you sure?", created_at: 2.day.ago)
+      most_recent_edition.comments.create!(comment: "Are you sure?", created_at: 2.days.ago)
 
       events = described_class.new(most_recent_edition).events
 
