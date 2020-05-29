@@ -5,9 +5,3 @@ inherit_gem:
 inherit_mode:
   merge:
     - Exclude
-
-Metrics/BlockLength:
-  Exclude:
-    - 'config/environments/*.rb'
-    - 'spec/**/*.rb'
-    - 'lib/tasks/**/*.rake'
