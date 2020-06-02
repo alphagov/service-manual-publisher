@@ -26,8 +26,6 @@ RSpec.describe TopicPublisher, "#save_draft" do
 
     expect(publishing_api).to receive(:put_content)
       .with(topic.content_id, a_hash_including(base_path: topic.path))
-    expect(publishing_api).to receive(:put_content)
-      .with(topic.email_alert_signup_content_id, a_kind_of(Hash))
     expect(publishing_api).to receive(:patch_links)
       .with(topic.content_id, a_kind_of(Hash))
 
@@ -93,12 +91,8 @@ RSpec.describe TopicPublisher, "#publish" do
     publishing_api = double(:publishing_api)
     topic = create(:topic)
 
-    # expect to publish both the topic and the email alert signup for the topic
     expect(publishing_api).to receive(:publish)
       .once.with(topic.content_id)
-
-    expect(publishing_api).to receive(:publish)
-      .once.with(topic.email_alert_signup_content_id)
 
     described_class.new(topic: topic, publishing_api: publishing_api)
       .publish
