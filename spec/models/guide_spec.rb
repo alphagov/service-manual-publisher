@@ -225,10 +225,10 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
     topic_section = create(:topic_section)
     guide = Guide.new(slug: "/service-manual/topic-name/slug")
     guide.editions << build(:edition, version: 1, created_at: 2.days.ago)
-    first_version_second_edition = build(:edition, version: 1, created_at: 1.days.ago)
+    first_version_second_edition = build(:edition, version: 1, created_at: 1.day.ago)
     guide.editions << first_version_second_edition
     guide.editions << build(:edition, version: 2, created_at: 2.days.ago)
-    second_version_second_edition = build(:edition, version: 2, created_at: 1.days.ago)
+    second_version_second_edition = build(:edition, version: 2, created_at: 1.day.ago)
     guide.editions << second_version_second_edition
     guide.topic_section_guides.build(topic_section: topic_section)
     guide.save!

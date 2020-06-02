@@ -3,9 +3,9 @@ class TopicSectionGuide < ApplicationRecord
   belongs_to :guide
   before_create :default_position_to_next_in_list
 
-  validates_uniqueness_of :guide_id,
-                          scope: :topic_section_id,
-                          message: "can only be in one topic section"
+  validates :guide_id,
+            uniqueness: { scope: :topic_section_id,
+                          message: "can only be in one topic section" }
 
   scope :within_topic_section,
         lambda { |topic_section_id|

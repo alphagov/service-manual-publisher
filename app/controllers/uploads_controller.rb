@@ -12,7 +12,7 @@ class UploadsController < ApplicationController
 
         begin
           response = ASSET_API.create_asset(file: file)
-          render body: response["file_url"], status: 201
+          render body: response["file_url"], status: :created
         rescue GdsApi::BaseError => e
           render body: e.message, status: :unprocessable_entity
         end

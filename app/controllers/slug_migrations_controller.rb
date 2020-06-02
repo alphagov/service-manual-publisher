@@ -21,7 +21,7 @@ class SlugMigrationsController < ApplicationController
     slug_migration_parameters[:completed] = true
 
     ActiveRecord::Base.transaction do
-      if @slug_migration.update_attributes(slug_migration_parameters)
+      if @slug_migration.update(slug_migration_parameters)
         RedirectPublisher.new.process(
           content_id: @slug_migration.content_id,
           old_path: @slug_migration.slug,

@@ -24,7 +24,7 @@ RSpec.describe "Creating a guide", type: :feature do
       expect(page).to have_content("saved")
     end
 
-    guide = Guide.find_by_slug("/service-manual/the/path")
+    guide = Guide.find_by(slug: "/service-manual/the/path")
     edition = guide.latest_edition
     content_id = guide.content_id
     expect(content_id).to be_present
@@ -51,7 +51,7 @@ RSpec.describe "Creating a guide", type: :feature do
       expect(page).to have_content("saved")
     end
 
-    guide = Guide.find_by_slug("/service-manual/the/path")
+    guide = Guide.find_by(slug: "/service-manual/the/path")
     edition = guide.latest_edition
     expect(guide.content_id).to eq content_id
     expect(edition.title).to eq "Second Edition Title"
@@ -111,7 +111,7 @@ RSpec.describe "Creating a guide", type: :feature do
       expect(page).to have_content("published")
     end
 
-    guide = Guide.find_by_slug("/service-manual/the/path")
+    guide = Guide.find_by(slug: "/service-manual/the/path")
     edition = guide.latest_edition
     expect(edition.title).to eq "First Edition Title"
     expect(edition.draft?).to eq false

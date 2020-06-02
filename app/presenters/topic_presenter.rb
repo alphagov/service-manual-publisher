@@ -3,9 +3,7 @@ class TopicPresenter
     @topic = topic
   end
 
-  def content_id
-    topic.content_id
-  end
+  delegate :content_id, to: :topic
 
   def content_payload
     {
