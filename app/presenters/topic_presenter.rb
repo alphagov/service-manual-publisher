@@ -30,7 +30,6 @@ class TopicPresenter
   def links_payload
     {
       links: {
-        email_alert_signup: [topic.email_alert_signup_content_id],
         linked_items: topic.guides.map(&:content_id),
         content_owners: content_owner_content_ids,
         organisations: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],

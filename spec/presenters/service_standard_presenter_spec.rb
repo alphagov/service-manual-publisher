@@ -42,16 +42,6 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
 end
 
 RSpec.describe ServiceStandardPresenter, "#links_payload" do
-  it "includes a link to the email alert signup for the service standard" do
-    presented_service_standard = described_class.new
-
-    links = presented_service_standard.links_payload[:links]
-
-    expect(links).to include(
-      email_alert_signup: %w[4a94ae54-5a47-40c1-b9aa-ff47dcaace85],
-    )
-  end
-
   it "includes the GDS Organisation ID as the primary publishing organisation" do
     presented_service_standard = described_class.new
 

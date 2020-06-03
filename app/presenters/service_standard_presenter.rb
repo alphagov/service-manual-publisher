@@ -29,9 +29,6 @@ class ServiceStandardPresenter
   def links_payload
     {
       links: {
-        email_alert_signup: [
-          ServiceStandardEmailAlertSignupPresenter::SERVICE_STANDARD_EMAIL_ALERT_SIGNUP_CONTENT_ID,
-        ],
         primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
       },
     }

@@ -25,9 +25,6 @@ RSpec.describe "Topics", type: :feature do
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
-    expect(api_double).to receive(:put_content)
-      .once
-      .with(an_instance_of(String), be_valid_against_schema("email_alert_signup"))
     create(:guide, editions: [build(:edition, title: "Guide 1")])
     create(:guide, editions: [build(:edition, title: "Guide 2")])
 
@@ -71,9 +68,6 @@ RSpec.describe "Topics", type: :feature do
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
-    expect(api_double).to receive(:put_content)
-      .once
-      .with(an_instance_of(String), be_valid_against_schema("email_alert_signup"))
     create(:topic, title: "Agile Delivery")
 
     visit root_path
@@ -94,12 +88,8 @@ RSpec.describe "Topics", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     topic = create(:topic, :with_some_guides, title: "Technology")
 
-    # expect to publish both the topic and the email alert signup for the topic
     expect(api_double).to receive(:publish)
       .once.with(topic.content_id)
-
-    expect(api_double).to receive(:publish)
-      .once.with(topic.email_alert_signup_content_id)
 
     visit root_path
     click_link "Manage Topics"
