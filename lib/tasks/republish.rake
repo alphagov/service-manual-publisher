@@ -30,4 +30,10 @@ namespace :republish do
     presenter = ServiceStandardPresenter.new
     Republisher.new.call(presenter, update_type: ENV["UPDATE_TYPE"])
   end
+
+  desc "republish service toolkit"
+  task service_toolkit: :environment do
+    presenter = ServiceToolkitPresenter.new
+    Republisher.new.call(presenter, update_type: ENV["UPDATE_TYPE"])
+  end
 end

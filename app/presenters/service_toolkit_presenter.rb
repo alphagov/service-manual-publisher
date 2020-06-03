@@ -24,6 +24,10 @@ class ServiceToolkitPresenter
     }
   end
 
+  def links_payload
+    { links: {} }
+  end
+
   def collections
     [
       {
