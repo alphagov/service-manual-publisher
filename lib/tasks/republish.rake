@@ -24,4 +24,10 @@ namespace :republish do
     presenter = HomepagePresenter.new
     Republisher.new.call(presenter, update_type: ENV["UPDATE_TYPE"])
   end
+
+  desc "republish service standard"
+  task service_standard: :environment do
+    presenter = ServiceStandardPresenter.new
+    Republisher.new.call(presenter, update_type: ENV["UPDATE_TYPE"])
+  end
 end

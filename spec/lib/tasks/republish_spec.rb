@@ -63,4 +63,28 @@ RSpec.describe "republish" do
       end
     end
   end
+
+  describe "service_standard" do
+    before do
+      Rake::Task["republish:service_standard"].reenable
+    end
+
+    it "republishes the service standard" do
+      publish_request = stub_any_publishing_api_publish
+      Rake::Task["republish:service_standard"].invoke
+      expect(publish_request).to have_been_requested
+    end
+
+    it "supports a custom update type" do
+      publish_request = stub_publishing_api_publish(
+        ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID,
+        update_type: "minor",
+      )
+
+      ClimateControl.modify(UPDATE_TYPE: "minor") do
+        Rake::Task["republish:service_standard"].invoke
+        expect(publish_request).to have_been_requested
+      end
+    end
+  end
 end
