@@ -1,5 +1,7 @@
 class Republisher
-  def call(presenter)
+  def call(presenter, update_type: nil)
+    update_type ||= "republish"
+
     GdsApi.publishing_api.put_content(
       presenter.content_id,
       presenter.content_payload,
@@ -12,7 +14,7 @@ class Republisher
 
     GdsApi.publishing_api.publish(
       presenter.content_id,
-      "republish",
+      update_type,
     )
   end
 end

@@ -1,14 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "republish" do
-  let!(:publish_request) { stub_any_publishing_api_publish }
-
   before do
     stub_any_publishing_api_put_content
     stub_any_publishing_api_patch_links
   end
 
   describe "guides" do
+    let!(:publish_request) { stub_any_publishing_api_publish }
+
     before do
       Rake::Task["republish:guides"].reenable
     end
@@ -27,6 +27,8 @@ RSpec.describe "republish" do
   end
 
   describe "topics" do
+    let!(:publish_request) { stub_any_publishing_api_publish }
+
     before do
       Rake::Task["republish:topics"].reenable
     end
@@ -44,8 +46,21 @@ RSpec.describe "republish" do
     end
 
     it "republishes the home page" do
-      Rake::Task['republish:homepage'].invoke
+      publish_request = stub_any_publishing_api_publish
+      Rake::Task["republish:homepage"].invoke
       expect(publish_request).to have_been_requested
+    end
+
+    it "supports a custom update type" do
+      publish_request = stub_publishing_api_publish(
+        HomepagePresenter::HOMEPAGE_CONTENT_ID,
+        update_type: "minor",
+      )
+
+      ClimateControl.modify(UPDATE_TYPE: "minor") do
+        Rake::Task["republish:homepage"].invoke
+        expect(publish_request).to have_been_requested
+      end
     end
   end
 end

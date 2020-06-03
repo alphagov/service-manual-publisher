@@ -25,5 +25,13 @@ RSpec.describe Republisher do
       expect(patch_links_request).to have_been_requested
       expect(publish_request).to have_been_requested
     end
+
+    it "supports changing the update type" do
+      stub_any_publishing_api_put_content
+      stub_any_publishing_api_patch_links
+      publish_request = stub_publishing_api_publish("content_id", update_type: "minor")
+      described_class.new.call(presenter, update_type: "minor")
+      expect(publish_request).to have_been_requested
+    end
   end
 end

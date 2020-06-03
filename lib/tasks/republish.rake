@@ -22,6 +22,6 @@ namespace :republish do
   desc "republish homepage"
   task homepage: :environment do
     presenter = HomepagePresenter.new
-    Republisher.new.call(presenter)
+    Republisher.new.call(presenter, update_type: ENV["UPDATE_TYPE"])
   end
 end

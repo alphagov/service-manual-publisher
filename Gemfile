@@ -42,6 +42,7 @@ group :development, :test do
 end
 
 group :test do
+  gem "climate_control"
   gem "database_cleaner"
   gem "factory_bot_rails", "~> 5.2.0"
   gem "govuk-content-schema-test-helpers"
