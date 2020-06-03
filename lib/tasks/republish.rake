@@ -21,11 +21,7 @@ namespace :republish do
 
   desc "republish homepage"
   task homepage: :environment do
-    homepage = HomepagePresenter.new
-
-    # Save a draft of the homepage
-    puts "Republishing homepage..."
-    PUBLISHING_API.put_content(homepage.content_id, homepage.content_payload)
-    PUBLISHING_API.publish(homepage.content_id, "minor")
+    presenter = HomepagePresenter.new
+    Republisher.new.call(presenter)
   end
 end

@@ -37,4 +37,15 @@ RSpec.describe "republish" do
       expect(publish_request).to have_been_requested
     end
   end
+
+  describe "homepage" do
+    before do
+      Rake::Task["republish:homepage"].reenable
+    end
+
+    it "republishes the home page" do
+      Rake::Task['republish:homepage'].invoke
+      expect(publish_request).to have_been_requested
+    end
+  end
 end
