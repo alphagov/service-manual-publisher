@@ -30,6 +30,7 @@ class ServiceStandardPresenter
     {
       links: {
         primary_publishing_organisation: [ServiceManualPublisher::GDS_ORGANISATION_CONTENT_ID],
+        email_alert_signup: [],
       },
     }
   end
