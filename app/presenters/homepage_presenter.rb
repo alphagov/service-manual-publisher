@@ -21,4 +21,8 @@ class HomepagePresenter
       locale: "en",
     }
   end
+
+  def links_payload
+    { links: {} }
+  end
 end
