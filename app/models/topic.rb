@@ -2,7 +2,7 @@ class Topic < ApplicationRecord
   include ContentIdentifiable
   validate :path_can_be_set_once
   validate :path_format
-  validates :path, uniqueness: true
+  validates :path, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :title, presence: true
   validates :email_alert_signup_content_id, presence: true, uniqueness: true
 
