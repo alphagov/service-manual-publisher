@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_04_153359) do
+ActiveRecord::Schema.define(version: 2020_06_04_155614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,10 +114,8 @@ ActiveRecord::Schema.define(version: 2020_06_04_153359) do
     t.string "description", null: false
     t.string "content_id"
     t.boolean "visually_collapsed", default: false
-    t.string "email_alert_signup_content_id"
     t.boolean "include_on_homepage", default: true
     t.index ["content_id"], name: "index_topics_on_content_id"
-    t.index ["email_alert_signup_content_id"], name: "index_topics_on_email_alert_signup_content_id", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
