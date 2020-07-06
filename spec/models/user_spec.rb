@@ -4,6 +4,8 @@ require "gds-sso/lint/user_spec"
 RSpec.describe User, type: :model do
   it_behaves_like "a gds-sso user class"
 
+  before { subject.update(email: "user@example.com") }
+
   describe "#authors" do
     it "lists users who are authors" do
       author1 = create(:user, name: "Author 1")

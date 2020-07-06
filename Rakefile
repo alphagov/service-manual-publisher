@@ -15,6 +15,8 @@ task default: %i[spec jasmine:ci lint]
 # a db/structure.sql file is inconsistent with our other repos, as
 # well as being much less readable. Instead, we primarily use the
 # db/schema.rb, and load custom functionality from db/structure.sql.
-Rake::Task["db:schema:load"].enhance do
-  Rake::Task["db:structure:load"].invoke
+%w[db:schema:load db:test:prepare].each do |task|
+  Rake::Task[task].enhance do
+    Rake::Task["db:structure:load"].invoke
+  end
 end

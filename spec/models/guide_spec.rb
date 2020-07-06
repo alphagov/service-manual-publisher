@@ -26,7 +26,7 @@ RSpec.describe Guide do
 
     describe "#topic" do
       it "returns the topic" do
-        expect(guide.topic).to eq topic
+        expect(guide.reload.topic).to eq topic
       end
     end
   end
