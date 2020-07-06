@@ -432,14 +432,14 @@ DEPENDENCIES
   climate_control
   database_cleaner
   diffy
-  factory_bot_rails (~> 6.1.0)
+  factory_bot_rails
   fuubar
   gds-api-adapters
   gds-sso
   govspeak
   govuk-content-schema-test-helpers
   govuk_admin_template
-  govuk_app_config (~> 2.2.1)
+  govuk_app_config
   govuk_test
   highline
   jasmine
@@ -455,7 +455,7 @@ DEPENDENCIES
   rails-controller-testing
   redcarpet
   rinku
-  rspec-rails (~> 4.0)
+  rspec-rails
   rubocop-govuk
   sass-rails
   select2-rails

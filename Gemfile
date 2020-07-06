@@ -15,7 +15,7 @@ gem "diffy"
 gem "gds-api-adapters"
 gem "gds-sso"
 gem "govspeak"
-gem "govuk_app_config", "~> 2.2.1"
+gem "govuk_app_config"
 gem "highline"
 gem "kaminari"
 gem "mail-notify"
@@ -36,7 +36,7 @@ group :development, :test do
   gem "pry"
   gem "pry-nav"
   gem "pry-remote"
-  gem "rspec-rails", "~> 4.0"
+  gem "rspec-rails"
   gem "rubocop-govuk"
   gem "simplecov", require: false
 end
@@ -44,7 +44,7 @@ end
 group :test do
   gem "climate_control"
   gem "database_cleaner"
-  gem "factory_bot_rails", "~> 6.1.0"
+  gem "factory_bot_rails"
   gem "govuk-content-schema-test-helpers"
   gem "govuk_test"
   gem "launchy"
