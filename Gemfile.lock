@@ -467,7 +467,7 @@ DEPENDENCIES
   pry
   pry-nav
   pry-remote
-  rails (~> 6.0.3, >= 6.0.3.2)
+  rails (= 6.0.3.2)
   rails-controller-testing
   redcarpet
   rinku
