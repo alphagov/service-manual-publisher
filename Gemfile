@@ -44,7 +44,7 @@ end
 group :test do
   gem "climate_control"
   gem "database_cleaner"
-  gem "factory_bot_rails", "~> 6.0.0"
+  gem "factory_bot_rails", "~> 6.1.0"
   gem "govuk-content-schema-test-helpers"
   gem "govuk_test"
   gem "launchy"
