@@ -9,7 +9,8 @@ RSpec.describe TopicSectionGuide, "validations" do
     TopicSectionGuide.create!(topic_section: topic_section, guide: guide)
 
     topic_section_guide = TopicSectionGuide.new(topic_section: topic_section, guide: guide)
-    topic_section_guide.save
+
+    topic_section_guide.validate
 
     expect(
       topic_section_guide.errors.full_messages,
