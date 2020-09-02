@@ -18,7 +18,7 @@ class GuidesController < ApplicationController
   def create
     guide = Guide.new(type: guide_form_params[:type])
 
-    save(guide)
+    save_form(guide)
   end
 
   def edit
@@ -43,7 +43,7 @@ class GuidesController < ApplicationController
     elsif params[:discard].present?
       manage(guide, :discard_draft, message: "Draft has been discarded", redirect: root_path)
     else
-      save(guide)
+      save_form(guide)
     end
   end
 
@@ -98,7 +98,7 @@ private
     end
   end
 
-  def save(guide)
+  def save_form(guide)
     failure_template = guide.persisted? ? "edit" : "new"
 
     @guide_form = GuideForm.build(
@@ -111,7 +111,7 @@ private
     if guide_has_changed_since_editing?(guide)
       flash.now[:error] = guide_has_changed_message
       render "edit"
-    elsif @guide_form.save
+    elsif @guide_form.save_form
       redirect_to edit_guide_path(@guide_form), notice: "Guide has been saved"
     else
       render failure_template

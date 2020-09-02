@@ -84,7 +84,7 @@ RSpec.describe "Guide history", type: :feature do
   it "shows a header with pertinent edition information" do
     guide = create(:guide, :with_published_edition)
     first_published_edition = guide.editions.find_by(state: "published")
-    first_published_edition.update(updated_at: "2004-11-24".to_time)
+    first_published_edition.update!(updated_at: "2004-11-24".to_time)
 
     second_published_edition = build(:edition, version: 2, update_type: "minor", state: "published", updated_at: "2004-11-25".to_time)
     guide.editions << second_published_edition

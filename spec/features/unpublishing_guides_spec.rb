@@ -81,7 +81,7 @@ RSpec.describe "unpublishing guides", type: :feature do
         # `editions.created_by_id` field is NULL
         latest_edition = guide.latest_edition
         latest_edition.created_by_id = nil
-        latest_edition.save(validate: false)
+        latest_edition.save!(validate: false)
 
         visit unpublish_guide_path(guide)
         select topic.path, from: "Redirect to"

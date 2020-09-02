@@ -233,7 +233,7 @@ RSpec.describe GuideForm, "#save" do
         title: "A fair tale",
         topic_section_id: topic_section.id,
       )
-      guide_form.save
+      guide_form.save_form
 
       expect(guide).to be_persisted
       expect(edition).to be_persisted
@@ -248,7 +248,7 @@ RSpec.describe GuideForm, "#save" do
       edition = guide.editions.build
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.save
+      guide_form.save_form
 
       expect(edition.state).to eq("draft")
     end
@@ -258,7 +258,7 @@ RSpec.describe GuideForm, "#save" do
       edition = guide.editions.build
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.save
+      guide_form.save_form
 
       expect(edition.version).to eq(1)
     end
@@ -269,7 +269,7 @@ RSpec.describe GuideForm, "#save" do
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(author_id: 5)
-      guide_form.save
+      guide_form.save_form
 
       expect(edition.author_id).to eq(5)
     end
@@ -280,7 +280,8 @@ RSpec.describe GuideForm, "#save" do
       user = create(:user)
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(author_id: 5)
-      guide_form.save
+
+      guide_form.save_form
 
       expect(edition.created_by).to eq(user)
     end
@@ -290,7 +291,8 @@ RSpec.describe GuideForm, "#save" do
       edition = guide.editions.build
       user = User.new
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
-      guide_form.save
+
+      guide_form.save_form
 
       expect(edition.change_note).to eq("Guidance first published")
     end
@@ -303,7 +305,7 @@ RSpec.describe GuideForm, "#save" do
       guide_form.assign_attributes(
         change_note: "X happened",
       )
-      guide_form.save
+      guide_form.save_form
 
       expect(edition.change_note).to eq("X happened")
     end
@@ -323,7 +325,7 @@ RSpec.describe GuideForm, "#save" do
       guide_form = described_class.new(guide: guide, edition: edition, user: user)
       guide_form.assign_attributes(topic_section_id: topic_section_id)
       expect(
-        guide_form.save,
+        guide_form.save_form,
       ).to eq(true)
 
       expect(
@@ -350,7 +352,7 @@ RSpec.describe GuideForm, "#save" do
       )
       guide_form.assign_attributes(body: "Nice new copy")
 
-      expect(guide_form.save).to eq(false)
+      expect(guide_form.save_form).to eq(false)
       expect(guide.reload.latest_edition.body).to eq(original_body)
       expect(guide_form.errors.full_messages).to include("trouble")
     end
@@ -362,7 +364,8 @@ RSpec.describe GuideForm, "validations" do
     guide = Guide.new
     edition = guide.editions.build
     guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
-    guide_form.save
+
+    guide_form.save_form
 
     expect(
       guide_form.errors.full_messages,

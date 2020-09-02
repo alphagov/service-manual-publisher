@@ -5,7 +5,7 @@ RSpec.describe PointForm, "validations" do
     guide = Point.new
     edition = guide.editions.build
     guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
-    guide_form.save
+    guide_form.save_form
 
     expect(guide_form.errors.full_messages).to_not include("Topic section can't be blank")
   end
@@ -37,7 +37,7 @@ RSpec.describe PointForm, "#save" do
       slug: "/service-manual/topic/a-fair-tale",
       title: "A fair tale",
     )
-    guide_form.save
+    guide_form.save_form
 
     expect(point).to be_persisted
     expect(edition).to be_persisted
@@ -52,7 +52,7 @@ RSpec.describe PointForm, "validations" do
 
     edition = point.editions.build
     guide_form = described_class.new(guide: point, edition: edition, user: User.new)
-    guide_form.save
+    guide_form.save_form
 
     expect(
       guide_form.errors.full_messages,

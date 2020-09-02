@@ -54,7 +54,7 @@ class BaseGuideForm
     end
   end
 
-  def save
+  def save_form
     guide.slug = slug
     edition.author_id = author_id
     edition.body = body

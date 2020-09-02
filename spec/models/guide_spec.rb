@@ -26,7 +26,7 @@ RSpec.describe Guide do
 
     describe "#topic" do
       it "returns the topic" do
-        expect(guide.topic).to eq topic
+        expect(guide.reload.topic).to eq topic
       end
     end
   end
@@ -145,7 +145,7 @@ RSpec.describe Guide do
           topic_section: original_topic_section,
         )
         guide.topic_section_guides[0].topic_section_id = different_topic_section.id
-        guide.save
+        guide.save!
 
         expect(guide).to be_valid
         expect(original_topic_section.reload.guides).not_to include guide
@@ -428,14 +428,14 @@ end
 RSpec.describe Guide, ".destroy" do
   it "destroys any associated editions" do
     guide = create(:guide, :with_draft_edition)
-    guide.destroy
+    guide.destroy!
 
     expect(Edition.where(guide_id: guide.id).count).to eq 0
   end
 
   it "destroys any associations with topic sections" do
     guide = create(:guide)
-    guide.destroy
+    guide.destroy!
 
     expect(TopicSectionGuide.where(guide_id: guide.id).count).to eq 0
   end
