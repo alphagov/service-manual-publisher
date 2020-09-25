@@ -183,6 +183,9 @@ GEM
       rack (>= 1.2.1)
       rake
     jasmine-core (3.6.0)
+    jasmine_selenium_runner (3.0.0)
+      jasmine (~> 3.0)
+      selenium-webdriver (~> 3.8)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -458,6 +461,7 @@ DEPENDENCIES
   govuk_test
   highline
   jasmine
+  jasmine_selenium_runner
   kaminari
   launchy
   mail-notify
