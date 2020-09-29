@@ -33,7 +33,9 @@ end
 group :development, :test do
   gem "byebug"
   gem "fuubar"
+  gem "govuk_test"
   gem "jasmine"
+  gem "jasmine_selenium_runner"
   gem "pry"
   gem "pry-nav"
   gem "pry-remote"
@@ -47,7 +49,6 @@ group :test do
   gem "database_cleaner"
   gem "factory_bot_rails"
   gem "govuk-content-schema-test-helpers"
-  gem "govuk_test"
   gem "launchy"
   gem "rails-controller-testing"
   gem "webmock"
