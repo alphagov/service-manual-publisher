@@ -69,6 +69,36 @@ RSpec.describe "Commenting", type: :feature do
     end
   end
 
+  describe "Notify service is using an allowlist or is in trial mode" do
+    before do
+      response = OpenStruct.new(
+        code: 400,
+        body: "Can't send to this recipient using a team-only API key",
+      )
+      allow_any_instance_of(Mail::Message)
+        .to receive(:deliver)
+        .and_raise(Notifications::Client::BadRequestError.new(response))
+    end
+
+    it "raises an error if an email address is not in Notify team" do
+      guide = create(:guide_community)
+      comment = "This is a guide community comment"
+
+      visit root_path
+      within_guide_index_row(guide.latest_edition.title) do
+        click_link guide.title
+      end
+      click_link "Comments and history"
+
+      within ".open-edition" do
+        fill_in "Add new comment", with: comment
+        click_button "Save comment"
+      end
+
+      expect(page).to have_content "Error: One or more recipients not in GOV.UK Notify team (code: 400)"
+    end
+  end
+
   def write_a_comment(guide:, comment:)
     visit root_path
     within_guide_index_row(guide.latest_edition.title) do
