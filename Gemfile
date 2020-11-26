@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "6.0.3.4"
 
 gem "pg"
-gem "sass-rails"
+gem "sassc-rails"
 gem "uglifier"
 
 gem "plek"
