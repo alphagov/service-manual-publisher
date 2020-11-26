@@ -1,55 +1,55 @@
-describe("Drag and drop image upload", function() {
-  "use strict";
+describe('Drag and drop image upload', function () {
+  'use strict'
 
   var uploadableTextarea,
-      mockFiles;
+    mockFiles
 
-  beforeEach(function() {
-    uploadableTextarea = $("<textarea class='js-markdown-image-upload'>First paragraph\n\nSecond paragraph</textarea>");
+  beforeEach(function () {
+    uploadableTextarea = $("<textarea class='js-markdown-image-upload'>First paragraph\n\nSecond paragraph</textarea>")
 
-    $('body').append(uploadableTextarea);
-    setCursorAfter("First paragraph\n");
+    $('body').append(uploadableTextarea)
+    setCursorAfter('First paragraph\n')
 
-    mockFiles = [{ name: "nice-pic.jpg"}];
-    jasmine.Ajax.install();
-  });
+    mockFiles = [{ name: 'nice-pic.jpg' }]
+    jasmine.Ajax.install()
+  })
 
-  afterEach(function() {
-    jasmine.Ajax.uninstall();
-    uploadableTextarea.remove();
-  });
+  afterEach(function () {
+    jasmine.Ajax.uninstall()
+    uploadableTextarea.remove()
+  })
 
-  it("insert markdown of an uploaded image at the current cursor position", function() {
+  it('insert markdown of an uploaded image at the current cursor position', function () {
     jasmine.Ajax.stubRequest('/uploads').andReturn({
       response: 'http://asset-api.dev.gov.uk/nice-pic.jpg',
       status: '201'
-    });
+    })
 
-    var upload = new ImageUploadMarkdown(mockFiles);
-    upload.init();
-    var markdown = "First paragraph\n![nice-pic.jpg](http://asset-api.dev.gov.uk/nice-pic.jpg)\nSecond paragraph";
-    expect($('body .js-markdown-image-upload').val()).toEqual(markdown);
-  });
+    var upload = new ImageUploadMarkdown(mockFiles)
+    upload.init()
+    var markdown = 'First paragraph\n![nice-pic.jpg](http://asset-api.dev.gov.uk/nice-pic.jpg)\nSecond paragraph'
+    expect($('body .js-markdown-image-upload').val()).toEqual(markdown)
+  })
 
-  it("show an alert and do not insert any markdown if upload fails", function() {
+  it('show an alert and do not insert any markdown if upload fails', function () {
     jasmine.Ajax.stubRequest('/uploads').andReturn({
       response: 'File is too big',
       status: '422'
-    });
-    spyOn(window, 'alert');
+    })
+    spyOn(window, 'alert')
 
-    var upload = new ImageUploadMarkdown(mockFiles);
-    upload.init();
-    var markdown = "First paragraph\n\nSecond paragraph";
+    var upload = new ImageUploadMarkdown(mockFiles)
+    upload.init()
+    var markdown = 'First paragraph\n\nSecond paragraph'
 
-    expect(window.alert).toHaveBeenCalled();
-    expect($('body .js-markdown-image-upload').val()).toEqual(markdown);
-  });
+    expect(window.alert).toHaveBeenCalled()
+    expect($('body .js-markdown-image-upload').val()).toEqual(markdown)
+  })
 
-  function setCursorAfter(value){
-    var textarea = $('body textarea')[0];
-    var cursorAt = value.length;
-    textarea.selectionStart = cursorAt;
-    textarea.selectionEnd = cursorAt;
+  function setCursorAfter (value) {
+    var textarea = $('body textarea')[0]
+    var cursorAt = value.length
+    textarea.selectionStart = cursorAt
+    textarea.selectionEnd = cursorAt
   }
-});
+})
