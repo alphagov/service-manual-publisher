@@ -7,7 +7,7 @@ function toggleChangeNote () {
   var value = $('.update-type-select:checked').val()
   var changeNote = $('.change-note-form-group')
 
-  if (value == 'major') {
+  if (value === 'major') {
     changeNote.show()
   } else {
     changeNote.hide()

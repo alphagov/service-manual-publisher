@@ -14,7 +14,7 @@ $(function () {
       return undefined
     }
 
-    forms = $('form.js-protect-data')
+    var forms = $('form.js-protect-data')
     for (var i = forms.length - 1; i >= 0; i--) {
       var form = forms[i]
       if (hasChanged($(form))) {
@@ -27,7 +27,7 @@ $(function () {
     if (form) {
       var currentChecksum = checksum(form.serialize()).toString()
       var previousChecksum = form.attr('data-checksum')
-      return currentChecksum != previousChecksum
+      return currentChecksum !== previousChecksum
     }
     return false
   }

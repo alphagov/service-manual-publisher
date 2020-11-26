@@ -49,7 +49,7 @@ function ImageUploadMarkdown (files) {
 
     request.onloadend = (function (fileName) {
       return function (e) {
-        if (e.currentTarget.status == 201) {
+        if (e.currentTarget.status === 201) {
           var filePath = e.currentTarget.response
           that.replaceImageMarkdownPlaceholder('![' + fileName + '](' + filePath + ')', fileName)
         } else {

@@ -67,15 +67,15 @@ $(function () {
   }
 
   function titleSlugPreviouslyChanged () {
-    return $titleSlug.val() != slugifiedTitle()
+    return $titleSlug.val() !== slugifiedTitle()
   }
 
   function slugify (text) {
     // https://gist.github.com/mathewbyrne/1280286
     return text.toString().toLowerCase()
       .replace(/\s+/g, '-') // Replace spaces with -
-      .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-      .replace(/\-\-+/g, '-') // Replace multiple - with single -
+      .replace(/[^\w-]+/g, '') // Remove all non-word chars
+      .replace(/--+/g, '-') // Replace multiple - with single -
       .replace(/^[-_]+/, '') // Trim - and _ from start
       .replace(/[-_]+$/, '') // Trim - and _ from end
   }

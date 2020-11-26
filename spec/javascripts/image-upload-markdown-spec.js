@@ -1,3 +1,5 @@
+/* globals ImageUploadMarkdown */
+
 describe('Drag and drop image upload', function () {
   'use strict'
 
