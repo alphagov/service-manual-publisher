@@ -278,7 +278,7 @@ GEM
       pry (~> 0.9)
       slop (~> 3.0)
     public_suffix (4.0.6)
-    puma (5.0.0)
+    puma (5.0.4)
       nio4r (~> 2.0)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -378,8 +378,6 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -480,7 +478,7 @@ DEPENDENCIES
   rinku
   rspec-rails
   rubocop-govuk
-  sass-rails
+  sassc-rails
   select2-rails
   simplecov
   uglifier

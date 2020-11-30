@@ -2,9 +2,9 @@
 
 library("govuk")
 
-node("postgresql-9.3") {
+node {
   govuk.buildProject(
-    rubyLintDiff: false,
-    brakeman: true
+    beforeTest: { sh("yarn install") },
+    brakeman: true,
   )
 }
