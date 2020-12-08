@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "/healthcheck", to: proc { [200, {}, %w[OK]] }
+  get "/healthcheck", to: GovukHealthcheck.rack_response(GovukHealthcheck::ActiveRecord)
   mount GovukAdminTemplate::Engine, at: "/style-guide"
 
   root "guides#index"
