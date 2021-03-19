@@ -1,4 +1,4 @@
-# Service-manual-publisher
+# Service Manual Publisher
 
 Service Manual Publisher is used for publishing and maintaining https://www.gov.uk/service-manual. This application, together with [Service Manual Frontend](https://github.com/alphagov/service-manual-frontend) replaced the previous [Jekyll-based service manual](https://github.com/alphagov/government-service-design-manual).
 
@@ -11,40 +11,21 @@ Service Manual Publisher is used for publishing and maintaining https://www.gov.
 
 ## Technical documentation
 
-PostgreSQL-backed Rails publishing application for internal use, with no public facing aspect.
+This is a Ruby on Rails app, and should follow [our Rails app conventions](https://docs.publishing.service.gov.uk/manual/conventions-for-rails-applications.html).
 
 There is some [disparity between the content as it appears in the database, and the content as it appears in the publishing api](doc/arch/002-disparity-between-database-and-publishing-api.md). This will need to be addressed if we switch to using the Publishing API as our main data store in the future.
 
 The Service manual's guide pages have a nested URL structure which is unusual for GOV.UK. The pros and cons to the nested URL structure are [retrospectively documented](doc/arch/001-nested-url-structure.md).
 
-### Development
+You can use the [GOV.UK Docker environment](https://github.com/alphagov/govuk-docker) to run the application and its tests with all the necessary dependencies. Follow [the usage instructions](https://github.com/alphagov/govuk-docker#usage) to get started.
 
-You can use [Bowler](https://github.com/JordanHatch/bowler) to automatically run
-the application and all of its dependencies. To do this, you'll need to check
-out the [development repository](https://github.gds/gds/development) where the
-`Pinfile` is located.
+**Use GOV.UK Docker to run any commands that follow.**
 
+### Running the test suite
+
+```sh
+bundle exec rake
 ```
-cd /var/govuk/development
-bowl service-manual-publisher service-manual-frontend
-```
-
-Alternatively, run `./startup.sh` in the `service-manual-publisher` directory on
-the development VM.
-
-```
-cd /var/govuk/service-manual-publisher
-./startup.sh
-```
-
-The application runs on port `3111` by default. If you're using the GDS VM it's
-exposed on http://service-manual-publisher.dev.gov.uk.
-
-The application has a style guide that can be accessed on `/style-guide`.
-
-### Testing
-
-`bundle exec rake`
 
 ## Licence
 
