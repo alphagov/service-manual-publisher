@@ -3,7 +3,7 @@ shared_examples "common service manual draft payload" do
   # frontend will reflect the time the draft was saved rather than the time it was
   # published. For the service manual we want to display the published time to the user.
   #
-  # https://github.com/alphagov/content-store/blob/master/doc/content_item_fields.md#public_updated_at
+  # https://github.com/alphagov/content-store/blob/master/docs/content_item_fields.md#public_updated_at
   #
   it "omits public_updated_at" do
     expect(payload).to_not have_key(:public_updated_at)
