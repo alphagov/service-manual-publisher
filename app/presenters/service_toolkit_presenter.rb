@@ -152,22 +152,6 @@ class ServiceToolkitPresenter
             "url": "https://www.cloud.service.gov.uk",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure",
           },
-          {
-            "title": "GOV.UK Registers",
-            "url": "https://www.registers.service.gov.uk/",
-            "description": "Get authoritative datasets your service can rely on",
-          },
-        ],
-      },
-      {
-        "title": "Monitoring services",
-        "description": "Data on service performance",
-        "links": [
-          {
-            "title": "Performance Platform",
-            "url": "https://www.gov.uk/performance",
-            "description": "Create a performance dashboard for your service",
-          },
         ],
       },
       {
