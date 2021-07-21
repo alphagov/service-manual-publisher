@@ -93,17 +93,15 @@ private
     end
   end
 
-  def catching_gds_api_exceptions
-    ApplicationRecord.transaction do
-      yield
-    end
+  def catching_gds_api_exceptions(&block)
+    ApplicationRecord.transaction(&block)
   rescue GdsApi::HTTPErrorResponse => e
     GovukError.notify(e)
     error_message = begin
-                      e.error_details["error"]["message"]
-                    rescue StandardError
-                      "Could not communicate with upstream API"
-                    end
+      e.error_details["error"]["message"]
+    rescue StandardError
+      "Could not communicate with upstream API"
+    end
     ManageResult.new(false, [error_message])
   end
 end

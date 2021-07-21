@@ -36,10 +36,10 @@ private
   rescue GdsApi::HTTPErrorResponse => e
     GovukError.notify(e)
     error_message = begin
-                      e.error_details["error"]["message"]
-                    rescue StandardError
-                      "Could not communicate with upstream API"
-                    end
+      e.error_details["error"]["message"]
+    rescue StandardError
+      "Could not communicate with upstream API"
+    end
     Response.new(success: false, error: error_message)
   end
 

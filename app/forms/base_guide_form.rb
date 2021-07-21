@@ -158,10 +158,8 @@ private
     end
   end
 
-  def catching_gds_api_exceptions
-    ActiveRecord::Base.transaction do
-      yield
-    end
+  def catching_gds_api_exceptions(&block)
+    ActiveRecord::Base.transaction(&block)
   rescue GdsApi::HTTPErrorResponse => e
     errors.add(:base, e.error_details["error"]["message"])
 
