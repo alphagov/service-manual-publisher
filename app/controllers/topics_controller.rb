@@ -86,18 +86,18 @@ private
       :description,
       :visually_collapsed,
       :include_on_homepage,
-      content_owner_ids: [],
-      topic_sections_attributes: [
-        :id,
-        :_destroy,
-        :title,
-        :description,
-        :position,
-        topic_section_guides_attributes: %i[
-          id
-          position
-        ],
-      ],
+      { content_owner_ids: [],
+        topic_sections_attributes: [
+          :id,
+          :_destroy,
+          :title,
+          :description,
+          :position,
+          { topic_section_guides_attributes: %i[
+            id
+            position
+          ] },
+        ] },
     ]
   end
 end
