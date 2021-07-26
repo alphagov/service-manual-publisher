@@ -1,4 +1,4 @@
-class AddContentIdToTopics < ActiveRecord::Migration
+class AddContentIdToTopics < ActiveRecord::Migration[5.2]
   def change
     add_column :topics, :content_id, :string
     add_index :topics, :content_id

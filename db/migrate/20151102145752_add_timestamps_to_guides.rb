@@ -1,4 +1,4 @@
-class AddTimestampsToGuides < ActiveRecord::Migration
+class AddTimestampsToGuides < ActiveRecord::Migration[5.2]
   def up
     change_table :guides, &:timestamps
 

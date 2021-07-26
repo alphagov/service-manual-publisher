@@ -1,4 +1,4 @@
-class FixIncorrectSlugMigration < ActiveRecord::Migration
+class FixIncorrectSlugMigration < ActiveRecord::Migration[5.2]
   def change
     old_slug = "/service-manual/service-manual/digital-foundation-day-training"
     new_slug = "/service-manual/digital-foundation-day-training"

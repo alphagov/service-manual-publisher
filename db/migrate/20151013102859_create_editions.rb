@@ -1,4 +1,4 @@
-class CreateEditions < ActiveRecord::Migration
+class CreateEditions < ActiveRecord::Migration[5.2]
   def change
     create_table :editions do |t|
       t.references :guide

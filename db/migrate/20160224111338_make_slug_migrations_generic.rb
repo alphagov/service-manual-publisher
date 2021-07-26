@@ -1,4 +1,4 @@
-class MakeSlugMigrationsGeneric < ActiveRecord::Migration
+class MakeSlugMigrationsGeneric < ActiveRecord::Migration[5.2]
   def change
     add_column :slug_migrations, :redirect_to, :string
 

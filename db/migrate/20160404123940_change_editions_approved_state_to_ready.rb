@@ -1,4 +1,4 @@
-class ChangeEditionsApprovedStateToReady < ActiveRecord::Migration
+class ChangeEditionsApprovedStateToReady < ActiveRecord::Migration[5.2]
   def up
     execute "UPDATE editions SET state = 'ready' WHERE state = 'approved';"
   end

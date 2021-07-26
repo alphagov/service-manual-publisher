@@ -1,4 +1,4 @@
-class CreateSearchIndex < ActiveRecord::Migration
+class CreateSearchIndex < ActiveRecord::Migration[5.2]
   def up
     execute <<-SQL
       ALTER TABLE guides ADD COLUMN tsv tsvector;

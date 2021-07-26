@@ -1,4 +1,4 @@
-class InsertMissedSlugMigrations < ActiveRecord::Migration
+class InsertMissedSlugMigrations < ActiveRecord::Migration[5.2]
   def change
     return say("Skipping slug creation in test environment") if Rails.env.test?
 

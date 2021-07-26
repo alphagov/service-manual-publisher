@@ -1,4 +1,4 @@
-class MoveTopicTreeToSql < ActiveRecord::Migration
+class MoveTopicTreeToSql < ActiveRecord::Migration[5.2]
   def up
     Topic.all.each do |topic|
       Array(topic.tree).each_with_index do |item, _index|

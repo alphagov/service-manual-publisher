@@ -1,4 +1,4 @@
-class PopulateEditionVersions < ActiveRecord::Migration
+class PopulateEditionVersions < ActiveRecord::Migration[5.2]
   class FakeGuide < ActiveRecord::Base
     self.table_name = "guides"
     has_many :editions, class_name: "FakeEdition", foreign_key: "guide_id"

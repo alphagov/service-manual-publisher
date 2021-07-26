@@ -1,4 +1,4 @@
-class CreateTopicSection < ActiveRecord::Migration
+class CreateTopicSection < ActiveRecord::Migration[5.2]
   def change
     create_table :topic_sections do |t|
       t.integer :topic_id, null: false

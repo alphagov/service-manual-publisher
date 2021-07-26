@@ -1,4 +1,4 @@
-class DropContentOwners < ActiveRecord::Migration
+class DropContentOwners < ActiveRecord::Migration[5.2]
   class FakeContentOwner < ActiveRecord::Base
     self.table_name = "content_owners"
   end

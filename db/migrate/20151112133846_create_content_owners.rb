@@ -1,4 +1,4 @@
-class CreateContentOwners < ActiveRecord::Migration
+class CreateContentOwners < ActiveRecord::Migration[5.2]
   def change
     create_table :content_owners do |t|
       t.string :title, null: false

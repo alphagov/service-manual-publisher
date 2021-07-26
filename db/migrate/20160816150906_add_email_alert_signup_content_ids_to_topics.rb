@@ -1,4 +1,4 @@
-class AddEmailAlertSignupContentIdsToTopics < ActiveRecord::Migration
+class AddEmailAlertSignupContentIdsToTopics < ActiveRecord::Migration[5.2]
   class FakeTopic < ActiveRecord::Base
     self.table_name = "topics"
   end

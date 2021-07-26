@@ -1,4 +1,4 @@
-class CreateSlugMigrations < ActiveRecord::Migration
+class CreateSlugMigrations < ActiveRecord::Migration[5.2]
   def change
     create_table :slug_migrations do |t|
       t.string :slug

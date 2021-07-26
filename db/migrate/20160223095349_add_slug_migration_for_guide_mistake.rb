@@ -1,4 +1,4 @@
-class AddSlugMigrationForGuideMistake < ActiveRecord::Migration
+class AddSlugMigrationForGuideMistake < ActiveRecord::Migration[5.2]
   def up
     return say("Skipping slug creation in test environment") if Rails.env.test?
 

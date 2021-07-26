@@ -1,4 +1,4 @@
-class AddTypeToGuides < ActiveRecord::Migration
+class AddTypeToGuides < ActiveRecord::Migration[5.2]
   def change
     add_column :guides, :type, :string
   end
