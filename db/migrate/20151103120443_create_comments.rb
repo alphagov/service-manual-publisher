@@ -9,8 +9,6 @@ class CreateComments < ActiveRecord::Migration[5.2]
     end
 
     add_index :comments, :commentable_type
-    add_index :comments, :commentable_id
-    add_index :comments, :user_id
   end
 
   def self.down
