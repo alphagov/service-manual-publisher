@@ -40,5 +40,9 @@ module ServiceManualPublisher
     config.active_record.belongs_to_required_by_default = false
 
     ActiveSupport.to_time_preserves_timezone = false
+
+    # use structure.sql instead of schema.rb, as the latter does not support triggers. See:
+    # https://edgeguides.rubyonrails.org/active_record_migrations.html#types-of-schema-dumps
+    config.active_record.schema_format = :sql
   end
 end
