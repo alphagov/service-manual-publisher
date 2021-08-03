@@ -152,6 +152,11 @@ class ServiceToolkitPresenter
             "url": "https://www.cloud.service.gov.uk",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure",
           },
+          {
+            "title": "GOV.UK Sign in",
+            "url": "https://www.sign-in.service.gov.uk",
+            "description": "Let your users sign in quickly, easily and securely to your service",
+          },
         ],
       },
       {
