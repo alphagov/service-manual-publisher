@@ -3,7 +3,7 @@ class CreateSearchIndex < ActiveRecord::Migration
     execute <<-SQL
       ALTER TABLE guides ADD COLUMN tsv tsvector;
 
-      CREATE FUNCTION editions_generate_tsvector() RETURNS TRIGGER AS $$
+      CREATE OR REPLACE FUNCTION editions_generate_tsvector() RETURNS TRIGGER AS $$
         BEGIN
           UPDATE guides SET tsv =
               setweight(to_tsvector('pg_catalog.english', coalesce(guides.slug,'')), 'A') ||
@@ -14,6 +14,8 @@ class CreateSearchIndex < ActiveRecord::Migration
         END
       $$ LANGUAGE plpgsql;
 
+      DROP TRIGGER IF EXISTS tsvector_editions_upsert_trigger ON editions;
+     
       CREATE TRIGGER tsvector_editions_upsert_trigger AFTER INSERT OR UPDATE
         ON editions
         FOR EACH ROW EXECUTE PROCEDURE editions_generate_tsvector();

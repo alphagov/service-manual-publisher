@@ -153,8 +153,8 @@ private
 
   def promote_errors_for(model, opts = {})
     ignored_attributes = opts.fetch(:ignored_attributes, [])
-    model.errors.each do |attrib, message|
-      errors.add(attrib, message) unless ignored_attributes.include? attrib
+    model.errors.each do |error|
+      errors.add(error.attribute, error.message) unless ignored_attributes.include? error.attribute
     end
   end
 
