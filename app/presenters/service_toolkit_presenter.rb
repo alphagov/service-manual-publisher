@@ -153,9 +153,9 @@ class ServiceToolkitPresenter
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure",
           },
           {
-            "title": "GOV.UK Sign in",
+            "title": "GOV.UK Sign in (beta)",
             "url": "https://www.sign-in.service.gov.uk",
-            "description": "Let your users sign in quickly, easily and securely to your service",
+            "description": "Let users sign in to your service quickly, easily and securely. Register for the private beta.",
           },
         ],
       },
