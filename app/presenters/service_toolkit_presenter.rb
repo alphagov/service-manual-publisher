@@ -143,11 +143,6 @@ class ServiceToolkitPresenter
             "description": "Take and process payments - a simple experience for users and easy integration for you",
           },
           {
-            "title": "GOV.UK Verify",
-            "url": "https://www.verify.service.gov.uk",
-            "description": "Let users prove their identity to you securely and conveniently",
-          },
-          {
             "title": "GOV.UK Platform as a Service",
             "url": "https://www.cloud.service.gov.uk",
             "description": "Host your service on a government cloud platform without having to build and manage your own infrastructure",
