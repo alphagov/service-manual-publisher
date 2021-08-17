@@ -193,10 +193,10 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    jasmine (3.8.0)
+    jasmine (3.8.1)
       jasmine-core (~> 3.8.0)
       phantomjs
-      rack (>= 1.2.1)
+      rack (>= 2.1.4)
       rake
       webrick
     jasmine-core (3.8.0)
@@ -335,7 +335,7 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     raindrops (0.19.2)
-    rake (13.0.3)
+    rake (13.0.6)
     redcarpet (3.5.1)
     regexp_parser (2.1.1)
     request_store (1.5.0)
