@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
-  get "/healthcheck/ready", to: GovukHealthcheck.rack_response(
-    GovukHealthcheck::ActiveRecord,
-  )
+  get "/healthcheck/ready", to: proc { [400, {}, %w[relp]] }
 
   mount GovukAdminTemplate::Engine, at: "/style-guide"
 
