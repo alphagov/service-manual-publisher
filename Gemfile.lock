@@ -135,7 +135,7 @@ GEM
     fuubar (2.5.0)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
-    gds-api-adapters (73.0.0)
+    gds-api-adapters (73.1.0)
       addressable
       link_header
       null_logger
@@ -252,7 +252,7 @@ GEM
     method_source (0.9.2)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0704)
+    mime-types-data (3.2021.0901)
     mini_mime (1.1.0)
     mini_portile2 (2.6.1)
     minitest (5.14.4)
