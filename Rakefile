@@ -14,9 +14,10 @@ task default: %i[lint spec jasmine:ci]
 # be represented using a normal db/schema.rb file. However, using
 # a db/structure.sql file is inconsistent with our other repos, as
 # well as being much less readable. Instead, we primarily use the
-# db/schema.rb, and load custom functionality from db/structure.sql.
+# db/schema.rb, and load custom functionality from db/custom_functions.sql.
 %w[db:schema:load db:test:prepare].each do |task|
   Rake::Task[task].enhance do
-    Rake::Task["db:structure:load"].invoke
+    # Additionally load db/custom_functions.sql
+    ActiveRecord::Tasks::DatabaseTasks.load_schema_current(:sql, "db/custom_functions.sql")
   end
 end
