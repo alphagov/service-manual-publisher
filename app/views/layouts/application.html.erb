@@ -4,6 +4,7 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tag %>
 <% end %>
+<% content_for :page_title, " | GOV.UK Service Manual Publisher" %>
 <% content_for :app_title do %>GOV.UK Service Manual Publisher<% end %>
 
 <% if current_user %>
