@@ -1,3 +1,5 @@
+<%= content_for :page_title, "Add #{@guide_form.guide.model_name.human.downcase}" %>
+
 <div class="row">
   <%= render 'form', guide_form: @guide_form %>
 </div>

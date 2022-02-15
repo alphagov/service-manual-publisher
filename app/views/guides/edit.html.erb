@@ -1,3 +1,5 @@
+<%= content_for :page_title, "Edit #{@guide_form.guide.model_name.human.downcase}" %>
+
 <%= render 'editions/header_with_navigation', edition: @guide_form.edition, guide: @guide_form.guide %>
 
 <div class="row">
