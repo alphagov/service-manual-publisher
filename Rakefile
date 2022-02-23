@@ -5,10 +5,15 @@ require File.expand_path("config/application", __dir__)
 
 Rails.application.load_tasks
 
+desc "Jasmine"
+task :jasmine do
+  sh "yarn run jasmine:ci"
+end
+
 # RSpec shoves itself into the default task without asking, which confuses the ordering.
 # https://github.com/rspec/rspec-rails/blob/eb3377bca425f0d74b9f510dbb53b2a161080016/lib/rspec/rails/tasks/rspec.rake#L6
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
-task default: %i[lint spec jasmine:ci]
+task default: %i[lint spec jasmine]
 
 # This app needs to define a custom function/trigger, which can't
 # be represented using a normal db/schema.rb file. However, using

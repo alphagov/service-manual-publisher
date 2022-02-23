@@ -17,5 +17,8 @@
 /tmp
 /coverage
 
+# Ignore compiled assets
+public/assets
+
 /node_modules
 /yarn-error.log
