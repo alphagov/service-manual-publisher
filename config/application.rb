@@ -7,12 +7,11 @@ require "active_model/railtie"
 require "active_record/railtie"
 # require "active_storage/engine"
 require "action_controller/railtie"
+require "action_mailer/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
 require "action_view/railtie"
 # require "action_cable/engine"
-require "sprockets/railtie"
-require "action_mailer/railtie"
 require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -25,9 +24,11 @@ module ServiceManualPublisher
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
 
     config.action_mailer.default_url_options = { host: Plek.new.external_url_for("service-manual-publisher") }
 
@@ -36,6 +37,9 @@ module ServiceManualPublisher
     # to use CSS that has same function names as SCSS such as max.
     # https://github.com/alphagov/govuk-frontend/issues/1350
     config.assets.css_compressor = nil
+
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_record.belongs_to_required_by_default = false
 
