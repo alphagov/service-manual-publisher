@@ -31,8 +31,6 @@ group :development, :test do
   gem "byebug"
   gem "fuubar"
   gem "govuk_test"
-  gem "jasmine"
-  gem "jasmine_selenium_runner"
   gem "pry"
   gem "pry-nav"
   gem "pry-remote"
