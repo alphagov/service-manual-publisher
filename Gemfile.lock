@@ -533,6 +533,7 @@ DEPENDENCIES
   sassc-rails
   select2-rails
   simplecov
+  sprockets-rails
   uglifier
   webmock
 

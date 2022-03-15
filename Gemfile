@@ -19,6 +19,7 @@ gem "redcarpet"
 gem "rinku", require: "rails_rinku"
 gem "sassc-rails"
 gem "select2-rails"
+gem "sprockets-rails"
 gem "uglifier"
 
 group :development do
