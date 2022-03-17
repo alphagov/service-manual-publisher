@@ -15,11 +15,12 @@ RSpec.describe EditionPolicy do
 
     it "is true when the edition after a review is requested and the ALLOW_SELF_APPROVAL is set" do
       edition = build_stubbed(:edition, state: "review_requested", author: author_a)
-      allow(ENV).to receive(:[]).with("ALLOW_SELF_APPROVAL").and_return("1")
 
-      expect(
-        described_class.new(author_a, edition).can_be_approved?,
-      ).to eq(true)
+      ClimateControl.modify(ALLOW_SELF_APPROVAL: "1") do
+        expect(
+          described_class.new(author_a, edition).can_be_approved?,
+        ).to eq(true)
+      end
     end
 
     it "is false when attempted by the same author" do
