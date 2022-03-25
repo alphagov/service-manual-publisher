@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "6.1.5"
+gem "rails", "7.0.2.3"
 
 gem "active_link_to"
 gem "auto_strip_attributes"
@@ -19,6 +19,7 @@ gem "redcarpet"
 gem "rinku", require: "rails_rinku"
 gem "sassc-rails"
 gem "select2-rails"
+gem "sprockets-rails"
 gem "uglifier"
 
 group :development do
@@ -41,7 +42,6 @@ end
 
 group :test do
   gem "climate_control"
-  gem "database_cleaner"
   gem "factory_bot_rails"
   gem "govuk-content-schema-test-helpers"
   gem "launchy"
