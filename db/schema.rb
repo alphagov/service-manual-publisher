@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
-
+ActiveRecord::Schema[7.0].define(version: 2020_06_04_155614) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,8 +27,8 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
     t.string "commentable_type"
     t.integer "user_id"
     t.string "role", default: "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["commentable_id"], name: "index_comments_on_commentable_id"
     t.index ["commentable_type"], name: "index_comments_on_commentable_type"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -43,8 +42,8 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
     t.text "body"
     t.string "update_type"
     t.text "phase", default: "beta"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "state"
     t.text "change_note"
     t.integer "content_owner_id"
@@ -58,8 +57,8 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
   create_table "guides", id: :serial, force: :cascade do |t|
     t.string "slug"
     t.string "content_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.tsvector "tsv"
     t.string "type"
     t.index ["content_id"], name: "index_guides_on_content_id"
@@ -70,16 +69,16 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
     t.text "content_id", null: false
     t.text "old_path", null: false
     t.text "new_path", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["content_id"], name: "index_redirects_on_content_id"
   end
 
   create_table "slug_migrations", id: :serial, force: :cascade do |t|
     t.string "slug"
     t.boolean "completed", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "content_id", null: false
     t.string "redirect_to"
     t.index ["content_id"], name: "index_slug_migrations_on_content_id"
@@ -90,8 +89,8 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
     t.integer "topic_section_id", null: false
     t.integer "guide_id", null: false
     t.integer "position", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["guide_id"], name: "index_topic_section_guides_on_guide_id"
     t.index ["topic_section_id"], name: "index_topic_section_guides_on_topic_section_id"
   end
@@ -101,14 +100,14 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
     t.string "title"
     t.string "description"
     t.integer "position", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["topic_id"], name: "index_topic_sections_on_topic_id"
   end
 
   create_table "topics", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "path", null: false
     t.string "title", null: false
     t.string "description", null: false
@@ -127,8 +126,8 @@ ActiveRecord::Schema[6.1].define(version: 2020_06_04_155614) do
     t.boolean "remotely_signed_out", default: false
     t.boolean "disabled", default: false
     t.text "permissions", array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["organisation_content_id"], name: "index_users_on_organisation_content_id"
     t.index ["uid"], name: "index_users_on_uid"
