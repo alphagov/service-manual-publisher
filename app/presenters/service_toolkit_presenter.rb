@@ -152,6 +152,11 @@ class ServiceToolkitPresenter
             "url": "https://www.sign-in.service.gov.uk",
             "description": "Let users sign in to your service quickly, easily and securely. Register for the private beta.",
           },
+          {
+            "title": "GOV.UK Forms (private beta)",
+            "url": "https://www.forms.service.gov.uk",
+            "description": "Create accessible online forms for GOV.UK with no need for technical or design skills.",
+          },
         ],
       },
       {
