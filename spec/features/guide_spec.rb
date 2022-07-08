@@ -7,7 +7,7 @@ RSpec.describe "Creating a guide", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .twice
-      .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
+      .with(an_instance_of(String), be_valid_against_publisher_schema("service_manual_guide"))
     expect(api_double).to receive(:patch_links)
       .twice
       .with(an_instance_of(String), an_instance_of(Hash))
@@ -69,7 +69,7 @@ RSpec.describe "Creating a guide", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
+      .with(an_instance_of(String), be_valid_against_publisher_schema("service_manual_guide"))
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
@@ -173,7 +173,7 @@ RSpec.describe "Updating a guide", type: :feature do
       stub_const("PUBLISHING_API", api_double)
       expect(api_double).to receive(:put_content)
         .once
-        .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
+        .with(an_instance_of(String), be_valid_against_publisher_schema("service_manual_guide"))
       expect(api_double).to receive(:patch_links)
         .once
         .with(an_instance_of(String), an_instance_of(Hash))

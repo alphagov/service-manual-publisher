@@ -12,7 +12,7 @@ RSpec.describe HomepagePresenter, "#content_payload" do
   it "conforms to the schema" do
     homepage_presenter = described_class.new
 
-    expect(homepage_presenter.content_payload).to be_valid_against_schema("service_manual_homepage")
+    expect(homepage_presenter.content_payload).to be_valid_against_publisher_schema("service_manual_homepage")
   end
 
   it "includes a title for the service manual" do
