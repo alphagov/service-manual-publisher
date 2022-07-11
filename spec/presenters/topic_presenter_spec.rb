@@ -4,7 +4,7 @@ RSpec.describe TopicPresenter, "#content_payload" do
   it "conforms to the schema" do
     topic_presenter = described_class.new(build(:topic))
 
-    expect(topic_presenter.content_payload).to be_valid_against_schema("service_manual_topic")
+    expect(topic_presenter.content_payload).to be_valid_against_publisher_schema("service_manual_topic")
   end
 
   describe "common service manual draft payload" do

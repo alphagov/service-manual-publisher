@@ -12,7 +12,7 @@ RSpec.describe ServiceToolkitPresenter, "#content_payload" do
   let(:payload) { described_class.new.content_payload }
 
   it "returns a payload that validates against the service toolkit schema" do
-    expect(payload).to be_valid_against_schema "service_manual_service_toolkit"
+    expect(payload).to be_valid_against_publisher_schema "service_manual_service_toolkit"
   end
 
   it "includes in the payload a base path of /service-toolkit" do

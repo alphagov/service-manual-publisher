@@ -43,7 +43,7 @@ end
 group :test do
   gem "climate_control"
   gem "factory_bot_rails"
-  gem "govuk-content-schema-test-helpers"
+  gem "govuk_schemas"
   gem "launchy"
   gem "rails-controller-testing"
   gem "webmock"

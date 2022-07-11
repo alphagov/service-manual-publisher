@@ -155,7 +155,7 @@ RSpec.describe "Guide history", type: :feature do
     publishing_api = double(:publishing_api)
     stub_const("PUBLISHING_API", publishing_api)
     allow(publishing_api).to receive(:put_content)
-      .with(an_instance_of(String), be_valid_against_schema("service_manual_guide"))
+      .with(an_instance_of(String), be_valid_against_publisher_schema("service_manual_guide"))
     allow(publishing_api).to receive(:patch_links)
       .with(an_instance_of(String), an_instance_of(Hash))
     allow(publishing_api).to receive(:publish)

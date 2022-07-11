@@ -6,7 +6,7 @@ RSpec.describe GuidePresenter do
       guide = create(:guide)
       presenter = described_class.new(guide, guide.latest_edition)
 
-      expect(presenter.content_payload).to be_valid_against_schema("service_manual_guide")
+      expect(presenter.content_payload).to be_valid_against_publisher_schema("service_manual_guide")
     end
 
     describe "common service manual draft payload" do

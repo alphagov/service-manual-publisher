@@ -21,7 +21,7 @@ RSpec.describe "Topics", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema("service_manual_topic"))
+      .with(an_instance_of(String), be_valid_against_publisher_schema("service_manual_topic"))
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))
@@ -64,7 +64,7 @@ RSpec.describe "Topics", type: :feature do
     stub_const("PUBLISHING_API", api_double)
     expect(api_double).to receive(:put_content)
       .once
-      .with(an_instance_of(String), be_valid_against_schema("service_manual_topic"))
+      .with(an_instance_of(String), be_valid_against_publisher_schema("service_manual_topic"))
     expect(api_double).to receive(:patch_links)
       .once
       .with(an_instance_of(String), an_instance_of(Hash))

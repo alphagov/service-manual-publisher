@@ -12,7 +12,7 @@ RSpec.describe ServiceStandardPresenter, "#content_payload" do
   it "returns a payload that validates against the service standard schema" do
     payload = described_class.new.content_payload
 
-    expect(payload).to be_valid_against_schema "service_manual_service_standard"
+    expect(payload).to be_valid_against_publisher_schema "service_manual_service_standard"
   end
 
   it "returns a hash suitable for a service standard draft" do
