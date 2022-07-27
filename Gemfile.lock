@@ -129,7 +129,7 @@ GEM
     fuubar (2.5.1)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
-    gds-api-adapters (81.0.0)
+    gds-api-adapters (81.0.2)
       addressable
       link_header
       null_logger
