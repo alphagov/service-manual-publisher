@@ -79,66 +79,66 @@ class ServiceToolkitPresenter
         ],
       },
 
-{
-  "title": "Platforms and tools",
-  "description": "Technologies to help you build and run government services",
-  "links": [
-    {
-      "title": "GOV.UK Notify",
-      "url": "https://www.notifications.service.gov.uk/",
-      "description": "Send your users emails, text messages and letters - cheaply and easily",
-    },
-    {
-      "title": "GOV.UK Pay",
-      "url": "https://www.payments.service.gov.uk/",
-      "description": "Collect and process payments - providing a simple experience for users and easy integration for service teams",
-    },
-    {
-      "title": "GOV.UK Sign In (beta)",
-      "url": "https://www.sign-in.service.gov.uk/",
-      "description": "Let users sign into your service quickly, easily and securely (private beta with limited participation)",
-    },
-    {
-      "title": "GOV.UK Forms (beta)",
-      "url": "https://www.forms.service.gov.uk/",
-      "description": "Create accessible online forms without needing technical or design skills (private beta with limited participation)",
-    },
-  ],
-},
+      {
+        "title": "Platforms and tools",
+        "description": "Technologies to help you build and run government services",
+        "links": [
+          {
+            "title": "GOV.UK Notify",
+            "url": "https://www.notifications.service.gov.uk/",
+            "description": "Send your users emails, text messages and letters - cheaply and easily",
+          },
+          {
+            "title": "GOV.UK Pay",
+            "url": "https://www.payments.service.gov.uk/",
+            "description": "Collect and process payments - providing a simple experience for users and easy integration for service teams",
+          },
+          {
+            "title": "GOV.UK Sign In (beta)",
+            "url": "https://www.sign-in.service.gov.uk/",
+            "description": "Let users sign into your service quickly, easily and securely (private beta with limited participation)",
+          },
+          {
+            "title": "GOV.UK Forms (beta)",
+            "url": "https://www.forms.service.gov.uk/",
+            "description": "Create accessible online forms without needing technical or design skills (private beta with limited participation)",
+          },
+        ],
+      },
 
-{
-  "title": "Spend controls and assurance",
-  "description": "Assurance for technology spending and digital services",
-  "links": [
-    {
-      "title": "Spend controls",
-      "url": "https://www.gov.uk/government/collections/cabinet-office-controls",
-      "description": "When and how to get approval to spend money on digital and technology",
-    },
-    {
-      "title": "Service Standard and assessments",
-      "url": "https://www.gov.uk/service-manual/service-assessments/check-if-need-to-meet-service-standard",
-      "description": "Check if you need to follow the Service Standard or get a service assessment",
-    },
-  ],
-},
+      {
+        "title": "Spend controls and assurance",
+        "description": "Assurance for technology spending and digital services",
+        "links": [
+          {
+            "title": "Spend controls",
+            "url": "https://www.gov.uk/government/collections/cabinet-office-controls",
+            "description": "When and how to get approval to spend money on digital and technology",
+          },
+          {
+            "title": "Service Standard and assessments",
+            "url": "https://www.gov.uk/service-manual/service-assessments/check-if-need-to-meet-service-standard",
+            "description": "Check if you need to follow the Service Standard or get a service assessment",
+          },
+        ],
+      },
 
-{
-  "title": "Buying technology and getting help with delivery",
-  "description": "Procurement frameworks and delivery support",
-  "links": [
-    {
-      "title": "Digital Marketplace",
-      "url": "https://www.digitalmarketplace.service.gov.uk/",
-      "description": "Use the G-Cloud or DOS frameworks to procure technology and find people for digital projects",
-    },
-    {
-      "title": "GDS Advisory",
-      "url": "https://www.gov.uk/guidance/gds-advisory-get-help-with-public-sector-digital-transformation",
-      "description": "Get digital and technology delivery support from GDS",
-    },
-  ],
-},
+      {
+        "title": "Buying technology and getting help with delivery",
+        "description": "Procurement frameworks and delivery support",
+        "links": [
+          {
+            "title": "Digital Marketplace",
+            "url": "https://www.digitalmarketplace.service.gov.uk/",
+            "description": "Use the G-Cloud or DOS frameworks to procure technology and find people for digital projects",
+          },
+          {
+            "title": "GDS Advisory",
+            "url": "https://www.gov.uk/guidance/gds-advisory-get-help-with-public-sector-digital-transformation",
+            "description": "Get digital and technology delivery support from GDS",
+          },
+        ],
+      },
     ]
   end
 end
