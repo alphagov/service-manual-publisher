@@ -8,10 +8,10 @@
 /.bundle
 
 # Ignore JavaScript dependencies
- /node_modules
+/node_modules
 
  # Ignore compiled assets
- /public/assets
+/public/assets
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
