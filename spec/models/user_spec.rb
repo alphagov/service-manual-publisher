@@ -23,8 +23,8 @@ RSpec.describe User, type: :model do
 
     it "drops duplicates" do
       author = create(:user, name: "Author 1")
-      create(:edition, author: author)
-      create(:edition, author: author)
+      create(:edition, author:)
+      create(:edition, author:)
 
       ids = User.authors.pluck(:id)
       expect(ids.uniq).to eq ids

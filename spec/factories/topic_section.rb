@@ -19,7 +19,7 @@ FactoryBot.define do
 
     after(:build) do |topic_section, evaluator|
       evaluator.guides.each do |guide|
-        topic_section_guide = TopicSectionGuide.new(guide: guide, topic_section: topic_section)
+        topic_section_guide = TopicSectionGuide.new(guide:, topic_section:)
         topic_section.topic_section_guides << topic_section_guide
       end
     end

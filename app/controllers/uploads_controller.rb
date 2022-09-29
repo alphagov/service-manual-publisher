@@ -11,7 +11,7 @@ class UploadsController < ApplicationController
         end
 
         begin
-          response = ASSET_API.create_asset(file: file)
+          response = ASSET_API.create_asset(file:)
           render body: response["file_url"], status: :created
         rescue GdsApi::BaseError => e
           render body: e.message, status: :unprocessable_entity
@@ -22,7 +22,7 @@ class UploadsController < ApplicationController
         file = params[:file]
 
         begin
-          response = ASSET_API.create_asset(file: file)
+          response = ASSET_API.create_asset(file:)
           redirect_to new_upload_path, notice: "Uploaded successfully to #{response['file_url']}"
         rescue GdsApi::BaseError => e
           render body: e.message, status: :unprocessable_entity

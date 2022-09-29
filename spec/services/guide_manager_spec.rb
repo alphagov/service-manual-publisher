@@ -5,7 +5,7 @@ RSpec.describe GuideManager, "#request_review!" do
     user = create(:user)
     guide = create(:guide)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.request_review!
 
     expect(guide.latest_edition.state).to eq("review_requested")
@@ -15,7 +15,7 @@ RSpec.describe GuideManager, "#request_review!" do
     user = create(:user)
     guide = create(:guide)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.request_review!
 
     expect(guide.latest_edition.created_by).to eq(user)
@@ -25,7 +25,7 @@ RSpec.describe GuideManager, "#request_review!" do
     user = create(:user)
     guide = create(:guide, :with_draft_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     result = manager.request_review!
 
     expect(result).to be_success
@@ -37,7 +37,7 @@ RSpec.describe GuideManager, "#approve_for_publication!" do
     user = create(:user)
     guide = create(:guide, :with_review_requested_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.approve_for_publication!
 
     expect(guide.latest_edition.state).to eq("ready")
@@ -47,7 +47,7 @@ RSpec.describe GuideManager, "#approve_for_publication!" do
     user = create(:user)
     guide = create(:guide, :with_review_requested_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.approve_for_publication!
 
     expect(guide.latest_edition.created_by).to eq(user)
@@ -57,7 +57,7 @@ RSpec.describe GuideManager, "#approve_for_publication!" do
     user = create(:user)
     guide = create(:guide, :with_review_requested_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.approve_for_publication!
 
     expect(
@@ -69,7 +69,7 @@ RSpec.describe GuideManager, "#approve_for_publication!" do
     user = create(:user)
     guide = create(:guide, :with_review_requested_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     result = manager.approve_for_publication!
 
     expect(result).to be_success
@@ -85,7 +85,7 @@ RSpec.describe GuideManager, "#publish" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.publish
 
     expect(guide.latest_edition.state).to eq("published")
@@ -95,7 +95,7 @@ RSpec.describe GuideManager, "#publish" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.publish
 
     expect(guide.latest_edition.created_by).to eq(user)
@@ -105,7 +105,7 @@ RSpec.describe GuideManager, "#publish" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.publish
 
     assert_publishing_api_publish(guide.content_id)
@@ -115,7 +115,7 @@ RSpec.describe GuideManager, "#publish" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.publish
 
     expect(
@@ -127,7 +127,7 @@ RSpec.describe GuideManager, "#publish" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     result = manager.publish
 
     expect(result).to be_success
@@ -140,7 +140,7 @@ RSpec.describe GuideManager, "#publish" do
       user = create(:user)
       guide = create(:guide, :with_ready_edition)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.publish
 
       expect(guide.editions.published).to be_empty
@@ -153,7 +153,7 @@ RSpec.describe GuideManager, "#publish" do
       user = create(:user)
       guide = create(:guide, :with_ready_edition)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       result = manager.publish
 
       expect(result).to_not be_success
@@ -180,7 +180,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
     user = create(:user)
     guide = create(:guide, :with_published_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.unpublish_with_redirect("/service-manual/somewhere-else")
 
     expect(guide.latest_edition.state).to eq("unpublished")
@@ -190,7 +190,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
     user = create(:user)
     guide = create(:guide, :with_published_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.unpublish_with_redirect("/service-manual/somewhere-else")
 
     expect(guide.latest_edition.created_by).to eq(user)
@@ -200,7 +200,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
     user = create(:user)
     guide = create(:guide, :with_published_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     manager.unpublish_with_redirect("/service-manual/suitable-redirect")
 
     assert_publishing_api_unpublish(
@@ -214,7 +214,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
     user = create(:user)
     guide = create(:guide, :with_ready_edition)
 
-    manager = described_class.new(guide: guide, user: user)
+    manager = described_class.new(guide:, user:)
     result = manager.unpublish_with_redirect("/service-manual/suitable-redirect")
 
     expect(result).to be_success
@@ -229,7 +229,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
       user = create(:user)
       guide = create(:guide, :with_published_edition)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.unpublish_with_redirect("/service-manual/somewhere-else")
 
       expect(guide.latest_edition.state).to eq("published")
@@ -241,7 +241,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
 
       expect(GovukError).to receive(:notify)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.unpublish_with_redirect("/service-manual/suitable-redirect")
     end
 
@@ -249,7 +249,7 @@ RSpec.describe GuideManager, "#unpublish_with_redirect" do
       user = create(:user)
       guide = create(:guide, :with_published_edition)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       result = manager.unpublish_with_redirect("/service-manual/somewhere-else")
 
       expect(result).to_not be_success
@@ -266,12 +266,12 @@ RSpec.describe GuideManager, "#discard_draft" do
 
       stub_publishing_api_discard_draft(guide.content_id)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.discard_draft
 
       guide_id = guide.id
       expect(Guide.find_by(id: guide_id)).to eq(nil)
-      expect(Edition.where(guide_id: guide_id).count).to eq(0)
+      expect(Edition.where(guide_id:).count).to eq(0)
     end
 
     it "discards drafts against the publishing api" do
@@ -280,7 +280,7 @@ RSpec.describe GuideManager, "#discard_draft" do
 
       stub_publishing_api_discard_draft(guide.content_id)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.discard_draft
 
       assert_publishing_api_discard_draft(guide.content_id)
@@ -292,7 +292,7 @@ RSpec.describe GuideManager, "#discard_draft" do
 
       stub_publishing_api_discard_draft(guide.content_id)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       result = manager.discard_draft
 
       expect(result).to be_success
@@ -306,7 +306,7 @@ RSpec.describe GuideManager, "#discard_draft" do
 
       stub_publishing_api_discard_draft(guide.content_id)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.discard_draft
 
       expect(guide.editions.where(title: "Agile").count).to eq(4)
@@ -323,7 +323,7 @@ RSpec.describe GuideManager, "#discard_draft" do
         build(:edition, title: "Agile amended"),
         build(:edition, title: "Agile amended", state: "review_requested"),
       ]
-      create(:guide, editions: editions)
+      create(:guide, editions:)
     end
   end
 
@@ -334,7 +334,7 @@ RSpec.describe GuideManager, "#discard_draft" do
       user = create(:user)
       guide = create(:guide)
 
-      manager = described_class.new(guide: guide, user: user)
+      manager = described_class.new(guide:, user:)
       manager.discard_draft
 
       expect(Guide.find_by(id: guide.id)).to be_present

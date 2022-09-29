@@ -15,7 +15,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       ),
     ]
 
-    guide = create(:guide, editions: editions)
+    guide = create(:guide, editions:)
     presenter = described_class.new(guide, guide.latest_edition)
 
     expect(presenter.change_history).to eq [
@@ -44,7 +44,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       ),
     ]
 
-    guide = create(:guide, editions: editions)
+    guide = create(:guide, editions:)
     presenter = described_class.new(guide, guide.latest_edition)
 
     expect(presenter.change_history).to eq [
@@ -74,7 +74,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       ),
     ]
 
-    guide = create(:guide, editions: editions)
+    guide = create(:guide, editions:)
     presenter = described_class.new(guide, guide.latest_edition)
 
     expect(presenter.change_history).to eq [

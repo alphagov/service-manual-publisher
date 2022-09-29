@@ -12,7 +12,7 @@ RSpec.describe Guide do
         :topic_section,
         "title" => "Title",
         "description" => "Description",
-        topic: topic,
+        topic:,
       )
       topic_section.guides << guide
       topic
@@ -53,7 +53,7 @@ RSpec.describe Guide do
     it "generates and sets content_id on create" do
       topic_section = create(:topic_section)
       guide = Guide.new(slug: "/service-manual/topic-name/slug", content_id: nil)
-      guide.topic_section_guides.build(topic_section: topic_section)
+      guide.topic_section_guides.build(topic_section:)
       guide.save!
 
       expect(guide.content_id).to be_present
@@ -178,8 +178,8 @@ RSpec.describe Guide do
 
       it "can be changed to a different section in the same topic even if the guide has been published" do
         topic = create(:topic)
-        guide = create(:guide, :with_published_edition, topic: topic)
-        new_topic_section = create(:topic_section, topic: topic)
+        guide = create(:guide, :with_published_edition, topic:)
+        new_topic_section = create(:topic_section, topic:)
 
         guide.topic_section_guides[0].topic_section_id = new_topic_section.id
 
@@ -230,7 +230,7 @@ RSpec.describe Guide, "#latest_edition_per_edition_group" do
     guide.editions << build(:edition, version: 2, created_at: 2.days.ago)
     second_version_second_edition = build(:edition, version: 2, created_at: 1.day.ago)
     guide.editions << second_version_second_edition
-    guide.topic_section_guides.build(topic_section: topic_section)
+    guide.topic_section_guides.build(topic_section:)
     guide.save!
 
     expect(

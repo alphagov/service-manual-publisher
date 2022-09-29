@@ -6,10 +6,10 @@ class GuidesController < ApplicationController
 
   def new
     type = params[:type].presence_in(%w[GuideCommunity Point])
-    guide = Guide.new(type: type)
+    guide = Guide.new(type:)
 
     @guide_form = GuideForm.build(
-      guide: guide,
+      guide:,
       edition: Edition.new,
       user: current_user,
     )
@@ -25,7 +25,7 @@ class GuidesController < ApplicationController
     guide = Guide.find(params[:id])
 
     @guide_form = GuideForm.build(
-      guide: guide,
+      guide:,
       edition: guide.latest_edition,
       user: current_user,
     )
@@ -76,7 +76,7 @@ private
     message = opts.fetch(:message, nil)
 
     @guide_form = GuideForm.build(
-      guide: guide,
+      guide:,
       edition: guide.latest_edition,
       user: current_user,
     )
@@ -87,7 +87,7 @@ private
       return
     end
 
-    guide_manager = GuideManager.new(guide: guide, user: current_user)
+    guide_manager = GuideManager.new(guide:, user: current_user)
     result = guide_manager.public_send(action)
 
     if result.success?
@@ -102,7 +102,7 @@ private
     failure_template = guide.persisted? ? "edit" : "new"
 
     @guide_form = GuideForm.build(
-      guide: guide,
+      guide:,
       edition: guide.editions.build(created_by: current_user),
       user: current_user,
     )

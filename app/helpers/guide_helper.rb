@@ -50,7 +50,7 @@ module GuideHelper
     options = args.extract_options!
     url = url_for(guide.becomes(Guide))
 
-    form_for(guide, *args << options.merge(as: :guide, url: url), &block)
+    form_for(guide, *args << options.merge(as: :guide, url:), &block)
   end
 
   def guide_community_title(guide_community)

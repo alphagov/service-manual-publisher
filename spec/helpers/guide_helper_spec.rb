@@ -52,7 +52,7 @@ end
 RSpec.describe GuideHelper, "#topic_section_options_for_select", type: :helper do
   it "returns topic sections options for a grouped select tag" do
     topic = create(:topic, path: "/service-manual/agile", title: "Agile")
-    topic_section = create(:topic_section, topic: topic, title: "Scrum")
+    topic_section = create(:topic_section, topic:, title: "Scrum")
 
     expect(helper.topic_section_options_for_select).to eq(
       [

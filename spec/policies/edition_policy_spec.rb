@@ -33,7 +33,7 @@ RSpec.describe EditionPolicy do
 
     (Edition::STATES - %w[review_requested]).each do |state|
       it "is false when the edition has a state of #{state}" do
-        edition = build_stubbed(:edition, state: state, author: author_a)
+        edition = build_stubbed(:edition, state:, author: author_a)
 
         expect(
           described_class.new(author_b, edition).can_be_approved?,
@@ -61,7 +61,7 @@ RSpec.describe EditionPolicy do
 
     (Edition::STATES - %w[draft]).each do |state|
       it "is false when the edition has a state of #{state}" do
-        edition = build_stubbed(:edition, state: state, author: author_a)
+        edition = build_stubbed(:edition, state:, author: author_a)
 
         expect(
           described_class.new(author_b, edition).can_request_review?,
@@ -92,7 +92,7 @@ RSpec.describe EditionPolicy do
 
     (Edition::STATES - %w[ready]).each do |state|
       it "is false when the edition has a state of #{state}" do
-        edition = build(:edition, state: state, author: author_a)
+        edition = build(:edition, state:, author: author_a)
         create(:guide, editions: [edition])
 
         expect(
@@ -107,7 +107,7 @@ RSpec.describe EditionPolicy do
 
     (Edition::STATES - undiscardable_states).each do |state|
       it "is true when the edition has a state of #{state}" do
-        edition = build_stubbed(:edition, state: state, author: author_a)
+        edition = build_stubbed(:edition, state:, author: author_a)
 
         expect(
           described_class.new(author_b, edition).can_discard_draft?,
@@ -117,7 +117,7 @@ RSpec.describe EditionPolicy do
 
     undiscardable_states.each do |state|
       it "is false when the edition has a state of #{state}" do
-        edition = build_stubbed(:edition, state: state, author: author_a)
+        edition = build_stubbed(:edition, state:, author: author_a)
 
         expect(
           described_class.new(author_b, edition).can_discard_draft?,

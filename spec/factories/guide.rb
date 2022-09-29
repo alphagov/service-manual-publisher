@@ -71,7 +71,7 @@ FactoryBot.define do
         guide.topic_section_guides.build(topic_section: evaluator.topic_section)
       elsif evaluator.requires_topic
         topic_section = build(:topic_section, topic: evaluator.topic || build(:topic))
-        guide.topic_section_guides.build(topic_section: topic_section)
+        guide.topic_section_guides.build(topic_section:)
       end
     end
 
@@ -82,7 +82,7 @@ FactoryBot.define do
       if guide.editions.empty?
         evaluator.states.each do |state|
           edition_attributes = evaluator.edition || { title: evaluator.title, body: evaluator.body }
-          guide.editions << create(evaluator.edition_factory, state, **edition_attributes, guide: guide)
+          guide.editions << create(evaluator.edition_factory, state, **edition_attributes, guide:)
         end
       end
     end

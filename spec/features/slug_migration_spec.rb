@@ -40,7 +40,7 @@ RSpec.describe "Slug migration", type: :feature do
   end
 
   def create_slug_migration_without_redirect_to(slug)
-    slug_migration = SlugMigration.new(slug: slug, completed: false)
+    slug_migration = SlugMigration.new(slug:, completed: false)
     slug_migration.save!(validate: false)
     slug_migration
   end

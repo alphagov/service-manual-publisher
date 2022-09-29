@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Create a guide community", type: :feature do
   before do
     topic = create(:topic)
-    @topic_section = create(:topic_section, topic: topic)
+    @topic_section = create(:topic_section, topic:)
   end
 
   it "successfully creates a guide community" do

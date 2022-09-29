@@ -7,7 +7,7 @@ module AuthenticationHelpers
     User.create!(
       uid: SecureRandom.hex,
       email: "stub.user@example.com",
-      name: name,
+      name:,
       permissions: %w[signin],
     )
   end
@@ -35,7 +35,7 @@ module AuthenticationControllerHelpers
     request.env["warden"] = double(
       authenticate!: true,
       authenticated?: true,
-      user: user,
+      user:,
     )
   end
 end

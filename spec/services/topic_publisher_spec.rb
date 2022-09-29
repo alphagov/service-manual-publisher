@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe TopicPublisher, "#save_draft" do
   let :topic_section do
     topic = create(:topic)
-    create(:topic_section, topic: topic)
+    create(:topic_section, topic:)
   end
 
   it "persists the content model and returns a successful response" do
@@ -13,7 +13,7 @@ RSpec.describe TopicPublisher, "#save_draft" do
     allow(publishing_api).to receive(:patch_links)
 
     publication_response =
-      described_class.new(topic: topic, publishing_api: publishing_api)
+      described_class.new(topic:, publishing_api:)
         .save_draft
 
     expect(topic).to be_persisted
@@ -29,7 +29,7 @@ RSpec.describe TopicPublisher, "#save_draft" do
     expect(publishing_api).to receive(:patch_links)
       .with(topic.content_id, a_kind_of(Hash))
 
-    described_class.new(topic: topic, publishing_api: publishing_api)
+    described_class.new(topic:, publishing_api:)
       .save_draft
   end
 
@@ -45,7 +45,7 @@ RSpec.describe TopicPublisher, "#save_draft" do
     expect(publishing_api).to_not receive(:put_content)
 
     publication_response =
-      described_class.new(topic: topic, publishing_api: publishing_api)
+      described_class.new(topic:, publishing_api:)
         .save_draft
 
     expect(publication_response).to_not be_success
@@ -67,7 +67,7 @@ RSpec.describe TopicPublisher, "#save_draft" do
       topic = build(:topic)
 
       publication_response =
-        described_class.new(topic: topic, publishing_api: publishing_api_which_always_fails)
+        described_class.new(topic:, publishing_api: publishing_api_which_always_fails)
           .save_draft
 
       expect(topic).to be_new_record
@@ -78,7 +78,7 @@ RSpec.describe TopicPublisher, "#save_draft" do
       topic = build(:topic)
 
       publication_response =
-        described_class.new(topic: topic, publishing_api: publishing_api_which_always_fails)
+        described_class.new(topic:, publishing_api: publishing_api_which_always_fails)
           .save_draft
 
       expect(publication_response.error).to include("trouble")
@@ -94,7 +94,7 @@ RSpec.describe TopicPublisher, "#publish" do
     expect(publishing_api).to receive(:publish)
       .once.with(topic.content_id)
 
-    described_class.new(topic: topic, publishing_api: publishing_api)
+    described_class.new(topic:, publishing_api:)
       .publish
   end
 end

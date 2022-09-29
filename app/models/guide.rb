@@ -32,7 +32,7 @@ class Guide < ApplicationRecord
           if type.blank?
             where("type = '' OR type IS NULL")
           else
-            where(type: type)
+            where(type:)
           end
         }
 
