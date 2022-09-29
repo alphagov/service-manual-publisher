@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "7.0.3.1"
+gem "rails", "7.0.4"
 
 gem "active_link_to"
 gem "auto_strip_attributes"
