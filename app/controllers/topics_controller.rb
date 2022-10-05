@@ -40,11 +40,11 @@ private
   end
 
   def save_draft(topic)
-    TopicPublisher.new(topic: topic).save_draft
+    TopicPublisher.new(topic:).save_draft
   end
 
   def publish(topic)
-    TopicPublisher.new(topic: topic).publish
+    TopicPublisher.new(topic:).publish
   end
 
   def add_heading(topic)

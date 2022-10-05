@@ -17,7 +17,7 @@ module CapybaraHelpers
 
   def fill_in_final_url(with)
     page.find_field("Final URL").base.native.remove_attribute("readonly")
-    fill_in "Final URL", with: with
+    fill_in "Final URL", with:
   end
 
   ##

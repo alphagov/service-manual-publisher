@@ -11,7 +11,7 @@ class TopicSectionGuide < ApplicationRecord
 
   scope :within_topic_section,
         lambda { |topic_section_id|
-          where(topic_section_id: topic_section_id)
+          where(topic_section_id:)
         }
 
 private

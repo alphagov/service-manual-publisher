@@ -25,7 +25,7 @@ RSpec.describe "Generating slugs", type: :feature, js: true do
     context "when the user has manually edited the slug" do
       it "does not update the slug or final url when you change the title" do
         topic = create(:topic, path: "/service-manual/my-topic")
-        topic_section = create(:topic_section, topic: topic)
+        topic_section = create(:topic_section, topic:)
         topic_section_label = "#{topic.title} -> #{topic_section.title}"
 
         visit new_guide_path
@@ -41,9 +41,9 @@ RSpec.describe "Generating slugs", type: :feature, js: true do
 
       it "remembers that the slug was edited when coming back to edit it" do
         topic = create(:topic, path: "/service-manual/my-topic")
-        topic_section = create(:topic_section, topic: topic)
+        topic_section = create(:topic_section, topic:)
 
-        guide = create(:guide, :with_draft_edition, slug: "/service-manual/my-topic/my-custom-slug", topic: topic)
+        guide = create(:guide, :with_draft_edition, slug: "/service-manual/my-topic/my-custom-slug", topic:)
         topic_section.guides << guide
 
         visit edit_guide_path(guide)

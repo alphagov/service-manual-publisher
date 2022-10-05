@@ -125,7 +125,7 @@ RSpec.describe GuidePresenter do
 
       it "includes a reference to the service manual topic" do
         topic = create(:topic, content_id: "4ac0bacf-0062-47fd-b1ce-852a95c25e20")
-        guide = create(:guide, topic: topic)
+        guide = create(:guide, topic:)
         presenter = described_class.new(guide, guide.latest_edition)
 
         expect(presenter.links_payload[:links][:service_manual_topics])

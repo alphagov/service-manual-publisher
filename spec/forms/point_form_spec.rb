@@ -4,7 +4,7 @@ RSpec.describe PointForm, "validations" do
   it "does not require topic_section_id" do
     guide = Point.new
     edition = guide.editions.build
-    guide_form = described_class.new(guide: guide, edition: edition, user: User.new)
+    guide_form = described_class.new(guide:, edition:, user: User.new)
     guide_form.save_form
 
     expect(guide_form.errors.full_messages).to_not include("Topic section can't be blank")
@@ -29,7 +29,7 @@ RSpec.describe PointForm, "#save" do
 
     point = Point.new
     edition = point.editions.build
-    guide_form = described_class.new(guide: point, edition: edition, user: user)
+    guide_form = described_class.new(guide: point, edition:, user:)
     guide_form.assign_attributes(
       body: "a fair old body",
       content_owner_id: guide_community.id,
@@ -51,7 +51,7 @@ RSpec.describe PointForm, "validations" do
     point = Point.new
 
     edition = point.editions.build
-    guide_form = described_class.new(guide: point, edition: edition, user: User.new)
+    guide_form = described_class.new(guide: point, edition:, user: User.new)
     guide_form.save_form
 
     expect(

@@ -18,7 +18,7 @@ RSpec.describe ":guide" do
 
   it "can be associated with a supplied topic" do
     topic = create(:topic)
-    guide = create(:guide, topic: topic)
+    guide = create(:guide, topic:)
 
     expect(guide.topic).to eq(topic)
 
@@ -30,7 +30,7 @@ RSpec.describe ":guide" do
 
   it "can be associated with a supplied topic section" do
     topic_section = create(:topic_section)
-    guide = create(:guide, topic_section: topic_section)
+    guide = create(:guide, topic_section:)
 
     expect(guide.topic).to eq(topic_section.topic)
     expect(topic_section.guides).to include(guide)

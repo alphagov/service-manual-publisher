@@ -14,7 +14,7 @@ class GuideManager
 
   def approve_for_publication!
     edition = build_clone_of_latest_edition
-    edition.build_approval(user: user)
+    edition.build_approval(user:)
     edition.state = "ready"
     edition.save!
 

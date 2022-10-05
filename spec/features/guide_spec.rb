@@ -221,7 +221,7 @@ RSpec.describe "Updating a guide", type: :feature do
       stub_any_publishing_api_patch_links
 
       topic = create(:topic, path: "/service-manual/test-topic")
-      guide = create(:guide, slug: "/service-manual/test-topic/something", topic: topic)
+      guide = create(:guide, slug: "/service-manual/test-topic/something", topic:)
 
       visit edit_guide_path(guide)
       expect(find("input.guide-slug")["disabled"]).to eq("false")
@@ -251,7 +251,7 @@ RSpec.describe "Updating a guide", type: :feature do
       :guide,
       slug: "/service-manual/topic-name/something",
       editions: [build(:edition)],
-      topic: topic,
+      topic:,
     )
 
     visit edit_guide_path(guide)
@@ -265,7 +265,7 @@ RSpec.describe "Updating a guide", type: :feature do
 
   it "omits the redundant 'editions is invalid' error message" do
     topic = create(:topic, path: "/service-manual/technology")
-    topic_section = create(:topic_section, topic: topic)
+    topic_section = create(:topic_section, topic:)
     guide = create(
       :guide,
       slug: "/service-manual/topic-name/something",

@@ -50,7 +50,7 @@ RSpec.describe Edition, type: :model do
     end
 
     before do
-      create(:guide, :with_published_edition, editions: editions)
+      create(:guide, :with_published_edition, editions:)
     end
 
     it "returns an edition that was the latest edition published before the current one" do

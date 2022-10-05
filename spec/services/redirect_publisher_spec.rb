@@ -28,9 +28,9 @@ RSpec.describe RedirectPublisher, type: :model do
       .once.with(content_id)
 
     RedirectPublisher.new(api).process(
-      content_id: content_id,
-      old_path: old_path,
-      new_path: new_path,
+      content_id:,
+      old_path:,
+      new_path:,
     )
   end
 
@@ -46,9 +46,9 @@ RSpec.describe RedirectPublisher, type: :model do
       .once.with(content_id)
 
     RedirectPublisher.new(api).process(
-      content_id: content_id,
-      old_path: old_path,
-      new_path: new_path,
+      content_id:,
+      old_path:,
+      new_path:,
     )
   end
 end

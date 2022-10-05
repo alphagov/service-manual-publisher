@@ -52,12 +52,12 @@ RSpec.describe TopicPresenter, "#content_payload" do
         :topic_section,
         title: "Group 1",
         description: "Fruits",
-        topic: topic,
+        topic:,
         guides: [guide1, guide2],
       )
       create(
         :topic_section,
-        topic: topic,
+        topic:,
         title: "Group 2",
         description: "Berries",
         guides: [guide3],
@@ -192,7 +192,7 @@ RSpec.describe TopicPresenter, "#links_payload" do
     groups.each do |group_guides|
       create(
         :topic_section,
-        topic: topic,
+        topic:,
         guides: group_guides,
       )
     end

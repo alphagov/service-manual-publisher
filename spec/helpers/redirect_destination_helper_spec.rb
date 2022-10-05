@@ -32,8 +32,8 @@ RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options"
 
   it "should include all topics with sub sections" do
     topic = create(:topic, path: "/service-manual/agile-delivery")
-    create(:topic_section, title: "Working with agile methods", topic: topic)
-    create(:topic_section, title: "Governing agile services", topic: topic)
+    create(:topic_section, title: "Working with agile methods", topic:)
+    create(:topic_section, title: "Governing agile services", topic:)
 
     expect(helper.redirect_destination_select_options).to include(
       "Topics" => [
@@ -46,7 +46,7 @@ RSpec.describe RedirectDestinationHelper, "#redirect_destination_select_options"
 
   it "should exclude topic sections without titles" do
     topic = create(:topic, path: "/service-manual/agile-delivery")
-    create(:topic_section, title: "", topic: topic)
+    create(:topic_section, title: "", topic:)
 
     expect(helper.redirect_destination_select_options).to include(
       "Topics" => ["/service-manual/agile-delivery"],

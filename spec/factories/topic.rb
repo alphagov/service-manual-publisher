@@ -13,7 +13,7 @@ FactoryBot.define do
           :topic_section,
           title: "Group 1 title",
           description: "Group 1 description",
-          topic: topic,
+          topic:,
         )
         topic_section1.guides << guide1
 
@@ -22,7 +22,7 @@ FactoryBot.define do
           :topic_section,
           title: "Group 2",
           description: "Group 2 description",
-          topic: topic,
+          topic:,
         )
         topic_section2.guides << guide2
       end

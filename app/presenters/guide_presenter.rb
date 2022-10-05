@@ -21,7 +21,7 @@ class GuidePresenter
       routes: [
         { type: "exact", path: guide.slug },
       ],
-      details: details,
+      details:,
     }
   end
 
@@ -43,7 +43,7 @@ class GuidePresenter
       links[:parent] = [ServiceStandardPresenter::SERVICE_STANDARD_CONTENT_ID]
     end
 
-    { links: links }
+    { links: }
   end
 
 private

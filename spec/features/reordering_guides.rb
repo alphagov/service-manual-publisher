@@ -11,7 +11,7 @@ RSpec.describe "Re-ordering guides", type: :feature, js: true do
 
   it "displays guides in order of position" do
     topic = create(:topic)
-    section = create(:topic_section, title: "Section 1", topic: topic)
+    section = create(:topic_section, title: "Section 1", topic:)
     topic.topic_sections << section
 
     section.guides << create(:guide, title: "Guide B")
@@ -25,7 +25,7 @@ RSpec.describe "Re-ordering guides", type: :feature, js: true do
 
   it "lets you re-order guides" do
     topic = create(:topic)
-    section = create(:topic_section, title: "Section 1", topic: topic)
+    section = create(:topic_section, title: "Section 1", topic:)
     topic.topic_sections << section
 
     section.guides << create(:guide, title: "Guide B")
@@ -42,8 +42,8 @@ RSpec.describe "Re-ordering guides", type: :feature, js: true do
 
   it "does not let you move guides between sections" do
     topic = create(:topic)
-    section1 = create(:topic_section, title: "Section 1", topic: topic)
-    section2 = create(:topic_section, title: "Section 2", topic: topic)
+    section1 = create(:topic_section, title: "Section 1", topic:)
+    section2 = create(:topic_section, title: "Section 2", topic:)
     topic.topic_sections = [section1, section2]
 
     section1.guides << create(:guide, title: "Guide B")
@@ -58,7 +58,7 @@ RSpec.describe "Re-ordering guides", type: :feature, js: true do
 
   it "remembers order changes when you add a heading" do
     topic = create(:topic)
-    section = create(:topic_section, title: "Section 1", topic: topic)
+    section = create(:topic_section, title: "Section 1", topic:)
     topic.topic_sections << section
 
     section.guides << create(:guide, title: "Guide B")
@@ -76,7 +76,7 @@ RSpec.describe "Re-ordering guides", type: :feature, js: true do
 private
 
   def handle_for_guide(title)
-    find(:xpath, sprintf(%{//ul[contains(@class, "js-guide-list")]/li[.//*[contains(text(), "%<title>s")]]//span[contains(@class, "js-guide-handle")]}, title: title))
+    find(:xpath, sprintf(%{//ul[contains(@class, "js-guide-list")]/li[.//*[contains(text(), "%<title>s")]]//span[contains(@class, "js-guide-handle")]}, title:))
   end
 
   def drag_guide_above(dragged_guide_title, destination_guide_title)

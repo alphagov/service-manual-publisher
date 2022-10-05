@@ -6,6 +6,6 @@ class EditionChangesController < ApplicationController
                     Edition.new
                   end
     @edition = Edition.find(params[:new_edition_id])
-    @edition_diff = EditionDiff.new(old_edition: old_edition, new_edition: @edition)
+    @edition_diff = EditionDiff.new(old_edition:, new_edition: @edition)
   end
 end

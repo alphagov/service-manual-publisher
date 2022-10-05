@@ -14,9 +14,9 @@ class EditionDiff
         old_text = old_edition.public_send(field).to_s
         new_text = new_edition.public_send(field).to_s
         memo[field] = FieldChange.new(
-          old_text: old_text,
-          new_text: new_text,
-          field: field,
+          old_text:,
+          new_text:,
+          field:,
         )
       end
     field_changes.with_indifferent_access

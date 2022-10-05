@@ -7,7 +7,7 @@ RSpec.describe "Deletion of topic sections", type: :feature, js: true do
 
   it "allows you to delete empty topic sections" do
     topic = create(:topic)
-    section_without_guides = create(:topic_section, title: "Empty Group", topic: topic)
+    section_without_guides = create(:topic_section, title: "Empty Group", topic:)
     topic.topic_sections << section_without_guides
 
     visit edit_topic_path(topic)

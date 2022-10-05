@@ -22,7 +22,7 @@ class TopicPresenter
       ],
       details: {
         visually_collapsed: topic.visually_collapsed,
-        groups: groups,
+        groups:,
       },
     }
   end
