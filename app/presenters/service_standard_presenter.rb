@@ -13,7 +13,7 @@ class ServiceStandardPresenter
       locale: "en",
       phase: "beta",
       publishing_app: "service-manual-publisher",
-      rendering_app: "service-manual-frontend",
+      rendering_app: "government-frontend",
       routes: [
         { type: "exact", path: "/service-manual/service-standard" },
       ],
