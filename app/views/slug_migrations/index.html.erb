@@ -39,7 +39,7 @@
                 <% end %>
               </td>
               <td>
-                <%= link_to slug_migration.slug, [Plek.new.website_root, slug_migration.slug].join('') %>
+                <%= link_to slug_migration.slug, [Plek.website_root, slug_migration.slug].join('') %>
               </td>
               <td>
                 <%= slug_migration.redirect_to %>

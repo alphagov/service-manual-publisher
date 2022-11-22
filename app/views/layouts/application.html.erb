@@ -9,7 +9,7 @@
 
 <% if current_user %>
   <% content_for :navbar_right do %>
-    <%= link_to current_user.name, Plek.new.external_url_for('signon') %>
+    <%= link_to current_user.name, Plek.external_url_for('signon') %>
     &bull; <%= link_to 'Sign out', gds_sign_out_path %>
   <% end %>
 <% end %>

@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   rescue_from Notifications::Client::BadRequestError, with: :notify_bad_request
 
   def preview_content_model_url(content_model)
-    [Plek.new.external_url_for("draft-origin"), content_model.slug].join("")
+    [Plek.external_url_for("draft-origin"), content_model.slug].join("")
   end
   helper_method :preview_content_model_url
 
