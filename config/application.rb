@@ -30,7 +30,7 @@ module ServiceManualPublisher
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
 
-    config.action_mailer.default_url_options = { host: Plek.new.external_url_for("service-manual-publisher") }
+    config.action_mailer.default_url_options = { host: Plek.external_url_for("service-manual-publisher") }
 
     # Using a sass css compressor causes a scss file to be processed twice
     # (once to build, once to compress) which breaks the usage of "unquote"

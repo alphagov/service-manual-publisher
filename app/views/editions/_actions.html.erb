@@ -9,7 +9,7 @@
       <% end %>
 
       <% if guide.has_been_published? %>
-        <%= link_to "View on website", [Plek.new.website_root, guide.slug].join(''), class: 'btn btn-default add-right-margin' %>
+        <%= link_to "View on website", [Plek.website_root, guide.slug].join(''), class: 'btn btn-default add-right-margin' %>
       <% end %>
 
       <% if !publish_controls_only %>

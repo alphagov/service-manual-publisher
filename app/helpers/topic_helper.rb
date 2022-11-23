@@ -1,6 +1,6 @@
 module TopicHelper
   def view_topic_url(topic)
-    [Plek.new.website_root, topic.path].join("")
+    [Plek.website_root, topic.path].join("")
   end
 
   def all_guides_container_for_select
