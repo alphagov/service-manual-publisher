@@ -11,7 +11,7 @@ class ServiceToolkitPresenter
       title: "Service Toolkit",
       description: "All you need to design, build and run services that meet government standards.",
       details: {
-        collections: collections,
+        collections:,
       },
       routes: [
         { type: "exact", path: "/service-toolkit" },
