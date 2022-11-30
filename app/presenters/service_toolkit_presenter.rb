@@ -11,7 +11,7 @@ class ServiceToolkitPresenter
       title: "Service Toolkit",
       description: "All you need to design, build and run services that meet government standards.",
       details: {
-        collections:,
+        collections: collections,
       },
       routes: [
         { type: "exact", path: "/service-toolkit" },
@@ -31,137 +31,106 @@ class ServiceToolkitPresenter
   def collections
     [
       {
-        "title": "Technology and digital standards",
-        "description": "Standards for creating and running government services",
+        "title": "Technology standards and guidance",
+        "description": "Designing, building and buying technology for government",
         "links": [
+          {
+            "title": "Technology Code of Practice",
+            "url": "https://www.gov.uk/service-manual/service-standard",
+            "description": "The standard you must meet to get approval to spend money on technology or a service",
+          },
+          {
+            "title": "Technology guidance",
+            "url": "https://www.gov.uk/guidance/government-technology-standards-and-guidance",
+            "description": "Guidance on accessibility, hosting, networking, open source, procurement, security and more",
+          },
+        ],
+      },
+
+      {
+        "title": "Service standards and guidance",
+        "description": "Creating and running government services",
+        "links": [
+          {
+            "title": "Design principles",
+            "url": "https://www.gov.uk/guidance/government-design-principles",
+            "description": "Principles to help guide teams creating government services",
+          },
           {
             "title": "Service Standard",
             "url": "https://www.gov.uk/service-manual/service-standard",
-            "description": "The 14-point standard that government services must meet",
+            "description": "The standard that government services need to meet",
           },
           {
             "title": "Service Manual",
             "url": "https://www.gov.uk/service-manual",
-            "description": "Guidance on how to research, design and build services that meet the Service Standard",
-          },
-          {
-            "title": "API technical and data standards",
-            "url": "https://www.gov.uk/guidance/gds-api-technical-and-data-standards",
-            "description": "Guidance for using APIs to build the best possible digital services",
-          },
-          {
-            "title": "Open Standards",
-            "url": "https://www.gov.uk/search/advanced?group=guidance_and_regulation&topic=%2Fgovernment%2Ftechnology-guidance-technology-guidance-open-standards",
-            "description": "Open Standards mandated by government",
-          },
-          {
-            "title": "Technology Code of Practice",
-            "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice",
-            "description": "The standard you must meet to get approval to spend money on technology or a service",
-          },
-        ],
-      },
-      {
-        "title": "Guidance on specific technology and digital topics",
-        "description": "Guidance for creating and running government services",
-        "links": [
-          {
-            "title": "Accessibility and assisted digital",
-            "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service",
-            "description": "Guidance to help you make sure your service is accessible",
-          },
-          {
-            "title": "Agile delivery",
-            "url": "https://www.gov.uk/service-manual/agile-delivery",
-            "description": "Guidance to help you work in an agile way",
-          },
-          {
-            "title": "Exiting major IT contracts",
-            "url": "https://www.gov.uk/government/publications/exiting-major-it-contracts",
-            "description": "Guidance and case studies to help you exit large IT contracts",
-          },
-          {
-            "title": "Spend controls",
-            "url": "https://www.gov.uk/government/collections/cabinet-office-controls",
-            "description": "Guidance on when and how to follow the digital and technology spend controls",
-          },
-          {
-            "title": "Security",
-            "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice-related-guidance#security",
-            "description": "GOV.UK and NCSC guidance to help you secure digital services and technology",
-          },
-          {
-            "title": "Working in the open",
-            "url": "https://www.gov.uk/search/advanced?group=guidance_and_regulation&topic=%2Fgovernment%2Ftechnology-guidance-technology-guidance-open-source",
-            "description": "Guidance to help you work in the open",
-          },
-          {
-            "title": "Looking for more technology topics",
-            "url": "https://www.gov.uk/government/publications/technology-code-of-practice/technology-code-of-practice-related-guidance",
-            "description": "A full alphabetised list of technology and digital topics from government websites and independent bodies to help you design, buy and build services",
-          },
-        ],
-      },
-      {
-        "title": "Design and style guidance",
-        "description": "Interaction and content design resources",
-        "links": [
-          {
-            "title": "Design Principles",
-            "url": "https://www.gov.uk/design-principles",
-            "description": "10 principles to guide you as you design your service",
+            "description": "Guidance on accessibility and assisted digital, agile delivery, design, measuring success, user research and more",
           },
           {
             "title": "GOV.UK Design System",
-            "url": "https://design-system.service.gov.uk",
-            "description": "Make your service consistent with GOV.UK by using components, styles and patterns",
+            "url": "https://design-system.service.gov.uk/",
+            "description": "Styles, patterns and components for building GOV.UK services",
           },
           {
             "title": "GOV.UK Prototype Kit",
             "url": "https://govuk-prototype-kit.herokuapp.com/docs",
-            "description": "Code and templates for building realistic prototypes",
-          },
-          {
-            "title": "Style guide",
-            "url": "https://www.gov.uk/guidance/style-guide",
-            "description": "Style, spelling and grammar conventions for digital content",
+            "description": "Create rapid prototypes of GOV.UK services",
           },
         ],
       },
+
       {
-        "title": "GOV.UK services",
-        "description": "Technologies you can use when building and running government services",
+        "title": "Platforms and tools",
+        "description": "Technologies to help you build and run government services",
         "links": [
           {
             "title": "GOV.UK Notify",
-            "url": "https://www.notifications.service.gov.uk",
-            "description": "Keep your users updated with emails, text messages and letters, cheaply and easily",
+            "url": "https://www.notifications.service.gov.uk/",
+            "description": "Send your users emails, text messages and letters - cheaply and easily",
           },
           {
             "title": "GOV.UK Pay",
-            "url": "https://www.payments.service.gov.uk",
-            "description": "Take and process payments - a simple experience for users and easy integration for you",
+            "url": "https://www.payments.service.gov.uk/",
+            "description": "Collect and process payments - providing a simple experience for users and easy integration for service teams",
           },
           {
-            "title": "GOV.UK Sign in (beta)",
-            "url": "https://www.sign-in.service.gov.uk",
-            "description": "Let users sign in to your service quickly, easily and securely. Register for the private beta.",
+            "title": "GOV.UK One Login (beta)",
+            "url": "https://www.sign-in.service.gov.uk/",
+            "description": "Let users sign into your service quickly, easily and securely (private beta with limited participation)",
           },
           {
-            "title": "GOV.UK Forms (private beta)",
-            "url": "https://www.forms.service.gov.uk",
-            "description": "Create accessible online forms for GOV.UK with no need for technical or design skills.",
+            "title": "GOV.UK Forms (beta)",
+            "url": "https://www.forms.service.gov.uk/",
+            "description": "Create accessible online forms without needing technical or design skills (private beta with limited participation)",
           },
         ],
       },
+
       {
-        "title": "Buying technology",
-        "description": "Skills and technology for building digital services",
+        "title": "Spend controls and assurance",
+        "description": "Assurance for technology spending and digital services",
+        "links": [
+          {
+            "title": "Spend controls",
+            "url": "https://www.gov.uk/government/collections/cabinet-office-controls",
+            "description": "When and how to get approval to spend money on digital and technology",
+          },
+          {
+            "title": "Service Standard and assessments",
+            "url": "https://www.gov.uk/service-manual/service-assessments/check-if-need-to-meet-service-standard",
+            "description": "Check if you need to follow the Service Standard or get a service assessment",
+          },
+        ],
+      },
+
+      {
+        "title": "Buying technology and getting help with delivery",
+        "description": "Procurement frameworks and delivery support",
         "links": [
           {
             "title": "Digital Marketplace",
-            "url": "https://www.gov.uk/digital-marketplace",
-            "description": "Source cloud technology and specialist services for digital projects",
+            "url": "https://www.digitalmarketplace.service.gov.uk/",
+            "description": "Use the G-Cloud or DOS frameworks to procure technology and find people to help deliver digital products and services",
           },
         ],
       },
