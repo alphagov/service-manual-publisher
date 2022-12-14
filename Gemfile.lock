@@ -498,6 +498,7 @@ DEPENDENCIES
   highline
   kaminari
   launchy
+  mail (~> 2.7.1)
   mail-notify
   pg
   plek
