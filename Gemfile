@@ -12,7 +12,7 @@ gem "govuk_admin_template"
 gem "govuk_app_config"
 gem "highline"
 gem "kaminari"
-gem "mail", "~> 2.8.0"  # TODO: remove once https://github.com/mikel/mail/issues/1489 is fixed.
+gem "mail", "~> 2.7.1"  # TODO: remove once https://github.com/mikel/mail/issues/1489 is fixed.
 gem "mail-notify"
 gem "pg"
 gem "plek"
