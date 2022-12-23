@@ -38,6 +38,10 @@ module ServiceManualPublisher
     # https://github.com/alphagov/govuk-frontend/issues/1350
     config.assets.css_compressor = nil
 
+    # Set asset path to be application specific so that we can put all GOV.UK
+    # assets into an S3 bucket and distinguish app by path.
+    config.assets.prefix = "/assets/service-manual-publisher"
+
     config.active_record.belongs_to_required_by_default = false
 
     ActiveSupport.to_time_preserves_timezone = false
