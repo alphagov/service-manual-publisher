@@ -1,5 +1,5 @@
 {
-   "srcDir": "public/assets",
+   "srcDir": "public/assets/service-manual-publisher",
    "srcFiles": [
      "govuk-admin-template-*.js",
      "application-*.js"
