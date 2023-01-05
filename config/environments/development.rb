@@ -62,13 +62,6 @@ Rails.application.configure do
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.add_footer = true
-    Bullet.console = true
-    Bullet.bullet_logger = true
-  end
-
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
