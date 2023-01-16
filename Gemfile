@@ -4,6 +4,7 @@ gem "rails", "7.0.4"
 
 gem "active_link_to"
 gem "auto_strip_attributes"
+gem "bootsnap", require: false
 gem "diffy"
 gem "gds-api-adapters"
 gem "gds-sso"
