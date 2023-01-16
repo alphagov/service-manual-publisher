@@ -495,7 +495,6 @@ DEPENDENCIES
   govuk_test
   highline
   kaminari
-  mail (~> 2.8.0)
   mail-notify
   pg
   plek
