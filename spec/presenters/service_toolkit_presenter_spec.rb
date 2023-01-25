@@ -40,7 +40,7 @@ RSpec.describe ServiceToolkitPresenter, "#content_payload" do
       document_type: "service_manual_service_toolkit",
       schema_name: "service_manual_service_toolkit",
       publishing_app: "service-manual-publisher",
-      rendering_app: "service-manual-frontend",
+      rendering_app: "government-frontend",
       locale: "en",
     )
   end
