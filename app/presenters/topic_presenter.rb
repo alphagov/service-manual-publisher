@@ -8,7 +8,7 @@ class TopicPresenter
   def content_payload
     {
       publishing_app: "service-manual-publisher",
-      rendering_app: "service-manual-frontend",
+      rendering_app: "government-frontend",
       schema_name: "service_manual_topic",
       document_type: "service_manual_topic",
       locale: "en",
