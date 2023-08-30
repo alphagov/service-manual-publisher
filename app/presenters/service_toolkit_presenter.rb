@@ -96,7 +96,7 @@ class ServiceToolkitPresenter
           {
             "title": "GOV.UK One Login (beta)",
             "url": "https://www.sign-in.service.gov.uk/",
-            "description": "Let users sign into your service quickly, easily and securely (private beta with limited participation)",
+            "description": "Lets your users sign in and prove their identity so they can access your service quickly and easily",
           },
           {
             "title": "GOV.UK Forms (beta)",
