@@ -67,7 +67,10 @@
         <%= f.error_list :body %>
         <%= file_field_tag 'attachment', multiple: true, class: "js-markdown-file-input hidden" %>
         <p class="help-block">
-          To insert images either <a class="js-markdown-file-input-trigger" href="javascript:void(0);">click here</a>, or drag and drop them into the text area below
+          To insert images either <a class="js-markdown-file-input-trigger" href="javascript:void(0);">click here</a>, or drag and drop them into the text area below.
+        </p>
+        <p class="help-block">
+          To add an attachment, first <%= link_to "upload the file (opens in new tab)", new_upload_path, target: "_blank" %>. 
         </p>
         <%= f.text_area :body, disabled: disable_inputs, class: 'js-markdown-image-upload input-md-12 form-control markdown-textarea text-area-auto-size text-area-auto-size-large js-text-area-auto-size', rows: 14 %>
       </div>
