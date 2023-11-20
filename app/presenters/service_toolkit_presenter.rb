@@ -101,7 +101,7 @@ class ServiceToolkitPresenter
           {
             "title": "GOV.UK Forms (beta)",
             "url": "https://www.forms.service.gov.uk/",
-            "description": "Create accessible online forms without needing technical or design skills (private beta with limited participation)",
+            "description": "A new platform that makes it easy to create accessible online forms for GOV.UK",
           },
         ],
       },
