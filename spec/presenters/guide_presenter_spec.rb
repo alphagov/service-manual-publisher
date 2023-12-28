@@ -45,7 +45,7 @@ RSpec.describe GuidePresenter do
       guide = create(
         :guide,
         edition: {
-          created_at: "2016-06-28T14:16:21Z".to_time,
+          created_at: Time.zone.parse("2016-06-28T14:16:21Z"),
           change_note: "Add a new guide 'The Title'",
         },
       )

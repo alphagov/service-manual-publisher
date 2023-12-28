@@ -15,7 +15,7 @@ RSpec.describe "Guide history", type: :feature do
 
     GDS::SSO.test_user = john
 
-    travel_to "2004-11-24".to_time do
+    travel_to Time.zone.parse("2004-11-24") do
       visit root_path
       click_on "Create a Guide"
       fill_in_final_url "/service-manual/the/path"
@@ -30,7 +30,7 @@ RSpec.describe "Guide history", type: :feature do
 
     GDS::SSO.test_user = sally
 
-    travel_to "2004-11-25".to_time do
+    travel_to Time.zone.parse("2004-11-25") do
       click_on "Comments and history"
 
       within ".open-edition" do
@@ -41,7 +41,7 @@ RSpec.describe "Guide history", type: :feature do
 
     GDS::SSO.test_user = john
 
-    travel_to "2004-11-25".to_time do
+    travel_to Time.zone.parse("2004-11-25") do
       click_on "Edit"
       select "Sally", from: "Author"
 
@@ -50,7 +50,7 @@ RSpec.describe "Guide history", type: :feature do
 
     GDS::SSO.test_user = sally
 
-    travel_to "2004-11-26".to_time do
+    travel_to Time.zone.parse("2004-11-26") do
       click_first_button "Send for review"
     end
 
@@ -58,7 +58,7 @@ RSpec.describe "Guide history", type: :feature do
 
     click_on "Edit"
 
-    travel_to "2004-11-27".to_time do
+    travel_to Time.zone.parse("2004-11-27") do
       click_first_button "Approve for publication"
     end
 
@@ -66,7 +66,7 @@ RSpec.describe "Guide history", type: :feature do
 
     click_on "Edit"
 
-    travel_to "2004-11-28".to_time do
+    travel_to Time.zone.parse("2004-11-28") do
       click_first_button "Publish"
     end
 
@@ -84,9 +84,9 @@ RSpec.describe "Guide history", type: :feature do
   it "shows a header with pertinent edition information" do
     guide = create(:guide, :with_published_edition)
     first_published_edition = guide.editions.find_by(state: "published")
-    first_published_edition.update!(updated_at: "2004-11-24".to_time)
+    first_published_edition.update!(updated_at: Time.zone.parse("2004-11-24"))
 
-    second_published_edition = build(:edition, version: 2, update_type: "minor", state: "published", updated_at: "2004-11-25".to_time)
+    second_published_edition = build(:edition, version: 2, update_type: "minor", state: "published", updated_at: Time.zone.parse("2004-11-25"))
     guide.editions << second_published_edition
 
     draft_edition = build(:edition, version: 3, update_type: "minor")
