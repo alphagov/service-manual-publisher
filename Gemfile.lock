@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    abbrev (0.1.2)
     actioncable (7.1.2)
       actionpack (= 7.1.2)
       activesupport (= 7.1.2)
@@ -210,7 +211,8 @@ GEM
       selenium-webdriver (>= 4.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
-    highline (2.1.0)
+    highline (3.0.0)
+      abbrev
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.5)
