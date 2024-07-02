@@ -36,7 +36,7 @@ class ServiceToolkitPresenter
         "links": [
           {
             "title": "Technology Code of Practice",
-            "url": "https://www.gov.uk/service-manual/service-standard",
+            "url": "https://www.gov.uk/guidance/the-technology-code-of-practice",
             "description": "The standard you must meet to get approval to spend money on technology or a service",
           },
           {
