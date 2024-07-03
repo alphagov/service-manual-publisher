@@ -45,7 +45,7 @@ RSpec.describe GuidePresenter do
       guide = create(
         :guide,
         edition: {
-          created_at: Time.zone.parse("2016-06-28T14:16:21Z"),
+          created_at: Time.zone.parse("2016-06-28 14:16:21").as_json,
           change_note: "Add a new guide 'The Title'",
         },
       )
@@ -54,7 +54,7 @@ RSpec.describe GuidePresenter do
       expect(presenter.content_payload[:details]).to include(
         change_history: [
           {
-            public_timestamp: "2016-06-28T14:16:21Z",
+            public_timestamp: Time.zone.parse("2016-06-28 14:16:21").as_json,
             note: "Add a new guide 'The Title'",
           },
         ],
