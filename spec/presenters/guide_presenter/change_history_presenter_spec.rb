@@ -6,12 +6,12 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       *published_edition(
         change_note: "Guidance first published",
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z",
+        created_at: Time.zone.parse("2016-06-25 14:16:21").iso8601,
       ),
       *published_edition(
         change_note: "Big content change",
         update_type: "major",
-        created_at: "2016-06-28T14:16:21Z",
+        created_at: Time.zone.parse("2016-06-28 14:16:21").iso8601,
       ),
     ]
 
@@ -20,11 +20,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
 
     expect(presenter.change_history).to eq [
       {
-        public_timestamp: "2016-06-28T14:16:21Z",
+        public_timestamp: Time.zone.parse("2016-06-28 14:16:21").iso8601,
         note: "Big content change",
       },
       {
-        public_timestamp: "2016-06-25T14:16:21Z",
+        public_timestamp: Time.zone.parse("2016-06-25 14:16:21").iso8601,
         note: "Guidance first published",
       },
     ]
@@ -35,12 +35,12 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       *published_edition(
         change_note: "Guidance first published",
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z",
+        created_at: Time.zone.parse("2016-06-25 14:16:21").iso8601,
       ),
       *draft_edition(
         change_note: "Big content change",
         update_type: "major",
-        created_at: "2016-06-28T14:16:21Z",
+        created_at: Time.zone.parse("2016-06-28 14:16:21").iso8601,
       ),
     ]
 
@@ -49,11 +49,11 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
 
     expect(presenter.change_history).to eq [
       {
-        public_timestamp: "2016-06-28T14:16:21Z",
+        public_timestamp: Time.zone.parse("2016-06-28 14:16:21").iso8601,
         note: "Big content change",
       },
       {
-        public_timestamp: "2016-06-25T14:16:21Z",
+        public_timestamp: Time.zone.parse("2016-06-25 14:16:21").iso8601,
         note: "Guidance first published",
       },
     ]
@@ -64,12 +64,12 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
       *published_edition(
         change_note: "Guidance first published",
         update_type: "major",
-        created_at: "2016-06-25T14:16:21Z",
+        created_at: Time.zone.parse("2016-06-25 14:16:21").iso8601,
       ),
       *draft_edition(
         change_note: "",
         update_type: "minor",
-        created_at: "2016-06-28T14:16:21Z",
+        created_at: Time.zone.parse("2016-06-28 14:16:21").iso8601,
         version: 2,
       ),
     ]
@@ -79,7 +79,7 @@ RSpec.describe GuidePresenter::ChangeHistoryPresenter do
 
     expect(presenter.change_history).to eq [
       {
-        public_timestamp: "2016-06-25T14:16:21Z",
+        public_timestamp: Time.zone.parse("2016-06-25 14:16:21").iso8601,
         note: "Guidance first published",
       },
     ]
