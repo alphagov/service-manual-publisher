@@ -20,11 +20,9 @@ RSpec.describe NotificationMailer, type: :mailer do
       expect(email.to).to eq ["gary@example.com"]
       expect(email.subject).to eq "New comment on \"Agile\""
 
-      email.parts.each do |part|
-        expect(part.body.to_s).to include "Luke"
-        expect(part.body.to_s).to include "Looking good"
-        expect(part.body.to_s).to include "guides/#{guide.id}/editions"
-      end
+      expect(email.body.to_s).to include "Luke"
+      expect(email.body.to_s).to include "Looking good"
+      expect(email.body.to_s).to include "guides/#{guide.id}/editions"
     end
 
     it "presents multi line comments correctly" do
@@ -58,11 +56,9 @@ RSpec.describe NotificationMailer, type: :mailer do
       expect(email.to).to eq ["gary@example.com"]
       expect(email.subject).to eq "\"Agile\" ready for publishing"
 
-      email.parts.each do |part|
-        expect(part.body.to_s).to include "Luke"
-        expect(part.body.to_s).to include "\"Agile\""
-        expect(part.body.to_s).to include edit_guide_path(guide)
-      end
+      expect(email.body.to_s).to include "Luke"
+      expect(email.body.to_s).to include "\"Agile\""
+      expect(email.body.to_s).to include edit_guide_path(guide)
     end
   end
 
@@ -74,11 +70,9 @@ RSpec.describe NotificationMailer, type: :mailer do
       expect(email.to).to eq ["gary@example.com"]
       expect(email.subject).to eq "\"Agile\" has been published"
 
-      email.parts.each do |part|
-        expect(part.body.to_s).to include "Luke"
-        expect(part.body.to_s).to include "\"Agile\""
-        expect(part.body.to_s).to include "#{Plek.find('www')}/service-manual/topic-name/agile-delivery"
-      end
+      expect(email.body.to_s).to include "Luke"
+      expect(email.body.to_s).to include "\"Agile\""
+      expect(email.body.to_s).to include "#{Plek.find('www')}/service-manual/topic-name/agile-delivery"
     end
   end
 end
