@@ -22,7 +22,7 @@ gem "redcarpet"
 gem "rinku", require: "rails_rinku"
 gem "select2-rails"
 gem "sprockets-rails"
-gem "uglifier"
+gem "terser"
 
 group :development do
   gem "better_errors"
