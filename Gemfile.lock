@@ -230,7 +230,7 @@ GEM
       selenium-webdriver (>= 4.0)
     hashdiff (1.1.1)
     hashie (5.0.0)
-    highline (3.1.1)
+    highline (3.1.2)
       reline
     htmlentities (4.3.4)
     http-accept (1.7.0)
