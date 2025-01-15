@@ -2370,7 +2370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.7":
+"nanoid@npm:^3.3.7, nanoid@npm:^3.3.8":
   version: 3.3.8
   resolution: "nanoid@npm:3.3.8"
   bin:
@@ -2808,6 +2808,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.5.0":
+  version: 8.5.0
+  resolution: "postcss@npm:8.5.0"
+  dependencies:
+    nanoid: "npm:^3.3.8"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: ce4fb520808a932566a0fd97be905b43e219b55a3752fc8daa944082a35848fa8aff300b89b77dc52c8c3bb5cd53e77182ddb37addc6cacf586f1ef42a34ef45
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -3122,7 +3133,7 @@ __metadata:
   dependencies:
     jasmine-browser-runner: "npm:^2.5.0"
     jasmine-core: "npm:^5.5.0"
-    postcss: "npm:^8.4.49"
+    postcss: "npm:^8.5.0"
     standardx: "npm:^7.0.0"
     stylelint: "npm:^16.13.1"
     stylelint-config-gds: "npm:^2.0.0"
