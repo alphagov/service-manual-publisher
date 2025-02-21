@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     GovukHealthcheck::ActiveRecord,
   )
 
+  mount GovukPublishingComponents::Engine, at: "/component-guide"
   mount GovukAdminTemplate::Engine, at: "/style-guide"
 
   root "guides#index"
