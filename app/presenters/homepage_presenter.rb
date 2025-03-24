@@ -17,7 +17,7 @@ class HomepagePresenter
       document_type: "service_manual_homepage",
       schema_name: "service_manual_homepage",
       publishing_app: "service-manual-publisher",
-      rendering_app: "government-frontend",
+      rendering_app: "frontend",
       locale: "en",
     }
   end

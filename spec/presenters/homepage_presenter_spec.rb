@@ -43,7 +43,7 @@ RSpec.describe HomepagePresenter, "#content_payload" do
 
     expect(payload).to include \
       publishing_app: "service-manual-publisher",
-      rendering_app: "government-frontend"
+      rendering_app: "frontend"
   end
 
   it "includes the document and schema type" do
