@@ -11,7 +11,6 @@ class ServiceStandardPresenter
       document_type: "service_manual_service_standard",
       update_type: "major",
       locale: "en",
-      phase: "beta",
       publishing_app: "service-manual-publisher",
       rendering_app: "frontend",
       routes: [
