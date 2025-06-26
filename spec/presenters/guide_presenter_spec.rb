@@ -16,14 +16,15 @@ RSpec.describe GuidePresenter do
         presenter.content_payload
       end
 
-      include_examples "common service manual draft payload"
+      include_examples "common service manual draft payload" do
+        let(:rendering_app) { "frontend" }
+      end
     end
 
     it "exports all necessary metadata" do
       guide = create(
         :guide,
         edition: {
-          phase: "beta",
           update_type: "major",
           description: "Description",
         },
@@ -34,7 +35,6 @@ RSpec.describe GuidePresenter do
       expect(presenter.content_payload).to include(
         description: "Description",
         update_type: "major",
-        phase: "beta",
         schema_name: "service_manual_guide",
         document_type: "service_manual_guide",
         base_path: "/service-manual/test-topic/the-title",
