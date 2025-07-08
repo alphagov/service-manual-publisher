@@ -13,8 +13,8 @@ shared_examples "common service manual draft payload" do
     expect(payload).to include(publishing_app: "service-manual-publisher")
   end
 
-  it "is rendering by the government-frontend" do
-    expect(payload).to include(rendering_app: "government-frontend")
+  it "is rendering by the correct rendering app" do
+    expect(payload).to include(rendering_app: rendering_app)
   end
 
   it "is in locale en" do

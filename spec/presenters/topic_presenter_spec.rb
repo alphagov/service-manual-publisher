@@ -10,7 +10,9 @@ RSpec.describe TopicPresenter, "#content_payload" do
   describe "common service manual draft payload" do
     let(:payload) { described_class.new(build(:topic)).content_payload }
 
-    include_examples "common service manual draft payload"
+    include_examples "common service manual draft payload" do
+      let(:rendering_app) { "government-frontend" }
+    end
   end
 
   it "exports all necessary metadata" do

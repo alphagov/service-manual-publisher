@@ -9,7 +9,7 @@ class GuidePresenter
   def content_payload
     {
       publishing_app: "service-manual-publisher",
-      rendering_app: "government-frontend",
+      rendering_app: "frontend",
       schema_name: "service_manual_guide",
       document_type: "service_manual_guide",
       locale: "en",
@@ -17,7 +17,6 @@ class GuidePresenter
       base_path: guide.slug,
       title: edition.title,
       description: edition.description,
-      phase: edition.phase,
       routes: [
         { type: "exact", path: guide.slug },
       ],
