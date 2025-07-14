@@ -8,7 +8,7 @@ class TopicPresenter
   def content_payload
     {
       publishing_app: "service-manual-publisher",
-      rendering_app: "government-frontend",
+      rendering_app: "frontend",
       schema_name: "service_manual_topic",
       document_type: "service_manual_topic",
       locale: "en",
@@ -16,7 +16,6 @@ class TopicPresenter
       base_path: topic.path,
       title: topic.title,
       description: topic.description,
-      phase: "beta",
       routes: [
         { type: "exact", path: topic.path },
       ],
