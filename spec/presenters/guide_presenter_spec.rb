@@ -16,9 +16,7 @@ RSpec.describe GuidePresenter do
         presenter.content_payload
       end
 
-      include_examples "common service manual draft payload" do
-        let(:rendering_app) { "frontend" }
-      end
+      include_examples "common service manual draft payload"
     end
 
     it "exports all necessary metadata" do
