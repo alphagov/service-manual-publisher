@@ -20,7 +20,7 @@ class ServiceStandardPresenter
       title: "Service Standard",
       description: "The Service Standard helps teams to create and run great public services.",
       details: {
-        body: '<p>Check whether you need to use <a href="/service-manual/service-assessments/pre-july-2019-digital-service-standard"> the previous version of the Service Standard</a>.</p>',
+        body: "",
       },
     }
   end
