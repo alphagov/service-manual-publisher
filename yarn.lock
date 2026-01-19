@@ -2016,10 +2016,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:^5.13.0":
-  version: 5.13.0
-  resolution: "jasmine-core@npm:5.13.0"
-  checksum: 3bbf1dbbde8017f41872a27f22bafd164fe4fcf834347af23d7d5a63e7e35c72c79e1596e6b384dd2906e885518419e13a6c7535ffabf8256b624110d664599d
+"jasmine-core@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "jasmine-core@npm:6.0.0"
+  checksum: 21489252db977976e28cff744a75e7b8553491268fea81dcac182b5fb1ff1dc43dc3174d87fe98e41c4886fabe90d472a3695de42be70480f28a6cc698ee9a67
   languageName: node
   linkType: hard
 
@@ -3230,7 +3230,7 @@ __metadata:
   resolution: "service-manual-publisher@workspace:."
   dependencies:
     jasmine-browser-runner: "npm:^3.0.0"
-    jasmine-core: "npm:^5.13.0"
+    jasmine-core: "npm:^6.0.0"
     postcss: "npm:^8.5.6"
     standardx: "npm:^7.0.0"
     stylelint: "npm:^16.26.1"
