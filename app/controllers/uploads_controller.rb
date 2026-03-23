@@ -6,7 +6,7 @@ class UploadsController < ApplicationController
         unless file.content_type.start_with?("image")
           render body: "The file that you're trying to upload does not seem "\
             "to be an image",
-                 status: :unprocessable_entity
+                 status: :unprocessable_content
           return
         end
 
@@ -14,7 +14,7 @@ class UploadsController < ApplicationController
           response = ASSET_API.create_asset(file:)
           render body: response["file_url"], status: :created
         rescue GdsApi::BaseError => e
-          render body: e.message, status: :unprocessable_entity
+          render body: e.message, status: :unprocessable_content
         end
       end
 
@@ -25,7 +25,7 @@ class UploadsController < ApplicationController
           response = ASSET_API.create_asset(file:)
           redirect_to new_upload_path, notice: "Uploaded successfully to #{response['file_url']}"
         rescue GdsApi::BaseError => e
-          render body: e.message, status: :unprocessable_entity
+          render body: e.message, status: :unprocessable_content
         end
       end
     end
