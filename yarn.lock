@@ -3181,7 +3181,7 @@ __metadata:
   dependencies:
     jasmine-browser-runner: "npm:^4.0.0"
     jasmine-core: "npm:^6.1.0"
-    postcss: "npm:^8.5.8"
+    postcss: "npm:^8.5.6"
     standardx: "npm:^7.0.0"
     stylelint: "npm:^17.5.0"
     stylelint-config-gds: "npm:^2.0.0"
