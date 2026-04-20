@@ -88,7 +88,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
-    bigdecimal (4.1.1)
+    bigdecimal (4.1.2)
     binding_of_caller (2.0.0)
       debug_inspector (>= 1.2.0)
     bootsnap (1.23.0)
@@ -212,7 +212,7 @@ GEM
     govuk_personalisation (1.1.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (65.2.2)
+    govuk_publishing_components (66.0.0)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
