@@ -5,7 +5,9 @@
   <%= csrf_meta_tag %>
 <% end %>
 
-<% render "layouts/google_tag_manager" %>
+<% render "layouts/google_tag_manager", {
+  gtm_id: "GTM-KHZP7S7Q",
+} %>
 
 <% content_for :page_title, " | GOV.UK Service Manual Publisher" %>
 <% content_for :app_title do %>GOV.UK Service Manual Publisher<% end %>
