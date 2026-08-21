@@ -18,6 +18,11 @@ Rails.application.configure do
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
+  # Do not fall back to assets pipeline if a precompiled asset is missed.
+  # (This is a GDS-specific configuration to ensure that all assets are precompiled and available in production.
+  # The alternative would be for assets to be compiled on the fly by Sprockets, which is not recommended for production environments.)
+  config.assets.compile = false
+
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
