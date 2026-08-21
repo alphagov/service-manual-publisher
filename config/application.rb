@@ -13,15 +13,12 @@ require "action_mailer/railtie"
 require "action_view/railtie"
 # require "action_cable/engine"
 require "rails/test_unit/railtie"
-require "sprockets/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module ServiceManualPublisher
-  GDS_ORGANISATION_CONTENT_ID = "af07d5a5-df63-4ddc-9383-6a666845ebe9".freeze
-
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
@@ -35,21 +32,7 @@ module ServiceManualPublisher
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
-
-    config.action_mailer.default_url_options = { host: Plek.external_url_for("service-manual-publisher") }
-
-    # Using a sass css compressor causes a scss file to be processed twice
-    # (once to build, once to compress) which breaks the usage of "unquote"
-    # to use CSS that has same function names as SCSS such as max.
-    # https://github.com/alphagov/govuk-frontend/issues/1350
-    config.assets.css_compressor = nil
-
-    # Set asset path to be application specific so that we can put all GOV.UK
-    # assets into an S3 bucket and distinguish app by path.
-    config.assets.prefix = "/assets/service-manual-publisher"
-
-    config.active_record.belongs_to_required_by_default = false
-
+    #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
   end
