@@ -7,12 +7,13 @@
    "cssFiles": [
      "application-*.css"
    ],
-   "specDir": "spec/javascripts",
+   "specDir": ".",
    "specFiles": [
-     "**/*[sS]pec.js"
+     "spec/javascripts/**/*[sS]pec.js"
    ],
    "helpers": [
-     "helpers/*.js"
+     "spec/javascripts/ghelpers/*.js",
+     "node_modules/jasmine-ajax/lib/mock-ajax.js"
    ],
    "browser": "headlessChrome"
  }
