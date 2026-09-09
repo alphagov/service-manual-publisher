@@ -73,7 +73,7 @@ class ServiceToolkitPresenter
           },
           {
             "title": "GOV.UK Prototype Kit",
-            "url": "https://govuk-prototype-kit.herokuapp.com/docs",
+            "url": "https://prototype-kit.service.gov.uk/",
             "description": "Create rapid prototypes of GOV.UK services",
           },
         ],
