@@ -216,7 +216,7 @@ GEM
     govuk_personalisation (1.2.0)
       plek (>= 1.9.0)
       rails (>= 6, < 9)
-    govuk_publishing_components (68.3.0)
+    govuk_publishing_components (70.2.1)
       chartkick
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
@@ -434,9 +434,11 @@ GEM
       opentelemetry-instrumentation-base (~> 0.25)
     opentelemetry-instrumentation-aws_sdk (0.13.0)
       opentelemetry-instrumentation-base (~> 0.25)
-    opentelemetry-instrumentation-base (0.26.1)
+    opentelemetry-instrumentation-base (0.27.0)
       opentelemetry-api (~> 1.7)
       opentelemetry-common (~> 0.21)
+      opentelemetry-logs-api (~> 0.6)
+      opentelemetry-metrics-api (~> 0.9)
       opentelemetry-registry (~> 0.1)
     opentelemetry-instrumentation-bunny (0.25.0)
       opentelemetry-instrumentation-base (~> 0.25)
@@ -520,6 +522,10 @@ GEM
       opentelemetry-helpers-sql-processor
       opentelemetry-instrumentation-base (~> 0.25)
       opentelemetry-semantic_conventions (>= 1.8.0)
+    opentelemetry-logs-api (0.6.0)
+      opentelemetry-api (~> 1.0)
+    opentelemetry-metrics-api (0.9.0)
+      opentelemetry-api (~> 1.0)
     opentelemetry-registry (0.6.3)
       opentelemetry-api (~> 1.1)
     opentelemetry-sdk (1.13.1)
